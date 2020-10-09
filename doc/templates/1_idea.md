@@ -1,4 +1,4 @@
-# Anteproxecto
+# Idea
 
 * Qué tipo de proxecto vas levar a cabo? Vas realizar únicamente a planificación e deseño ou crearás un entregable?
 * En que consiste o teu proxecto? Cal é o propósito principal do mesmo?
