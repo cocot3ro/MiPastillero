@@ -31,12 +31,13 @@
 
 > *TODO*: Simplemente indexa ordenadamente todo tu proyecto.
 
-1. [Idea](doc/templates/1_idea.md)
-2. [Necesidades](doc/templates/2_necesidades.md)
-3. [Análisis](doc/templates/3_analise.md)
-4. [Diseño](doc/templates/4_deseño.md)
-5. [Planificación](doc/templates/5_planificacion.md)
-6. [Implantación](doc/templates/6_implantacion.md)
+1. Anteproxecto
+    1.1. [Idea](doc/templates/1_idea.md)
+    1.2. [Necesidades](doc/templates/2_necesidades.md)
+2. [Análisis](doc/templates/3_analise.md)
+3. [Planificación](doc/templates/4_planificacion.md)
+4. [Diseño](doc/templates/5_deseño.md)
+5. [Implantación](doc/templates/6_implantacion.md)
 
 
 ## Guía de contribución
