@@ -14,13 +14,13 @@
     
     4.4. Que medios, actividades e recursos van poñer en xogo? 
     
-    4.5. Que actividades van realizar? 
+    4.5. Que actividades se van realizar? 
     
-    4.6. Con que metodoloxía vai levar a cabo o traballo?
+    4.6. Que metodoloxía se vai empregar para levar a cabo o traballo?
     
     4.7. Que persoas serían precisas para realizar o proxecto con éxito? 
     
-    4.8 Con canto tempo cóntase? 
+    4.8 Con canto tempo se conta? 
     
     4.9 Canto tempo se necesita?
 
@@ -38,6 +38,10 @@
         1.2.a) Os beneficios do proyecto son superiores aos costes?
         
         1.2.b) As perdas poden cubrirse vía financiamento (por parte da administración pública, con subvencións, etc)?
+
+        1.2.c) Que riscos se deben ter en conta e qué accións se poden levar a cabo para mitigalos?
+
+        1.2.d) Cales son os interesados que se poden ver afectados polo proxecto e qué accións se poden levar a cabo para que estas persoas colaboren para que o proxecto sexa un éxito?
         
 2.	Competencia.
 
