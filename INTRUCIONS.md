@@ -4,6 +4,10 @@
 
 Para o desenvolvemento e seguimento do proxecto usaremos a plataforma gitlab. Gitlab é unha plataforma que facilita o proceso de planificación, deseño, desenvolvemento e mantemento de calquera solución software de tipo libre. Mediante o seu uso preténdese promove a autoorganización, as boas prácticas e o espíritu colaborativo e de traballo en equipo. Ademáis, disporedes dun marco de traballo estándar que a día de hoxe está implantado na maioría de empresas que desenvolven software de alta calidade.
 
+## Guía do alumno
+
+Tedes un documento de referencia de lectura rápida sobre o PFC no seguinte enlace: [Guía do alumno PFC](doc/material_axuda/Guia alumno PFC.pdf)
+
 ## Os elementos principais cos que ides traballar no proxecto son os seguintes:
 
 ### Un repositorio git asociado ó voso proxecto
