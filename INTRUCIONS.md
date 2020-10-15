@@ -6,7 +6,9 @@ Para o desenvolvemento e seguimento do proxecto usaremos a plataforma gitlab. Gi
 
 ## Guía do alumno
 
-Tedes un documento de referencia de lectura rápida sobre o PFC no seguinte enlace: [Guía do alumno PFC](doc/material_axuda/Guia alumno PFC.pdf)
+Tedes un documento de referencia de lectura rápida sobre o PFC no seguinte enlace: [Guía do alumno PFC](doc/material_axuda/Guia alumno PFC.pdf). 
+
+Nesa guía tedes información sobre as modalidades do PFC, o cal pode ser desenvolvido documentalmente ou ben facendo un prototipo funcional dunha solución, e instruccións sobre o desenvolvemento e cualificación do PFC. Para a cualificación do PFC usaranse as **rúbricas** que están recollidas nese documento, especificando ademais o peso de cada un dos apartados a avaliar.
 
 ## Os elementos principais cos que ides traballar no proxecto son os seguintes:
 
