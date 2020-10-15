@@ -6,58 +6,66 @@
 
 ### Metodoloxía
 
-
 ### Fases planificadas
 
 Descríbense as fases en que se divide o proxecto e as tarefas que se han levar a cabo en cada unha destas fases.
+
 Pódense indicar os recursos materiais e humanos asociados a cada tarefa ou, se son os mesmos, de maneira máis xeral.
 
 #### Fase 1: Estudo de necesidades e modelo de negocio
 
 ##### Tarefa 1: xxxxxxxx
 
-Descrición: 
+Descrición:
 
-Recursos hardware/software: 
+Recursos hardware/software:
 
 Recursos humanos: Persoas que se encargarán de realizar esta tarefa
 
-Duración: 
+Duración:
 
 #### Tarefa 2
+
 ...
 
 #### Fase 2: xxxxx
 
 ##### Tarefa 1: xxxxxxxx
 
-Descrición: 
+Descrición:
 
-Recursos hardware/software: 
+Recursos hardware/software:
 
-Recursos humanos: 
+Recursos humanos:
 
-Duración: 
+Duración:
 
 #### Tarefa 2
+
 ...
 
 ### Diagrama de Gantt
-Un diagrama de Gantt é unha representación gráfica da secuenciación que tes que seguir para realizar as tarefas planificadas. Pódese usar o software "Gantt project" ou calquera outro que permita representar nun cronograma a información relativa á planificación de tarefas. 
+
+Un diagrama de Gantt é unha representación gráfica da secuenciación que tes que seguir para realizar as tarefas planificadas. Pódese usar o software "Gantt project" ou calquera outro que permita representar nun cronograma a información relativa á planificación de tarefas.
 
 ## Orzamento
-O orzamento do proxecto será a suma do importe dos materiais que necesites para realizar o proxecto máis o importe que corresponde ao traballo realizado. 
-O importe relacionado co traballo no proxecto é relativamente fácil de obter se se elaboraron ben as etapas anteriores: definir as actividades necesarias e os recursos propios de cada actividade. Neste caso disporase dun custo por cada actividade e a suma do custo de todas as actividades será o custo total do traballo do proxecto. 
-Para establecer os custos do proxecto debes ter en conta diferentes conceptos: 
-- Materiais que se utilizan: material funxible, materias primas, materiais didácticos, roupa de traballo… 
-- Custo horario das persoas que participan directamente na actividade. 
-- Aluguer/compra de ferramentas, maquinaria, equipos informáticos e/ou audiovisuais… 
-- Aluguer/compra de locais 
-- Contratos de subministracións: auga, luz, electricidade, gas… Subcontrataciones 
-- Gastos de publicidade… 
-- Seguros ... 
+
+O orzamento do proxecto será a suma do importe dos materiais que necesites para realizar o proxecto máis o importe que corresponde ao traballo realizado.
+
+O importe relacionado co traballo no proxecto é relativamente fácil de obter se se elaboraron ben as etapas anteriores: definir as actividades necesarias e os recursos propios de cada actividade. Neste caso disporase dun custo por cada actividade e a suma do custo de todas as actividades será o custo total do traballo do proxecto.
+
+Para establecer os custos do proxecto debes ter en conta diferentes conceptos:
+
+- Materiais que se utilizan: material funxible, materias primas, materiais didácticos, roupa de traballo…
+- Custo horario das persoas que participan directamente na actividade.
+- Alugueiro/compra de ferramentas, maquinaria, equipos informáticos e/ou audiovisuais…
+- Alugueiro/compra de locais
+- Contratos de subministracións: auga, luz, electricidade, gas… Subcontratacións.
+- Gastos de publicidade…
+- Seguros ...
 
 O maior custo no proxecto case sempre corresponde ás persoas, polo que é importante controlar o número de horas que se invisten en cada actividade para que non se nos desequilibre o orzamento. Tamén hai que coidar as subcontratacións; convén que traballen cun orzamento establecido.
+
  A continuación preséntanse dúas opción de táboa para facilitar a creación do orzamento do proxecto:
 
 ### Orzamento por actividade
@@ -70,14 +78,14 @@ O maior custo no proxecto case sempre corresponde ás persoas, polo que é impor
 |||||
 |||||
 
-| TOTAL | PROXECTO | 
+| TOTAL | PROXECTO |
 | -- | -- |
 
-### Orzamento por partidas de inversión / gasto:
+### Orzamento por partidas de inversión / gasto
 
 | CONCEPTO | IMPORTE|
 |--|--|
-|**A) INVERSIONS**
+|**A) INVERSIÓNS**
 |Gastos de establecemento e gastos de constitución
 |Total inmobilizacións inmateriais
 |Terreos
@@ -109,8 +117,6 @@ O maior custo no proxecto case sempre corresponde ás persoas, polo que é impor
 |--|
 
 ### WEBGRAFÍA
+
 Guía para a elaboración de proyectos. Gobierno Vasco.
-https://www.pluralismoyconvivencia.es/upload/19/71/guia_elaboracion_proyectos_c.pdf  (páxina 49 e seguintes)
-
-
-
+<https://www.pluralismoyconvivencia.es/upload/19/71/guia_elaboracion_proyectos_c.pdf>  (páxina 49 e seguintes)

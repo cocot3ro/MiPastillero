@@ -1,8 +1,8 @@
 # FASE DE IMPLANTACIÓN
 
-## Manual técnico:
+## Manual técnico
 
-### Información relativa á instalación: 
+### Información relativa á instalación
 
 * Requirimentos de hardware, servidores na nube, etc.
 * Software necesario (S.O. válidos, software externo co que interaciona a nosa aplicación, etc.).
@@ -11,7 +11,7 @@
 * Usuarios do sistema. Usuarios da aplicación.
 * Diagrama final de despregue (se hai variacións con respecto ó realizado na anterior fase).
 
-### Información relativa á administración do sistema, é dicir, tarefas que se deberán realizar unha vez que o sistema estea funcionando, como por exemplo:
+### Información relativa á administración do sistema, é dicir, tarefas que se deberán realizar unha vez que o sistema estea funcionando, como por exemplo
 
 * Copias de seguridade do sistema.
 * Copias de seguridade da base de datos.
@@ -19,7 +19,7 @@
 * Xestión seguridade.
 * Xestión de incidencias, que poden ser de dous tipos: de sistema (accesos non autorizados á BD, etc) ou de fallos no software.
 
-### Información relativa ó matemento do sistema: 
+### Información relativa ó mantemento do sistema
 
 * Corrixir erros.
 * Engadir novas funcionalidades.
@@ -29,7 +29,7 @@
 
 Poden ser incidencias de dous tipos: de sistema (accesos non autorizados á BD, etc) ou de fallos no software.
 
-## Protección de datos de carácter persoal.
+## Protección de datos de carácter persoal
 
 ## Manual de usuario
 

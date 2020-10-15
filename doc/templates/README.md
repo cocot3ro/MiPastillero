@@ -1,5 +1,5 @@
-# Sobre esta carpeta:
+# Sobre esta carpeta
 
-### `doc/templates/`
+## `doc/templates/`
 
-Documentos de plantilla para elaborar la documentación del proyecto
+Documentos modelo para elaborar a documentación do proxecto.
