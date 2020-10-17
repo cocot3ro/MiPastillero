@@ -10,6 +10,14 @@ Tedes un documento de referencia de lectura rápida sobre o PFC no seguinte enla
 
 Nesa guía tedes información sobre as modalidades do PFC, o cal pode ser desenvolvido documentalmente ou ben facendo un prototipo funcional dunha solución, e instrucións sobre o desenvolvemento e cualificación do PFC. Para a cualificación do PFC usaranse as **rúbricas** que están recollidas nese documento, especificando ademais o peso de cada un dos apartados a avaliar.
 
+## Enfoque
+
+En función do tipo de proxecto de elixades facer, documental ou construcción de software, tedes que completar os apartados correspondients da documentación dos templates do proxecto en gitlab.
+
+Seguide a seguinte guía, onde se recollen, no apartado **CALENDARIO DE ENTREGAS**, en función do tipo de proxecto, os aspectos que procede realizar:
+
+[Enfoque do proxecto](https://gitlab.iessanclemente.net/documentacion/doc/-/wikis/DAM%20Ordinario)
+
 ## Os elementos principais cos que ides traballar no proxecto son os seguintes
 
 ### Un repositorio git asociado ó voso proxecto
