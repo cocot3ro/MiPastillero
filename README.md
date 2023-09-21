@@ -1,49 +1,26 @@
 # Proyecto fin de ciclo
 
-> *TODO*: Este documento será la "*página de aterrizaje*" de tu proyecto. Será lo primero que vean los que se interesen por él. Cúida su redacción con todo tu mimo. Elimina posteriormente todas las lineas "*TODO*" cuando creas finalizada su redacción.
-> Puedes acompañar a la redacción de este fichero con imágenes o gifs, pero no abuses de ellos.
+> _TODO_: Este documento será a páxina de inicio do teu proxecto. Será o primeiro que vexa quen se interese por el. Coida a súa redacción e ortografía. Vai eliminando as liñas "_TODO_" a medida que completes a redacción de cada apartado. Inclúe neste apartado o título do proxecto e a autoría.
 
-## Descripción
+## Descrición
 
-> *TODO*: Realiza una breve descripción del proyecto. No menos de 100 palabras y no más de 300. Resalta lo fundamental **con tus propias palabras**. Utiliza un lenguaje correcto, **pero natural**, que lo entienda todo el mundo, incluso y en especial, las personas que no tengan un conocimiento técnico avanzado. Puede ser un estracto o resumen de apartados que ya contemples en otros ficheros.
+> _TODO_: Realiza unha breve descrición do proxecto (entre 100 e 300 palabras). Resalta o fundamental **coas túas propias palabras**. Utiliza unha linguaxe correcta, **pero natural**, que poida ser entendida pola maioría das persoas, incluso as que non teñan un coñecemento técnico da materia.
 
-## Instalación / Puesta en marcha
+## Sobre a autoría
 
-> *TODO*: En este apartado describe con toda precisión y a poder ser con la mayor simplicidad/facilidad posible, cómo poner en marcha tu aplicación para probarla (en un ambiente local). Se valorará muy positivamente que este proceso sea lo más fácil posible, con una simple instrucción (p. e. un script de instalación).
-> Si tu proyecto es documental, realiza una especificación de cómo va a ser este proceso. En otras palabras, realiza este apartado independientemente que no haya implementación.
-
-## Uso
-
-> *TODO*: Es este apartado describe brevemente cómo se usará el software que proyectas. Si tiene una interfaz de terminal, describe aquí su sintaxis. Si tiene una interfaz gráfica de usuario, describe aquí **sólo el uso** (a modo de sumario) **de los aspectos más relevantes de su funcionamiento** (máxima brevedad, como si fuese un anuncio reclamo o comercial).
-> Si tu proyecto es documental, realiza una especificación de cómo planteas estas interfaces, con ejemplos incluso o esquemas de diseño. En otras palabras, realiza este apartado independientemente que no haya implementación.
-
-## Sobre el autor
-
-> *TODO*: Realiza una breve descripción de quien eres (perfil profesional), tus puntos fuertes, o tecnologías que más dominas... y porqué te has decantado por este proyecto. **No más de 200 palabras**. Indica la forma fiable de contactar contigo en el presente y en el futuro.
+> _TODO_: Realiza unha breve descrición de quen es (perfil profesional), puntos fortes, tecnoloxías que máis dominas... e os motivos que te levaron a elaborar este proxecto. **Non máis de 200 palabras**.
 
 ## Licencia
 
-> *TODO*: Es requisito INDISPENSABLE el licenciar explícitamente el proyecto software. Se recomienda licenciar con *GNU Free Documentation License Version 1.3*. Crear un fichero `LICENSE` en la raiz del repo, con tu fichero de licencia. Recuerda que si empleas una licencia de software libre estás autorizando la derivación de tu obra bajo la misma licencia que elijas, pudiendo dar continuidad, p. e. otro alumno, para continuar tu proyecto en otro curso.
-> Si tu proyecto es documental, recomendamos los términos de *GNU Free Documentation License Version 1.3*, crea igualmente el fichero `LICENSE`. Será especialmente valorado en este caso, la claridad de la especificación para que el proyecto pueda ser ejecutado partiendo de lo proyectado.
-
+> _TODO_: É requisito INDISPENSABLE licenciar explicitamente o proxecto. Crea un ficheiro `LICENSE` na raíz do repositorio, coa especificación da licencia.
 
 ## Índice
 
-> *TODO*: Simplemente indexa ordenadamente todo tu proyecto.
-
-1. Anteproyecto
-    * 1.1. [Idea](doc/templates/1_idea.md)
-    * 1.2. [Necesidades](doc/templates/2_necesidades.md)
-2. [Análisis](doc/templates/3_analise.md)
-3. [Planificación](doc/templates/4_planificacion.md)
-4. [Diseño](doc/templates/5_deseño.md)
-5. [Implantación](doc/templates/6_implantacion.md)
-
-
-## Guía de contribución
-
-> *TODO*: Tratándose de un proyecto de software libre, es muy importante que expongas cómo se puede contribuir con tu proyecto. Algunos ejemplos de esto son realizar nuevas funcionalidades, corrección y/u optimización del código, realización de tests automatizados, nuevas interfaces de integración, desarrollo de plugins, etc. etc. Sé lo más conciso que puedas.
-
-## Links
-
-> *TODO*: Enlaces externos y descipciones de estos enlaces que creas conveniente indicar aquí. Generalmente ya van a estar integrados con tu documentación, pero si requieres realizar un listado de ellos, este es el lugar.
+1. [Estudo preliminar](doc/templates/1_estudo_preliminar.md)
+2. [Análise](doc/templates/2_analise.md)
+   - [Planificación](doc/templates/21_planificacion.md)
+   - [Orzamento](doc/templates/22_orzamento.md)
+3. [Deseño](doc/templates/3_deseño.md)
+4. [Codificación e probas](doc/templates/4_codificacion_probas.md)
+5. [Manuais do proxecto](doc/templates/5_manuais.md)
+   - [Referencias](doc/templates/51_referencias.md)
