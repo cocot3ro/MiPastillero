@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/calendarFragment"
+            android:title="@string/calendar"
+            android:icon="@android:drawable/ic_menu_today"
+            app:showAsAction="always"/>
+
+        <item
+            android:id="@+id/activeFragment"
+            android:title="@string/active_medication"
+            android:icon="@android:drawable/alert_dark_frame"
+            app:showAsAction="always"/>
+
+        <item
+            android:id="@+id/favoriteFragment"
+            android:title="@string/favorites"
+            android:icon="@android:drawable/btn_star"
+            app:showAsAction="always"/>
+
+        <item
+            android:id="@+id/bookFragment"
+            android:title="@string/notebook"
+            android:icon="@android:drawable/ic_menu_agenda"
+            app:showAsAction="always"/>
+    </group>
+
+    <item
+        android:id="@+id/historyFragment"
+        android:title="@string/history"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        app:showAsAction="always"/>
+</menu>

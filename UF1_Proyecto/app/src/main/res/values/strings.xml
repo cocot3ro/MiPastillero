@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Weekly Pill Box - Medication Control</string>
+    <string name="calendar">Calendar</string>
+    <string name="active_medication">Active medication</string>
+    <string name="favorites">Favorites</string>
+    <string name="notebook">Notebook</string>
+    <string name="history">History</string>
 </resources>
