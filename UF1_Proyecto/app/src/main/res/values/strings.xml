@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Weekly Pill Box - Medication Control</string>
     <string name="calendar">Calendar</string>
@@ -6,4 +7,8 @@
     <string name="notebook">Notebook</string>
     <string name="history">History</string>
     <string name="frequency">Frequency</string>
+    <string name="day">Day</string>
+    <string name="week">week</string>
+    <string name="month">Month</string>
+    <string name="today">today</string>
 </resources>

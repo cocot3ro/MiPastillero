@@ -7,4 +7,8 @@
     <string name="notebook">Libreta</string>
     <string name="history">Historial</string>
     <string name="frequency">Frecuencia</string>
+    <string name="day">Día</string>
+    <string name="week">Semana</string>
+    <string name="month">Mes</string>
+    <string name="today">Hoy</string>
 </resources>

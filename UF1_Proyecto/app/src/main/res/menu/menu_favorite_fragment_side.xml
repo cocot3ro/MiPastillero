@@ -5,26 +5,20 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/calendarFragment"
-            android:title="@string/calendar"
+            android:title="@string/day"
             android:icon="@android:drawable/ic_menu_today"
             app:showAsAction="always"/>
 
         <item
             android:id="@+id/activeFragment"
-            android:title="@string/active_medication"
-            android:icon="@android:drawable/alert_dark_frame"
+            android:title="@string/week"
+            android:icon="@android:drawable/ic_menu_today"
             app:showAsAction="always"/>
 
         <item
             android:id="@+id/favoriteFragment"
-            android:title="@string/favorites"
-            android:icon="@android:drawable/btn_star"
-            app:showAsAction="always"/>
-
-        <item
-            android:id="@+id/bookFragment"
-            android:title="@string/notebook"
-            android:icon="@android:drawable/ic_menu_agenda"
+            android:title="@string/month"
+            android:icon="@android:drawable/ic_menu_today"
             app:showAsAction="always"/>
     </group>
 
