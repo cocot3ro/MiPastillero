@@ -6,9 +6,14 @@
     <string name="favorites">Favoritos</string>
     <string name="notebook">Libreta</string>
     <string name="history">Historial</string>
-    <string name="frequency">Frecuencia</string>
     <string name="day">Día</string>
     <string name="week">Semana</string>
     <string name="month">Mes</string>
     <string name="today">Hoy</string>
+    <string name="start">Inicio:</string>
+    <string name="end">Fin:</string>
+    <string name="dose">Dosis:</string>
+    <string name="frequency">Frecuencia:</string>
+    <string name="every">"Cada "</string>
+    <string name="end_of_prescription">Fin de la receta</string>
 </resources>

@@ -6,9 +6,14 @@
     <string name="favorites">Favorites</string>
     <string name="notebook">Notebook</string>
     <string name="history">History</string>
-    <string name="frequency">Frequency</string>
     <string name="day">Day</string>
-    <string name="week">week</string>
+    <string name="week">Week</string>
     <string name="month">Month</string>
-    <string name="today">today</string>
+    <string name="today">Today</string>
+    <string name="start">Start:</string>
+    <string name="end">End:</string>
+    <string name="dose">Dose:</string>
+    <string name="frequency">Frequency:</string>
+    <string name="every">"Every"</string>
+    <string name="end_of_prescription">End of prescription:</string>
 </resources>
