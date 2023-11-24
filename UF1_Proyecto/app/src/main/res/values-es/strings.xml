@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Pastillero Semanal - Control de Medicamentos</string>
+    <string name="app_name">Pastillero Semanal</string>
     <string name="calendar">Calendario</string>
     <string name="active_medication">Medicación activa</string>
     <string name="favorites">Favoritos</string>
@@ -14,6 +14,11 @@
     <string name="end">Fin:</string>
     <string name="dose">Dosis:</string>
     <string name="frequency">Frecuencia:</string>
-    <string name="every">"Cada "</string>
-    <string name="end_of_prescription">Fin de la receta</string>
+    <string name="every">"Cada"</string>
+    <string name="end_of_prescription">Fin de la receta:</string>
+    <string name="ml">ml</string>
+    <string name="capsule">capsula</string>
+    <string name="capsules">capsulas</string>
+    <string name="unit">unidad</string>
+    <string name="units">unidades</string>
 </resources>

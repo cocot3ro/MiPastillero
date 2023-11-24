@@ -18,8 +18,15 @@
             android:id="@+id/favoriteFragmentToolbar"
             style="@style/Widget.MaterialComponents.Toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/menu_favorite_fragment_toolbar"/>
+            android:layout_height="?attr/actionBarSize">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/favorites"
+                android:textSize="25sp"/>
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
     </LinearLayout>
 
@@ -28,6 +35,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/menu_favorite_fragment_side"/>
+        app:menu="@menu/menu_calendar_fragment_side"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

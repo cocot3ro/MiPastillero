@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Weekly Pill Box - Medication Control</string>
+    <string name="app_name">Weekly Pill Box</string>
     <string name="calendar">Calendar</string>
     <string name="active_medication">Active medication</string>
     <string name="favorites">Favorites</string>
@@ -16,4 +16,9 @@
     <string name="frequency">Frequency:</string>
     <string name="every">"Every"</string>
     <string name="end_of_prescription">End of prescription:</string>
+    <string name="ml">ml</string>
+    <string name="capsule">capsule</string>
+    <string name="capsules">capsules</string>
+    <string name="unit">unit</string>
+    <string name="units">units</string>
 </resources>

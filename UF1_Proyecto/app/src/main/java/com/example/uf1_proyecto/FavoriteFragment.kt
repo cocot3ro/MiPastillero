@@ -3,6 +3,8 @@ package com.example.uf1_proyecto
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -37,5 +39,9 @@ class FavoriteFragment : Fragment() {
         navigationView.setupWithNavController(navController)
 
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
     }
 }
