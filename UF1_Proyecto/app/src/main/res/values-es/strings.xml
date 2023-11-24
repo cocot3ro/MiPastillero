@@ -4,7 +4,7 @@
     <string name="calendar">Calendario</string>
     <string name="active_medication">Medicación activa</string>
     <string name="favorites">Favoritos</string>
-    <string name="notebook">Libreta</string>
+    <string name="diary">Agenda</string>
     <string name="history">Historial</string>
     <string name="day">Día</string>
     <string name="week">Semana</string>
@@ -21,4 +21,5 @@
     <string name="capsules">capsulas</string>
     <string name="unit">unidad</string>
     <string name="units">unidades</string>
+    <string name="notes">Notas</string>
 </resources>

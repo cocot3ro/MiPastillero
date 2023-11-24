@@ -10,7 +10,7 @@
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/activeFragment"
+        android:id="@+id/activeMedFragment"
         android:title="@string/active_medication"
         android:icon="@android:drawable/alert_dark_frame"
         app:showAsAction="always"/>
@@ -22,8 +22,8 @@
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/bookFragment"
-        android:title="@string/notebook"
+        android:id="@+id/agendaFragment"
+        android:title="@string/diary"
         android:icon="@android:drawable/ic_menu_agenda"
         app:showAsAction="always"/>
 </menu>

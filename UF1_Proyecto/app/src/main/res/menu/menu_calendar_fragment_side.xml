@@ -10,7 +10,7 @@
             app:showAsAction="always"/>
 
         <item
-            android:id="@+id/activeFragment"
+            android:id="@+id/activeMedFragment"
             android:title="@string/week"
             android:icon="@android:drawable/ic_menu_today"
             app:showAsAction="always"/>

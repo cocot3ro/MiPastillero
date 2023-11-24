@@ -42,11 +42,12 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/txt"
+                    android:id="@+id/name"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:text="Nombre Medicamento"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:text="Medication name"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -55,21 +56,12 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/btnNotify"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:background="@drawable/rounded"
-                    android:src="@android:drawable/star_big_on" />
-
                 <ImageButton
                     android:id="@+id/btnFav"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="4dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="8dp"
                     android:background="@drawable/rounded"
                     android:src="@android:drawable/star_big_on" />
 
@@ -107,39 +99,12 @@
                             android:text="@string/start" />
 
                         <TextView
+                            android:id="@+id/date_start"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="01/01/2023" />
 
                     </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="4dp"
-                            android:text="@string/dose" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="5 ml" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="2dp"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -154,30 +119,64 @@
                             android:text="@string/end" />
 
                         <TextView
+                            android:id="@+id/date_end"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="01/01/2023" />
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="0dp"
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="2dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
-                        android:orientation="horizontal">
+                        android:layout_marginEnd="4dp"
+                        android:text="@string/frequency" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="4dp"
-                            android:text="@string/frequency" />
+                    <TextView
+                        android:id="@+id/frequency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Every 8 hours" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Every 8 hours" />
+                </LinearLayout>
 
-                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:text="@string/dose" />
+
+                    <TextView
+                        android:id="@+id/dose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5 ml" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/notes"/>
 
                 </LinearLayout>
 
