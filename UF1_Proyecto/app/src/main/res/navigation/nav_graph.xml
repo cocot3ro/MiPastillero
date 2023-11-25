@@ -26,4 +26,9 @@
         android:name="com.example.uf1_proyecto.AgendaFragment"
         android:label="fragment_agenda"
         tools:layout="@layout/fragment_agenda" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.uf1_proyecto.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

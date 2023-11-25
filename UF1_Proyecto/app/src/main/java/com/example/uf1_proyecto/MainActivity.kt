@@ -26,9 +26,4 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setupWithNavController(navController)
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return NavigationUI.onNavDestinationSelected(
-//            item, findNavController(R.id.nav_host_fragment)
-//        )
-//    }
 }
