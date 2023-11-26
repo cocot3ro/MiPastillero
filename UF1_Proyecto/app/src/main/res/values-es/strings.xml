@@ -19,7 +19,9 @@
     <string name="ml">ml</string>
     <string name="capsule">capsula</string>
     <string name="capsules">capsulas</string>
-    <string name="unit">unidad</string>
-    <string name="units">unidades</string>
-    <string name="notes">Notas</string>
+    <string-array name="arr">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+    </string-array>
 </resources>
