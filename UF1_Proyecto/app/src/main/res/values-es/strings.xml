@@ -19,6 +19,8 @@
     <string name="ml">ml</string>
     <string name="capsule">capsula</string>
     <string name="capsules">capsulas</string>
+    <string name="summary">Ficha Técnica</string>
+    <string name="leaflet">Prospecto</string>
     <string-array name="arr">
         <item>A</item>
         <item>B</item>

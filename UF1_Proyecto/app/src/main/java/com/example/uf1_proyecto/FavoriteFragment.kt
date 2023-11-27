@@ -24,21 +24,13 @@ class FavoriteFragment : Fragment() {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        (activity as AppCompatActivity).setSupportActionBar(binding.favoriteFragmentToolbar)
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         val navHostFragment =
             (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        val drawerLayout = binding.drawerLayout
-        val builder = AppBarConfiguration.Builder(navController.graph)
-        builder.setOpenableLayout(drawerLayout)
-
-        val appBarConfiguration = builder.build()
-        binding.favoriteFragmentToolbar.setupWithNavController(navController, appBarConfiguration)
-
-        val navigationView = binding.navView
-        navigationView.setupWithNavController(navController)
+        binding.toolbar.setupWithNavController(navController, AppBarConfiguration.Builder(navController.graph).build())
 
         return view
     }
