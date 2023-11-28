@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.uf1_proyecto.databinding.FragmentFavoriteBinding
 
@@ -24,17 +23,21 @@ class FavoriteFragment : Fragment() {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        setHasOptionsMenu(true)
+
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         val navHostFragment =
             (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        binding.toolbar.setupWithNavController(
-            navController,
-            AppBarConfiguration.Builder(navController.graph).build()
-        )
+        binding.toolbar.setupWithNavController(navController)
 
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_import_export, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 }

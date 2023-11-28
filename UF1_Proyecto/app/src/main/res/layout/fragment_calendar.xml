@@ -17,8 +17,7 @@
             android:id="@+id/toolbar"
             style="@style/Widget.MaterialComponents.Toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/menu_main">
+            android:layout_height="?attr/actionBarSize">
 
             <TextView
                 android:layout_width="match_parent"
@@ -38,10 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:orientation="horizontal">
-
-                <!--                Aquí se añaden los dias o día a visualizar en el pastillero-->
-            </LinearLayout>
+                android:orientation="horizontal"/>
 
         </HorizontalScrollView>
 

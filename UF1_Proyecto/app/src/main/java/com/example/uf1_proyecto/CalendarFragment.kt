@@ -1,5 +1,8 @@
 package com.example.uf1_proyecto
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -48,7 +51,7 @@ class CalendarFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_calendar_fragment_toolbar, menu)
+        inflater.inflate(R.menu.menu_today_search, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -69,4 +72,11 @@ class CalendarFragment : Fragment() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+//    openPDF(requireContext(), url)
+//    private fun openPDF(context: Context, url: String) {
+//        val intent = Intent(Intent.ACTION_VIEW)
+//        intent.data = Uri.parse(url)
+//        context.startActivity(intent)
+//    }
 }

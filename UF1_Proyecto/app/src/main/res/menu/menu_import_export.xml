@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/exportar"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="@string/export"
+        app:showAsAction="withText"/>
+
+    <item
+        android:id="@+id/importar"
+        android:icon="@android:drawable/ic_menu_upload"
+        android:title="@string/import_str"
+        app:showAsAction="withText"/>
+</menu>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Weekly Pill Box</string>
+    <string name="app_name">My Pill Box</string>
     <string name="calendar">Calendar</string>
     <string name="active_medication">Active medication</string>
     <string name="favorites">Favorites</string>
@@ -36,12 +36,7 @@
     <string name="notifications">Notifications</string>
     <string name="time_format">Time format</string>
     <string name="display_mode">Calendar mode</string>
-    <string-array name="time_format">
-        <item>12h</item>
-        <item>24h</item>
-    </string-array>
-    <string-array name="calendar_format">
-        <item>Daily</item>
-        <item>Weekly</item>
-    </string-array>
+    <string name="export">Export</string>
+    <string name="import_str">Import</string>
+    <string name="add_medicament">Add medicament</string>
 </resources>

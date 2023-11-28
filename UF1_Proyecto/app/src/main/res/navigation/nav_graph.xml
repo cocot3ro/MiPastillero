@@ -30,12 +30,6 @@
         tools:layout="@layout/fragment_diary" />
 
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.uf1_proyecto.SettingsFragment"
-        android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
-
-    <fragment
         android:id="@+id/historyFragment"
         android:name="com.example.uf1_proyecto.HistoryFragment"
         android:label="fragment_history"

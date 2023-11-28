@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Pastillero Semanal</string>
+    <string name="app_name">Mi Pastillero</string>
     <string name="calendar">Calendario</string>
     <string name="active_medication">Medicación activa</string>
     <string name="favorites">Favoritos</string>
@@ -36,11 +36,7 @@
     <string name="notifications">Notificaciones</string>
     <string name="time_format">Formato de hora</string>
     <string name="display_mode">Modo de calendario</string>
-    <string-array name="time_format">
-        <item>12h</item>
-        <item>24h</item>
-    </string-array>
-    <string-array name="calendar_format">
-        <item>Diario</item>
-        <item>Semanal</item>
-    </string-array></resources>
+    <string name="export">Exportar</string>
+    <string name="import_str">Importar</string>
+    <string name="add_medicament">Añadir medicamento</string>
+</resources>

@@ -2,21 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="@string/view_mode">
-        <menu>
-            <item
-                android:id="@+id/day"
-                android:icon="@android:drawable/ic_menu_day"
-                android:title="@string/daily"
-                app:showAsAction="always" />
-
-            <item
-                android:id="@+id/week"
-                android:icon="@android:drawable/ic_menu_week"
-                android:title="@string/weekly"
-                app:showAsAction="always" />
-        </menu>
-    </item>
+    <item
+        android:id="@+id/addMedFragment"
+        android:title="@string/add_medicament"
+        android:icon="@android:drawable/ic_input_add"
+        app:showAsAction="withText"/>
 
     <item android:title="@string/extra">
         <menu>
@@ -24,12 +14,6 @@
                 android:id="@+id/historyFragment"
                 android:icon="@android:drawable/ic_menu_recent_history"
                 android:title="@string/history"
-                app:showAsAction="always" />
-
-            <item
-                android:id="@+id/settingsFragment"
-                android:icon="@android:drawable/ic_menu_manage"
-                android:title="@string/settings"
                 app:showAsAction="always" />
         </menu>
     </item>
