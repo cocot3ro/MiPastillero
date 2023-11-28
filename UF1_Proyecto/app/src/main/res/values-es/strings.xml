@@ -6,9 +6,8 @@
     <string name="favorites">Favoritos</string>
     <string name="diary">Agenda</string>
     <string name="history">Historial</string>
-    <string name="day">Día</string>
-    <string name="week">Semana</string>
-    <string name="month">Mes</string>
+    <string name="daily">Diariamente</string>
+    <string name="weekly">Semanalmente</string>
     <string name="today">Hoy</string>
     <string name="start">Inicio:</string>
     <string name="end">Fin:</string>
@@ -21,9 +20,27 @@
     <string name="capsules">capsulas</string>
     <string name="summary">Ficha Técnica</string>
     <string name="leaflet">Prospecto</string>
-    <string-array name="arr">
-        <item>A</item>
-        <item>B</item>
-        <item>C</item>
+    <string name="settings">Configuración</string>
+    <string name="extra">Extra</string>
+    <string name="view_mode">Modo de vista</string>
+    <string name="monday">Lunes</string>
+    <string name="tuesday">Martes</string>
+    <string name="wednesday">Miércoles</string>
+    <string name="thursday">Jueves</string>
+    <string name="friday">Viernes</string>
+    <string name="saturday">Sábado</string>
+    <string name="sunday">Domingo</string>
+    <string name="am">am.</string>
+    <string name="pm">pm.</string>
+    <string name="week">Semana</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="time_format">Formato de hora</string>
+    <string name="display_mode">Modo de calendario</string>
+    <string-array name="time_format">
+        <item>12h</item>
+        <item>24h</item>
     </string-array>
-</resources>
+    <string-array name="calendar_format">
+        <item>Diario</item>
+        <item>Semanal</item>
+    </string-array></resources>

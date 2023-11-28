@@ -30,12 +30,11 @@ class FavoriteFragment : Fragment() {
             (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        binding.toolbar.setupWithNavController(navController, AppBarConfiguration.Builder(navController.graph).build())
+        binding.toolbar.setupWithNavController(
+            navController,
+            AppBarConfiguration.Builder(navController.graph).build()
+        )
 
         return view
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
     }
 }

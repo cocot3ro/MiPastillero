@@ -6,7 +6,7 @@
         <item
             android:id="@+id/search"
             android:icon="@android:drawable/ic_menu_search"
-            android:title="@string/day"
+            android:title="@string/daily"
             app:showAsAction="always" />
 
         <item

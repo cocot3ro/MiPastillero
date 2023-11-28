@@ -22,7 +22,7 @@
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/agendaFragment"
+        android:id="@+id/diaryFragment"
         android:title="@string/diary"
         android:icon="@android:drawable/ic_menu_agenda"
         app:showAsAction="always"/>

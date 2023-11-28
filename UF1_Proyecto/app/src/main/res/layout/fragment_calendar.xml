@@ -17,15 +17,33 @@
             android:id="@+id/toolbar"
             style="@style/Widget.MaterialComponents.Toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/menu_main">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:text="@string/calendar"
                 android:textSize="25sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/pillboxLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:orientation="horizontal">
+
+                <!--                Aquí se añaden los dias o día a visualizar en el pastillero-->
+            </LinearLayout>
+
+        </HorizontalScrollView>
 
     </LinearLayout>
 
