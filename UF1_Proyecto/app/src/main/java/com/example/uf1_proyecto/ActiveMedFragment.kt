@@ -6,7 +6,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -15,12 +18,14 @@ import com.example.uf1_proyecto.databinding.FragmentActiveMedBinding
 class ActiveMedFragment : Fragment() {
     private var _binding: FragmentActiveMedBinding? = null
     private val binding get() = _binding!!
+    private lateinit var pillboxViewModel: PillboxViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentActiveMedBinding.inflate(inflater, container, false)
+        pillboxViewModel = PillboxViewModel.getInstance(requireContext())
+
         val view = binding.root
 
         setHasOptionsMenu(true)
@@ -33,7 +38,22 @@ class ActiveMedFragment : Fragment() {
 
         binding.toolbar.setupWithNavController(navController)
 
+        pillboxViewModel.getActives().forEach { addCardView(it) }
+
         return view
+    }
+
+    private fun addCardView(medicamento: Medicamento) {
+        val activeMedLayout: LinearLayout = binding.activeMedLayout
+
+        val inflater = LayoutInflater.from(requireContext())
+
+        val cardLayout =
+            inflater.inflate(R.layout.active_med_card_layout, activeMedLayout, false) as CardView
+        cardLayout.findViewById<TextView>(R.id.name).text = medicamento.nombre
+        cardLayout.findViewById<TextView>(R.id.date_start).text = pillboxViewModel.millisToDate(medicamento.fechaInicio)
+        cardLayout.findViewById<TextView>(R.id.date_end).text = pillboxViewModel.millisToDate(medicamento.fechaFin)
+        activeMedLayout.addView(cardLayout)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -5,27 +5,22 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
+class DBHelper private constructor(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
     companion object {
         const val DB_NAME = "pillbox.db"
-        const val DB_VERSION = 1
+        const val DB_VERSION = 5
 
+        @Volatile
         private var instance: DBHelper? = null
 
-        fun getInstance(context: Context): DBHelper {
-            if (instance == null) {
-                synchronized(DBHelper::class) {
-                    if (instance == null) {
-                        instance = DBHelper(context.applicationContext)
-                    }
-                }
+        fun getInstance(context: Context): DBHelper =
+            instance ?: synchronized(this) {
+                instance ?: DBHelper(context.applicationContext).also { instance = it }
             }
-            return instance!!
-        }
 
         private const val CREATE_MEDICATION_TABLE = """
-            CREATE TABLE ${ContratoMedicamentos.NOMBRE_TABLA} (
+            CREATE TABLE IF NOT EXISTS ${ContratoMedicamentos.NOMBRE_TABLA} (
                 ${ContratoMedicamentos.Columnas.COLUMN_COD_NACIONAL} INTEGER PRIMARY KEY,
                 ${ContratoMedicamentos.Columnas.COLUMN_NOMBRE} TEXT,
                 ${ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA} TEXT,
@@ -34,7 +29,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_V
         """
 
         private const val CREATE_ACTIVE_TABLE = """
-            CREATE TABLE ${ContratoActivos.NOMBRE_TABLA} (
+            CREATE TABLE IF NOT EXISTS ${ContratoActivos.NOMBRE_TABLA} (
                 ${ContratoActivos.Columnas.COLUMN_COD_NACIONAL} INTEGER,
                 ${ContratoActivos.Columnas.COLUMN_INICIO} INTEGER,
                 ${ContratoActivos.Columnas.COLUMN_FIN} INTEGER,
@@ -44,21 +39,21 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_V
         """
 
         private const val CREATE_FAVORITE_TABLE = """
-            CREATE TABLE ${ContratoFavoritos.NOMBRE_TABLA} (
+            CREATE TABLE IF NOT EXISTS ${ContratoFavoritos.NOMBRE_TABLA} (
                 ${ContratoFavoritos.Columnas.COLUMN_COD_NACIONAL} INTEGER PRIMARY KEY,
                 FOREIGN KEY (${ContratoFavoritos.Columnas.COLUMN_COD_NACIONAL}) REFERENCES ${ContratoMedicamentos.NOMBRE_TABLA}(${ContratoMedicamentos.Columnas.COLUMN_COD_NACIONAL})
             )
         """
 
         private const val CREATE_AGENDA_TABLE = """
-            CREATE TABLE ${ContratoAgenda.NOMBRE_TABLA} (
+            CREATE TABLE IF NOT EXISTS ${ContratoAgenda.NOMBRE_TABLA} (
                 ${ContratoAgenda.Columnas.COLUMN_FECHA} INTEGER PRIMARY KEY,
                 ${ContratoAgenda.Columnas.COLUMN_DESCRIPCION} TEXT
             )
         """
 
         private const val CREATE_HISTORY_TABLE = """
-            CREATE TABLE ${ContratoHistorial.NOMBRE_TABLA} (
+            CREATE TABLE IF NOT EXISTS ${ContratoHistorial.NOMBRE_TABLA} (
                 ${ContratoHistorial.Columnas.COLUMN_COD_NACIONAL} INTEGER,
                 ${ContratoHistorial.Columnas.COLUMN_INICIO} INTEGER,
                 ${ContratoHistorial.Columnas.COLUMN_FIN} INTEGER,
@@ -86,9 +81,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_V
         onCreate(db)
     }
 
-    fun insertIntoMedicamentos(medicamento: Medicamento) {
+    private fun insertIntoMedicamentos(medicamento: Medicamento) {
         val db = writableDatabase
-
         val values = ContentValues().apply {
             put(ContratoMedicamentos.Columnas.COLUMN_COD_NACIONAL, medicamento.codNacional)
             put(ContratoMedicamentos.Columnas.COLUMN_NOMBRE, medicamento.nombre)
@@ -98,12 +92,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_V
 
         db.insert(ContratoMedicamentos.NOMBRE_TABLA, null, values)
 
-        db.close()
     }
 
-    fun insertIntoActivos(medicamento: Medicamento) {
+    private fun insertIntoActivos(medicamento: Medicamento) {
         val db = writableDatabase
-
         if (!existeEnMedicamentos(medicamento)) {
             insertIntoMedicamentos(medicamento)
         }
@@ -114,12 +106,12 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_V
             put(ContratoActivos.Columnas.COLUMN_FIN, medicamento.fechaFin)
         }
 
-        db.close()
+        db.insert(ContratoActivos.NOMBRE_TABLA, null, values)
+
     }
 
     fun insertIntoFavoritos(medicamento: Medicamento) {
         val db = writableDatabase
-
         if (!existeEnMedicamentos(medicamento)) {
             insertIntoMedicamentos(medicamento)
         }
@@ -130,12 +122,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_V
 
         db.insert(ContratoFavoritos.NOMBRE_TABLA, null, values)
 
-        db.close()
     }
 
     fun insertIntoAgenda(fecha: Long, descripcion: String) {
         val db = writableDatabase
-
         if (!existeEnAgenda(fecha)) {
             val values = ContentValues().apply {
                 put(ContratoAgenda.Columnas.COLUMN_FECHA, fecha)
@@ -154,12 +144,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_V
             )
         }
 
-        db.close()
     }
 
     fun insertIntoHistorial(medicamento: Medicamento) {
         val db = writableDatabase
-
         val values = ContentValues().apply {
             put(ContratoHistorial.Columnas.COLUMN_COD_NACIONAL, medicamento.codNacional)
             put(ContratoHistorial.Columnas.COLUMN_INICIO, medicamento.fechaInicio)
@@ -168,12 +156,11 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_V
 
         db.insert(ContratoHistorial.NOMBRE_TABLA, null, values)
 
-        db.close()
     }
 
     fun existeEnAgenda(fecha: Long): Boolean {
         val db = readableDatabase
-        val cursor = db.query(
+        db.query(
             ContratoAgenda.NOMBRE_TABLA,
             null,
             "${ContratoAgenda.Columnas.COLUMN_FECHA} = ?",
@@ -181,19 +168,15 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_V
             null,
             null,
             null
-        )
+        ).use { cursor ->
+            return cursor.moveToFirst()
+        }
 
-        val existe = cursor.moveToFirst()
-
-        cursor.close()
-        db.close()
-
-        return existe
     }
 
     fun existeEnMedicamentos(medicamento: Medicamento): Boolean {
         val db = readableDatabase
-        val cursor = db.query(
+        db.query(
             ContratoMedicamentos.NOMBRE_TABLA,
             null,
             "${ContratoMedicamentos.Columnas.COLUMN_COD_NACIONAL} = ?",
@@ -201,66 +184,52 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_V
             null,
             null,
             null
-        )
+        ).use { cursor ->
+            return cursor.moveToFirst()
+        }
 
-        val existe = cursor.moveToFirst()
-
-        cursor.close()
-        db.close()
-
-        return existe
     }
 
-    fun getWeek(start: Long, end: Long): MutableList<Medicamento> {
+    fun getWeek(dia: Long): MutableList<Medicamento> {
         val list: MutableList<Medicamento> = mutableListOf()
 
         val db = readableDatabase
-        val cursor = db.query(
-            ContratoMedicamentos.NOMBRE_TABLA + " INNER JOIN " + ContratoActivos.NOMBRE_TABLA +
-                    " ON " + ContratoMedicamentos.NOMBRE_TABLA + "." + ContratoMedicamentos.Columnas.COLUMN_COD_NACIONAL +
-                    " = " + ContratoActivos.NOMBRE_TABLA + "." + ContratoActivos.Columnas.COLUMN_COD_NACIONAL,
+        db.query(
+            ContratoMedicamentos.NOMBRE_TABLA + " INNER JOIN " + ContratoActivos.NOMBRE_TABLA + " ON " + ContratoMedicamentos.NOMBRE_TABLA + "." + ContratoMedicamentos.Columnas.COLUMN_COD_NACIONAL + " = " + ContratoActivos.NOMBRE_TABLA + "." + ContratoActivos.Columnas.COLUMN_COD_NACIONAL,
             null,
-            "(${ContratoActivos.Columnas.COLUMN_INICIO} <= ? AND ${ContratoActivos.Columnas.COLUMN_FIN} >= ?) OR " +
-                    "(${ContratoActivos.Columnas.COLUMN_INICIO} <= ? AND ${ContratoActivos.Columnas.COLUMN_FIN} >= ?) OR " +
-                    "(${ContratoActivos.Columnas.COLUMN_INICIO} <= ? AND ${ContratoActivos.Columnas.COLUMN_FIN} >= ?) OR " +
-                    "(${ContratoActivos.Columnas.COLUMN_INICIO} >= ? AND ${ContratoActivos.Columnas.COLUMN_FIN} <= ?)",
-            arrayOf(
-                start.toString(),
-                end.toString(),
-                start.toString(),
-                start.toString(),
-                end.toString(),
-                end.toString(),
-                start.toString(),
-                end.toString()
-            ),
+            "${ContratoActivos.Columnas.COLUMN_INICIO} <= ? AND ${ContratoActivos.Columnas.COLUMN_FIN} >= ?",
+            arrayOf(dia.toString(), dia.toString()),
             null,
             null,
             null
-        )
+        ).use { cursor ->
 
-        val colCodNacional: Int
-        val colNombre: Int
-        val colFichaTecnica: Int
-        val colProspecto: Int
-        val colFechaInicio: Int
-        val colFechaFin: Int
+            if (cursor.moveToFirst()) {
+                val colCodNacional =
+                    cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD_NACIONAL)
+                val colNombre = cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_NOMBRE)
+                val colFichaTecnica =
+                    cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA)
+                val colProspecto =
+                    cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_PROSPECTO)
+                val colFechaInicio = cursor.getColumnIndex(ContratoActivos.Columnas.COLUMN_INICIO)
+                val colFechaFin = cursor.getColumnIndex(ContratoActivos.Columnas.COLUMN_FIN)
 
-        if (cursor.moveToFirst()) {
-            colCodNacional = cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD_NACIONAL)
-            colNombre = cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_NOMBRE)
-            colFichaTecnica = cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA)
-            colProspecto = cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_PROSPECTO)
-            colFechaInicio = cursor.getColumnIndex(ContratoActivos.Columnas.COLUMN_INICIO)
-            colFechaFin = cursor.getColumnIndex(ContratoActivos.Columnas.COLUMN_FIN)
+                do {
+                    list.add(
+                        Medicamento(
+                            cursor.getInt(colCodNacional),
+                            cursor.getString(colNombre),
+                            cursor.getString(colFichaTecnica),
+                            cursor.getString(colProspecto),
+                            cursor.getLong(colFechaInicio),
+                            cursor.getLong(colFechaFin)
+                        )
+                    )
+                } while (cursor.moveToNext())
+            }
 
-            do {
-                list.add(Medicamento(cursor.getInt(colCodNacional), cursor.getString(colNombre), cursor.getString(colFichaTecnica), cursor.getString(colProspecto), cursor.getLong(colFechaInicio), cursor.getLong(colFechaFin)))
-            } while (cursor.moveToNext())
         }
-
-        cursor.close()
-        db.close()
 
         return list
     }

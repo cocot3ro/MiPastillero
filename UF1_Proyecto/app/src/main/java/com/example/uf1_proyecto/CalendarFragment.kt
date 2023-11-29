@@ -1,8 +1,5 @@
 package com.example.uf1_proyecto
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -22,7 +19,7 @@ import com.example.uf1_proyecto.databinding.FragmentCalendarBinding
 class CalendarFragment : Fragment() {
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
-    private val calendarModel: CalendarViewModel by viewModels(ownerProducer = { this.requireActivity() })
+    private val pillboxViewModel: PillboxViewModel by viewModels(ownerProducer = { this.requireActivity() })
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {

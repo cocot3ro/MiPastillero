@@ -34,5 +34,10 @@
         android:name="com.example.uf1_proyecto.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
+    <fragment
+        android:id="@+id/addMedFragment"
+        android:name="com.example.uf1_proyecto.AddMedFragment"
+        android:label="fragment_add_med"
+        tools:layout="@layout/fragment_add_med" />
 
 </navigation>
