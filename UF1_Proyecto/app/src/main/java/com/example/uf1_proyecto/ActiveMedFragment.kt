@@ -38,6 +38,8 @@ class ActiveMedFragment : Fragment() {
 
         binding.toolbar.setupWithNavController(navController)
 
+//        pillboxViewModel.ejemplosActivos()
+
         pillboxViewModel.getActives().forEach { addCardView(it) }
 
         return view

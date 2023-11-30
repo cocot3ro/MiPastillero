@@ -25,18 +25,20 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
     // TODO: fun get this week ""
     fun getActives() = dbHelper.getWeek(System.currentTimeMillis())
 
+    fun millisToDate(millis: Long): String =
+        SimpleDateFormat.getDateInstance().format(Date(millis))
 
-    // TODO: fun day to millis
-    fun millisToDate(milisegundos: Long): String {
-        val formatoFecha = SimpleDateFormat.getDateInstance()
-        val fecha = Date(milisegundos)
-        println("$milisegundos ms -> ${formatoFecha.format(fecha)}")
-        return formatoFecha.format(fecha)
+    fun millisToHour(millis: Long): String =
+        SimpleDateFormat.getTimeInstance().format(Date(millis))
+
+    fun hourToMillis(hour: String): Long =
+        SimpleDateFormat.getTimeInstance().parse(hour).time
+
+    fun dateToMillis(date: String): Long =
+        SimpleDateFormat.getDateInstance().parse(date).time
+
+    fun ejemplosActivos() {
+        dbHelper.ejemplosActivos()
     }
-
-    // TODO: fun dateToMillis
-    // TODO: fun millisToHour
-    // TODO: fun hourToMillis
-
 
 }

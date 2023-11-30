@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -19,11 +18,13 @@ import com.example.uf1_proyecto.databinding.FragmentCalendarBinding
 class CalendarFragment : Fragment() {
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
-    private val pillboxViewModel: PillboxViewModel by viewModels(ownerProducer = { this.requireActivity() })
+    private lateinit var pillboxViewModel: PillboxViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
+        pillboxViewModel = PillboxViewModel.getInstance(requireContext())
+
         val view = binding.root
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
