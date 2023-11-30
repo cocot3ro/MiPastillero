@@ -18,13 +18,15 @@ import com.example.uf1_proyecto.databinding.FragmentActiveMedBinding
 class ActiveMedFragment : Fragment() {
     private var _binding: FragmentActiveMedBinding? = null
     private val binding get() = _binding!!
-    private lateinit var pillboxViewModel: PillboxViewModel
+
+    private var _pillboxViewModel: PillboxViewModel? = null
+    private val pillboxViewModel get() = _pillboxViewModel!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentActiveMedBinding.inflate(inflater, container, false)
-        pillboxViewModel = PillboxViewModel.getInstance(requireContext())
+        _pillboxViewModel = PillboxViewModel.getInstance(requireContext())
 
         val view = binding.root
 
@@ -40,7 +42,7 @@ class ActiveMedFragment : Fragment() {
 
 //        pillboxViewModel.ejemplosActivos()
 
-        pillboxViewModel.getActives().forEach { addCardView(it) }
+        pillboxViewModel.getActivosHoy().forEach { addCardView(it) }
 
         return view
     }
@@ -52,9 +54,15 @@ class ActiveMedFragment : Fragment() {
 
         val cardLayout =
             inflater.inflate(R.layout.active_med_card_layout, activeMedLayout, false) as CardView
+
         cardLayout.findViewById<TextView>(R.id.name).text = medicamento.nombre
-        cardLayout.findViewById<TextView>(R.id.date_start).text = pillboxViewModel.millisToDate(medicamento.fechaInicio)
-        cardLayout.findViewById<TextView>(R.id.date_end).text = pillboxViewModel.millisToDate(medicamento.fechaFin)
+
+        cardLayout.findViewById<TextView>(R.id.date_start).text =
+            pillboxViewModel.millisToDate(medicamento.fechaInicio)
+
+        cardLayout.findViewById<TextView>(R.id.date_end).text =
+            pillboxViewModel.millisToDate(medicamento.fechaFin)
+
         activeMedLayout.addView(cardLayout)
     }
 

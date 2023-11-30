@@ -22,14 +22,11 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
 
     }
 
-    // TODO: fun get this week ""
-    fun getActives() = dbHelper.getWeek(System.currentTimeMillis())
+    fun millisToHour(millis: Long): String =
+        SimpleDateFormat.getTimeInstance().format(Date(millis))
 
     fun millisToDate(millis: Long): String =
         SimpleDateFormat.getDateInstance().format(Date(millis))
-
-    fun millisToHour(millis: Long): String =
-        SimpleDateFormat.getTimeInstance().format(Date(millis))
 
     fun hourToMillis(hour: String): Long =
         SimpleDateFormat.getTimeInstance().parse(hour).time
@@ -37,6 +34,11 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
     fun dateToMillis(date: String): Long =
         SimpleDateFormat.getDateInstance().parse(date).time
 
+    // TODO: fun get this week ""
+    fun getActivosHoy() = dbHelper.getActivosHoy(System.currentTimeMillis())
+
+    // TODO: Borrar
+    @Deprecated("Marked for removal")
     fun ejemplosActivos() {
         dbHelper.ejemplosActivos()
     }

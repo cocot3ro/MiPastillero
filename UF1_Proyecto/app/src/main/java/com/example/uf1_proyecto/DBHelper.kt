@@ -10,6 +10,8 @@ class DBHelper private constructor(context: Context) :
 
     companion object {
         const val DB_NAME = "pillbox.db"
+
+        // TODO: Cambiar a version 1 al finalizar
         const val DB_VERSION = 7
 
         @Volatile
@@ -194,7 +196,8 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
-    fun getWeek(dia: Long): MutableList<Medicamento> {
+    // TODO: Borrar
+    fun getActivosHoy(dia: Long): MutableList<Medicamento> {
         val list: MutableList<Medicamento> = mutableListOf()
 
         readableDatabase.use { db ->
@@ -240,6 +243,8 @@ class DBHelper private constructor(context: Context) :
         return list
     }
 
+    // TODO: Borrar
+    @Deprecated("Marked for removal")
     fun ejemplosActivos() {
         insertIntoActivos(
             Medicamento(
