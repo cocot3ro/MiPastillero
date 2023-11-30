@@ -6,7 +6,7 @@ object ContratoAgenda {
     const val NOMBRE_TABLA = "Agenda"
 
     object Columnas : BaseColumns {
-        const val COLUMN_FECHA = "fecha"
+        const val _ID = "fecha"
         const val COLUMN_DESCRIPCION = "descripcion"
     }
 }

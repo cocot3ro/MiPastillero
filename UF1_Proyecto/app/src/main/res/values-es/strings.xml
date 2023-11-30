@@ -39,4 +39,5 @@
     <string name="export">Exportar</string>
     <string name="import_str">Importar</string>
     <string name="add_medicament">Añadir medicamento</string>
+    <string name="schedule">Horario</string>
 </resources>

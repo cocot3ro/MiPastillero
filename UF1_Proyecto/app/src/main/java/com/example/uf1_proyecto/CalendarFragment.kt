@@ -70,11 +70,4 @@ class CalendarFragment : Fragment() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-//    openPDF(requireContext(), url)
-//    private fun openPDF(context: Context, url: String) {
-//        val intent = Intent(Intent.ACTION_VIEW)
-//        intent.data = Uri.parse(url)
-//        context.startActivity(intent)
-//    }
 }

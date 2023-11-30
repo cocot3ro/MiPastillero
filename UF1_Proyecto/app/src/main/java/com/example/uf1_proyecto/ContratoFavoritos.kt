@@ -6,6 +6,6 @@ object ContratoFavoritos {
     const val NOMBRE_TABLA = "favoritos"
 
     object Columnas : BaseColumns {
-        const val COLUMN_COD_NACIONAL = "codNacional"
+        const val _ID = "codNacional"
     }
 }

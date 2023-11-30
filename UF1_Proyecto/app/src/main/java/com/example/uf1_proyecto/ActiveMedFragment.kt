@@ -1,11 +1,15 @@
 package com.example.uf1_proyecto
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -40,7 +44,7 @@ class ActiveMedFragment : Fragment() {
 
         binding.toolbar.setupWithNavController(navController)
 
-//        pillboxViewModel.ejemplosActivos()
+        pillboxViewModel.ejemplosActivos()
 
         pillboxViewModel.getActivosHoy().forEach { addCardView(it) }
 
@@ -63,7 +67,32 @@ class ActiveMedFragment : Fragment() {
         cardLayout.findViewById<TextView>(R.id.date_end).text =
             pillboxViewModel.millisToDate(medicamento.fechaFin)
 
+        cardLayout.findViewById<ImageButton>(R.id.summary_btn).setOnClickListener { openPDF(medicamento.fichaTecnica) }
+
+        cardLayout.findViewById<ImageButton>(R.id.leaflet_btn).setOnClickListener { openPDF(medicamento.prospecto) }
+
+        val scheduleLayout = cardLayout.findViewById<LinearLayout>(R.id.schedule_layout)
+
+        medicamento.horario.forEach {
+            val textView = TextView(requireContext())
+            val layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            textView.layoutParams = layoutParams
+
+            textView.text = pillboxViewModel.millisToHour(it)
+
+            scheduleLayout.addView(textView)
+        }
+
         activeMedLayout.addView(cardLayout)
+    }
+
+    private fun openPDF(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(url)
+        requireContext().startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
