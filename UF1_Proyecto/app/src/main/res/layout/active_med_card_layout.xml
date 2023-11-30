@@ -4,7 +4,6 @@
     android:id="@+id/active_med_card_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="4dp"
     android:layout_marginBottom="8dp"
     app:cardCornerRadius="8dp">
 
@@ -64,6 +63,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="4dp"
                 android:background="@color/black" />
 

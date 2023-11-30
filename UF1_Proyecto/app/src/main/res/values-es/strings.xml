@@ -40,4 +40,11 @@
     <string name="import_str">Importar</string>
     <string name="add_medicament">Añadir medicamento</string>
     <string name="schedule">Horario</string>
+    <string name="no_active_meds">Parece que no tienes medicamentos activos actualmente…</string>
+    <string name="undo">Deshacer</string>
+    <string name="deleteOk">Medicamento eliminado correctamente</string>
+    <string name="deleteFail">No se pudo eliminar el medicamento</string>
+    <string name="reinsertOK">Medicamento recuperado</string>
+    <string name="reinsertFail">No se pudo recuperar el medicamento</string>
+
 </resources>

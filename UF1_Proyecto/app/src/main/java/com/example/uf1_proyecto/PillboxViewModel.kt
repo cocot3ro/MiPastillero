@@ -1,14 +1,13 @@
 package com.example.uf1_proyecto
 
 import android.content.Context
+import android.content.Intent
 import android.icu.text.SimpleDateFormat
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import java.util.Date
 
-//import androidx.lifecycle.MutableLiveData
-
 class PillboxViewModel private constructor(context: Context) : ViewModel() {
-
     private var dbHelper: DBHelper = DBHelper.getInstance(context)
 
     companion object {
@@ -35,7 +34,15 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
         SimpleDateFormat.getDateInstance().parse(date).time
 
     // TODO: fun get this week ""
-    fun getActivosHoy() = dbHelper.getActivosHoy(System.currentTimeMillis())
+    fun getActivos() = dbHelper.getActivos()
+
+    fun addActiveMed(medicamento: Medicamento) = dbHelper.insertIntoActivos(medicamento)
+
+    fun deleteActiveMed(medicamento: Medicamento) = dbHelper.deleteFromActivos(medicamento)
+
+    fun addFavMed(medicamento: Medicamento) = dbHelper.insertIntoFavoritos(medicamento)
+
+    fun deleteFavMed(medicamento: Medicamento) = dbHelper.deleteFromFavoritos(medicamento)
 
     // TODO: Borrar
     @Deprecated("Marked for removal")

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">My Pill Box</string>
+    <string name="app_name">My PillBox</string>
     <string name="calendar">Calendar</string>
     <string name="active_medication">Active medication</string>
     <string name="favorites">Favorites</string>
@@ -40,4 +40,10 @@
     <string name="import_str">Import</string>
     <string name="add_medicament">Add medicament</string>
     <string name="schedule">Schedule</string>
+    <string name="no_active_meds">It appears you have no active medications currently…</string>
+    <string name="undo">Undo</string>
+    <string name="deleteOk">Medication disposed correctly</string>
+    <string name="deleteFail">Could not remove medication</string>
+    <string name="reinsertOK">Recovered medication</string>
+    <string name="reinsertFail">The medication could not be retrieved</string>
 </resources>
