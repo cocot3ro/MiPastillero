@@ -46,4 +46,9 @@
     <string name="deleteFail">Could not remove medication</string>
     <string name="reinsertOK">Recovered medication</string>
     <string name="reinsertFail">The medication could not be retrieved</string>
+    <string name="removeFavOk">Medication removed from favorites</string>
+    <string name="addFavOk">Medication added to favorites</string>
+    <string name="addFavFail">Error adding to favorites</string>
+    <string name="removeFavFail">Error deleting favorites</string>
+    <string name="no_fav_meds">It appears you have no favorite medications currently…</string>
 </resources>

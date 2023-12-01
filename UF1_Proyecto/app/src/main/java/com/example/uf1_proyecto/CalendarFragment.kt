@@ -35,11 +35,16 @@ class CalendarFragment : Fragment() {
             (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        val drawerLayout = binding.drawerLayout
-        val builder = AppBarConfiguration.Builder(navController.graph)
-        builder.setOpenableLayout(drawerLayout)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.calendarFragment,
+                R.id.activeMedFragment,
+                R.id.favoriteFragment,
+                R.id.diaryFragment
+            ),
+            binding.drawerLayout
+        )
 
-        val appBarConfiguration = builder.build()
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
         val navigationView = binding.navView
@@ -49,7 +54,7 @@ class CalendarFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_today_search, menu)
+        inflater.inflate(R.menu.menu_toolbar_calendar, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

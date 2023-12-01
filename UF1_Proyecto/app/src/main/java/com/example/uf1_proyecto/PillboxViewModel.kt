@@ -21,6 +21,12 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
 
     }
 
+    fun openPDF(context: Context, url: String) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(url)
+        context.startActivity(intent)
+    }
+
     fun millisToHour(millis: Long): String =
         SimpleDateFormat.getTimeInstance().format(Date(millis))
 

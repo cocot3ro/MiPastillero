@@ -21,16 +21,14 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp">
+                android:layout_margin="8dp">
 
                 <ImageButton
-                    android:id="@+id/btnFav"
+                    android:id="@+id/fav_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:background="@drawable/rounded"
                     android:src="@android:drawable/star_big_off"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,22 +37,19 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="Medication name"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btnRemove"
-                    app:layout_constraintStart_toEndOf="@id/btnFav"
+                    app:layout_constraintEnd_toStartOf="@id/remove_btn"
+                    app:layout_constraintStart_toEndOf="@id/fav_btn"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
-                    android:id="@+id/btnRemove"
+                    android:id="@+id/remove_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:background="@drawable/rounded"
                     android:src="@android:drawable/ic_delete"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -97,8 +92,7 @@
                         <TextView
                             android:id="@+id/date_start"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="01/01/2023" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
@@ -116,8 +110,7 @@
                         <TextView
                             android:id="@+id/date_end"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="01/01/2023" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
@@ -154,7 +147,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:background="@drawable/med_card_btn"
+                        android:background="@drawable/summary_btn"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -176,7 +169,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/med_card_btn"
+                        android:background="@drawable/leaflet_btn"
                         android:gravity="center"
                         android:orientation="vertical">
 

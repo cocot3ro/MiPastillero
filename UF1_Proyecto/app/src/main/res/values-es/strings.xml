@@ -46,5 +46,9 @@
     <string name="deleteFail">No se pudo eliminar el medicamento</string>
     <string name="reinsertOK">Medicamento recuperado</string>
     <string name="reinsertFail">No se pudo recuperar el medicamento</string>
-
+    <string name="removeFavOk">Medicamento eliminado de favoritos</string>
+    <string name="addFavOk">Medicamento añadido a favoritos</string>
+    <string name="addFavFail">Error al añadir a favoritos</string>
+    <string name="removeFavFail">Error al borrar de favoritos</string>
+    <string name="no_fav_meds">Parece que no tienes medicamentos favoritos actualmente…</string>
 </resources>

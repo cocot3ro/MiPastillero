@@ -14,7 +14,7 @@ class DBHelper private constructor(context: Context) :
         const val DB_NAME = "pillbox.db"
 
         // TODO: Cambiar a version 1 al finalizar proyecto
-        const val DB_VERSION = 20
+        const val DB_VERSION = 21
 
         @Volatile
         private var instance: DBHelper? = null
@@ -322,7 +322,7 @@ class DBHelper private constructor(context: Context) :
                 "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
                 "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
                 1700866800000,
-                1701385200000,
+                1701730800000,
                 listOf(-3600000, 25200000, 54000000),
                 true
             )
@@ -335,7 +335,7 @@ class DBHelper private constructor(context: Context) :
                 "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
                 "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
                 1700866800000,
-                1701385200000,
+                1701730800000,
                 listOf(-3600000, 25200000, 54000000),
                 false
             )
@@ -348,7 +348,7 @@ class DBHelper private constructor(context: Context) :
                 "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
                 "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
                 1700866800000,
-                1701385200000,
+                1701730800000,
                 listOf(-3600000, 25200000, 54000000),
                 true
             )
@@ -361,7 +361,7 @@ class DBHelper private constructor(context: Context) :
                 "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
                 "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
                 1700866800000,
-                1701385200000,
+                1701730800000,
                 listOf(-3600000, 25200000, 54000000),
                 false
             )
@@ -374,7 +374,7 @@ class DBHelper private constructor(context: Context) :
                 "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
                 "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
                 1700866800000,
-                1701385200000,
+                1701730800000,
                 listOf(-3600000, 25200000, 54000000),
                 true
             )
@@ -387,7 +387,7 @@ class DBHelper private constructor(context: Context) :
                 "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
                 "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
                 1700866800000,
-                1701385200000,
+                1701730800000,
                 listOf(-3600000, 25200000, 54000000),
                 false
             )

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.uf1_proyecto.databinding.FragmentDiaryBinding
 
@@ -26,7 +27,17 @@ class DiaryFragment : Fragment() {
             (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        binding.toolbar.setupWithNavController(navController)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.calendarFragment,
+                R.id.activeMedFragment,
+                R.id.favoriteFragment,
+                R.id.diaryFragment
+            ),
+            binding.drawerLayout
+        )
+
+        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
         return view
     }

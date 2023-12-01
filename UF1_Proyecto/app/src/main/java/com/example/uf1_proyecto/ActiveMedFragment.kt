@@ -1,7 +1,5 @@
 package com.example.uf1_proyecto
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -16,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.uf1_proyecto.databinding.FragmentActiveMedBinding
 import com.google.android.material.snackbar.Snackbar
@@ -41,19 +40,32 @@ class ActiveMedFragment : Fragment() {
 
         val navHostFragment =
             (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+
         val navController = navHostFragment.navController
 
-        binding.toolbar.setupWithNavController(navController)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.calendarFragment,
+                R.id.activeMedFragment,
+                R.id.favoriteFragment,
+                R.id.diaryFragment
+            ),
+            binding.drawerLayout
+        )
+
+        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
 //        pillboxViewModel.ejemplosActivos()
 
         val activos = pillboxViewModel.getActivos()
 
-        if (activos.isEmpty()) {
-            binding.noActiveMedsText.text = getString(R.string.no_active_meds)
-        } else {
+        if (activos.isNotEmpty()) {
             binding.activeMedLayout.removeView(binding.noActiveMedsText)
             activos.forEach { addCardView(it) }
+        }
+
+        binding.fabAdd.setOnClickListener {
+            // TODO: showAddMedDialog
         }
 
         return view
@@ -77,35 +89,52 @@ class ActiveMedFragment : Fragment() {
         cardView.findViewById<TextView>(R.id.date_end).text =
             pillboxViewModel.millisToDate(medicamento.fechaFin)
 
-        cardView.findViewById<ImageButton>(R.id.summary_btn)
-            .setOnClickListener { openPDF(medicamento.fichaTecnica) }
+        cardView.findViewById<ImageButton>(R.id.summary_btn).setOnClickListener {
+            pillboxViewModel.openPDF(
+                requireContext(),
+                medicamento.fichaTecnica
+            )
+        }
+        cardView.findViewById<ImageButton>(R.id.leaflet_btn).setOnClickListener {
+            pillboxViewModel.openPDF(
+                requireContext(),
+                medicamento.prospecto
+            )
+        }
 
-        cardView.findViewById<ImageButton>(R.id.leaflet_btn)
-            .setOnClickListener { openPDF(medicamento.prospecto) }
-
-        val favBtn = cardView.findViewById<ImageButton>(R.id.btnFav)
+        val favBtn = cardView.findViewById<ImageButton>(R.id.fav_btn)
         if (medicamento.isFavorite) {
             favBtn.setImageResource(android.R.drawable.star_big_on)
         }
 
-        // TODO: Cambiar icono solo si se completa eliminacion o insercion
         favBtn.setOnClickListener {
             if (medicamento.isFavorite) {
-                pillboxViewModel.deleteFavMed(medicamento)
-                favBtn.setImageResource(android.R.drawable.star_big_off)
+                if (pillboxViewModel.deleteFavMed(medicamento)) {
+                    favBtn.setImageResource(android.R.drawable.star_big_off)
+                    Toast.makeText(activity, getString(R.string.removeFavOk), Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    Toast.makeText(activity, getString(R.string.removeFavFail), Toast.LENGTH_SHORT)
+                        .show()
+                }
             } else {
-                pillboxViewModel.addFavMed(medicamento)
-                favBtn.setImageResource(android.R.drawable.star_big_on)
+                if (pillboxViewModel.addFavMed(medicamento)) {
+                    favBtn.setImageResource(android.R.drawable.star_big_on)
+                    Toast.makeText(activity, getString(R.string.addFavOk), Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    Toast.makeText(activity, getString(R.string.addFavFail), Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
 
             medicamento.isFavorite = !medicamento.isFavorite
         }
 
-        val removeBtn = cardView.findViewById<ImageButton>(R.id.btnRemove)
+        val removeBtn = cardView.findViewById<ImageButton>(R.id.remove_btn)
         removeBtn.setOnClickListener {
-
             if (pillboxViewModel.deleteActiveMed(medicamento)) {
-
+                val index = binding.activeMedLayout.indexOfChild(cardView)
                 binding.activeMedLayout.removeView(cardView)
                 val snackBar =
                     Snackbar.make(requireView(), getString(R.string.deleteOk), Snackbar.LENGTH_LONG)
@@ -114,7 +143,7 @@ class ActiveMedFragment : Fragment() {
                     if (pillboxViewModel.addActiveMed(medicamento)) {
                         Toast.makeText(activity, getString(R.string.reinsertOK), Toast.LENGTH_LONG)
                             .show()
-                        binding.activeMedLayout.addView(cardView)
+                        binding.activeMedLayout.addView(cardView, index)
                     } else {
                         Toast.makeText(
                             activity,
@@ -145,12 +174,6 @@ class ActiveMedFragment : Fragment() {
         }
 
         binding.activeMedLayout.addView(cardView)
-    }
-
-    private fun openPDF(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
-        requireContext().startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
