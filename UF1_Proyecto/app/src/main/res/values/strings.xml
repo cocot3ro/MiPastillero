@@ -42,4 +42,10 @@
     <string name="national_drug_code">National drug code</string>
     <string name="name">Name</string>
     <string name="codNacional_help">The national code is usually found on the back of the medication box in the following format \'123456.7\'. It is necessary to autofill some data and access the leaflet</string>
+    <string name="am">am</string>
+    <string name="pm">pm</string>
+    <string name="save_as_favorite">Save as favorite</string>
+    <string name="no_time_format">Select a time format</string>
+    <string name="openPDFFail">The PDF cannot be opened or it does not exist</string>
+    <string name="codNacional_not_found">Could not find medication with that code</string>
 </resources>

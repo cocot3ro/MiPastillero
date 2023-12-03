@@ -106,7 +106,7 @@ class DBHelper private constructor(context: Context) :
             insertIntoMedicamentos(medicamento)
         }
 
-        if (medicamento.isFavorite) {
+        if (medicamento.isFavorite!!) {
             insertIntoFavoritos(medicamento)
         }
 

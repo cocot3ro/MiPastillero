@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.google.gson.GsonBuilder
 import java.util.Date
 
 class PillboxViewModel private constructor(context: Context) : ViewModel() {
@@ -21,7 +23,6 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
 
     }
 
-    // TODO: abrir solo si hai url
     fun openPDF(context: Context, url: String?): Boolean {
         if (url.isNullOrEmpty()) {
             return false
@@ -36,8 +37,8 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
     fun millisToHour(millis: Long): String =
         SimpleDateFormat.getTimeInstance().format(Date(millis))
 
-    fun millisToDate(millis: Long): String =
-        SimpleDateFormat.getDateInstance().format(Date(millis))
+    fun millisToDate(millis: Long?): String =
+        SimpleDateFormat.getDateInstance().format(Date(millis!!))
 
     fun hourToMillis(hour: String): Long =
         SimpleDateFormat.getTimeInstance().parse(hour).time
@@ -46,6 +47,7 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
         SimpleDateFormat.getDateInstance().parse(date).time
 
     // TODO: fun get this week ""
+
     fun getActivos() = dbHelper.getActivos()
 
     fun getFavoritos() = dbHelper.getFavoritos()
@@ -57,6 +59,24 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
     fun addFavMed(medicamento: Medicamento) = dbHelper.insertIntoFavoritos(medicamento)
 
     fun deleteFavMed(medicamento: Medicamento) = dbHelper.deleteFromFavoritos(medicamento)
+
+    fun searchMedicamento(codNacional: String): Medicamento? {
+        val apiUrl = "https://cima.aemps.es/cima/rest/medicamento?cn=$codNacional"
+
+        val response = khttp.get(apiUrl)
+
+        if (response.statusCode != 200) {
+            return null
+        }
+
+        Log.e("JSON response", response.text)
+
+        val gson = GsonBuilder()
+            .registerTypeAdapter(Medicamento::class.java, MedicamentoTypeAdapter())
+            .create()
+
+        return gson.fromJson(response.text, Medicamento::class.java)
+    }
 
     // TODO: Borrar
     @Deprecated("Marked for removal")

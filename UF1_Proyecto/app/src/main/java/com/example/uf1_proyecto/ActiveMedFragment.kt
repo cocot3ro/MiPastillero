@@ -65,16 +65,16 @@ class ActiveMedFragment : Fragment() {
         cargarActivos()
 
         binding.fabAdd.setOnClickListener {
-            // TODO: dialogo para añadir medicamento
-            val dataInputDialog = DataInputDialog(requireContext(), object : DataInputDialog.OnDataEnteredListener {
-                override fun onDataEntered(data: String) {
-                    // Aquí obtienes los datos ingresados por el usuario
-                    // Puedes realizar acciones con los datos, como enviarlos a otro fragmento o hacer lo que necesites.
-                    // Ejemplo: showToast("Datos ingresados: $data")
-                    Log.i("DataInputDialog", "Datos ingresados: $data")
-                }
+            val dataInputDialog =
+                DataInputDialog(requireContext(), object : DataInputDialog.OnDataEnteredListener {
+                    override fun onDataEntered(medicamento: Medicamento?) {
+                        // Aquí obtienes los datos ingresados por el usuario
+                        // Puedes realizar acciones con los datos, como enviarlos a otro fragmento o hacer lo que necesites.
+                        // Ejemplo: showToast("Datos ingresados: $data")
+                        Log.i("DataInputDialog", "Datos ingresados: $medicamento")
+                    }
 
-            })
+                })
 
             dataInputDialog.show()
         }
@@ -111,28 +111,29 @@ class ActiveMedFragment : Fragment() {
 
         cardView.findViewById<ImageButton>(R.id.summary_btn).setOnClickListener {
             if (medicamento.codNacional != -1) {
-                pillboxViewModel.openPDF(
-                    requireContext(),
-                    medicamento.fichaTecnica
-                )
+                if (!pillboxViewModel.openPDF(requireContext(), medicamento.fichaTecnica)) {
+                    Toast.makeText(activity, getString(R.string.openPDFFail), Toast.LENGTH_LONG)
+                        .show()
+                }
             }
         }
+
         cardView.findViewById<ImageButton>(R.id.leaflet_btn).setOnClickListener {
             if (medicamento.codNacional != -1) {
-                pillboxViewModel.openPDF(
-                    requireContext(),
-                    medicamento.prospecto
-                )
+                if (!pillboxViewModel.openPDF(requireContext(),medicamento.prospecto)) {
+                    Toast.makeText(activity, getString(R.string.openPDFFail), Toast.LENGTH_LONG)
+                        .show()
+                }
             }
         }
 
         val favBtn = cardView.findViewById<ImageButton>(R.id.fav_btn)
-        if (medicamento.isFavorite) {
+        if (medicamento.isFavorite!!) {
             favBtn.setImageResource(android.R.drawable.star_big_on)
         }
 
         favBtn.setOnClickListener {
-            if (medicamento.isFavorite) {
+            if (medicamento.isFavorite!!) {
                 if (pillboxViewModel.deleteFavMed(medicamento)) {
                     favBtn.setImageResource(android.R.drawable.star_big_off)
                     Toast.makeText(activity, getString(R.string.removeFavOk), Toast.LENGTH_SHORT)
@@ -152,7 +153,7 @@ class ActiveMedFragment : Fragment() {
                 }
             }
 
-            medicamento.isFavorite = !medicamento.isFavorite
+            medicamento.isFavorite = !medicamento.isFavorite!!
         }
 
         val removeBtn = cardView.findViewById<ImageButton>(R.id.remove_btn)
@@ -184,7 +185,7 @@ class ActiveMedFragment : Fragment() {
 
         val scheduleLayout = cardView.findViewById<LinearLayout>(R.id.schedule_layout)
 
-        medicamento.horario.forEach {
+        medicamento.horario!!.forEach {
             val textView = TextView(requireContext())
             val layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
