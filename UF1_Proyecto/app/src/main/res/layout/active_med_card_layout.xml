@@ -32,6 +32,16 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <ImageButton
+                    android:id="@+id/fill_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded"
+                    android:src="@android:drawable/ic_input_add"
+                    android:layout_marginStart="4dp"
+                    app:layout_constraintStart_toEndOf="@id/fav_btn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="0dp"
@@ -41,7 +51,7 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/remove_btn"
-                    app:layout_constraintStart_toEndOf="@id/fav_btn"
+                    app:layout_constraintStart_toEndOf="@id/fill_btn"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton

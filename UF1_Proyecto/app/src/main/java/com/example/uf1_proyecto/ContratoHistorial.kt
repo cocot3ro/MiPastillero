@@ -6,7 +6,7 @@ object ContratoHistorial {
     const val NOMBRE_TABLA = "Historial"
 
     object Columnas : BaseColumns {
-        const val _ID = "codNacional"
+        const val _ID = "nombre"
         const val COLUMN_INICIO = "fechaInicio"
         const val COLUMN_FIN = "fechaFin"
     }

@@ -14,7 +14,7 @@ class DBHelper private constructor(context: Context) :
         const val DB_NAME = "pillbox.db"
 
         // TODO: Cambiar a version 1 al finalizar proyecto
-        const val DB_VERSION = 21
+        const val DB_VERSION = 31
 
         @Volatile
         private var instance: DBHelper? = null
@@ -26,8 +26,8 @@ class DBHelper private constructor(context: Context) :
 
         private const val CREATE_MEDICATION_TABLE = """
             CREATE TABLE IF NOT EXISTS ${ContratoMedicamentos.NOMBRE_TABLA} (
-                ${ContratoMedicamentos.Columnas._ID} INTEGER PRIMARY KEY,
-                ${ContratoMedicamentos.Columnas.COLUMN_NOMBRE} TEXT,
+                ${ContratoMedicamentos.Columnas._ID} TEXT PRIMARY KEY,
+                ${ContratoMedicamentos.Columnas.COLUMN_COD} INTEGER DEFAULT -1,
                 ${ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA} TEXT,
                 ${ContratoMedicamentos.Columnas.COLUMN_PROSPECTO} TEXT
             )
@@ -35,7 +35,7 @@ class DBHelper private constructor(context: Context) :
 
         private const val CREATE_ACTIVE_TABLE = """
             CREATE TABLE IF NOT EXISTS ${ContratoActivos.NOMBRE_TABLA} (
-                ${ContratoActivos.Columnas._ID} INTEGER,
+                ${ContratoActivos.Columnas._ID} TEXT,
                 ${ContratoActivos.Columnas.COLUMN_INICIO} INTEGER,
                 ${ContratoActivos.Columnas.COLUMN_FIN} INTEGER,
                 ${ContratoActivos.Columnas.COLUMN_HORARIO} TEXT,
@@ -46,7 +46,7 @@ class DBHelper private constructor(context: Context) :
 
         private const val CREATE_FAVORITE_TABLE = """
             CREATE TABLE IF NOT EXISTS ${ContratoFavoritos.NOMBRE_TABLA} (
-                ${ContratoFavoritos.Columnas._ID} INTEGER PRIMARY KEY,
+                ${ContratoFavoritos.Columnas._ID} TEXT PRIMARY KEY,
                 FOREIGN KEY (${ContratoFavoritos.Columnas._ID}) REFERENCES ${ContratoMedicamentos.NOMBRE_TABLA}(${ContratoMedicamentos.Columnas._ID})
             )
         """
@@ -60,7 +60,7 @@ class DBHelper private constructor(context: Context) :
 
         private const val CREATE_HISTORY_TABLE = """
             CREATE TABLE IF NOT EXISTS ${ContratoHistorial.NOMBRE_TABLA} (
-                ${ContratoHistorial.Columnas._ID} INTEGER,
+                ${ContratoHistorial.Columnas._ID} TEXT,
                 ${ContratoHistorial.Columnas.COLUMN_INICIO} INTEGER,
                 ${ContratoHistorial.Columnas.COLUMN_FIN} INTEGER,
                 PRIMARY KEY (${ContratoHistorial.Columnas._ID}, ${ContratoHistorial.Columnas.COLUMN_INICIO}, ${ContratoHistorial.Columnas.COLUMN_FIN}),
@@ -90,8 +90,8 @@ class DBHelper private constructor(context: Context) :
     private fun insertIntoMedicamentos(medicamento: Medicamento) {
 
         val values = ContentValues().apply {
-            put(ContratoMedicamentos.Columnas._ID, medicamento.codNacional)
-            put(ContratoMedicamentos.Columnas.COLUMN_NOMBRE, medicamento.nombre)
+            put(ContratoMedicamentos.Columnas._ID, medicamento.nombre)
+            put(ContratoMedicamentos.Columnas.COLUMN_COD, medicamento.codNacional)
             put(ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA, medicamento.fichaTecnica)
             put(ContratoMedicamentos.Columnas.COLUMN_PROSPECTO, medicamento.prospecto)
         }
@@ -111,7 +111,7 @@ class DBHelper private constructor(context: Context) :
         }
 
         val values = ContentValues().apply {
-            put(ContratoActivos.Columnas._ID, medicamento.codNacional)
+            put(ContratoActivos.Columnas._ID, medicamento.nombre)
             put(ContratoActivos.Columnas.COLUMN_INICIO, medicamento.fechaInicio)
             put(ContratoActivos.Columnas.COLUMN_FIN, medicamento.fechaFin)
             put(ContratoActivos.Columnas.COLUMN_HORARIO, Gson().toJson(medicamento.horario))
@@ -130,7 +130,7 @@ class DBHelper private constructor(context: Context) :
                         "${ContratoActivos.Columnas.COLUMN_INICIO} = ? AND " +
                         "${ContratoActivos.Columnas.COLUMN_FIN} = ?",
                 arrayOf(
-                    medicamento.codNacional.toString(),
+                    medicamento.nombre,
                     medicamento.fechaInicio.toString(),
                     medicamento.fechaFin.toString()
                 )
@@ -144,7 +144,7 @@ class DBHelper private constructor(context: Context) :
         }
 
         val values = ContentValues().apply {
-            put(ContratoFavoritos.Columnas._ID, medicamento.codNacional)
+            put(ContratoFavoritos.Columnas._ID, medicamento.nombre)
         }
 
         writableDatabase.use { db ->
@@ -157,7 +157,7 @@ class DBHelper private constructor(context: Context) :
             return db.delete(
                 ContratoFavoritos.NOMBRE_TABLA,
                 "${ContratoFavoritos.Columnas._ID} = ?",
-                arrayOf(medicamento.codNacional.toString())
+                arrayOf(medicamento.nombre)
             ) != 0
         }
     }
@@ -190,7 +190,7 @@ class DBHelper private constructor(context: Context) :
 
     fun insertIntoHistorial(medicamento: Medicamento): Boolean {
         val values = ContentValues().apply {
-            put(ContratoHistorial.Columnas._ID, medicamento.codNacional)
+            put(ContratoHistorial.Columnas._ID, medicamento.nombre)
             put(ContratoHistorial.Columnas.COLUMN_INICIO, medicamento.fechaInicio)
             put(ContratoHistorial.Columnas.COLUMN_FIN, medicamento.fechaInicio)
         }
@@ -222,7 +222,7 @@ class DBHelper private constructor(context: Context) :
                 ContratoMedicamentos.NOMBRE_TABLA,
                 null,
                 "${ContratoMedicamentos.Columnas._ID} = ?",
-                arrayOf(medicamento.codNacional.toString()),
+                arrayOf(medicamento.nombre),
                 null,
                 null,
                 null
@@ -233,18 +233,16 @@ class DBHelper private constructor(context: Context) :
     }
 
     fun existeEnFavoritos(medicamento: Medicamento): Boolean {
-        return existeEnFavoritos(medicamento.codNacional)
+        return existeEnFavoritos(medicamento.nombre)
     }
 
-    private fun existeEnFavoritos(codNacional: Int): Boolean {
+    private fun existeEnFavoritos(nombre: String): Boolean {
         readableDatabase.use { db ->
             db.query(
                 ContratoMedicamentos.NOMBRE_TABLA + " INNER JOIN " + ContratoFavoritos.NOMBRE_TABLA + " ON " + ContratoMedicamentos.NOMBRE_TABLA + "." + ContratoMedicamentos.Columnas._ID + " = " + ContratoFavoritos.NOMBRE_TABLA + "." + ContratoFavoritos.Columnas._ID,
                 null,
-                "${
-                    ContratoFavoritos.NOMBRE_TABLA
-                }.${ContratoFavoritos.Columnas._ID} = ?",
-                arrayOf(codNacional.toString()),
+                "${ContratoFavoritos.NOMBRE_TABLA}.${ContratoFavoritos.Columnas._ID} = ?",
+                arrayOf(nombre),
                 null,
                 null,
                 null
@@ -269,11 +267,11 @@ class DBHelper private constructor(context: Context) :
                 ContratoActivos.Columnas.COLUMN_INICIO
             ).use { cursor ->
                 if (cursor.moveToFirst()) {
-                    val colCodNacional =
+                    val colNombre =
                         cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
 
-                    val colNombre =
-                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_NOMBRE)
+                    val colCodNacional =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD)
 
                     val colFichaTecnica =
                         cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA)
@@ -291,8 +289,8 @@ class DBHelper private constructor(context: Context) :
                     do {
                         listaActivos.add(
                             Medicamento(
-                                cursor.getInt(colCodNacional),
                                 cursor.getString(colNombre),
+                                cursor.getInt(colCodNacional),
                                 cursor.getString(colFichaTecnica),
                                 cursor.getString(colProspecto),
                                 cursor.getLong(colFechaInicio),
@@ -301,7 +299,7 @@ class DBHelper private constructor(context: Context) :
                                     cursor.getString(colHorario),
                                     object : TypeToken<List<Long>>() {}.type
                                 ),
-                                existeEnFavoritos(cursor.getInt(colCodNacional))
+                                existeEnFavoritos(cursor.getString(colNombre))
                             )
                         )
                     } while (cursor.moveToNext())
@@ -312,13 +310,60 @@ class DBHelper private constructor(context: Context) :
         return listaActivos
     }
 
+    fun getFavoritos(): List<Medicamento> {
+        val listaFavoritos = mutableListOf<Medicamento>()
+
+        readableDatabase.use { db ->
+            db.query(
+                ContratoMedicamentos.NOMBRE_TABLA + " INNER JOIN " + ContratoFavoritos.NOMBRE_TABLA + " ON " + ContratoMedicamentos.NOMBRE_TABLA + "." + ContratoMedicamentos.Columnas._ID + " = " + ContratoFavoritos.NOMBRE_TABLA + "." + ContratoFavoritos.Columnas._ID,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val colNombre =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
+
+                    val colCodNacional =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD)
+
+                    val colFichaTecnica =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA)
+
+                    val colProspecto =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_PROSPECTO)
+
+                    do {
+                        listaFavoritos.add(
+                            Medicamento(
+                                cursor.getString(colNombre),
+                                cursor.getInt(colCodNacional),
+                                cursor.getString(colFichaTecnica),
+                                cursor.getString(colProspecto),
+                                -1L,
+                                -1L,
+                                listOf(),
+                                existeEnFavoritos(cursor.getString(colNombre))
+                            )
+                        )
+                    } while (cursor.moveToNext())
+                }
+            }
+        }
+
+        return listaFavoritos
+    }
+
     // TODO: Borrar
     @Deprecated("Marked for removal")
     fun ejemplosActivos() {
         insertIntoActivos(
             Medicamento(
-                1,
                 "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES1",
+                1,
                 "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
                 "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
                 1700866800000,
@@ -330,8 +375,8 @@ class DBHelper private constructor(context: Context) :
 
         insertIntoActivos(
             Medicamento(
-                2,
                 "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES2",
+                2,
                 "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
                 "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
                 1700866800000,
@@ -343,8 +388,8 @@ class DBHelper private constructor(context: Context) :
 
         insertIntoActivos(
             Medicamento(
-                3,
                 "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES3",
+                3,
                 "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
                 "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
                 1700866800000,
@@ -356,8 +401,8 @@ class DBHelper private constructor(context: Context) :
 
         insertIntoActivos(
             Medicamento(
-                4,
                 "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES4",
+                4,
                 "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
                 "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
                 1700866800000,
@@ -369,8 +414,8 @@ class DBHelper private constructor(context: Context) :
 
         insertIntoActivos(
             Medicamento(
-                5,
                 "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES5",
+                5,
                 "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
                 "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
                 1700866800000,
@@ -382,8 +427,8 @@ class DBHelper private constructor(context: Context) :
 
         insertIntoActivos(
             Medicamento(
-                6,
                 "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES6",
+                6,
                 "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
                 "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
                 1700866800000,
@@ -395,8 +440,8 @@ class DBHelper private constructor(context: Context) :
 
         insertIntoActivos(
             Medicamento(
-                7,
                 "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES7",
+                7,
                 "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
                 "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
                 1704063600000,
@@ -408,8 +453,8 @@ class DBHelper private constructor(context: Context) :
 
         insertIntoActivos(
             Medicamento(
-                8,
                 "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES8",
+                8,
                 "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
                 "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
                 1704063600000,
@@ -421,8 +466,8 @@ class DBHelper private constructor(context: Context) :
 
         insertIntoActivos(
             Medicamento(
-                9,
                 "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES9",
+                9,
                 "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
                 "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
                 1704063600000,

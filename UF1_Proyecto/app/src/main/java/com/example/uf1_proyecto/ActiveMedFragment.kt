@@ -1,9 +1,11 @@
 package com.example.uf1_proyecto
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -55,20 +57,38 @@ class ActiveMedFragment : Fragment() {
 
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
-//        pillboxViewModel.ejemplosActivos()
+        // TODO: Borrar esto
+        binding.fabAdd2.setOnClickListener {
+            pillboxViewModel.ejemplosActivos()
+        }
 
+        cargarActivos()
+
+        binding.fabAdd.setOnClickListener {
+            // TODO: dialogo para añadir medicamento
+            val dataInputDialog = DataInputDialog(requireContext(), object : DataInputDialog.OnDataEnteredListener {
+                override fun onDataEntered(data: String) {
+                    // Aquí obtienes los datos ingresados por el usuario
+                    // Puedes realizar acciones con los datos, como enviarlos a otro fragmento o hacer lo que necesites.
+                    // Ejemplo: showToast("Datos ingresados: $data")
+                    Log.i("DataInputDialog", "Datos ingresados: $data")
+                }
+
+            })
+
+            dataInputDialog.show()
+        }
+
+        return view
+    }
+
+    private fun cargarActivos() {
         val activos = pillboxViewModel.getActivos()
 
         if (activos.isNotEmpty()) {
             binding.activeMedLayout.removeView(binding.noActiveMedsText)
             activos.forEach { addCardView(it) }
         }
-
-        binding.fabAdd.setOnClickListener {
-            // TODO: showAddMedDialog
-        }
-
-        return view
     }
 
     private fun addCardView(medicamento: Medicamento) {
@@ -90,16 +110,20 @@ class ActiveMedFragment : Fragment() {
             pillboxViewModel.millisToDate(medicamento.fechaFin)
 
         cardView.findViewById<ImageButton>(R.id.summary_btn).setOnClickListener {
-            pillboxViewModel.openPDF(
-                requireContext(),
-                medicamento.fichaTecnica
-            )
+            if (medicamento.codNacional != -1) {
+                pillboxViewModel.openPDF(
+                    requireContext(),
+                    medicamento.fichaTecnica
+                )
+            }
         }
         cardView.findViewById<ImageButton>(R.id.leaflet_btn).setOnClickListener {
-            pillboxViewModel.openPDF(
-                requireContext(),
-                medicamento.prospecto
-            )
+            if (medicamento.codNacional != -1) {
+                pillboxViewModel.openPDF(
+                    requireContext(),
+                    medicamento.prospecto
+                )
+            }
         }
 
         val favBtn = cardView.findViewById<ImageButton>(R.id.fav_btn)
@@ -179,5 +203,23 @@ class ActiveMedFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_import_export, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.importar -> {
+                // TODO: importar de json
+                Toast.makeText(activity, "IMPORT", Toast.LENGTH_LONG).show()
+                true
+            }
+
+            // TODO: exportar a json
+            R.id.exportar -> {
+                Toast.makeText(activity, "EXPORT", Toast.LENGTH_LONG).show()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

@@ -9,31 +9,19 @@
         android:id="@+id/favoriteFragment"
         android:name="com.example.uf1_proyecto.FavoriteFragment"
         android:label="fragment_favorite"
-        tools:layout="@layout/fragment_favorite">
-        <action
-            android:id="@+id/action_favoriteFragment_to_addMedFragment2"
-            app:destination="@id/addMedFragment2" />
-    </fragment>
+        tools:layout="@layout/fragment_favorite"/>
 
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.example.uf1_proyecto.CalendarFragment"
         android:label="fragment_calendar"
-        tools:layout="@layout/fragment_calendar">
-        <action
-            android:id="@+id/action_calendarFragment_to_addMedFragment2"
-            app:destination="@id/addMedFragment2" />
-    </fragment>
+        tools:layout="@layout/fragment_calendar"/>
 
     <fragment
         android:id="@+id/activeMedFragment"
         android:name="com.example.uf1_proyecto.ActiveMedFragment"
         android:label="fragment_active_med"
-        tools:layout="@layout/fragment_active_med">
-        <action
-            android:id="@+id/action_activeMedFragment_to_addMedFragment2"
-            app:destination="@id/addMedFragment2" />
-    </fragment>
+        tools:layout="@layout/fragment_active_med"/>
 
     <fragment
         android:id="@+id/diaryFragment"
@@ -46,16 +34,5 @@
         android:name="com.example.uf1_proyecto.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
-
-    <fragment
-        android:id="@+id/addMedFragment2"
-        android:name="com.example.uf1_proyecto.AddMedFragment"
-        android:label="fragment_add_med"
-        tools:layout="@layout/fragment_add_med">
-        <argument
-            android:name="medicamento"
-            app:argType="com.example.uf1_proyecto"
-            app:nullable="true" />
-    </fragment>
 
 </navigation>
