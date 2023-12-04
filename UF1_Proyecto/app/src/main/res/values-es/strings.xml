@@ -39,7 +39,7 @@
     <string name="national_code">Código nacional:</string>
     <string name="accept">Aceptar</string>
     <string name="cancel">Cancelar</string>
-    <string name="national_drug_code">Código nacional del medicamento</string>
+    <string name="national_drug_code">Código nacional</string>
     <string name="name">Nombre</string>
     <string name="codNacional_help">El código nacional se encuentra generalmente en el reverso de la caja del medicamento con el siguiente formato \'123456.7\'. Es necesario para autocompletar algunos datos y acceder al prospecto</string>
     <string name="am">am</string>

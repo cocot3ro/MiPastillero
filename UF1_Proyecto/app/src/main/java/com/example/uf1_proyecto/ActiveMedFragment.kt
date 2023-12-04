@@ -65,8 +65,8 @@ class ActiveMedFragment : Fragment() {
         cargarActivos()
 
         binding.fabAdd.setOnClickListener {
-            val dataInputDialog =
-                DataInputDialog(requireContext(), object : DataInputDialog.OnDataEnteredListener {
+            val addMedDialog =
+                AddMedDialog(requireContext(), object : AddMedDialog.OnDataEnteredListener {
                     override fun onDataEntered(medicamento: Medicamento?) {
                         // Aquí obtienes los datos ingresados por el usuario
                         // Puedes realizar acciones con los datos, como enviarlos a otro fragmento o hacer lo que necesites.
@@ -76,7 +76,7 @@ class ActiveMedFragment : Fragment() {
 
                 })
 
-            dataInputDialog.show()
+            addMedDialog.show()
         }
 
         return view

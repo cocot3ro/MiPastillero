@@ -7,6 +7,13 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.Date
 
 class PillboxViewModel private constructor(context: Context) : ViewModel() {
@@ -60,22 +67,71 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
 
     fun deleteFavMed(medicamento: Medicamento) = dbHelper.deleteFromFavoritos(medicamento)
 
+//    fun searchMedicamento(codNacional: String): Medicamento? {
+//        val apiUrl = "https://cima.aemps.es/cima/rest/medicamento?cn=$codNacional"
+//
+//        val response = khttp.get(apiUrl)
+//
+//        if (response.statusCode != 200) {
+//            return null
+//        }
+//
+//        Log.e("JSON response", response.text)
+//
+//        val gson = GsonBuilder()
+//            .registerTypeAdapter(Medicamento::class.java, MedicamentoTypeAdapter())
+//            .create()
+//
+//        return gson.fromJson(response.text, Medicamento::class.java)
+//    }
+
     fun searchMedicamento(codNacional: String): Medicamento? {
-        val apiUrl = "https://cima.aemps.es/cima/rest/medicamento?cn=$codNacional"
+        // Lanzar una corrutina en un hilo de fondo
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val url = "https://cima.aemps.es/cima/rest/medicamento?cn=$codNacional"
+                val respuesta = hacerPeticionApi(url)
 
-        val response = khttp.get(apiUrl)
+                val gson = GsonBuilder()
+                    .registerTypeAdapter(Medicamento::class.java, MedicamentoTypeAdapter())
+                    .create()
 
-        if (response.statusCode != 200) {
-            return null
+                return gson.fromJson(respuesta, Medicamento::class.java)
+
+            } catch (e: Exception) {
+                return null
+            }
         }
+    }
 
-        Log.e("JSON response", response.text)
+    private suspend fun hacerPeticionApi(url: String): Medicamento? {
+        val urlObj = URL(url)
+        val conexion = urlObj.openConnection() as HttpURLConnection
 
-        val gson = GsonBuilder()
-            .registerTypeAdapter(Medicamento::class.java, MedicamentoTypeAdapter())
-            .create()
+        try {
+            // Configurar la conexión
+            conexion.requestMethod = "GET"
 
-        return gson.fromJson(response.text, Medicamento::class.java)
+            // Obtener la respuesta
+            val codigoRespuesta = conexion.responseCode
+            if (codigoRespuesta == HttpURLConnection.HTTP_OK) {
+                val reader = BufferedReader(InputStreamReader(conexion.inputStream))
+                val respuesta = StringBuilder()
+                var linea: String?
+                while (reader.readLine().also { linea = it } != null) {
+                    respuesta.append(linea)
+                }
+                reader.close()
+
+                Log.e("JSON response", respuesta.toString())
+
+                return null
+            } else {
+                throw Exception("Error en la petición, código de respuesta: $codigoRespuesta")
+            }
+        } finally {
+            conexion.disconnect()
+        }
     }
 
     // TODO: Borrar
