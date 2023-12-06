@@ -200,7 +200,7 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
-    fun existeEnAgenda(fecha: Long): Boolean {
+    private fun existeEnAgenda(fecha: Long): Boolean {
         readableDatabase.use { db ->
             db.query(
                 ContratoAgenda.NOMBRE_TABLA,
@@ -216,7 +216,7 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
-    fun existeEnMedicamentos(medicamento: Medicamento): Boolean {
+    private fun existeEnMedicamentos(medicamento: Medicamento): Boolean {
         readableDatabase.use { db ->
             db.query(
                 ContratoMedicamentos.NOMBRE_TABLA,

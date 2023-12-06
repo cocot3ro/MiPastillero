@@ -45,7 +45,11 @@
     <string name="am">am</string>
     <string name="pm">pm</string>
     <string name="save_as_favorite">Save as favorite</string>
-    <string name="no_time_format">Select a time format</string>
     <string name="openPDFFail">The PDF cannot be opened or it does not exist</string>
-    <string name="codNacional_not_found">Could not find medication with that code</string>
+    <string name="codNacional_not_found">Could not find any medication with that code</string>
+    <string name="no_schedule">You have not specified any schedule</string>
+    <string name="empty_name">You must indicate a name for the medication</string>
+    <string name="invalid_date">The end date is before the start date</string>
+    <string name="invalid_schedule">Two or more entries in the schedule are the same</string>
+    <string name="searching">Searching…</string>
 </resources>

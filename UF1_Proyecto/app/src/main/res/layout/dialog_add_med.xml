@@ -64,13 +64,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
                     android:text="@string/start" />
 
                 <TextView
                     android:id="@+id/date_start"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp" />
 
                 <ImageButton
                     android:id="@+id/btn_date_picker1"
@@ -90,13 +90,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
                     android:text="@string/end" />
 
                 <TextView
                     android:id="@+id/date_end"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp" />
 
                 <ImageButton
                     android:id="@+id/btn_date_picker2"
@@ -139,6 +139,7 @@
         <LinearLayout
             android:id="@+id/schedule_layout"
             android:layout_width="wrap_content"
+            android:layout_marginStart="4dp"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 

@@ -4,16 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
+import android.text.format.DateFormat
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.gson.GsonBuilder
+import khttp.responses.Response
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
+import kotlinx.coroutines.withContext
+import java.util.Calendar
 import java.util.Date
 
 class PillboxViewModel private constructor(context: Context) : ViewModel() {
@@ -41,19 +39,41 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
         return true
     }
 
-    fun millisToHour(millis: Long): String =
-        SimpleDateFormat.getTimeInstance().format(Date(millis))
+    fun getTodayAsString(): String = millisToDate(System.currentTimeMillis())
 
-    fun millisToDate(millis: Long?): String =
-        SimpleDateFormat.getDateInstance().format(Date(millis!!))
+    fun getTodayAsMillis(): Long = dateToMillis(getTodayAsString())
 
-    fun hourToMillis(hour: String): Long =
-        SimpleDateFormat.getTimeInstance().parse(hour).time
+    fun getNowAsString(): String = millisToHour(System.currentTimeMillis())
 
-    fun dateToMillis(date: String): Long =
-        SimpleDateFormat.getDateInstance().parse(date).time
+    fun getNowAsMillis(): Long = hourToMillis(getNowAsString())
 
-    // TODO: fun get this week ""
+    fun millisToHour(millis: Long): String = SimpleDateFormat.getTimeInstance().format(Date(millis))
+
+    fun millisToDate(millis: Long): String = SimpleDateFormat.getDateInstance().format(Date(millis))
+
+    fun hourToMillis(hour: String): Long = SimpleDateFormat.getTimeInstance().parse(hour).time
+
+    fun dateToMillis(date: String): Long = SimpleDateFormat.getDateInstance().parse(date).time
+
+    fun is24HourFormat(context: Context) = DateFormat.is24HourFormat(context)
+
+    fun createDate(year: Int, monthOfYear: Int, dayOfMonth: Int): Long {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, monthOfYear)
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        return calendar.timeInMillis
+    }
+
+    fun createHour(hourOfDay: Int, minute: Int): Long {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        calendar.set(Calendar.MINUTE, minute)
+        calendar.set(Calendar.SECOND, 0)
+        return calendar.timeInMillis
+    }
+
+    // TODO: fun get activos por semana
 
     fun getActivos() = dbHelper.getActivos()
 
@@ -67,70 +87,28 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
 
     fun deleteFavMed(medicamento: Medicamento) = dbHelper.deleteFromFavoritos(medicamento)
 
-//    fun searchMedicamento(codNacional: String): Medicamento? {
-//        val apiUrl = "https://cima.aemps.es/cima/rest/medicamento?cn=$codNacional"
-//
-//        val response = khttp.get(apiUrl)
-//
-//        if (response.statusCode != 200) {
-//            return null
-//        }
-//
-//        Log.e("JSON response", response.text)
-//
-//        val gson = GsonBuilder()
-//            .registerTypeAdapter(Medicamento::class.java, MedicamentoTypeAdapter())
-//            .create()
-//
-//        return gson.fromJson(response.text, Medicamento::class.java)
-//    }
+    suspend fun searchMedicamento(codNacional: String): Medicamento? {
+        return withContext(Dispatchers.IO) {
+            val apiUrl = "https://cima.aemps.es/cima/rest/medicamento?cn=$codNacional"
 
-    fun searchMedicamento(codNacional: String): Medicamento? {
-        // Lanzar una corrutina en un hilo de fondo
-        GlobalScope.launch(Dispatchers.IO) {
             try {
-                val url = "https://cima.aemps.es/cima/rest/medicamento?cn=$codNacional"
-                val respuesta = hacerPeticionApi(url)
+                Log.i("API", "Antes de la llamada")
+                val response: Response = khttp.get(apiUrl, timeout = 5.0)
+
+                Log.i("API", "Después de la llamada")
+
+                if (response.statusCode != 200) {
+                    return@withContext null
+                }
 
                 val gson = GsonBuilder()
-                    .registerTypeAdapter(Medicamento::class.java, MedicamentoTypeAdapter())
+                    .registerTypeAdapter(Medicamento::class.java, APITypeAdapter())
                     .create()
 
-                return gson.fromJson(respuesta, Medicamento::class.java)
-
+                gson.fromJson(response.text, Medicamento::class.java)
             } catch (e: Exception) {
-                return null
+                null
             }
-        }
-    }
-
-    private suspend fun hacerPeticionApi(url: String): Medicamento? {
-        val urlObj = URL(url)
-        val conexion = urlObj.openConnection() as HttpURLConnection
-
-        try {
-            // Configurar la conexión
-            conexion.requestMethod = "GET"
-
-            // Obtener la respuesta
-            val codigoRespuesta = conexion.responseCode
-            if (codigoRespuesta == HttpURLConnection.HTTP_OK) {
-                val reader = BufferedReader(InputStreamReader(conexion.inputStream))
-                val respuesta = StringBuilder()
-                var linea: String?
-                while (reader.readLine().also { linea = it } != null) {
-                    respuesta.append(linea)
-                }
-                reader.close()
-
-                Log.e("JSON response", respuesta.toString())
-
-                return null
-            } else {
-                throw Exception("Error en la petición, código de respuesta: $codigoRespuesta")
-            }
-        } finally {
-            conexion.disconnect()
         }
     }
 

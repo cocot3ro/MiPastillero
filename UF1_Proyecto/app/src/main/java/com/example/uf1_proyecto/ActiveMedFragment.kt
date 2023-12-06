@@ -65,18 +65,17 @@ class ActiveMedFragment : Fragment() {
         cargarActivos()
 
         binding.fabAdd.setOnClickListener {
-            val addMedDialog =
-                AddMedDialog(requireContext(), object : AddMedDialog.OnDataEnteredListener {
-                    override fun onDataEntered(medicamento: Medicamento?) {
-                        // Aquí obtienes los datos ingresados por el usuario
-                        // Puedes realizar acciones con los datos, como enviarlos a otro fragmento o hacer lo que necesites.
-                        // Ejemplo: showToast("Datos ingresados: $data")
-                        Log.i("DataInputDialog", "Datos ingresados: $medicamento")
+            AddMedDialog(requireContext(), object : AddMedDialog.OnDataEnteredListener {
+                // TODO: Cambiar de Medicamento? a Medicamento
+                override fun onDataEntered(medicamento: Medicamento?) {
+                    if (medicamento == null) {
+                        Log.i("DataInputDialog", "Datos ingresados: null")
+                        return
                     }
+                    Log.i("DataInputDialog","Datos ingresados: codNacional = ${medicamento.codNacional}, nombre = ${medicamento.nombre}, fechaInicio = ${medicamento.fechaInicio}, fechaFin = ${medicamento.fechaFin}, horario = ${medicamento.horario}, fichaTecnica = ${medicamento.fichaTecnica}, prospecto = ${medicamento.prospecto}")
+                }
 
-                })
-
-            addMedDialog.show()
+            }).show()
         }
 
         return view
@@ -104,10 +103,10 @@ class ActiveMedFragment : Fragment() {
         cardView.findViewById<TextView>(R.id.name).text = medicamento.nombre
 
         cardView.findViewById<TextView>(R.id.date_start).text =
-            pillboxViewModel.millisToDate(medicamento.fechaInicio)
+            pillboxViewModel.millisToDate(medicamento.fechaInicio!!)
 
         cardView.findViewById<TextView>(R.id.date_end).text =
-            pillboxViewModel.millisToDate(medicamento.fechaFin)
+            pillboxViewModel.millisToDate(medicamento.fechaFin!!)
 
         cardView.findViewById<ImageButton>(R.id.summary_btn).setOnClickListener {
             if (medicamento.codNacional != -1) {
@@ -120,7 +119,7 @@ class ActiveMedFragment : Fragment() {
 
         cardView.findViewById<ImageButton>(R.id.leaflet_btn).setOnClickListener {
             if (medicamento.codNacional != -1) {
-                if (!pillboxViewModel.openPDF(requireContext(),medicamento.prospecto)) {
+                if (!pillboxViewModel.openPDF(requireContext(), medicamento.prospecto)) {
                     Toast.makeText(activity, getString(R.string.openPDFFail), Toast.LENGTH_LONG)
                         .show()
                 }

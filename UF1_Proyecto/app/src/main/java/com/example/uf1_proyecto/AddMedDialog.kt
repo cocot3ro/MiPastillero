@@ -2,9 +2,8 @@ package com.example.uf1_proyecto
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
-import android.text.format.DateFormat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -12,15 +11,19 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.children
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Calendar
 
 class AddMedDialog(private val context: Context, private val listener: OnDataEnteredListener) {
 
     interface OnDataEnteredListener {
+        // TODO: Cambiar de Medicamento? a Medicamento
         fun onDataEntered(medicamento: Medicamento?)
     }
 
@@ -28,71 +31,69 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
     private val pillboxViewModel get() = _pillboxViewModel!!
 
     private val dialogView: View =
-        LayoutInflater.from(context).inflate(R.layout.dialog_data_input, null)
+        LayoutInflater.from(context).inflate(R.layout.dialog_add_med, null)
 
     private val inputCodNacional: EditText = dialogView.findViewById(R.id.codNacional)
     private val inputNombre: EditText = dialogView.findViewById(R.id.nombre)
     private val inputFavorite: CheckBox = dialogView.findViewById(R.id.save_as_favorite)
     private val inputFechaInicio: TextView = dialogView.findViewById(R.id.date_start)
     private val inputFechaFin: TextView = dialogView.findViewById(R.id.date_end)
+    private var fichaTecnica: String? = null
+    private var prospecto: String? = null
 
     private val alertDialog: AlertDialog = AlertDialog.Builder(context)
         .setView(dialogView)
         .setTitle(context.getString(R.string.add_medicament))
-        .setPositiveButton(context.getString(R.string.accept)) { _, _ ->
-            val codNacional = inputCodNacional.text.toString()
-            val nombre = inputNombre.text.toString()
-            val fichaTecnica = pillboxViewModel.searchMedicamento(codNacional)?.fichaTecnica
-            val prospecto = pillboxViewModel.searchMedicamento(codNacional)?.prospecto
-
-            val horario = mutableListOf<Long>()
-            for (i in 0 until (dialogView.findViewById<LinearLayout>(R.id.schedule_layout).childCount)) {
-                val timer =
-                    dialogView.findViewById<LinearLayout>(R.id.schedule_layout).getChildAt(i)
-                val hour = timer.findViewById<EditText>(R.id.timerHour).text.toString()
-                if (!is24HourFormat(context)) {
-                    if (timer.findViewById<RadioGroup>(R.id.time_format_grp).checkedRadioButtonId == -1) {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.no_time_format),
-                            Toast.LENGTH_LONG
-                        ).show()
-                        return@setPositiveButton
-                    }
-
-                    if (timer.findViewById<RadioButton>(R.id.radio_pm).isChecked) {
-                        hour.toInt() + 12
-                    }
-                }
-                val minute = timer.findViewById<EditText>(R.id.timerMinute).text.toString()
-                val second = timer.findViewById<EditText>(R.id.timerSecond).text.toString()
-                val time = "$hour:$minute:$second"
-                horario.add(pillboxViewModel.hourToMillis(time))
-            }
-
-            listener.onDataEntered(null)
-
-        }
+        .setPositiveButton(context.getString(R.string.accept), null)
         .setNegativeButton(context.getString(R.string.cancel), null)
         .create()
 
     init {
-        addTimePicker()
-
         _pillboxViewModel = PillboxViewModel.getInstance(context)
 
-        dialogView.findViewById<ImageButton>(R.id.btn_search).setOnClickListener {
-            val medicamento = pillboxViewModel.searchMedicamento(inputCodNacional.text.toString())
+        alertDialog.setOnShowListener {
+            setupPositiveButton()
+        }
 
-            if (medicamento == null) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.codNacional_not_found),
-                    Toast.LENGTH_LONG
-                ).show()
-            } else {
-                inputNombre.setText(medicamento.nombre)
+        addTimePicker()
+
+        dialogView.findViewById<ImageButton>(R.id.btn_search).setOnClickListener {
+            if (inputCodNacional.text.isNullOrBlank()) {
+                return@setOnClickListener
             }
+
+            val searchingToast = Toast.makeText(
+                context, context.getString(R.string.searching), Toast.LENGTH_LONG
+            )
+
+            searchingToast.show()
+
+            GlobalScope.launch(Dispatchers.Main) {
+                val codNacional = inputCodNacional.text.toString()
+                val index = codNacional.indexOf(".")
+
+                val medicamento = if (index != -1) {
+                    pillboxViewModel.searchMedicamento(codNacional.substring(0, index))
+                } else {
+                    pillboxViewModel.searchMedicamento(codNacional)
+                }
+
+                withContext(Dispatchers.Main) {
+                    searchingToast.cancel()
+                    if (medicamento == null) {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.codNacional_not_found),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        inputNombre.setText(medicamento.nombre)
+                        fichaTecnica = medicamento.fichaTecnica
+                        prospecto = medicamento.prospecto
+                    }
+                }
+            }
+
         }
 
         dialogView.findViewById<ImageButton>(R.id.btn_help).setOnClickListener {
@@ -108,8 +109,18 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
                 context,
                 { _, year, monthOfYear, dayOfMonth ->
                     when (view.id) {
-                        R.id.btn_date_picker1 -> inputFechaInicio.text = pillboxViewModel.millisToDate(createDate(year, monthOfYear, dayOfMonth))
-                        R.id.btn_date_picker2 -> inputFechaFin.text = pillboxViewModel.millisToDate(createDate(year, monthOfYear, dayOfMonth))
+                        R.id.btn_date_picker1 -> inputFechaInicio.text =
+                            pillboxViewModel.millisToDate(
+                                pillboxViewModel.createDate(
+                                    year, monthOfYear, dayOfMonth
+                                )
+                            )
+
+                        R.id.btn_date_picker2 -> inputFechaFin.text = pillboxViewModel.millisToDate(
+                            pillboxViewModel.createDate(
+                                year, monthOfYear, dayOfMonth
+                            )
+                        )
                     }
                 },
                 // Establece la fecha actual como predeterminada
@@ -124,17 +135,56 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
         dialogView.findViewById<ImageButton>(R.id.btn_date_picker1).setOnClickListener(listener)
         dialogView.findViewById<ImageButton>(R.id.btn_date_picker2).setOnClickListener(listener)
 
-        inputFechaInicio.text = pillboxViewModel.millisToDate(System.currentTimeMillis())
-        inputFechaFin.text = pillboxViewModel.millisToDate(System.currentTimeMillis())
+        inputFechaInicio.text = pillboxViewModel.getTodayAsString()
+        inputFechaFin.text = pillboxViewModel.getTodayAsString()
 
     }
 
-    private fun createDate(year: Int, monthOfYear: Int, dayOfMonth: Int): Long {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.YEAR, year)
-        calendar.set(Calendar.MONTH, monthOfYear)
-        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-        return calendar.timeInMillis
+    private fun validateForm(): Boolean {
+        if (inputNombre.text.isNullOrBlank()) {
+            Toast.makeText(context, context.getString(R.string.empty_name), Toast.LENGTH_LONG)
+                .show()
+            return false
+        }
+
+        if (pillboxViewModel.dateToMillis(inputFechaInicio.text.toString()) < pillboxViewModel.dateToMillis(
+                inputFechaFin.text.toString()
+            )
+        ) {
+            Toast.makeText(
+                context, context.getString(R.string.invalid_date), Toast.LENGTH_LONG
+            ).show()
+            return false
+        }
+
+        if (getSchedule().isEmpty()) {
+            Toast.makeText(
+                context, context.getString(R.string.no_schedule), Toast.LENGTH_LONG
+            ).show()
+            return false
+        }
+
+        if (getSchedule().size < dialogView.findViewById<LinearLayout>(R.id.schedule_layout).childCount) {
+            Toast.makeText(
+                context, context.getString(R.string.invalid_schedule), Toast.LENGTH_LONG
+            ).show()
+            return false
+        }
+
+        return true
+    }
+
+    private fun getSchedule(): List<Long> {
+        val horario = mutableListOf<Long>()
+
+        for (child in (dialogView.findViewById<LinearLayout>(R.id.schedule_layout).children)) {
+            val time = child.findViewById<TextView>(R.id.timer_hour).text.toString()
+            if (!horario.contains(pillboxViewModel.hourToMillis(time))) {
+                horario.add(pillboxViewModel.hourToMillis(time))
+            }
+        }
+
+        return horario
     }
 
     private fun addTimePicker() {
@@ -142,80 +192,24 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
         val scheduleLayout = dialogView.findViewById<LinearLayout>(R.id.schedule_layout)
 
         val timer = inflater.inflate(
-            R.layout.time_picker_layout,
-            scheduleLayout,
-            false
+            R.layout.time_picker_layout, scheduleLayout, false
         ) as LinearLayout
 
-        if (is24HourFormat(context)) {
-            timer.removeView(timer.findViewById(R.id.time_format_layout))
-        }
+        timer.findViewById<TextView>(R.id.timer_hour).text = pillboxViewModel.millisToHour(-3600000)
 
-        val hourTime = timer.findViewById<EditText>(R.id.timerHour)
-        timer.findViewById<ImageButton>(R.id.hourIncrement).setOnClickListener {
-            if (is24HourFormat(context)) {
-                if (hourTime.text.toString().toInt() == 23) {
-                    hourTime.setText("0")
-                } else {
-                    hourTime.setText((hourTime.text.toString().toInt() + 1).toString())
-                }
-            } else {
-                if (hourTime.text.toString().toInt() == 12) {
-                    hourTime.setText("1")
-                } else {
-                    hourTime.setText((hourTime.text.toString().toInt() + 1).toString())
-                }
-            }
-        }
+        timer.findViewById<ImageButton>(R.id.timePicker).setOnClickListener {
+            val timePickerDialog = TimePickerDialog(
+                context, { _, hourOfDay, minute ->
+                    val time = pillboxViewModel.millisToHour(
+                        pillboxViewModel.createHour(
+                            hourOfDay, minute
+                        )
+                    )
+                    timer.findViewById<TextView>(R.id.timer_hour).text = time
+                }, 0, 0, pillboxViewModel.is24HourFormat(context)
+            )
 
-        timer.findViewById<ImageButton>(R.id.hourDecrement).setOnClickListener {
-            if (is24HourFormat(context)) {
-                if (hourTime.text.toString().toInt() == 0) {
-                    hourTime.setText("23")
-                } else {
-                    hourTime.setText((hourTime.text.toString().toInt() - 1).toString())
-                }
-            } else {
-                if (hourTime.text.toString().toInt() == 1) {
-                    hourTime.setText("12")
-                } else {
-                    hourTime.setText((hourTime.text.toString().toInt() - 1).toString())
-                }
-            }
-        }
-
-        val minuteTime = timer.findViewById<EditText>(R.id.timerMinute)
-        timer.findViewById<ImageButton>(R.id.minuteIncrement).setOnClickListener {
-            if (minuteTime.text.toString().toInt() == 59) {
-                minuteTime.setText("0")
-            } else {
-                minuteTime.setText((minuteTime.text.toString().toInt() + 1).toString())
-            }
-        }
-
-        timer.findViewById<ImageButton>(R.id.minuteDecrement).setOnClickListener {
-            if (minuteTime.text.toString().toInt() == 0) {
-                minuteTime.setText("59")
-            } else {
-                minuteTime.setText((minuteTime.text.toString().toInt() - 1).toString())
-            }
-        }
-
-        val secondTime = timer.findViewById<EditText>(R.id.timerSecond)
-        timer.findViewById<ImageButton>(R.id.secondIncrement).setOnClickListener {
-            if (secondTime.text.toString().toInt() == 59) {
-                secondTime.setText("0")
-            } else {
-                secondTime.setText((secondTime.text.toString().toInt() + 1).toString())
-            }
-        }
-
-        timer.findViewById<ImageButton>(R.id.secondDecrement).setOnClickListener {
-            if (secondTime.text.toString().toInt() == 0) {
-                secondTime.setText("59")
-            } else {
-                secondTime.setText((secondTime.text.toString().toInt() - 1).toString())
-            }
+            timePickerDialog.show()
         }
 
         timer.findViewById<ImageButton>(R.id.delete_timer).setOnClickListener {
@@ -225,8 +219,30 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
         scheduleLayout.addView(timer)
     }
 
-    private fun is24HourFormat(context: Context): Boolean {
-        return DateFormat.is24HourFormat(context)
+    private fun setupPositiveButton() {
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            if (!validateForm()) {
+                return@setOnClickListener
+            }
+
+            val nombre = inputNombre.text.toString()
+            val codNacional = inputCodNacional.text.toString()
+            val horario = getSchedule()
+
+            /*
+            ignore this for now
+            val nombre: String,
+            val codNacional: Int?,
+            val fichaTecnica: String,
+            val prospecto: String,
+            val fechaInicio: Long?,
+            val fechaFin: Long?,
+            val horario: List<Long>?,
+            var isFavorite: Boolean?
+            */
+            alertDialog.dismiss()
+            listener.onDataEntered(null)
+        }
     }
 
     fun show() {

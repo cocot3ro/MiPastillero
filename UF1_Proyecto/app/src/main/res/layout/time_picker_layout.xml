@@ -2,133 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:gravity="center">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/timer_hour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginEnd="8dp"/>
 
-        <ImageButton
-            android:id="@+id/hourIncrement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/arrow_up_float" />
-
-        <EditText
-            android:id="@+id/timerHour"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="2"
-            android:text="0" />
-
-        <ImageButton
-            android:id="@+id/hourDecrement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/arrow_down_float" />
-
-    </LinearLayout>
-
-    <LinearLayout
+    <ImageButton
+        android:id="@+id/timePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:src="@android:drawable/ic_menu_recent_history"/>
 
-        <ImageButton
-            android:id="@+id/minuteIncrement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/arrow_up_float" />
-
-        <EditText
-            android:id="@+id/timerMinute"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="2"
-            android:text="0" />
-
-        <ImageButton
-            android:id="@+id/minuteDecrement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/arrow_down_float" />
-
-    </LinearLayout>
-
-    <LinearLayout
+    <ImageButton
+        android:id="@+id/delete_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <ImageButton
-            android:id="@+id/secondIncrement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/arrow_up_float" />
-
-        <EditText
-            android:id="@+id/timerSecond"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="2"
-            android:text="0" />
-
-        <ImageButton
-            android:id="@+id/secondDecrement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/arrow_down_float" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/time_format_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="4dp"
-        android:orientation="vertical">
-
-        <RadioGroup
-            android:id="@+id/time_format_grp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/radio_am"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/am" />
-
-            <RadioButton
-                android:id="@+id/radio_pm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pm" />
-        </RadioGroup>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical">
-
-
-        <ImageButton
-            android:id="@+id/delete_timer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_delete" />
-
-    </LinearLayout>
+        android:src="@android:drawable/ic_menu_delete" />
 
 </LinearLayout>
