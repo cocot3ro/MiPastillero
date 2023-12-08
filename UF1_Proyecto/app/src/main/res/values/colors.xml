@@ -3,4 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="card_bg">#FFEEEE</color>
+    <color name="leaflet_bg">#FBFFEE</color>
+    <color name="summary_bg">#EEF1FF</color>
+    <color name="diary_border">#787878</color>
 </resources>

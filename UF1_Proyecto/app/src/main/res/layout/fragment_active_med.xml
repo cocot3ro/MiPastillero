@@ -18,7 +18,7 @@
             style="@style/Widget.MaterialComponents.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/menu_import_export">
+            app:menu="@menu/menu_toolbar_active_med">
 
             <TextView
                 android:layout_width="match_parent"
@@ -51,25 +51,6 @@
             </LinearLayout>
 
         </ScrollView>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="16dp"
-            android:src="@android:drawable/ic_input_add" />
-
-        <!--        TODO : BORRAR-->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabAdd2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="16dp"
-            android:src="@android:drawable/ic_menu_add" />
 
     </RelativeLayout>
 

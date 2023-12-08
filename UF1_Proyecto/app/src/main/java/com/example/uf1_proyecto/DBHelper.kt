@@ -106,10 +106,6 @@ class DBHelper private constructor(context: Context) :
             insertIntoMedicamentos(medicamento)
         }
 
-        if (medicamento.isFavorite!!) {
-            insertIntoFavoritos(medicamento)
-        }
-
         val values = ContentValues().apply {
             put(ContratoActivos.Columnas._ID, medicamento.nombre)
             put(ContratoActivos.Columnas.COLUMN_INICIO, medicamento.fechaInicio)
@@ -357,124 +353,27 @@ class DBHelper private constructor(context: Context) :
         return listaFavoritos
     }
 
-    // TODO: Borrar
-    @Deprecated("Marked for removal")
-    fun ejemplosActivos() {
-        insertIntoActivos(
-            Medicamento(
-                "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES1",
-                1,
-                "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
-                "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
-                1700866800000,
-                1701730800000,
-                listOf(-3600000, 25200000, 54000000),
-                true
-            )
-        )
+    fun getDiaryEntry(diaryCurrDate: Long): String {
+        readableDatabase.use { db ->
+            db.query(
+                ContratoAgenda.NOMBRE_TABLA,
+                null,
+                "${ContratoAgenda.Columnas._ID} = ?",
+                arrayOf(diaryCurrDate.toString()),
+                null,
+                null,
+                null
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val colDescripcion =
+                        cursor.getColumnIndex(ContratoAgenda.Columnas.COLUMN_DESCRIPCION)
 
-        insertIntoActivos(
-            Medicamento(
-                "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES2",
-                2,
-                "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
-                "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
-                1700866800000,
-                1701730800000,
-                listOf(-3600000, 25200000, 54000000),
-                false
-            )
-        )
+                    return cursor.getString(colDescripcion)
+                }
+            }
+        }
 
-        insertIntoActivos(
-            Medicamento(
-                "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES3",
-                3,
-                "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
-                "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
-                1700866800000,
-                1701730800000,
-                listOf(-3600000, 25200000, 54000000),
-                true
-            )
-        )
-
-        insertIntoActivos(
-            Medicamento(
-                "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES4",
-                4,
-                "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
-                "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
-                1700866800000,
-                1701730800000,
-                listOf(-3600000, 25200000, 54000000),
-                false
-            )
-        )
-
-        insertIntoActivos(
-            Medicamento(
-                "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES5",
-                5,
-                "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
-                "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
-                1700866800000,
-                1701730800000,
-                listOf(-3600000, 25200000, 54000000),
-                true
-            )
-        )
-
-        insertIntoActivos(
-            Medicamento(
-                "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES6",
-                6,
-                "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
-                "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
-                1700866800000,
-                1701730800000,
-                listOf(-3600000, 25200000, 54000000),
-                false
-            )
-        )
-
-        insertIntoActivos(
-            Medicamento(
-                "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES7",
-                7,
-                "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
-                "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
-                1704063600000,
-                1704495600000,
-                listOf(-3600000, 25200000, 54000000),
-                true
-            )
-        )
-
-        insertIntoActivos(
-            Medicamento(
-                "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES8",
-                8,
-                "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
-                "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
-                1704063600000,
-                1704495600000,
-                listOf(-3600000, 25200000, 54000000),
-                false
-            )
-        )
-
-        insertIntoActivos(
-            Medicamento(
-                "ASPIRINA C 400 mg/240 mg COMPRIMIDOS EFERVESCENTES9",
-                9,
-                "https://cima.aemps.es/cima/pdfs/ft/51347/FT_51347.pdf",
-                "https://cima.aemps.es/cima/pdfs/p/51347/P_51347.pdf",
-                1704063600000,
-                1704495600000,
-                listOf(-3600000, 25200000, 54000000),
-                true
-            )
-        )
+        return ""
     }
+
 }

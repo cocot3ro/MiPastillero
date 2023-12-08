@@ -23,8 +23,7 @@ import java.util.Calendar
 class AddMedDialog(private val context: Context, private val listener: OnDataEnteredListener) {
 
     interface OnDataEnteredListener {
-        // TODO: Cambiar de Medicamento? a Medicamento
-        fun onDataEntered(medicamento: Medicamento?)
+        fun onDataEntered(medicamento: Medicamento)
     }
 
     private var _pillboxViewModel: PillboxViewModel? = null
@@ -64,9 +63,7 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
 
             val searchingToast = Toast.makeText(
                 context, context.getString(R.string.searching), Toast.LENGTH_LONG
-            )
-
-            searchingToast.show()
+            ).also { it.show() }
 
             GlobalScope.launch(Dispatchers.Main) {
                 val codNacional = inputCodNacional.text.toString()
@@ -147,7 +144,7 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
             return false
         }
 
-        if (pillboxViewModel.dateToMillis(inputFechaInicio.text.toString()) < pillboxViewModel.dateToMillis(
+        if (pillboxViewModel.dateToMillis(inputFechaInicio.text.toString()) > pillboxViewModel.dateToMillis(
                 inputFechaFin.text.toString()
             )
         ) {
@@ -226,22 +223,31 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
             }
 
             val nombre = inputNombre.text.toString()
-            val codNacional = inputCodNacional.text.toString()
+            var codNacional = inputCodNacional.text.toString()
+            val index = codNacional.indexOf(".")
+            if (index != -1) {
+                codNacional = codNacional.substring(0, index)
+            }
+            val fichaTecnica = fichaTecnica
+            val prospecto = prospecto
+            val fechaInicio = pillboxViewModel.dateToMillis(inputFechaInicio.text.toString())
+            val fechaFin = pillboxViewModel.dateToMillis(inputFechaFin.text.toString())
             val horario = getSchedule()
+            val isFavorite = inputFavorite.isChecked
 
-            /*
-            ignore this for now
-            val nombre: String,
-            val codNacional: Int?,
-            val fichaTecnica: String,
-            val prospecto: String,
-            val fechaInicio: Long?,
-            val fechaFin: Long?,
-            val horario: List<Long>?,
-            var isFavorite: Boolean?
-            */
             alertDialog.dismiss()
-            listener.onDataEntered(null)
+            listener.onDataEntered(
+                Medicamento(
+                    nombre,
+                    codNacional.toInt(),
+                    fichaTecnica,
+                    prospecto,
+                    fechaInicio,
+                    fechaFin,
+                    horario,
+                    isFavorite
+                )
+            )
         }
     }
 

@@ -5,21 +5,6 @@ import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 
 class APITypeAdapter : TypeAdapter<Medicamento>() {
-    // TODO: Borrar esto
-//    override fun write(writer: JsonWriter, value: Medicamento) {
-//        writer.beginObject()
-//
-//        writer.name("codNacional").value(value.codNacional)
-//        writer.name("fichaTecnica").value(value.fichaTecnica)
-//        writer.name("fichaTecnica").value(value.fichaTecnica)
-//        writer.name("prospecto").value(value.prospecto)
-//        writer.name("fechaInicio").value(value.fechaInicio)
-//        writer.name("fechaFin").value(value.fechaFin)
-//        writer.name("horario")
-//        gson.toJson(value.horario, MutableList::class.java, writer)
-//        writer.name("isFavorite").value(value.isFavorite)
-//        writer.endObject()
-//    }
 
     override fun write(writer: JsonWriter, value: Medicamento) {}
 

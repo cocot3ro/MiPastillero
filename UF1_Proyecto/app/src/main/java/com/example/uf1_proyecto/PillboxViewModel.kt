@@ -6,6 +6,7 @@ import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.text.format.DateFormat
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.GsonBuilder
 import khttp.responses.Response
@@ -16,6 +17,9 @@ import java.util.Date
 
 class PillboxViewModel private constructor(context: Context) : ViewModel() {
     private var dbHelper: DBHelper = DBHelper.getInstance(context)
+
+    private var diaryCurrDate = MutableLiveData(getTodayAsMillis())
+    private var diaryText = MutableLiveData(getDiaryEntry())
 
     companion object {
         @Volatile
@@ -39,13 +43,22 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
         return true
     }
 
+    fun getTodayAsDayOfWeek(context: Context): String {
+        return when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
+            Calendar.MONDAY -> context.getString(R.string.monday)
+            Calendar.TUESDAY -> context.getString(R.string.tuesday)
+            Calendar.WEDNESDAY -> context.getString(R.string.wednesday)
+            Calendar.THURSDAY -> context.getString(R.string.thursday)
+            Calendar.FRIDAY -> context.getString(R.string.friday)
+            Calendar.SATURDAY -> context.getString(R.string.saturday)
+            Calendar.SUNDAY -> context.getString(R.string.sunday)
+            else -> ""
+        }
+    }
+
     fun getTodayAsString(): String = millisToDate(System.currentTimeMillis())
 
     fun getTodayAsMillis(): Long = dateToMillis(getTodayAsString())
-
-    fun getNowAsString(): String = millisToHour(System.currentTimeMillis())
-
-    fun getNowAsMillis(): Long = hourToMillis(getNowAsString())
 
     fun millisToHour(millis: Long): String = SimpleDateFormat.getTimeInstance().format(Date(millis))
 
@@ -73,7 +86,37 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
         return calendar.timeInMillis
     }
 
+    fun getDiaryCurrDate(): Long = diaryCurrDate.value!!
+
+    fun setDiaryCurrDate(date: Long) {
+        diaryCurrDate.value = date
+        diaryText.value = getDiaryEntry()
+    }
+
+    fun diaryNextDay() {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = diaryCurrDate.value!!
+        calendar.add(Calendar.DAY_OF_MONTH, 1)
+        diaryCurrDate.value = calendar.timeInMillis
+        diaryText.value = getDiaryEntry()
+    }
+
+    fun diaryPrevDay() {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = diaryCurrDate.value!!
+        calendar.add(Calendar.DAY_OF_MONTH, -1)
+        diaryCurrDate.value = calendar.timeInMillis
+        diaryText.value = getDiaryEntry()
+    }
+
+    fun getDiaryText(): String = diaryText.value!!
+
+    private fun getDiaryEntry() = dbHelper.getDiaryEntry(getDiaryCurrDate())
+
+
     // TODO: fun get activos por semana
+
+    // TODO: fun get entradas de agenda
 
     fun getActivos() = dbHelper.getActivos()
 
@@ -86,6 +129,15 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
     fun addFavMed(medicamento: Medicamento) = dbHelper.insertIntoFavoritos(medicamento)
 
     fun deleteFavMed(medicamento: Medicamento) = dbHelper.deleteFromFavoritos(medicamento)
+
+    fun insertIntoAgenda(descripcion: String): Boolean {
+        return if (dbHelper.insertIntoAgenda(getDiaryCurrDate(), descripcion)) {
+            diaryText.value = descripcion
+            true
+        } else {
+            false
+        }
+    }
 
     suspend fun searchMedicamento(codNacional: String): Medicamento? {
         return withContext(Dispatchers.IO) {
@@ -110,12 +162,6 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
                 null
             }
         }
-    }
-
-    // TODO: Borrar
-    @Deprecated("Marked for removal")
-    fun ejemplosActivos() {
-        dbHelper.ejemplosActivos()
     }
 
 }

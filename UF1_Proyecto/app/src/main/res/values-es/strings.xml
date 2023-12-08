@@ -39,9 +39,9 @@
     <string name="national_code">Código nacional:</string>
     <string name="accept">Aceptar</string>
     <string name="cancel">Cancelar</string>
-    <string name="national_drug_code">Código nacional</string>
+    <string name="national_drug_code">Código nacional (opcional)</string>
     <string name="name">Nombre</string>
-    <string name="codNacional_help">El código nacional se encuentra generalmente en el reverso de la caja del medicamento con el siguiente formato \'123456.7\'. Es necesario para autocompletar algunos datos y acceder al prospecto</string>
+    <string name="codNacional_help">El código nacional se encuentra generalmente en el reverso de la caja del medicamento con el siguiente formato \'123456.7\'. Es necesario para autocompletar algunos datos y acceder al prospecto y ficha técnica</string>
     <string name="am">am</string>
     <string name="pm">pm</string>
     <string name="save_as_favorite">Guardar como favorito</string>
@@ -52,4 +52,8 @@
     <string name="invalid_date">La fecha de fin es anterior a la de inicio</string>
     <string name="invalid_schedule">Dos o más entradas en el horario son iguales</string>
     <string name="searching">Buscando…</string>
+    <string name="addActiveOk">Medicamento añadido correctamente</string>
+    <string name="addActiveFail">No se pudo añadir el medicamento</string>
+    <string name="saveDiaryOk">Descripción guardada correctamente</string>
+    <string name="saveDiaryFail">Error al guardar la descripción</string>
 </resources>

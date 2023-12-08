@@ -91,7 +91,7 @@ class FavoriteFragment : Fragment() {
 
         val fillBtn = cardView.findViewById<ImageButton>(R.id.fill_btn)
         fillBtn.setOnClickListener {
-            // TODO: add med dialog
+            // TODO: add fav med dialog
         }
 
         val removeBtn = cardView.findViewById<ImageButton>(R.id.remove_btn)
@@ -128,7 +128,8 @@ class FavoriteFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_import_export, menu)
+        // TODO: cambiar menu
+        inflater.inflate(R.menu.menu_toolbar_active_med, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 }

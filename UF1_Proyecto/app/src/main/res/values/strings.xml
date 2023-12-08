@@ -39,9 +39,9 @@
     <string name="national_code">National code:</string>
     <string name="accept">Accept</string>
     <string name="cancel">Cancel</string>
-    <string name="national_drug_code">National drug code</string>
+    <string name="national_drug_code">National drug code (optional)</string>
     <string name="name">Name</string>
-    <string name="codNacional_help">The national code is usually found on the back of the medication box in the following format \'123456.7\'. It is necessary to autofill some data and access the leaflet</string>
+    <string name="codNacional_help">The national code is usually found on the back of the medication box in the following format \'123456.7\'. It is necessary to autofill some data and access the leaflet ans summary</string>
     <string name="am">am</string>
     <string name="pm">pm</string>
     <string name="save_as_favorite">Save as favorite</string>
@@ -52,4 +52,8 @@
     <string name="invalid_date">The end date is before the start date</string>
     <string name="invalid_schedule">Two or more entries in the schedule are the same</string>
     <string name="searching">Searching…</string>
+    <string name="addActiveOk">Medication added correctly</string>
+    <string name="addActiveFail">Could not add medication</string>
+    <string name="saveDiaryOk">Description saved correctly</string>
+    <string name="saveDiaryFail">Error saving new description</string>
 </resources>

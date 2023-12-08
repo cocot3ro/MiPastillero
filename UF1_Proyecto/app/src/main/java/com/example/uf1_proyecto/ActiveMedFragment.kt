@@ -1,7 +1,6 @@
 package com.example.uf1_proyecto
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -57,26 +56,7 @@ class ActiveMedFragment : Fragment() {
 
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
-        // TODO: Borrar esto
-        binding.fabAdd2.setOnClickListener {
-            pillboxViewModel.ejemplosActivos()
-        }
-
         cargarActivos()
-
-        binding.fabAdd.setOnClickListener {
-            AddMedDialog(requireContext(), object : AddMedDialog.OnDataEnteredListener {
-                // TODO: Cambiar de Medicamento? a Medicamento
-                override fun onDataEntered(medicamento: Medicamento?) {
-                    if (medicamento == null) {
-                        Log.i("DataInputDialog", "Datos ingresados: null")
-                        return
-                    }
-                    Log.i("DataInputDialog","Datos ingresados: codNacional = ${medicamento.codNacional}, nombre = ${medicamento.nombre}, fechaInicio = ${medicamento.fechaInicio}, fechaFin = ${medicamento.fechaFin}, horario = ${medicamento.horario}, fichaTecnica = ${medicamento.fichaTecnica}, prospecto = ${medicamento.prospecto}")
-                }
-
-            }).show()
-        }
 
         return view
     }
@@ -88,6 +68,11 @@ class ActiveMedFragment : Fragment() {
             binding.activeMedLayout.removeView(binding.noActiveMedsText)
             activos.forEach { addCardView(it) }
         }
+    }
+
+    private fun recargarActivos() {
+        binding.activeMedLayout.removeAllViews()
+        pillboxViewModel.getActivos().forEach { addCardView(it) }
     }
 
     private fun addCardView(medicamento: Medicamento) {
@@ -201,21 +186,58 @@ class ActiveMedFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_import_export, menu)
+        inflater.inflate(R.menu.menu_toolbar_active_med, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.importar -> {
-                // TODO: importar de json
-                Toast.makeText(activity, "IMPORT", Toast.LENGTH_LONG).show()
-                true
-            }
+            R.id.addActiveMed -> {
+                AddMedDialog(requireContext(), object : AddMedDialog.OnDataEnteredListener {
+                    override fun onDataEntered(medicamento: Medicamento) {
+                        if (!medicamento.isFavorite!!) {
+                            if (pillboxViewModel.addActiveMed(medicamento)) {
+                                Toast.makeText(
+                                    context,
+                                    getString(R.string.addActiveOk),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                recargarActivos()
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    getString(R.string.addActiveFail),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        } else {
+                            val addActive = pillboxViewModel.addActiveMed(medicamento)
+                            val addFav = pillboxViewModel.addFavMed(medicamento)
 
-            // TODO: exportar a json
-            R.id.exportar -> {
-                Toast.makeText(activity, "EXPORT", Toast.LENGTH_LONG).show()
+                            if (addActive && addFav) {
+                                Toast.makeText(
+                                    context,
+                                    getString(R.string.addActiveOk),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                recargarActivos()
+                            } else if (addActive) {
+                                Toast.makeText(
+                                    context,
+                                    getString(R.string.addFavFail),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                recargarActivos()
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    getString(R.string.addActiveFail),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    }
+                }).show()
                 true
             }
 
