@@ -9,19 +9,19 @@
         android:id="@+id/favoriteFragment"
         android:name="com.example.uf1_proyecto.FavoriteFragment"
         android:label="fragment_favorite"
-        tools:layout="@layout/fragment_favorite"/>
+        tools:layout="@layout/fragment_favorite" />
 
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.example.uf1_proyecto.CalendarFragment"
         android:label="fragment_calendar"
-        tools:layout="@layout/fragment_calendar"/>
+        tools:layout="@layout/fragment_calendar" />
 
     <fragment
         android:id="@+id/activeMedFragment"
         android:name="com.example.uf1_proyecto.ActiveMedFragment"
         android:label="fragment_active_med"
-        tools:layout="@layout/fragment_active_med"/>
+        tools:layout="@layout/fragment_active_med" />
 
     <fragment
         android:id="@+id/diaryFragment"

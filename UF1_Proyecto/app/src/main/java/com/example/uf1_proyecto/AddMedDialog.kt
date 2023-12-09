@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View.OnClickListener
 import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.children
@@ -26,7 +25,8 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
         fun onDataEntered(medicamento: Medicamento)
     }
 
-    private var _binding: DialogAddMedBinding? = DialogAddMedBinding.inflate(LayoutInflater.from(context))
+    private var _binding: DialogAddMedBinding? =
+        DialogAddMedBinding.inflate(LayoutInflater.from(context))
     private val binding get() = _binding!!
 
     private var _pillboxViewModel: PillboxViewModel? = null

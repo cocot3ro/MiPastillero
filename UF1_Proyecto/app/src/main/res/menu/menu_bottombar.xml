@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/calendarFragment"
-        android:title="@string/calendar"
         android:icon="@android:drawable/ic_menu_today"
-        app:showAsAction="always"/>
+        android:title="@string/calendar"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/activeMedFragment"
-        android:title="@string/active_medication"
         android:icon="@android:drawable/alert_dark_frame"
-        app:showAsAction="always"/>
+        android:title="@string/active_medication"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/favoriteFragment"
-        android:title="@string/favorites"
         android:icon="@android:drawable/btn_star"
-        app:showAsAction="always"/>
+        android:title="@string/favorites"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/diaryFragment"
-        android:title="@string/diary"
         android:icon="@android:drawable/ic_menu_agenda"
-        app:showAsAction="always"/>
+        android:title="@string/diary"
+        app:showAsAction="always" />
 </menu>

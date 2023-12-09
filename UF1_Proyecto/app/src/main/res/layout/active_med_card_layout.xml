@@ -36,9 +36,9 @@
                     android:id="@+id/fill_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
                     android:background="@drawable/rounded"
                     android:src="@android:drawable/ic_input_add"
-                    android:layout_marginStart="4dp"
                     app:layout_constraintStart_toEndOf="@id/fav_btn"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -102,7 +102,7 @@
                         <TextView
                             android:id="@+id/date_start"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -120,7 +120,7 @@
                         <TextView
                             android:id="@+id/date_end"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 

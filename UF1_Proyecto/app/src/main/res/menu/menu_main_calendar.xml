@@ -4,9 +4,9 @@
 
     <item
         android:id="@+id/addMedFragment"
-        android:title="@string/add_medicament"
         android:icon="@android:drawable/ic_input_add"
-        app:showAsAction="withText"/>
+        android:title="@string/add_medicament"
+        app:showAsAction="withText" />
 
     <item android:title="@string/extra">
         <menu>
