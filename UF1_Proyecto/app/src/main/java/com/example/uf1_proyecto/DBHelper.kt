@@ -440,7 +440,7 @@ class DBHelper private constructor(context: Context) :
     /**
      * Devuelve la entrada de la agenda correspondiente a la fecha
      * @param diaryCurrDate fecha de la entrada
-     * @return texto de la entrada si existe, cadena vacía si no
+     * @return texto de la entrada si existe, null si no existe
      */
     fun getDiaryEntry(diaryCurrDate: Long): String? {
         readableDatabase.use { db ->

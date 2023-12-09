@@ -18,7 +18,9 @@ import com.example.uf1_proyecto.databinding.FragmentCalendarBinding
 class CalendarFragment : Fragment() {
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
+
     private lateinit var pillboxViewModel: PillboxViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
