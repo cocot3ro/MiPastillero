@@ -60,6 +60,10 @@ class ActiveMedFragment : Fragment() {
         return view
     }
 
+    /**
+     * Recupera de la base de datos los medicamento activos.
+     * Si hay medicamentos activos, los muestra en la vista y elimina el texto de "no hay medicamentos activos"
+     */
     private fun cargarActivos() {
         val activos = pillboxViewModel.getActivos()
 
@@ -69,32 +73,37 @@ class ActiveMedFragment : Fragment() {
         }
     }
 
+    /**
+     * Recarga los medicamentos activos de la base de datos y los muestra en la vista.
+     * Se usa cuando se añade un medicamento activo.
+     */
     private fun recargarActivos() {
         binding.activeMedLayout.removeAllViews()
         pillboxViewModel.getActivos().forEach { addCardView(it) }
     }
 
+    /**
+     * Añade un medicamento activo a la vista.
+     * @param medicamento medicamento activo a añadir
+     */
     private fun addCardView(medicamento: Medicamento) {
-//        val inflater = LayoutInflater.from(requireContext())
-//
-//        val cardView =
-//            inflater.inflate(
-//                R.layout.active_med_card_layout,
-//                binding.activeMedLayout,
-//                false
-//            ) as CardView
 
-        val cardViewBindinig = ActiveMedCardLayoutBinding.inflate(layoutInflater)
+        // Infla el layout del cardview
+        val cardViewBinding = ActiveMedCardLayoutBinding.inflate(layoutInflater)
 
-        cardViewBindinig.name.text = medicamento.nombre
+        // Le pone el nombre
+        cardViewBinding.name.text = medicamento.nombre
 
-        cardViewBindinig.dateStart.text =
+        // Fecha de inicio
+        cardViewBinding.dateStart.text =
             pillboxViewModel.millisToDate(medicamento.fechaInicio!!)
 
-        cardViewBindinig.dateEnd.text =
+        // Fecha de fin
+        cardViewBinding.dateEnd.text =
             pillboxViewModel.millisToDate(medicamento.fechaFin!!)
 
-        cardViewBindinig.summaryBtn.setOnClickListener {
+        // Botón para abrir PDF de la ficha técnica
+        cardViewBinding.summaryBtn.setOnClickListener {
             if (medicamento.codNacional != -1) {
                 if (!pillboxViewModel.openPDF(requireContext(), medicamento.fichaTecnica)) {
                     Toast.makeText(activity, getString(R.string.openPDFFail), Toast.LENGTH_LONG)
@@ -103,7 +112,8 @@ class ActiveMedFragment : Fragment() {
             }
         }
 
-        cardViewBindinig.leafletBtn.setOnClickListener {
+        // Botón para abrir PDF del prospecto
+        cardViewBinding.leafletBtn.setOnClickListener {
             if (medicamento.codNacional != -1) {
                 if (!pillboxViewModel.openPDF(requireContext(), medicamento.prospecto)) {
                     Toast.makeText(activity, getString(R.string.openPDFFail), Toast.LENGTH_LONG)
@@ -112,11 +122,13 @@ class ActiveMedFragment : Fragment() {
             }
         }
 
-        val favBtn = cardViewBindinig.favBtn
+        // Cambia el icono de favorito si el medicamento es favorito
+        val favBtn = cardViewBinding.favBtn
         if (medicamento.isFavorite!!) {
             favBtn.setImageResource(android.R.drawable.star_big_on)
         }
 
+        // Añade o elimina el medicamento de favoritos y cambia el icono en consecuencia
         favBtn.setOnClickListener {
             if (medicamento.isFavorite!!) {
                 if (pillboxViewModel.deleteFavMed(medicamento)) {
@@ -141,11 +153,12 @@ class ActiveMedFragment : Fragment() {
             medicamento.isFavorite = !medicamento.isFavorite!!
         }
 
-        val removeBtn = cardViewBindinig.removeBtn
+        // Botón para eliminar el medicamento activo
+        val removeBtn = cardViewBinding.removeBtn
         removeBtn.setOnClickListener {
             if (pillboxViewModel.deleteActiveMed(medicamento)) {
-                val index = binding.activeMedLayout.indexOfChild(cardViewBindinig.root)
-                binding.activeMedLayout.removeView(cardViewBindinig.root)
+                val index = binding.activeMedLayout.indexOfChild(cardViewBinding.root)
+                binding.activeMedLayout.removeView(cardViewBinding.root)
                 val snackBar =
                     Snackbar.make(requireView(), getString(R.string.deleteOk), Snackbar.LENGTH_LONG)
 
@@ -153,7 +166,7 @@ class ActiveMedFragment : Fragment() {
                     if (pillboxViewModel.addActiveMed(medicamento)) {
                         Toast.makeText(activity, getString(R.string.reinsertOK), Toast.LENGTH_LONG)
                             .show()
-                        binding.activeMedLayout.addView(cardViewBindinig.root, index)
+                        binding.activeMedLayout.addView(cardViewBinding.root, index)
                     } else {
                         Toast.makeText(
                             activity,
@@ -168,6 +181,7 @@ class ActiveMedFragment : Fragment() {
             }
         }
 
+        // Añade los horarios del medicamento
         medicamento.horario!!.forEach {
             val textView = TextView(requireContext())
             val layoutParams = LinearLayout.LayoutParams(
@@ -178,10 +192,11 @@ class ActiveMedFragment : Fragment() {
 
             textView.text = pillboxViewModel.millisToHour(it)
 
-            cardViewBindinig.scheduleLayout.addView(textView)
+            cardViewBinding.scheduleLayout.addView(textView)
         }
 
-        binding.activeMedLayout.addView(cardViewBindinig.root)
+        // Añade el cardview a la vista
+        binding.activeMedLayout.addView(cardViewBinding.root)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -191,6 +206,7 @@ class ActiveMedFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            // Dialogo para añadir un nuevo medicamento
             R.id.addActiveMed -> {
                 AddMedDialog(requireContext(), object : AddMedDialog.OnDataEnteredListener {
                     override fun onDataEntered(medicamento: Medicamento) {
@@ -210,6 +226,7 @@ class ActiveMedFragment : Fragment() {
                                 ).show()
                             }
                         } else {
+                            // Si se elige guardar tambien como favorito, se añade a la lista de favoritos
                             val addActive = pillboxViewModel.addActiveMed(medicamento)
                             val addFav = pillboxViewModel.addFavMed(medicamento)
 

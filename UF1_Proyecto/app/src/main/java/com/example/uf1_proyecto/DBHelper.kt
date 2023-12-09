@@ -11,19 +11,29 @@ class DBHelper private constructor(context: Context) :
     SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
     companion object {
-        const val DB_NAME = "pillbox.db"
+        private const val DB_NAME = "pillbox.db"
 
         // TODO: Cambiar a version 1 al finalizar proyecto
-        const val DB_VERSION = 31
+        private const val DB_VERSION = 31
 
+        /**
+         * Instancia única de la clase [DBHelper]
+         */
         @Volatile
         private var instance: DBHelper? = null
 
+        /**
+         * Devuelve la instancia única de la clase [DBHelper]
+         * @param context contexto de la aplicación
+         */
         fun getInstance(context: Context): DBHelper =
             instance ?: synchronized(this) {
                 instance ?: DBHelper(context.applicationContext).also { instance = it }
             }
 
+        /**
+         * Sentencia SQL para crear la tabla de medicamentos
+         */
         private const val CREATE_MEDICATION_TABLE = """
             CREATE TABLE IF NOT EXISTS ${ContratoMedicamentos.NOMBRE_TABLA} (
                 ${ContratoMedicamentos.Columnas._ID} TEXT PRIMARY KEY,
@@ -33,6 +43,9 @@ class DBHelper private constructor(context: Context) :
             )
         """
 
+        /**
+         * Sentencia SQL para crear la tabla de activos
+         */
         private const val CREATE_ACTIVE_TABLE = """
             CREATE TABLE IF NOT EXISTS ${ContratoActivos.NOMBRE_TABLA} (
                 ${ContratoActivos.Columnas._ID} TEXT,
@@ -44,6 +57,9 @@ class DBHelper private constructor(context: Context) :
             )
         """
 
+        /**
+         * Sentencia SQL para crear la tabla de favoritos
+         */
         private const val CREATE_FAVORITE_TABLE = """
             CREATE TABLE IF NOT EXISTS ${ContratoFavoritos.NOMBRE_TABLA} (
                 ${ContratoFavoritos.Columnas._ID} TEXT PRIMARY KEY,
@@ -51,6 +67,9 @@ class DBHelper private constructor(context: Context) :
             )
         """
 
+        /**
+         * Sentencia SQL para crear la tabla de agenda
+         */
         private const val CREATE_AGENDA_TABLE = """
             CREATE TABLE IF NOT EXISTS ${ContratoAgenda.NOMBRE_TABLA} (
                 ${ContratoAgenda.Columnas._ID} INTEGER PRIMARY KEY,
@@ -58,6 +77,9 @@ class DBHelper private constructor(context: Context) :
             )
         """
 
+        /**
+         * Sentencia SQL para crear la tabla de historial
+         */
         private const val CREATE_HISTORY_TABLE = """
             CREATE TABLE IF NOT EXISTS ${ContratoHistorial.NOMBRE_TABLA} (
                 ${ContratoHistorial.Columnas._ID} TEXT,
@@ -87,6 +109,11 @@ class DBHelper private constructor(context: Context) :
         onCreate(db)
     }
 
+    /**
+     * Inserta un medicamento en la tabla medicamentos
+     * @param medicamento medicamento a insertar
+     * @return true si se ha insertado correctamente, false si no
+     */
     private fun insertIntoMedicamentos(medicamento: Medicamento) {
 
         val values = ContentValues().apply {
@@ -101,6 +128,11 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
+    /**
+     * Inserta un medicamento en la tabla activos
+     * @param medicamento medicamento a insertar
+     * @return true si se ha insertado correctamente, false si no
+     */
     fun insertIntoActivos(medicamento: Medicamento): Boolean {
         if (!existeEnMedicamentos(medicamento)) {
             insertIntoMedicamentos(medicamento)
@@ -118,6 +150,11 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
+    /**
+     * Elimina un medicamento de la tabla activos
+     * @param medicamento medicamento a eliminar
+     * @return true si se ha eliminado correctamente, false si no
+     */
     fun deleteFromActivos(medicamento: Medicamento): Boolean {
         writableDatabase.use { db ->
             return db.delete(
@@ -134,6 +171,11 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
+    /**
+     * Inserta un medicamento en la tabla de favoritos
+     * @param medicamento medicamento a insertar
+     * @return true si se ha insertado correctamente, false si no
+     */
     fun insertIntoFavoritos(medicamento: Medicamento): Boolean {
         if (!existeEnMedicamentos(medicamento)) {
             insertIntoMedicamentos(medicamento)
@@ -148,6 +190,11 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
+    /**
+     * Elimina un medicamento de la tabla de favoritos
+     * @param medicamento medicamento a eliminar
+     * @return true si se ha eliminado correctamente, false si no
+     */
     fun deleteFromFavoritos(medicamento: Medicamento): Boolean {
         writableDatabase.use { db ->
             return db.delete(
@@ -158,6 +205,12 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
+    /**
+     * Inserta una entrada en la agenda
+     * @param fecha fecha de la entrada
+     * @param descripcion descripción de la entrada
+     * @return true si se ha insertado correctamente, false si no
+     */
     fun insertIntoAgenda(fecha: Long, descripcion: String): Boolean {
         if (!existeEnAgenda(fecha)) {
             val values = ContentValues().apply {
@@ -184,6 +237,11 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
+    /**
+     * Inserta una entrada en el historial
+     * @param medicamento medicamento a insertar
+     * @return true si se ha insertado correctamente, false si no
+     */
     fun insertIntoHistorial(medicamento: Medicamento): Boolean {
         val values = ContentValues().apply {
             put(ContratoHistorial.Columnas._ID, medicamento.nombre)
@@ -196,6 +254,11 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
+    /**
+     * Comprueba si existe una entrada en la agenda
+     * @param fecha fecha de la entrada
+     * @return true si existe, false si no
+     */
     private fun existeEnAgenda(fecha: Long): Boolean {
         readableDatabase.use { db ->
             db.query(
@@ -212,6 +275,11 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
+    /**
+     * Comprueba si existe un medicamento en la tabla de medicamentos
+     * @param medicamento medicamento a comprobar
+     * @return true si existe, false si no
+     */
     private fun existeEnMedicamentos(medicamento: Medicamento): Boolean {
         readableDatabase.use { db ->
             db.query(
@@ -228,10 +296,20 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
+    /**
+     * Comprueba si un medicamento está en la lista de favoritos
+     * @param medicamento medicamento a comprobar
+     * @return true si está en favoritos, false si no
+     */
     fun existeEnFavoritos(medicamento: Medicamento): Boolean {
         return existeEnFavoritos(medicamento.nombre)
     }
 
+    /**
+     * Comprueba si un medicamento está en la lista de favoritos
+     * @param nombre nombre del medicamento a comprobar
+     * @return true si está en favoritos, false si no
+     */
     private fun existeEnFavoritos(nombre: String): Boolean {
         readableDatabase.use { db ->
             db.query(
@@ -248,6 +326,9 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
+    /**
+     * Devuelve los medicamentos activos
+     */
     fun getActivos(): List<Medicamento> {
         val dia = System.currentTimeMillis().toString()
         val listaActivos: MutableList<Medicamento> = mutableListOf()
@@ -306,6 +387,9 @@ class DBHelper private constructor(context: Context) :
         return listaActivos
     }
 
+    /**
+     * Devuelve los medicamentos favoritos
+     */
     fun getFavoritos(): List<Medicamento> {
         val listaFavoritos = mutableListOf<Medicamento>()
 
@@ -353,7 +437,12 @@ class DBHelper private constructor(context: Context) :
         return listaFavoritos
     }
 
-    fun getDiaryEntry(diaryCurrDate: Long): String {
+    /**
+     * Devuelve la entrada de la agenda correspondiente a la fecha
+     * @param diaryCurrDate fecha de la entrada
+     * @return texto de la entrada si existe, cadena vacía si no
+     */
+    fun getDiaryEntry(diaryCurrDate: Long): String? {
         readableDatabase.use { db ->
             db.query(
                 ContratoAgenda.NOMBRE_TABLA,
@@ -373,7 +462,7 @@ class DBHelper private constructor(context: Context) :
             }
         }
 
-        return ""
+        return null
     }
 
 }

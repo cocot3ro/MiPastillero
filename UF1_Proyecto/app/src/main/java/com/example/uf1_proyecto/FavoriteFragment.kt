@@ -50,9 +50,10 @@ class FavoriteFragment : Fragment() {
 
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
+        // Recupera los medicamentos favoritos de la base de datos y los añade a la vista
         val favoritos = pillboxViewModel.getFavoritos()
-
         if (favoritos.isNotEmpty()) {
+            // Si hay medicamentos favoritos, elimina el texto de "no hay medicamentos favoritos"
             binding.favoriteLayout.removeView(binding.noFavMedsText)
             favoritos.forEach { addCardView(it) }
         }
@@ -60,11 +61,18 @@ class FavoriteFragment : Fragment() {
         return view
     }
 
+    /**
+     * Añade un medicamento a la vista
+     * @param medicamento medicamento a añadir
+     */
     private fun addCardView(medicamento: Medicamento) {
+        // Infla el layout de la tarjeta
         val cardViewBinding = FavoriteCardLayoutBinding.inflate(layoutInflater)
 
+        // Nombre del medicamento
         cardViewBinding.name.text = medicamento.nombre
 
+        // Botón para abrir PDF de la ficha técnica
         cardViewBinding.summaryBtn.setOnClickListener {
             if (medicamento.codNacional != -1) {
                 if (!pillboxViewModel.openPDF(requireContext(), medicamento.fichaTecnica)) {
@@ -74,6 +82,7 @@ class FavoriteFragment : Fragment() {
             }
         }
 
+        // Botón para abrir PDF del prospecto
         cardViewBinding.leafletBtn.setOnClickListener {
             if (medicamento.codNacional != -1) {
                 if (!pillboxViewModel.openPDF(requireContext(), medicamento.prospecto)) {
@@ -83,10 +92,12 @@ class FavoriteFragment : Fragment() {
             }
         }
 
+        // Botón para añadir el medicamento a la lista de medicamentos activos
         cardViewBinding.fillBtn.setOnClickListener {
             // TODO: add fav med dialog
         }
 
+        // Botón para eliminar el medicamento de la lista de medicamentos favoritos
         cardViewBinding.removeBtn.setOnClickListener {
             if (pillboxViewModel.deleteFavMed(medicamento)) {
                 val index = binding.favoriteLayout.indexOfChild(cardViewBinding.root)
@@ -114,8 +125,7 @@ class FavoriteFragment : Fragment() {
             }
         }
 
-
-
+        // Añade la tarjeta a la vista
         binding.favoriteLayout.addView(cardViewBinding.root)
     }
 
