@@ -8,9 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +16,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.example.uf1_proyecto.databinding.DiaryEditorBinding
+import com.example.uf1_proyecto.databinding.DiaryRendererBinding
 import com.example.uf1_proyecto.databinding.FragmentDiaryBinding
 import java.util.Calendar
 
@@ -72,58 +72,44 @@ class DiaryFragment : Fragment() {
     }
 
     private fun initRenderer() {
-        val inflater = LayoutInflater.from(requireContext())
-
-        val renderer =
-            inflater.inflate(
-                R.layout.diary_renderer,
-                binding.diaryLayout,
-                false
-            ) as LinearLayout
+        val rendererBinding = DiaryRendererBinding.inflate(layoutInflater)
 
         @Suppress("SetTextI18n")
-        renderer.findViewById<TextView>(R.id.diary_date).text =
+        rendererBinding.diaryDate.text =
             "${pillboxViewModel.getTodayAsDayOfWeek(requireContext())} - ${
                 pillboxViewModel.millisToDate(
                     pillboxViewModel.getDiaryCurrDate()
                 )
             }"
 
-        renderer.findViewById<TextView>(R.id.diary_text).text = pillboxViewModel.getDiaryText()
+        rendererBinding.diaryText.text = pillboxViewModel.getDiaryText()
 
-        renderer.findViewById<ImageButton>(R.id.diary_edit_button).setOnClickListener {
+        rendererBinding.diaryEditButton.setOnClickListener {
             changeToEditor()
         }
 
-        binding.diaryLayout.addView(renderer)
+        binding.diaryLayout.addView(rendererBinding.root)
     }
 
     private fun initEditor() {
-        val inflater = LayoutInflater.from(requireContext())
-
-        val editor =
-            inflater.inflate(
-                R.layout.diary_editor,
-                binding.diaryLayout,
-                false
-            ) as LinearLayout
+        val editorBinding = DiaryEditorBinding.inflate(layoutInflater)
 
         @Suppress("SetTextI18n")
-        editor.findViewById<TextView>(R.id.diary_date).text =
+        editorBinding.diaryDate.text =
             "${pillboxViewModel.getTodayAsDayOfWeek(requireContext())} - ${
                 pillboxViewModel.millisToDate(
                     pillboxViewModel.getDiaryCurrDate()
                 )
             }"
 
-        editor.findViewById<EditText>(R.id.diary_text).setText(pillboxViewModel.getDiaryText())
+        editorBinding.diaryText.setText(pillboxViewModel.getDiaryText())
 
-        editor.findViewById<ImageButton>(R.id.diary_delete_button).setOnClickListener {
+        editorBinding.diaryDeleteButton.setOnClickListener {
             changeToRenderer()
         }
 
-        editor.findViewById<ImageButton>(R.id.diary_save_button).setOnClickListener {
-            val text = editor.findViewById<EditText>(R.id.diary_text).text.toString()
+        editorBinding.diarySaveButton.setOnClickListener {
+            val text = editorBinding.diaryText.text.toString()
             if (text != pillboxViewModel.getDiaryText()) {
                 if (pillboxViewModel.insertIntoAgenda(text)) {
                     changeToRenderer()
@@ -138,7 +124,7 @@ class DiaryFragment : Fragment() {
             }
         }
 
-        binding.diaryLayout.addView(editor)
+        binding.diaryLayout.addView(editorBinding.root)
     }
 
     private fun changeToEditor() {

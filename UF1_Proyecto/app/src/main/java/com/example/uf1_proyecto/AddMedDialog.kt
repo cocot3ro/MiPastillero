@@ -5,15 +5,15 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.View.OnClickListener
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.children
+import com.example.uf1_proyecto.databinding.DialogAddMedBinding
+import com.example.uf1_proyecto.databinding.TimePickerLayoutBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -26,22 +26,25 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
         fun onDataEntered(medicamento: Medicamento)
     }
 
+    private var _binding: DialogAddMedBinding? = DialogAddMedBinding.inflate(LayoutInflater.from(context))
+    private val binding get() = _binding!!
+
     private var _pillboxViewModel: PillboxViewModel? = null
     private val pillboxViewModel get() = _pillboxViewModel!!
 
-    private val dialogView: View =
-        LayoutInflater.from(context).inflate(R.layout.dialog_add_med, null)
+//    private val dialogView: View =
+//        LayoutInflater.from(context).inflate(R.layout.dialog_add_med, null)
 
-    private val inputCodNacional: EditText = dialogView.findViewById(R.id.codNacional)
-    private val inputNombre: EditText = dialogView.findViewById(R.id.nombre)
-    private val inputFavorite: CheckBox = dialogView.findViewById(R.id.save_as_favorite)
-    private val inputFechaInicio: TextView = dialogView.findViewById(R.id.date_start)
-    private val inputFechaFin: TextView = dialogView.findViewById(R.id.date_end)
+    private val inputCodNacional: EditText = binding.codNacional
+    private val inputNombre: EditText = binding.nombre
+    private val inputFavorite: CheckBox = binding.saveAsFavorite
+    private val inputFechaInicio: TextView = binding.dateStart
+    private val inputFechaFin: TextView = binding.dateEnd
     private var fichaTecnica: String? = null
     private var prospecto: String? = null
 
     private val alertDialog: AlertDialog = AlertDialog.Builder(context)
-        .setView(dialogView)
+        .setView(binding.root)
         .setTitle(context.getString(R.string.add_medicament))
         .setPositiveButton(context.getString(R.string.accept), null)
         .setNegativeButton(context.getString(R.string.cancel), null)
@@ -56,7 +59,7 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
 
         addTimePicker()
 
-        dialogView.findViewById<ImageButton>(R.id.btn_search).setOnClickListener {
+        binding.btnSearch.setOnClickListener {
             if (inputCodNacional.text.isNullOrBlank()) {
                 return@setOnClickListener
             }
@@ -93,12 +96,12 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
 
         }
 
-        dialogView.findViewById<ImageButton>(R.id.btn_help).setOnClickListener {
+        binding.btnHelp.setOnClickListener {
             Toast.makeText(context, context.getString(R.string.codNacional_help), Toast.LENGTH_LONG)
                 .show()
         }
 
-        dialogView.findViewById<ImageButton>(R.id.btn_add_timer)
+        binding.btnAddTimer
             .setOnClickListener { addTimePicker() }
 
         val listener = OnClickListener { view ->
@@ -129,8 +132,8 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
             datePickerDialog.show()
         }
 
-        dialogView.findViewById<ImageButton>(R.id.btn_date_picker1).setOnClickListener(listener)
-        dialogView.findViewById<ImageButton>(R.id.btn_date_picker2).setOnClickListener(listener)
+        binding.btnDatePicker1.setOnClickListener(listener)
+        binding.btnDatePicker2.setOnClickListener(listener)
 
         inputFechaInicio.text = pillboxViewModel.getTodayAsString()
         inputFechaFin.text = pillboxViewModel.getTodayAsString()
@@ -161,7 +164,7 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
             return false
         }
 
-        if (getSchedule().size < dialogView.findViewById<LinearLayout>(R.id.schedule_layout).childCount) {
+        if (getSchedule().size < binding.scheduleLayout.childCount) {
             Toast.makeText(
                 context, context.getString(R.string.invalid_schedule), Toast.LENGTH_LONG
             ).show()
@@ -174,7 +177,7 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
     private fun getSchedule(): List<Long> {
         val horario = mutableListOf<Long>()
 
-        for (child in (dialogView.findViewById<LinearLayout>(R.id.schedule_layout).children)) {
+        for (child in (binding.scheduleLayout.children)) {
             val time = child.findViewById<TextView>(R.id.timer_hour).text.toString()
             if (!horario.contains(pillboxViewModel.hourToMillis(time))) {
                 horario.add(pillboxViewModel.hourToMillis(time))
@@ -185,16 +188,11 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
     }
 
     private fun addTimePicker() {
-        val inflater = LayoutInflater.from(context)
-        val scheduleLayout = dialogView.findViewById<LinearLayout>(R.id.schedule_layout)
+        val timerBinding = TimePickerLayoutBinding.inflate(LayoutInflater.from(context))
 
-        val timer = inflater.inflate(
-            R.layout.time_picker_layout, scheduleLayout, false
-        ) as LinearLayout
+        timerBinding.timerHour.text = pillboxViewModel.millisToHour(-3600000)
 
-        timer.findViewById<TextView>(R.id.timer_hour).text = pillboxViewModel.millisToHour(-3600000)
-
-        timer.findViewById<ImageButton>(R.id.timePicker).setOnClickListener {
+        timerBinding.timePicker.setOnClickListener {
             val timePickerDialog = TimePickerDialog(
                 context, { _, hourOfDay, minute ->
                     val time = pillboxViewModel.millisToHour(
@@ -202,18 +200,18 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
                             hourOfDay, minute
                         )
                     )
-                    timer.findViewById<TextView>(R.id.timer_hour).text = time
+                    timerBinding.timerHour.text = time
                 }, 0, 0, pillboxViewModel.is24HourFormat(context)
             )
 
             timePickerDialog.show()
         }
 
-        timer.findViewById<ImageButton>(R.id.delete_timer).setOnClickListener {
-            scheduleLayout.removeView(timer)
+        timerBinding.deleteTimer.setOnClickListener {
+            binding.scheduleLayout.removeView(timerBinding.root)
         }
 
-        scheduleLayout.addView(timer)
+        binding.scheduleLayout.addView(timerBinding.root)
     }
 
     private fun setupPositiveButton() {

@@ -12,11 +12,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.example.uf1_proyecto.databinding.ActiveMedCardLayoutBinding
 import com.example.uf1_proyecto.databinding.FragmentActiveMedBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -76,24 +76,26 @@ class ActiveMedFragment : Fragment() {
     }
 
     private fun addCardView(medicamento: Medicamento) {
-        val inflater = LayoutInflater.from(requireContext())
+//        val inflater = LayoutInflater.from(requireContext())
+//
+//        val cardView =
+//            inflater.inflate(
+//                R.layout.active_med_card_layout,
+//                binding.activeMedLayout,
+//                false
+//            ) as CardView
 
-        val cardView =
-            inflater.inflate(
-                R.layout.active_med_card_layout,
-                binding.activeMedLayout,
-                false
-            ) as CardView
+        val cardViewBindinig = ActiveMedCardLayoutBinding.inflate(layoutInflater)
 
-        cardView.findViewById<TextView>(R.id.name).text = medicamento.nombre
+        cardViewBindinig.name.text = medicamento.nombre
 
-        cardView.findViewById<TextView>(R.id.date_start).text =
+        cardViewBindinig.dateStart.text =
             pillboxViewModel.millisToDate(medicamento.fechaInicio!!)
 
-        cardView.findViewById<TextView>(R.id.date_end).text =
+        cardViewBindinig.dateEnd.text =
             pillboxViewModel.millisToDate(medicamento.fechaFin!!)
 
-        cardView.findViewById<ImageButton>(R.id.summary_btn).setOnClickListener {
+        cardViewBindinig.summaryBtn.setOnClickListener {
             if (medicamento.codNacional != -1) {
                 if (!pillboxViewModel.openPDF(requireContext(), medicamento.fichaTecnica)) {
                     Toast.makeText(activity, getString(R.string.openPDFFail), Toast.LENGTH_LONG)
@@ -102,7 +104,7 @@ class ActiveMedFragment : Fragment() {
             }
         }
 
-        cardView.findViewById<ImageButton>(R.id.leaflet_btn).setOnClickListener {
+        cardViewBindinig.leafletBtn.setOnClickListener {
             if (medicamento.codNacional != -1) {
                 if (!pillboxViewModel.openPDF(requireContext(), medicamento.prospecto)) {
                     Toast.makeText(activity, getString(R.string.openPDFFail), Toast.LENGTH_LONG)
@@ -111,7 +113,7 @@ class ActiveMedFragment : Fragment() {
             }
         }
 
-        val favBtn = cardView.findViewById<ImageButton>(R.id.fav_btn)
+        val favBtn = cardViewBindinig.favBtn
         if (medicamento.isFavorite!!) {
             favBtn.setImageResource(android.R.drawable.star_big_on)
         }
@@ -140,11 +142,11 @@ class ActiveMedFragment : Fragment() {
             medicamento.isFavorite = !medicamento.isFavorite!!
         }
 
-        val removeBtn = cardView.findViewById<ImageButton>(R.id.remove_btn)
+        val removeBtn = cardViewBindinig.removeBtn
         removeBtn.setOnClickListener {
             if (pillboxViewModel.deleteActiveMed(medicamento)) {
-                val index = binding.activeMedLayout.indexOfChild(cardView)
-                binding.activeMedLayout.removeView(cardView)
+                val index = binding.activeMedLayout.indexOfChild(cardViewBindinig.root)
+                binding.activeMedLayout.removeView(cardViewBindinig.root)
                 val snackBar =
                     Snackbar.make(requireView(), getString(R.string.deleteOk), Snackbar.LENGTH_LONG)
 
@@ -152,7 +154,7 @@ class ActiveMedFragment : Fragment() {
                     if (pillboxViewModel.addActiveMed(medicamento)) {
                         Toast.makeText(activity, getString(R.string.reinsertOK), Toast.LENGTH_LONG)
                             .show()
-                        binding.activeMedLayout.addView(cardView, index)
+                        binding.activeMedLayout.addView(cardViewBindinig.root, index)
                     } else {
                         Toast.makeText(
                             activity,
@@ -167,8 +169,6 @@ class ActiveMedFragment : Fragment() {
             }
         }
 
-        val scheduleLayout = cardView.findViewById<LinearLayout>(R.id.schedule_layout)
-
         medicamento.horario!!.forEach {
             val textView = TextView(requireContext())
             val layoutParams = LinearLayout.LayoutParams(
@@ -179,10 +179,10 @@ class ActiveMedFragment : Fragment() {
 
             textView.text = pillboxViewModel.millisToHour(it)
 
-            scheduleLayout.addView(textView)
+            cardViewBindinig.scheduleLayout.addView(textView)
         }
 
-        binding.activeMedLayout.addView(cardView)
+        binding.activeMedLayout.addView(cardViewBindinig.root)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
