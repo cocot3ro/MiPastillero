@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/addActiveMed"
+        android:id="@+id/addFavMed"
         android:icon="@android:drawable/ic_input_add"
-        android:title="@string/add_active_medication"
+        android:title="@string/add_favorite_medication"
         app:showAsAction="always" />
 </menu>

@@ -18,7 +18,8 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        // TODO: comprobar medicamentos activos completados y añadir a historial
+        // TODO: comprobar medicamentos activos completados y añadir a historial en un hilo aparte
+        // TODO: traducir a idiomas de españa
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment

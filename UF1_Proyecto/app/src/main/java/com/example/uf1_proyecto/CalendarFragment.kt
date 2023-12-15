@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.example.uf1_proyecto.databinding.CalendarMedGroupLayoutBinding
+import com.example.uf1_proyecto.databinding.CalendarMedLayoutBinding
 import com.example.uf1_proyecto.databinding.FragmentCalendarBinding
 
 class CalendarFragment : Fragment() {
@@ -43,8 +45,7 @@ class CalendarFragment : Fragment() {
                 R.id.activeMedFragment,
                 R.id.favoriteFragment,
                 R.id.diaryFragment
-            ),
-            binding.drawerLayout
+            ), binding.drawerLayout
         )
 
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
@@ -52,7 +53,79 @@ class CalendarFragment : Fragment() {
         val navigationView = binding.navView
         navigationView.setupWithNavController(navController)
 
+        binding.prevDay.setOnClickListener {
+            pillboxViewModel.calendarPrevDay()
+            updateView()
+        }
+
+        binding.nextDay.setOnClickListener {
+            pillboxViewModel.calendarNextDay()
+            updateView()
+        }
+
+        updateView()
+
         return view
+    }
+
+    // FIXME: medicamentos marcados hoy se muestran como marcados siempre
+
+    private fun updateView() {
+        @Suppress("SetTextI18n")
+        binding.calendarDay.text = "${
+            DateTimeUtils.millisToDayOfWeek(
+                pillboxViewModel.getCalendarCurrDate(),
+                requireContext()
+            )
+        } - ${DateTimeUtils.millisToDate(pillboxViewModel.getCalendarCurrDate())}"
+
+        binding.calendarLayout.removeAllViews()
+
+        val map = pillboxViewModel.getActivosCalendario(pillboxViewModel.getCalendarCurrDate())
+
+        for (entry in map) {
+            val groupBinding =
+                CalendarMedGroupLayoutBinding.inflate(layoutInflater, binding.calendarLayout, true)
+
+            groupBinding.hora.text = DateTimeUtils.millisToHour(entry.key)
+
+            for (med in entry.value) {
+                val calendarEntryBinding = CalendarMedLayoutBinding.inflate(
+                    layoutInflater, groupBinding.calendarMedsLayout, true
+                )
+
+                calendarEntryBinding.nombre.text = med.nombre
+
+                if (med.seHaTomado!!) {
+                    calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_on_background)
+                }
+
+//                View#setImageResource(`resource`)
+//                favBtn.setImageResource(android.R.drawable.star_big_on)
+                calendarEntryBinding.btn.setOnClickListener {
+                    if (med.seHaTomado!!) {
+                        if (pillboxViewModel.desmarcarToma(med, entry.key, pillboxViewModel.getCalendarCurrDate())) {
+                            Toast.makeText(context, getString(R.string.medUnmarkOK), Toast.LENGTH_LONG).show()
+                            med.seHaTomado = false
+                            calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_off_background)
+                        } else {
+                            Toast.makeText(context,
+                                getString(R.string.medUnmarkFail), Toast.LENGTH_LONG).show()
+                        }
+                    } else {
+                        if (pillboxViewModel.marcarToma(med, entry.key, pillboxViewModel.getCalendarCurrDate())) {
+                            Toast.makeText(context,
+                                getString(R.string.medMarkOK), Toast.LENGTH_LONG).show()
+                            med.seHaTomado = true
+                            calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_on_background)
+                        } else {
+                            Toast.makeText(context,
+                                getString(R.string.medMarkFail), Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -62,13 +135,15 @@ class CalendarFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            // TODO: Preguntar por fecha y buscar (date picker)
+            //  ver en DiaryFragment
             R.id.search -> {
-                // TODO: Preguntar por fecha y buscar (date picker)
                 Toast.makeText(activity, "SEARCH", Toast.LENGTH_LONG).show()
                 true
             }
 
             // TODO: ir a la fecha actual
+            //  ver en DiaryFragment
             R.id.today -> {
                 Toast.makeText(activity, "TODAY", Toast.LENGTH_LONG).show()
                 true

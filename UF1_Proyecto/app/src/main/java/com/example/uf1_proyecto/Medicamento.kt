@@ -14,12 +14,13 @@ import java.io.Serializable
  * @property isFavorite indica si el medicamento es favorito
  */
 data class Medicamento(
-    val nombre: String,
+    val nombre: String?,
     val codNacional: Int?,
     val fichaTecnica: String?,
     val prospecto: String?,
     val fechaInicio: Long?,
     val fechaFin: Long?,
     val horario: List<Long>?,
-    var isFavorite: Boolean?
+    var isFavorite: Boolean?,
+    var seHaTomado: Boolean?
 ) : Serializable

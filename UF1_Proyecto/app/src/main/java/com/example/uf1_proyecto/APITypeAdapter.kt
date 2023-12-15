@@ -30,10 +30,14 @@ class APITypeAdapter : TypeAdapter<Medicamento>() {
                                     when (reader.nextInt()) {
                                         1 -> {
                                             reader.nextName()
+                                            reader.nextString()
+                                            reader.nextName()
                                             fichaTecnica = reader.nextString()
                                         }
 
                                         2 -> {
+                                            reader.nextName()
+                                            reader.nextString()
                                             reader.nextName()
                                             prospecto = reader.nextString()
                                         }
@@ -55,7 +59,11 @@ class APITypeAdapter : TypeAdapter<Medicamento>() {
 
         reader.endObject()
 
-        return Medicamento(nombre, null, fichaTecnica, prospecto, null, null, null, null)
+        return MedicamentoBuilder()
+            .setNombre(nombre)
+            .setFichaTecnica(fichaTecnica)
+            .setProspecto(prospecto)
+            .build()
     }
 
 }

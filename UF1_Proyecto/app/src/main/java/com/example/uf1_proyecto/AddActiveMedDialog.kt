@@ -11,7 +11,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.children
-import com.example.uf1_proyecto.databinding.DialogAddMedBinding
+import com.example.uf1_proyecto.databinding.DialogAddActiveMedBinding
 import com.example.uf1_proyecto.databinding.TimePickerLayoutBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -19,21 +19,21 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
 
-class AddMedDialog(private val context: Context, private val listener: OnDataEnteredListener) {
+class AddActiveMedDialog(
+    private val context: Context,
+    private val listener: OnDataEnteredListener
+) {
 
     interface OnDataEnteredListener {
         fun onDataEntered(medicamento: Medicamento)
     }
 
-    private var _binding: DialogAddMedBinding? =
-        DialogAddMedBinding.inflate(LayoutInflater.from(context))
+    private var _binding: DialogAddActiveMedBinding? =
+        DialogAddActiveMedBinding.inflate(LayoutInflater.from(context))
     private val binding get() = _binding!!
 
     private var _pillboxViewModel: PillboxViewModel? = null
     private val pillboxViewModel get() = _pillboxViewModel!!
-
-//    private val dialogView: View =
-//        LayoutInflater.from(context).inflate(R.layout.dialog_add_med, null)
 
     private val inputCodNacional: EditText = binding.codNacional
     private val inputNombre: EditText = binding.nombre
@@ -57,7 +57,7 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
             setupPositiveButton()
         }
 
-        addTimePicker()
+        addTimePicker(false)
 
         binding.btnSearch.setOnClickListener {
             if (inputCodNacional.text.isNullOrBlank()) {
@@ -69,14 +69,9 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
             ).also { it.show() }
 
             GlobalScope.launch(Dispatchers.Main) {
-                val codNacional = inputCodNacional.text.toString()
-                val index = codNacional.indexOf(".")
+                val codNacional = inputCodNacional.text.toString().split(".")[0].trim()
 
-                val medicamento = if (index != -1) {
-                    pillboxViewModel.searchMedicamento(codNacional.substring(0, index))
-                } else {
-                    pillboxViewModel.searchMedicamento(codNacional)
-                }
+                val medicamento = pillboxViewModel.searchMedicamento(codNacional)
 
                 withContext(Dispatchers.Main) {
                     searchingToast.cancel()
@@ -102,22 +97,22 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
         }
 
         binding.btnAddTimer
-            .setOnClickListener { addTimePicker() }
+            .setOnClickListener { addTimePicker(true) }
 
-        val listener = OnClickListener { view ->
+        val addDatePickerListener = OnClickListener { view ->
             val datePickerDialog = DatePickerDialog(
                 context,
                 { _, year, monthOfYear, dayOfMonth ->
                     when (view.id) {
                         R.id.btn_date_picker1 -> inputFechaInicio.text =
-                            pillboxViewModel.millisToDate(
-                                pillboxViewModel.createDate(
+                            DateTimeUtils.millisToDate(
+                                DateTimeUtils.createDate(
                                     year, monthOfYear, dayOfMonth
                                 )
                             )
 
-                        R.id.btn_date_picker2 -> inputFechaFin.text = pillboxViewModel.millisToDate(
-                            pillboxViewModel.createDate(
+                        R.id.btn_date_picker2 -> inputFechaFin.text = DateTimeUtils.millisToDate(
+                            DateTimeUtils.createDate(
                                 year, monthOfYear, dayOfMonth
                             )
                         )
@@ -132,11 +127,11 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
             datePickerDialog.show()
         }
 
-        binding.btnDatePicker1.setOnClickListener(listener)
-        binding.btnDatePicker2.setOnClickListener(listener)
+        binding.btnDatePicker1.setOnClickListener(addDatePickerListener)
+        binding.btnDatePicker2.setOnClickListener(addDatePickerListener)
 
-        inputFechaInicio.text = pillboxViewModel.getTodayAsString()
-        inputFechaFin.text = pillboxViewModel.getTodayAsString()
+        inputFechaInicio.text = DateTimeUtils.getTodayAsString()
+        inputFechaFin.text = DateTimeUtils.getTodayAsString()
 
     }
 
@@ -147,9 +142,9 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
             return false
         }
 
-        if (pillboxViewModel.dateToMillis(inputFechaInicio.text.toString()) > pillboxViewModel.dateToMillis(
+        if ((DateTimeUtils.dateToMillis(inputFechaInicio.text.toString()) > DateTimeUtils.dateToMillis(
                 inputFechaFin.text.toString()
-            )
+            ) || (DateTimeUtils.dateToMillis(inputFechaFin.text.toString()) < DateTimeUtils.getTodayAsMillis()))
         ) {
             Toast.makeText(
                 context, context.getString(R.string.invalid_date), Toast.LENGTH_LONG
@@ -179,29 +174,33 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
 
         for (child in (binding.scheduleLayout.children)) {
             val time = child.findViewById<TextView>(R.id.timer_hour).text.toString()
-            if (!horario.contains(pillboxViewModel.hourToMillis(time))) {
-                horario.add(pillboxViewModel.hourToMillis(time))
+            if (!horario.contains(DateTimeUtils.hourToMillis(time))) {
+                horario.add(DateTimeUtils.hourToMillis(time))
             }
         }
 
         return horario
     }
 
-    private fun addTimePicker() {
-        val timerBinding = TimePickerLayoutBinding.inflate(LayoutInflater.from(context))
+    private fun addTimePicker(showAfterAdd: Boolean) {
+        val timerBinding = TimePickerLayoutBinding.inflate(LayoutInflater.from(context), binding.scheduleLayout, true)
 
-        timerBinding.timerHour.text = pillboxViewModel.millisToHour(-3600000)
+        timerBinding.timerHour.text = DateTimeUtils.millisToHour(-3600000) // 0:00:00 - 12:00:00 AM
 
         timerBinding.timePicker.setOnClickListener {
             val timePickerDialog = TimePickerDialog(
                 context, { _, hourOfDay, minute ->
-                    val time = pillboxViewModel.millisToHour(
-                        pillboxViewModel.createHour(
+                    val time = DateTimeUtils.millisToHour(
+                        DateTimeUtils.createHour(
                             hourOfDay, minute
                         )
                     )
                     timerBinding.timerHour.text = time
-                }, 0, 0, pillboxViewModel.is24HourFormat(context)
+                },
+                // Establece las 00:00 como hora predeterminada
+                0,
+                0,
+                DateTimeUtils.is24HourFormat(context)
             )
 
             timePickerDialog.show()
@@ -211,7 +210,9 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
             binding.scheduleLayout.removeView(timerBinding.root)
         }
 
-        binding.scheduleLayout.addView(timerBinding.root)
+        if (showAfterAdd) {
+            timerBinding.timePicker.performClick()
+        }
     }
 
     private fun setupPositiveButton() {
@@ -221,31 +222,28 @@ class AddMedDialog(private val context: Context, private val listener: OnDataEnt
             }
 
             val nombre = inputNombre.text.toString()
-            var codNacional = inputCodNacional.text.toString()
-            val index = codNacional.indexOf(".")
-            if (index != -1) {
-                codNacional = codNacional.substring(0, index)
+            var codNacional = inputCodNacional.text.toString().split(".")[0].trim()
+            if (codNacional.isBlank()) {
+                codNacional = "-1"
             }
             val fichaTecnica = fichaTecnica
             val prospecto = prospecto
-            val fechaInicio = pillboxViewModel.dateToMillis(inputFechaInicio.text.toString())
-            val fechaFin = pillboxViewModel.dateToMillis(inputFechaFin.text.toString())
+            val fechaInicio = DateTimeUtils.dateToMillis(inputFechaInicio.text.toString())
+            val fechaFin = DateTimeUtils.dateToMillis(inputFechaFin.text.toString())
             val horario = getSchedule()
             val isFavorite = inputFavorite.isChecked
 
             alertDialog.dismiss()
-            listener.onDataEntered(
-                Medicamento(
-                    nombre,
-                    codNacional.toInt(),
-                    fichaTecnica,
-                    prospecto,
-                    fechaInicio,
-                    fechaFin,
-                    horario,
-                    isFavorite
-                )
-            )
+            val builder = MedicamentoBuilder()
+                .setNombre(nombre)
+                .setCodNacional(codNacional.toInt())
+                .setFichaTecnica(fichaTecnica ?: "")
+                .setProspecto(prospecto ?: "")
+                .setFechaInicio(fechaInicio)
+                .setFechaFin(fechaFin)
+                .setHorario(horario)
+                .setFavorito(isFavorite)
+            listener.onDataEntered(builder.build())
         }
     }
 

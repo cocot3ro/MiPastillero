@@ -2,43 +2,44 @@ package com.example.uf1_proyecto
 
 import android.content.Context
 import android.content.Intent
-import android.icu.text.SimpleDateFormat
 import android.net.Uri
-import android.text.format.DateFormat
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.GsonBuilder
 import khttp.responses.Response
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.Calendar
-import java.util.Date
 
 class PillboxViewModel private constructor(context: Context) : ViewModel() {
     private var dbHelper: DBHelper = DBHelper.getInstance(context)
 
-    private var diaryCurrDate = MutableLiveData(getTodayAsMillis())
-    private var diaryText = MutableLiveData(getDiaryEntry() ?: "")
+    private var calendarCurrDate = MutableLiveData(DateTimeUtils.getTodayAsMillis())
+
+    private var diaryCurrDate = MutableLiveData(DateTimeUtils.getTodayAsMillis())
 
     companion object {
+        /**
+         * Instancia única de la clase [PillboxViewModel]
+         */
         @Volatile
         private var instance: PillboxViewModel? = null
 
-        fun getInstance(context: Context): PillboxViewModel =
-            instance ?: synchronized(this) {
-                instance ?: PillboxViewModel(context.applicationContext).also { instance = it }
-            }
+        /**
+         * Devuelve la instancia única de la clase [PillboxViewModel]
+         */
+        fun getInstance(context: Context): PillboxViewModel = instance ?: synchronized(this) {
+            instance ?: PillboxViewModel(context.applicationContext).also { instance = it }
+        }
 
     }
 
     /**
-     * Abre un enlace a un PDF en el navegador
+     * Abre un enlace en el navegador
      * @param context contexto de la aplicación
-     * @param url URL del PDF
+     * @param url URL a abrir
      */
-    fun openPDF(context: Context, url: String?): Boolean {
-        if (url.isNullOrEmpty()) {
+    fun openURL(context: Context, url: String?): Boolean {
+        if (url.isNullOrBlank()) {
             return false
         }
 
@@ -49,85 +50,37 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
     }
 
     /**
-     * Devuelve el día de la semana actual
+     * Devuelve la fecha que se está mostrando en el calendario
      */
-    fun getTodayAsDayOfWeek(context: Context): String {
-        return when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
-            Calendar.MONDAY -> context.getString(R.string.monday)
-            Calendar.TUESDAY -> context.getString(R.string.tuesday)
-            Calendar.WEDNESDAY -> context.getString(R.string.wednesday)
-            Calendar.THURSDAY -> context.getString(R.string.thursday)
-            Calendar.FRIDAY -> context.getString(R.string.friday)
-            Calendar.SATURDAY -> context.getString(R.string.saturday)
-            Calendar.SUNDAY -> context.getString(R.string.sunday)
-            else -> ""
-        }
+    fun getCalendarCurrDate(): Long = calendarCurrDate.value!!
+
+    /**
+     * Establece la fecha que se está mostrando en el calendario
+     * @param date fecha en milisegundos
+     */
+    fun setCalendarCurrDate(date: Long) {
+        calendarCurrDate.value = date
     }
 
     /**
-     * Devuelve la fecha actual en el formato de la configuración regional
+     * Avanza un día en el calendario
      */
-    fun getTodayAsString(): String = millisToDate(System.currentTimeMillis())
-
-    /**
-     * Devuelve la fecha actual en milisegundos
-     */
-    fun getTodayAsMillis(): Long = dateToMillis(getTodayAsString())
-
-    /**
-     * Convierte milisegundos a hora en el formato de la configuración regional
-     */
-    fun millisToHour(millis: Long): String = SimpleDateFormat.getTimeInstance().format(Date(millis))
-
-    /**
-     * Convierte milisegundos a fecha en el formato de la configuración regional
-     */
-    fun millisToDate(millis: Long): String = SimpleDateFormat.getDateInstance().format(Date(millis))
-
-    /**
-     * Convierte hora en el formato de la configuración regional a milisegundos
-     */
-    fun hourToMillis(hour: String): Long = SimpleDateFormat.getTimeInstance().parse(hour).time
-
-    /**
-     * Convierte fecha en el formato de la configuración regional a milisegundos
-     */
-    fun dateToMillis(date: String): Long = SimpleDateFormat.getDateInstance().parse(date).time
-
-    /**
-     * Comprueba si el formato de la hora es de 24 horas
-     * @return true si el formato de la hora es de 24 horas, false si es de 12 horas
-     */
-    fun is24HourFormat(context: Context) = DateFormat.is24HourFormat(context)
-
-    /**
-     * Convierte una fecha a milisegundos
-     * @param year año
-     * @param monthOfYear mes
-     * @param dayOfMonth día
-     * @return fecha en milisegundos
-     */
-    fun createDate(year: Int, monthOfYear: Int, dayOfMonth: Int): Long {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.YEAR, year)
-        calendar.set(Calendar.MONTH, monthOfYear)
-        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-        return calendar.timeInMillis
+    fun calendarNextDay() {
+        calendarCurrDate.value = DateTimeUtils.nextDay(calendarCurrDate.value!!)
     }
 
     /**
-     * Convierte una hora a milisegundos
-     * @param hourOfDay hora
-     * @param minute minuto
-     * @return hora en milisegundos
+     * Retrocede un día en el calendario
      */
-    fun createHour(hourOfDay: Int, minute: Int): Long {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
-        calendar.set(Calendar.MINUTE, minute)
-        calendar.set(Calendar.SECOND, 0)
-        return calendar.timeInMillis
+    fun calendarPrevDay() {
+        calendarCurrDate.value = DateTimeUtils.prevDay(calendarCurrDate.value!!)
     }
+
+    /**
+     * Devuelve los medicamentos activos de un día agrupados por hora
+     * @param dia día en milisegundos
+     */
+    fun getActivosCalendario(dia: Long) = dbHelper.getActivosCalendario(dia)
 
     /**
      * Devuelve la fecha que se está mostrando en la agenda
@@ -140,49 +93,29 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      */
     fun setDiaryCurrDate(date: Long) {
         diaryCurrDate.value = date
-        diaryText.value = getDiaryEntry() ?: ""
     }
 
     /**
      * Avanza un día en la agenda
      */
     fun diaryNextDay() {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = diaryCurrDate.value!!
-        calendar.add(Calendar.DAY_OF_MONTH, 1)
-        diaryCurrDate.value = calendar.timeInMillis
-        diaryText.value = getDiaryEntry() ?: ""
+        diaryCurrDate.value = DateTimeUtils.nextDay(diaryCurrDate.value!!)
     }
 
     /**
      * Retrocede un día en la agenda
      */
     fun diaryPrevDay() {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = diaryCurrDate.value!!
-        calendar.add(Calendar.DAY_OF_MONTH, -1)
-        diaryCurrDate.value = calendar.timeInMillis
-        diaryText.value = getDiaryEntry() ?: ""
+        diaryCurrDate.value = DateTimeUtils.prevDay(diaryCurrDate.value!!)
     }
 
     /**
-     * Devuelve el texto de la entrada de la agenda
+     * Devuelve el texto de la entrada de la agenda del dia correspondiente
      */
-    fun getDiaryText(): String = diaryText.value!!
+    fun getDiaryText() = dbHelper.getDiaryEntry(getDiaryCurrDate())
 
     /**
-     * Recupera de la base de datos el texto de la agenda correspondiente a la fecha actual
-     * @see getDiaryCurrDate
-     */
-    private fun getDiaryEntry() = dbHelper.getDiaryEntry(getDiaryCurrDate())
-
-
-    // TODO: fun get activos por semana
-
-    // TODO: fun get entradas de agenda
-
-    /**
-     * Devuelve los medicamentos activos
+     * Devuelve todos los medicamentos activos
      */
     fun getActivos() = dbHelper.getActivos()
 
@@ -217,13 +150,12 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      * @return true si se ha insertado correctamente, false si no
      */
     fun insertIntoAgenda(descripcion: String): Boolean {
-        return if (dbHelper.insertIntoAgenda(getDiaryCurrDate(), descripcion)) {
-            diaryText.value = descripcion
-            true
-        } else {
-            false
-        }
+        return dbHelper.insertIntoAgenda(getDiaryCurrDate(), descripcion)
     }
+
+    fun desmarcarToma(med: Medicamento, hora: Long, dia: Long) = dbHelper.desmarcarToma(med, hora, dia)
+
+    fun marcarToma(med: Medicamento, hora: Long, dia: Long) = dbHelper.marcarToma(med, hora, dia)
 
     /**
      * Consulta el API de la AEMPS para buscar un medicamento
@@ -235,20 +167,17 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
             val apiUrl = "https://cima.aemps.es/cima/rest/medicamento?cn=$codNacional"
 
             try {
-                Log.i("API", "Antes de la llamada")
                 val response: Response = khttp.get(apiUrl, timeout = 5.0)
-
-                Log.i("API", "Después de la llamada")
 
                 if (response.statusCode != 200) {
                     return@withContext null
                 }
 
-                val gson = GsonBuilder()
+                GsonBuilder()
                     .registerTypeAdapter(Medicamento::class.java, APITypeAdapter())
                     .create()
+                    .fromJson(response.text, Medicamento::class.java)
 
-                gson.fromJson(response.text, Medicamento::class.java)
             } catch (e: Exception) {
                 null
             }

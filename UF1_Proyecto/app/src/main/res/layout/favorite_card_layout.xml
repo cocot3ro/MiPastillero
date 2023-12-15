@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginBottom="8dp"
     app:cardCornerRadius="8dp">
 
     <LinearLayout
@@ -30,6 +30,7 @@
                     android:background="@drawable/rounded"
                     android:src="@android:drawable/ic_input_add"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -42,7 +43,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/remove_btn"
                     app:layout_constraintStart_toEndOf="@id/fill_btn"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <ImageButton
                     android:id="@+id/remove_btn"
@@ -76,6 +77,7 @@
             android:paddingBottom="4dp">
 
             <LinearLayout
+                android:id="@+id/summary_btn_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -99,6 +101,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/leaflet_btn_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/leaflet_btn"

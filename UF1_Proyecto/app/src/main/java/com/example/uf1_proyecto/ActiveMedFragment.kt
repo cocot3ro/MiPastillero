@@ -17,6 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.uf1_proyecto.databinding.ActiveMedCardLayoutBinding
 import com.example.uf1_proyecto.databinding.FragmentActiveMedBinding
+import com.example.uf1_proyecto.databinding.NoActiveMedsLayoutBinding
 import com.google.android.material.snackbar.Snackbar
 
 class ActiveMedFragment : Fragment() {
@@ -62,24 +63,17 @@ class ActiveMedFragment : Fragment() {
 
     /**
      * Recupera de la base de datos los medicamento activos.
-     * Si hay medicamentos activos, los muestra en la vista y elimina el texto de "no hay medicamentos activos"
+     * Si no hay medicamentos activos, muestra un texto indicándolo.
      */
     private fun cargarActivos() {
+        binding.activeMedLayout.removeAllViews()
         val activos = pillboxViewModel.getActivos()
 
         if (activos.isNotEmpty()) {
-            binding.activeMedLayout.removeView(binding.noActiveMedsText)
             activos.forEach { addCardView(it) }
+        } else {
+            NoActiveMedsLayoutBinding.inflate(layoutInflater, binding.activeMedLayout, true)
         }
-    }
-
-    /**
-     * Recarga los medicamentos activos de la base de datos y los muestra en la vista.
-     * Se usa cuando se añade un medicamento activo.
-     */
-    private fun recargarActivos() {
-        binding.activeMedLayout.removeAllViews()
-        pillboxViewModel.getActivos().forEach { addCardView(it) }
     }
 
     /**
@@ -87,38 +81,44 @@ class ActiveMedFragment : Fragment() {
      * @param medicamento medicamento activo a añadir
      */
     private fun addCardView(medicamento: Medicamento) {
-
         // Infla el layout del cardview
-        val cardViewBinding = ActiveMedCardLayoutBinding.inflate(layoutInflater)
+        val cardViewBinding =
+            ActiveMedCardLayoutBinding.inflate(layoutInflater, binding.activeMedLayout, true)
 
         // Le pone el nombre
         cardViewBinding.name.text = medicamento.nombre
 
         // Fecha de inicio
         cardViewBinding.dateStart.text =
-            pillboxViewModel.millisToDate(medicamento.fechaInicio!!)
+            DateTimeUtils.millisToDate(medicamento.fechaInicio!!)
 
         // Fecha de fin
         cardViewBinding.dateEnd.text =
-            pillboxViewModel.millisToDate(medicamento.fechaFin!!)
+            DateTimeUtils.millisToDate(medicamento.fechaFin!!)
 
-        // Botón para abrir PDF de la ficha técnica
+        // Botón para abrir URL de la ficha técnica
         cardViewBinding.summaryBtn.setOnClickListener {
             if (medicamento.codNacional != -1) {
-                if (!pillboxViewModel.openPDF(requireContext(), medicamento.fichaTecnica)) {
-                    Toast.makeText(activity, getString(R.string.openPDFFail), Toast.LENGTH_LONG)
+                if (!pillboxViewModel.openURL(requireContext(), medicamento.fichaTecnica)) {
+                    Toast.makeText(activity, getString(R.string.openURLFail), Toast.LENGTH_LONG)
                         .show()
                 }
+            } else {
+                Toast.makeText(activity, getString(R.string.noURL), Toast.LENGTH_LONG)
+                    .show()
             }
         }
 
-        // Botón para abrir PDF del prospecto
+        // Botón para abrir URL del prospecto
         cardViewBinding.leafletBtn.setOnClickListener {
             if (medicamento.codNacional != -1) {
-                if (!pillboxViewModel.openPDF(requireContext(), medicamento.prospecto)) {
-                    Toast.makeText(activity, getString(R.string.openPDFFail), Toast.LENGTH_LONG)
+                if (!pillboxViewModel.openURL(requireContext(), medicamento.prospecto)) {
+                    Toast.makeText(activity, getString(R.string.openURLFail), Toast.LENGTH_LONG)
                         .show()
                 }
+            } else {
+                Toast.makeText(activity, getString(R.string.noURL), Toast.LENGTH_LONG)
+                    .show()
             }
         }
 
@@ -135,6 +135,7 @@ class ActiveMedFragment : Fragment() {
                     favBtn.setImageResource(android.R.drawable.star_big_off)
                     Toast.makeText(activity, getString(R.string.removeFavOk), Toast.LENGTH_SHORT)
                         .show()
+                    cargarActivos()
                 } else {
                     Toast.makeText(activity, getString(R.string.removeFavFail), Toast.LENGTH_SHORT)
                         .show()
@@ -144,6 +145,7 @@ class ActiveMedFragment : Fragment() {
                     favBtn.setImageResource(android.R.drawable.star_big_on)
                     Toast.makeText(activity, getString(R.string.addFavOk), Toast.LENGTH_SHORT)
                         .show()
+                    cargarActivos()
                 } else {
                     Toast.makeText(activity, getString(R.string.addFavFail), Toast.LENGTH_SHORT)
                         .show()
@@ -154,8 +156,7 @@ class ActiveMedFragment : Fragment() {
         }
 
         // Botón para eliminar el medicamento activo
-        val removeBtn = cardViewBinding.removeBtn
-        removeBtn.setOnClickListener {
+        cardViewBinding.removeBtn.setOnClickListener {
             if (pillboxViewModel.deleteActiveMed(medicamento)) {
                 val index = binding.activeMedLayout.indexOfChild(cardViewBinding.root)
                 binding.activeMedLayout.removeView(cardViewBinding.root)
@@ -176,6 +177,7 @@ class ActiveMedFragment : Fragment() {
                     }
                 }
                 snackBar.show()
+                cargarActivos()
             } else {
                 Toast.makeText(activity, getString(R.string.deleteFail), Toast.LENGTH_LONG).show()
             }
@@ -190,13 +192,10 @@ class ActiveMedFragment : Fragment() {
             )
             textView.layoutParams = layoutParams
 
-            textView.text = pillboxViewModel.millisToHour(it)
+            textView.text = DateTimeUtils.millisToHour(it)
 
             cardViewBinding.scheduleLayout.addView(textView)
         }
-
-        // Añade el cardview a la vista
-        binding.activeMedLayout.addView(cardViewBinding.root)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -208,52 +207,54 @@ class ActiveMedFragment : Fragment() {
         return when (item.itemId) {
             // Dialogo para añadir un nuevo medicamento
             R.id.addActiveMed -> {
-                AddMedDialog(requireContext(), object : AddMedDialog.OnDataEnteredListener {
-                    override fun onDataEntered(medicamento: Medicamento) {
-                        if (!medicamento.isFavorite!!) {
-                            if (pillboxViewModel.addActiveMed(medicamento)) {
-                                Toast.makeText(
-                                    context,
-                                    getString(R.string.addActiveOk),
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                recargarActivos()
+                AddActiveMedDialog(
+                    requireContext(),
+                    object : AddActiveMedDialog.OnDataEnteredListener {
+                        override fun onDataEntered(medicamento: Medicamento) {
+                            if (!medicamento.isFavorite!!) {
+                                if (pillboxViewModel.addActiveMed(medicamento)) {
+                                    Toast.makeText(
+                                        context,
+                                        getString(R.string.addActiveOk),
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    cargarActivos()
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        getString(R.string.addActiveFail),
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
                             } else {
-                                Toast.makeText(
-                                    context,
-                                    getString(R.string.addActiveFail),
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        } else {
-                            // Si se elige guardar tambien como favorito, se añade a la lista de favoritos
-                            val addActive = pillboxViewModel.addActiveMed(medicamento)
-                            val addFav = pillboxViewModel.addFavMed(medicamento)
+                                // Si se elige guardar tambien como favorito, se añade a la lista de favoritos
+                                val addActive = pillboxViewModel.addActiveMed(medicamento)
+                                val addFav = pillboxViewModel.addFavMed(medicamento)
 
-                            if (addActive && addFav) {
-                                Toast.makeText(
-                                    context,
-                                    getString(R.string.addActiveOk),
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                recargarActivos()
-                            } else if (addActive) {
-                                Toast.makeText(
-                                    context,
-                                    getString(R.string.addFavFail),
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                recargarActivos()
-                            } else {
-                                Toast.makeText(
-                                    context,
-                                    getString(R.string.addActiveFail),
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                if (addActive && addFav) {
+                                    Toast.makeText(
+                                        context,
+                                        getString(R.string.addActiveOk),
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    cargarActivos()
+                                } else if (addActive) {
+                                    Toast.makeText(
+                                        context,
+                                        getString(R.string.addFavFail),
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    cargarActivos()
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        getString(R.string.addActiveFail),
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
                             }
                         }
-                    }
-                }).show()
+                    }).show()
                 true
             }
 

@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".FavoriteFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/fragment_favorite"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".FavoriteFragment">
+        android:orientation="vertical">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -31,7 +31,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar">
 
             <LinearLayout
                 android:id="@+id/favorite_layout"
@@ -39,19 +40,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="4dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/no_fav_meds_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/no_fav_meds" />
-
-            </LinearLayout>
+                android:orientation="vertical" />
 
         </ScrollView>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

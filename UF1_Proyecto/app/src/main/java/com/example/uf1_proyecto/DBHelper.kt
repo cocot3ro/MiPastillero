@@ -14,7 +14,7 @@ class DBHelper private constructor(context: Context) :
         private const val DB_NAME = "pillbox.db"
 
         // TODO: Cambiar a version 1 al finalizar proyecto
-        private const val DB_VERSION = 31
+        private const val DB_VERSION = 39
 
         /**
          * Instancia única de la clase [DBHelper]
@@ -24,12 +24,10 @@ class DBHelper private constructor(context: Context) :
 
         /**
          * Devuelve la instancia única de la clase [DBHelper]
-         * @param context contexto de la aplicación
          */
-        fun getInstance(context: Context): DBHelper =
-            instance ?: synchronized(this) {
-                instance ?: DBHelper(context.applicationContext).also { instance = it }
-            }
+        fun getInstance(context: Context): DBHelper = instance ?: synchronized(this) {
+            instance ?: DBHelper(context.applicationContext).also { instance = it }
+        }
 
         /**
          * Sentencia SQL para crear la tabla de medicamentos
@@ -54,6 +52,20 @@ class DBHelper private constructor(context: Context) :
                 ${ContratoActivos.Columnas.COLUMN_HORARIO} TEXT,
                 PRIMARY KEY (${ContratoActivos.Columnas._ID}, ${ContratoActivos.Columnas.COLUMN_INICIO}, ${ContratoActivos.Columnas.COLUMN_FIN}),
                 FOREIGN KEY (${ContratoActivos.Columnas._ID}) REFERENCES ${ContratoMedicamentos.NOMBRE_TABLA}(${ContratoMedicamentos.Columnas._ID})
+            )
+        """
+
+        /**
+         * Sentencia SQL para crear la tabla de calendario
+         */
+        private const val CREATE_CALENDAR_TABLE = """
+            CREATE TABLE IF NOT EXISTS ${ContratoCalendario.NOMBRE_TABLA} (
+                ${ContratoCalendario.Columnas._ID} TEXT,
+                ${ContratoCalendario.Columnas.COLUMN_FECHA} INTEGER,
+                ${ContratoCalendario.Columnas.COLUMN_HORA} INTEGER,
+                ${ContratoCalendario.Columnas.COLUMN_SE_HA_TOMADO} INTEGER,
+                PRIMARY KEY (${ContratoCalendario.Columnas._ID}, ${ContratoCalendario.Columnas.COLUMN_FECHA}, ${ContratoCalendario.Columnas.COLUMN_HORA}),
+                FOREIGN KEY (${ContratoCalendario.Columnas._ID}) REFERENCES ${ContratoMedicamentos.NOMBRE_TABLA}(${ContratoMedicamentos.Columnas._ID})
             )
         """
 
@@ -97,14 +109,16 @@ class DBHelper private constructor(context: Context) :
         db.execSQL(CREATE_FAVORITE_TABLE)
         db.execSQL(CREATE_AGENDA_TABLE)
         db.execSQL(CREATE_HISTORY_TABLE)
+        db.execSQL(CREATE_CALENDAR_TABLE)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS ${ContratoMedicamentos.NOMBRE_TABLA}")
         db.execSQL("DROP TABLE IF EXISTS ${ContratoActivos.NOMBRE_TABLA}")
         db.execSQL("DROP TABLE IF EXISTS ${ContratoFavoritos.NOMBRE_TABLA}")
         db.execSQL("DROP TABLE IF EXISTS ${ContratoAgenda.NOMBRE_TABLA}")
         db.execSQL("DROP TABLE IF EXISTS ${ContratoHistorial.NOMBRE_TABLA}")
+        db.execSQL("DROP TABLE IF EXISTS ${ContratoCalendario.NOMBRE_TABLA}")
+        db.execSQL("DROP TABLE IF EXISTS ${ContratoMedicamentos.NOMBRE_TABLA}")
 
         onCreate(db)
     }
@@ -128,8 +142,9 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
+    // TODO: insertar tamen en tabla calendario
     /**
-     * Inserta un medicamento en la tabla activos
+     * Añade un medicamento activo a la base de datos
      * @param medicamento medicamento a insertar
      * @return true si se ha insertado correctamente, false si no
      */
@@ -137,6 +152,8 @@ class DBHelper private constructor(context: Context) :
         if (!existeEnMedicamentos(medicamento)) {
             insertIntoMedicamentos(medicamento)
         }
+
+        insertIntoCalendario(medicamento)
 
         val values = ContentValues().apply {
             put(ContratoActivos.Columnas._ID, medicamento.nombre)
@@ -150,8 +167,30 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
+    private fun insertIntoCalendario(medicamento: Medicamento) {
+        var dia = medicamento.fechaInicio!!
+        while (dia <= medicamento.fechaFin!!) {
+
+            for (hora in medicamento.horario!!) {
+                val values = ContentValues().apply {
+                    put(ContratoCalendario.Columnas._ID, medicamento.nombre)
+                    put(ContratoCalendario.Columnas.COLUMN_FECHA, medicamento.fechaInicio)
+                    put(ContratoCalendario.Columnas.COLUMN_HORA, hora)
+                    put(ContratoCalendario.Columnas.COLUMN_SE_HA_TOMADO, 0)
+                }
+
+                writableDatabase.use { db ->
+                    db.insert(ContratoCalendario.NOMBRE_TABLA, null, values)
+                }
+            }
+
+            dia = DateTimeUtils.nextDay(dia)
+        }
+    }
+
+    // TODO: borrar tamen de tabla calendario
     /**
-     * Elimina un medicamento de la tabla activos
+     * Elimina un medicamento activo de la base de datos
      * @param medicamento medicamento a eliminar
      * @return true si se ha eliminado correctamente, false si no
      */
@@ -159,9 +198,7 @@ class DBHelper private constructor(context: Context) :
         writableDatabase.use { db ->
             return db.delete(
                 ContratoActivos.NOMBRE_TABLA,
-                "${ContratoActivos.Columnas._ID} = ? AND " +
-                        "${ContratoActivos.Columnas.COLUMN_INICIO} = ? AND " +
-                        "${ContratoActivos.Columnas.COLUMN_FIN} = ?",
+                "${ContratoActivos.Columnas._ID} = ? AND " + "${ContratoActivos.Columnas.COLUMN_INICIO} = ? AND " + "${ContratoActivos.Columnas.COLUMN_FIN} = ?",
                 arrayOf(
                     medicamento.nombre,
                     medicamento.fechaInicio.toString(),
@@ -169,6 +206,10 @@ class DBHelper private constructor(context: Context) :
                 )
             ) != 0
         }
+    }
+
+    private fun deleteFromCalendario(medicamento: Medicamento) {
+
     }
 
     /**
@@ -298,15 +339,6 @@ class DBHelper private constructor(context: Context) :
 
     /**
      * Comprueba si un medicamento está en la lista de favoritos
-     * @param medicamento medicamento a comprobar
-     * @return true si está en favoritos, false si no
-     */
-    fun existeEnFavoritos(medicamento: Medicamento): Boolean {
-        return existeEnFavoritos(medicamento.nombre)
-    }
-
-    /**
-     * Comprueba si un medicamento está en la lista de favoritos
      * @param nombre nombre del medicamento a comprobar
      * @return true si está en favoritos, false si no
      */
@@ -330,7 +362,7 @@ class DBHelper private constructor(context: Context) :
      * Devuelve los medicamentos activos
      */
     fun getActivos(): List<Medicamento> {
-        val dia = System.currentTimeMillis().toString()
+        val dia = DateTimeUtils.getTodayAsMillis().toString()
         val listaActivos: MutableList<Medicamento> = mutableListOf()
 
         readableDatabase.use { db ->
@@ -344,8 +376,7 @@ class DBHelper private constructor(context: Context) :
                 ContratoActivos.Columnas.COLUMN_INICIO
             ).use { cursor ->
                 if (cursor.moveToFirst()) {
-                    val colNombre =
-                        cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
+                    val colNombre = cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
 
                     val colCodNacional =
                         cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD)
@@ -365,19 +396,19 @@ class DBHelper private constructor(context: Context) :
 
                     do {
                         listaActivos.add(
-                            Medicamento(
-                                cursor.getString(colNombre),
-                                cursor.getInt(colCodNacional),
-                                cursor.getString(colFichaTecnica),
-                                cursor.getString(colProspecto),
-                                cursor.getLong(colFechaInicio),
-                                cursor.getLong(colFechaFin),
-                                Gson().fromJson(
-                                    cursor.getString(colHorario),
-                                    object : TypeToken<List<Long>>() {}.type
-                                ),
-                                existeEnFavoritos(cursor.getString(colNombre))
-                            )
+                            MedicamentoBuilder().setNombre(cursor.getString(colNombre))
+                                .setCodNacional(cursor.getInt(colCodNacional))
+                                .setFichaTecnica(cursor.getString(colFichaTecnica))
+                                .setProspecto(cursor.getString(colProspecto))
+                                .setFechaInicio(cursor.getLong(colFechaInicio))
+                                .setFechaFin(cursor.getLong(colFechaFin))
+                                .setHorario(
+                                    Gson().fromJson(
+                                        cursor.getString(colHorario),
+                                        object : TypeToken<List<Long>>() {}.type
+                                    )
+                                ).setFavorito(existeEnFavoritos(cursor.getString(colNombre)))
+                                .build()
                         )
                     } while (cursor.moveToNext())
                 }
@@ -385,6 +416,74 @@ class DBHelper private constructor(context: Context) :
         }
 
         return listaActivos
+    }
+
+    /**
+     * Devuelve los medicamentos activos agrupados por hora
+     * @param dia día del que se quieren obtener los medicamentos
+     */
+    fun getActivosCalendario(dia: Long): Map<Long, List<Medicamento>> {
+        val map = mutableMapOf<Long, MutableList<Medicamento>>()
+
+        readableDatabase.use { db ->
+            db.query(
+                ContratoMedicamentos.NOMBRE_TABLA + " INNER JOIN " + ContratoActivos.NOMBRE_TABLA + " ON " + ContratoMedicamentos.NOMBRE_TABLA + "." + ContratoMedicamentos.Columnas._ID + " = " + ContratoActivos.NOMBRE_TABLA + "." + ContratoActivos.Columnas._ID
+                        + " INNER JOIN " + ContratoCalendario.NOMBRE_TABLA + " ON " + ContratoMedicamentos.NOMBRE_TABLA + "." + ContratoMedicamentos.Columnas._ID + " = " + ContratoCalendario.NOMBRE_TABLA + "." + ContratoCalendario.Columnas._ID,
+                null,
+                "(${ContratoActivos.Columnas.COLUMN_INICIO} <= ? AND ${ContratoActivos.Columnas.COLUMN_FIN} >= ?)",
+                arrayOf(dia.toString(), dia.toString()),
+                null,
+                null,
+                ContratoActivos.Columnas.COLUMN_INICIO
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val colNombre = cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
+
+                    val colHora = cursor.getColumnIndex(ContratoCalendario.Columnas.COLUMN_HORA)
+
+                    val colSeHaTomado =
+                        cursor.getColumnIndex(ContratoCalendario.Columnas.COLUMN_SE_HA_TOMADO)
+
+                    do {
+                        val medicamento =
+                            MedicamentoBuilder().setNombre(cursor.getString(colNombre))
+                                .setSeHaTomado(cursor.getInt(colSeHaTomado) == 1)
+                                .build()
+
+                        if (map.containsKey(cursor.getLong(colHora))) {
+                            map[cursor.getLong(colHora)]!!.add(medicamento)
+                        } else {
+                            map[cursor.getLong(colHora)] = mutableListOf(medicamento)
+                        }
+                    } while (cursor.moveToNext())
+                }
+            }
+        }
+
+        return map
+    }
+
+    private fun updateCalendario(med: Medicamento, hora: Long, dia: Long, update: Int): Boolean {
+        val values = ContentValues().apply {
+            put(ContratoCalendario.Columnas.COLUMN_SE_HA_TOMADO, update)
+        }
+
+        writableDatabase.use { db ->
+            return db.update(
+                ContratoCalendario.NOMBRE_TABLA,
+                values,
+                "${ContratoCalendario.Columnas._ID} = ? AND ${ContratoCalendario.Columnas.COLUMN_FECHA} = ? AND ${ContratoCalendario.Columnas.COLUMN_HORA} = ?",
+                arrayOf(med.nombre, dia.toString(), hora.toString())
+            ) != 0
+        }
+    }
+
+    fun desmarcarToma(med: Medicamento, hora: Long, dia: Long): Boolean {
+        return updateCalendario(med, hora, dia, 0)
+    }
+
+    fun marcarToma(med: Medicamento, hora: Long, dia: Long): Boolean {
+        return updateCalendario(med, hora, dia, 1)
     }
 
     /**
@@ -404,8 +503,7 @@ class DBHelper private constructor(context: Context) :
                 null
             ).use { cursor ->
                 if (cursor.moveToFirst()) {
-                    val colNombre =
-                        cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
+                    val colNombre = cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
 
                     val colCodNacional =
                         cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD)
@@ -418,16 +516,11 @@ class DBHelper private constructor(context: Context) :
 
                     do {
                         listaFavoritos.add(
-                            Medicamento(
-                                cursor.getString(colNombre),
-                                cursor.getInt(colCodNacional),
-                                cursor.getString(colFichaTecnica),
-                                cursor.getString(colProspecto),
-                                -1L,
-                                -1L,
-                                listOf(),
-                                existeEnFavoritos(cursor.getString(colNombre))
-                            )
+                            MedicamentoBuilder().setNombre(cursor.getString(colNombre))
+                                .setCodNacional(cursor.getInt(colCodNacional))
+                                .setFichaTecnica(cursor.getString(colFichaTecnica))
+                                .setProspecto(cursor.getString(colProspecto)).setFavorito(true)
+                                .build()
                         )
                     } while (cursor.moveToNext())
                 }

@@ -77,13 +77,13 @@ class DiaryFragment : Fragment() {
      */
     private fun initRenderer() {
         // Infla el layout del renderer
-        val rendererBinding = DiaryRendererBinding.inflate(layoutInflater)
+        val rendererBinding = DiaryRendererBinding.inflate(layoutInflater, binding.diaryLayout, true)
 
         // Establece la fecha actual
         @Suppress("SetTextI18n")
         rendererBinding.diaryDate.text =
-            "${pillboxViewModel.getTodayAsDayOfWeek(requireContext())} - ${
-                pillboxViewModel.millisToDate(
+            "${DateTimeUtils.getTodayAsDayOfWeek(requireContext())} - ${
+                DateTimeUtils.millisToDate(
                     pillboxViewModel.getDiaryCurrDate()
                 )
             }"
@@ -95,9 +95,6 @@ class DiaryFragment : Fragment() {
         rendererBinding.diaryEditButton.setOnClickListener {
             changeToEditor()
         }
-
-        // Añade el layout del renderer a la vista
-        binding.diaryLayout.addView(rendererBinding.root)
     }
 
     /**
@@ -105,13 +102,13 @@ class DiaryFragment : Fragment() {
      */
     private fun initEditor() {
         // Infla el layout del editor
-        val editorBinding = DiaryEditorBinding.inflate(layoutInflater)
+        val editorBinding = DiaryEditorBinding.inflate(layoutInflater, binding.diaryLayout, true)
 
         // Establece la fecha actual
         @Suppress("SetTextI18n")
         editorBinding.diaryDate.text =
-            "${pillboxViewModel.getTodayAsDayOfWeek(requireContext())} - ${
-                pillboxViewModel.millisToDate(
+            "${DateTimeUtils.getTodayAsDayOfWeek(requireContext())} - ${
+                DateTimeUtils.millisToDate(
                     pillboxViewModel.getDiaryCurrDate()
                 )
             }"
@@ -140,9 +137,6 @@ class DiaryFragment : Fragment() {
                 }
             }
         }
-
-        // Añade el layout del editor a la vista
-        binding.diaryLayout.addView(editorBinding.root)
     }
 
     /**
@@ -174,7 +168,7 @@ class DiaryFragment : Fragment() {
                     requireContext(),
                     { _, year, monthOfYear, dayOfMonth ->
                         pillboxViewModel.setDiaryCurrDate(
-                            pillboxViewModel.createDate(
+                            DateTimeUtils.createDate(
                                 year, monthOfYear, dayOfMonth
                             )
                         )
@@ -192,7 +186,7 @@ class DiaryFragment : Fragment() {
 
             // Muestra la entrada de la agenda del día actual
             R.id.today -> {
-                pillboxViewModel.setDiaryCurrDate(pillboxViewModel.getTodayAsMillis())
+                pillboxViewModel.setDiaryCurrDate(DateTimeUtils.getTodayAsMillis())
                 changeToRenderer()
                 true
             }
