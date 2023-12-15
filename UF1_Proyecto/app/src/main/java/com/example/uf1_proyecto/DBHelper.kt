@@ -14,7 +14,7 @@ class DBHelper private constructor(context: Context) :
         private const val DB_NAME = "pillbox.db"
 
         // TODO: Cambiar a version 1 al finalizar proyecto
-        private const val DB_VERSION = 39
+        private const val DB_VERSION = 59
 
         /**
          * Instancia única de la clase [DBHelper]
@@ -65,7 +65,7 @@ class DBHelper private constructor(context: Context) :
                 ${ContratoCalendario.Columnas.COLUMN_HORA} INTEGER,
                 ${ContratoCalendario.Columnas.COLUMN_SE_HA_TOMADO} INTEGER,
                 PRIMARY KEY (${ContratoCalendario.Columnas._ID}, ${ContratoCalendario.Columnas.COLUMN_FECHA}, ${ContratoCalendario.Columnas.COLUMN_HORA}),
-                FOREIGN KEY (${ContratoCalendario.Columnas._ID}) REFERENCES ${ContratoMedicamentos.NOMBRE_TABLA}(${ContratoMedicamentos.Columnas._ID})
+                FOREIGN KEY (${ContratoCalendario.Columnas._ID}) REFERENCES ${ContratoActivos.NOMBRE_TABLA}(${ContratoActivos.Columnas._ID})
             )
         """
 
@@ -142,7 +142,6 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
-    // TODO: insertar tamen en tabla calendario
     /**
      * Añade un medicamento activo a la base de datos
      * @param medicamento medicamento a insertar
@@ -174,7 +173,7 @@ class DBHelper private constructor(context: Context) :
             for (hora in medicamento.horario!!) {
                 val values = ContentValues().apply {
                     put(ContratoCalendario.Columnas._ID, medicamento.nombre)
-                    put(ContratoCalendario.Columnas.COLUMN_FECHA, medicamento.fechaInicio)
+                    put(ContratoCalendario.Columnas.COLUMN_FECHA, dia)
                     put(ContratoCalendario.Columnas.COLUMN_HORA, hora)
                     put(ContratoCalendario.Columnas.COLUMN_SE_HA_TOMADO, 0)
                 }
@@ -188,13 +187,13 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
-    // TODO: borrar tamen de tabla calendario
     /**
      * Elimina un medicamento activo de la base de datos
      * @param medicamento medicamento a eliminar
      * @return true si se ha eliminado correctamente, false si no
      */
     fun deleteFromActivos(medicamento: Medicamento): Boolean {
+        deleteFromCalendario(medicamento)
         writableDatabase.use { db ->
             return db.delete(
                 ContratoActivos.NOMBRE_TABLA,
@@ -209,7 +208,149 @@ class DBHelper private constructor(context: Context) :
     }
 
     private fun deleteFromCalendario(medicamento: Medicamento) {
+        var dia = medicamento.fechaInicio!!
+        while (dia <= medicamento.fechaFin!!) {
 
+            writableDatabase.use { db ->
+                db.delete(
+                    ContratoCalendario.NOMBRE_TABLA,
+                    "${ContratoCalendario.Columnas._ID} = ? AND ${ContratoCalendario.Columnas.COLUMN_FECHA} = ?",
+                    arrayOf(medicamento.nombre, dia.toString())
+                )
+            }
+
+            dia = DateTimeUtils.nextDay(dia)
+        }
+    }
+
+    /**
+     * Devuelve los medicamentos activos
+     */
+    fun getActivos(): List<Medicamento> {
+        val dia = DateTimeUtils.getTodayAsMillis().toString()
+        val listaActivos: MutableList<Medicamento> = mutableListOf()
+
+        readableDatabase.use { db ->
+            db.query(
+                ContratoMedicamentos.NOMBRE_TABLA + " INNER JOIN " + ContratoActivos.NOMBRE_TABLA + " ON " + ContratoMedicamentos.NOMBRE_TABLA + "." + ContratoMedicamentos.Columnas._ID + " = " + ContratoActivos.NOMBRE_TABLA + "." + ContratoActivos.Columnas._ID,
+                null,
+                "(${ContratoActivos.Columnas.COLUMN_INICIO} <= ? AND ${ContratoActivos.Columnas.COLUMN_FIN} >= ?) OR ${ContratoActivos.Columnas.COLUMN_INICIO} >= ?",
+                arrayOf(dia, dia, dia),
+                null,
+                null,
+                ContratoActivos.Columnas.COLUMN_INICIO
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val colNombre = cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
+
+                    val colCodNacional =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD)
+
+                    val colFichaTecnica =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA)
+
+                    val colProspecto =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_PROSPECTO)
+
+                    val colFechaInicio =
+                        cursor.getColumnIndex(ContratoActivos.Columnas.COLUMN_INICIO)
+
+                    val colFechaFin = cursor.getColumnIndex(ContratoActivos.Columnas.COLUMN_FIN)
+
+                    val colHorario = cursor.getColumnIndex(ContratoActivos.Columnas.COLUMN_HORARIO)
+
+                    do {
+                        listaActivos.add(
+                            MedicamentoBuilder().setNombre(cursor.getString(colNombre))
+                                .setCodNacional(cursor.getInt(colCodNacional))
+                                .setFichaTecnica(cursor.getString(colFichaTecnica))
+                                .setProspecto(cursor.getString(colProspecto))
+                                .setFechaInicio(cursor.getLong(colFechaInicio))
+                                .setFechaFin(cursor.getLong(colFechaFin))
+                                .setHorario(
+                                    Gson().fromJson(
+                                        cursor.getString(colHorario),
+                                        object : TypeToken<Set<Long>>() {}.type
+                                    )
+                                ).setFavorito(existeEnFavoritos(cursor.getString(colNombre)))
+                                .build()
+                        )
+                    } while (cursor.moveToNext())
+                }
+            }
+        }
+
+        return listaActivos
+    }
+
+    /**
+     * Devuelve los medicamentos activos agrupados por hora
+     * @param dia día del que se quiere obtener los medicamentos
+     */
+    fun getActivosCalendario(dia: Long): Map<Long, List<Medicamento>> {
+        val map = sortedMapOf<Long, MutableList<Medicamento>>()
+
+        readableDatabase.use { db ->
+            db.query(
+                ContratoMedicamentos.NOMBRE_TABLA + " INNER JOIN " + ContratoActivos.NOMBRE_TABLA + " ON " + ContratoMedicamentos.NOMBRE_TABLA + "." + ContratoMedicamentos.Columnas._ID + " = " + ContratoActivos.NOMBRE_TABLA + "." + ContratoActivos.Columnas._ID
+                        + " INNER JOIN " + ContratoCalendario.NOMBRE_TABLA + " ON " + ContratoMedicamentos.NOMBRE_TABLA + "." + ContratoMedicamentos.Columnas._ID + " = " + ContratoCalendario.NOMBRE_TABLA + "." + ContratoCalendario.Columnas._ID,
+                null,
+                "${ContratoCalendario.Columnas.COLUMN_FECHA} = ?",
+                arrayOf(dia.toString()),
+                null,
+                null,
+                ContratoActivos.Columnas.COLUMN_INICIO
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val colNombre = cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
+
+                    val colHora = cursor.getColumnIndex(ContratoCalendario.Columnas.COLUMN_HORA)
+
+                    val colSeHaTomado =
+                        cursor.getColumnIndex(ContratoCalendario.Columnas.COLUMN_SE_HA_TOMADO)
+
+                    do {
+                        val medicamento =
+                            MedicamentoBuilder().setNombre(cursor.getString(colNombre))
+                                .setSeHaTomado(cursor.getInt(colSeHaTomado) == 1)
+                                .build()
+
+                        if (map.containsKey(cursor.getLong(colHora))) {
+                            map[cursor.getLong(colHora)]!!.add(medicamento)
+                        } else {
+                            map[cursor.getLong(colHora)] = mutableListOf(medicamento)
+                        }
+                    } while (cursor.moveToNext())
+                }
+            }
+        }
+
+        return map
+    }
+
+    private fun updateCalendario(med: Medicamento, hora: Long, dia: Long, update: Int): Boolean {
+        val values = ContentValues().apply {
+            put(ContratoCalendario.Columnas.COLUMN_SE_HA_TOMADO, update)
+        }
+
+        writableDatabase.use { db ->
+            val i = db.update(
+                ContratoCalendario.NOMBRE_TABLA,
+                values,
+                "${ContratoCalendario.Columnas._ID} = ? AND ${ContratoCalendario.Columnas.COLUMN_FECHA} = ? AND ${ContratoCalendario.Columnas.COLUMN_HORA} = ?",
+                arrayOf(med.nombre, dia.toString(), hora.toString())
+            )
+
+            return i != 0
+        }
+    }
+
+    fun desmarcarToma(med: Medicamento, hora: Long, dia: Long): Boolean {
+        return updateCalendario(med, hora, dia, 0)
+    }
+
+    fun marcarToma(med: Medicamento, hora: Long, dia: Long): Boolean {
+        return updateCalendario(med, hora, dia, 1)
     }
 
     /**
@@ -356,134 +497,6 @@ class DBHelper private constructor(context: Context) :
                 return cursor.moveToFirst()
             }
         }
-    }
-
-    /**
-     * Devuelve los medicamentos activos
-     */
-    fun getActivos(): List<Medicamento> {
-        val dia = DateTimeUtils.getTodayAsMillis().toString()
-        val listaActivos: MutableList<Medicamento> = mutableListOf()
-
-        readableDatabase.use { db ->
-            db.query(
-                ContratoMedicamentos.NOMBRE_TABLA + " INNER JOIN " + ContratoActivos.NOMBRE_TABLA + " ON " + ContratoMedicamentos.NOMBRE_TABLA + "." + ContratoMedicamentos.Columnas._ID + " = " + ContratoActivos.NOMBRE_TABLA + "." + ContratoActivos.Columnas._ID,
-                null,
-                "(${ContratoActivos.Columnas.COLUMN_INICIO} <= ? AND ${ContratoActivos.Columnas.COLUMN_FIN} >= ?) OR ${ContratoActivos.Columnas.COLUMN_INICIO} >= ?",
-                arrayOf(dia, dia, dia),
-                null,
-                null,
-                ContratoActivos.Columnas.COLUMN_INICIO
-            ).use { cursor ->
-                if (cursor.moveToFirst()) {
-                    val colNombre = cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
-
-                    val colCodNacional =
-                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD)
-
-                    val colFichaTecnica =
-                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA)
-
-                    val colProspecto =
-                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_PROSPECTO)
-
-                    val colFechaInicio =
-                        cursor.getColumnIndex(ContratoActivos.Columnas.COLUMN_INICIO)
-
-                    val colFechaFin = cursor.getColumnIndex(ContratoActivos.Columnas.COLUMN_FIN)
-
-                    val colHorario = cursor.getColumnIndex(ContratoActivos.Columnas.COLUMN_HORARIO)
-
-                    do {
-                        listaActivos.add(
-                            MedicamentoBuilder().setNombre(cursor.getString(colNombre))
-                                .setCodNacional(cursor.getInt(colCodNacional))
-                                .setFichaTecnica(cursor.getString(colFichaTecnica))
-                                .setProspecto(cursor.getString(colProspecto))
-                                .setFechaInicio(cursor.getLong(colFechaInicio))
-                                .setFechaFin(cursor.getLong(colFechaFin))
-                                .setHorario(
-                                    Gson().fromJson(
-                                        cursor.getString(colHorario),
-                                        object : TypeToken<List<Long>>() {}.type
-                                    )
-                                ).setFavorito(existeEnFavoritos(cursor.getString(colNombre)))
-                                .build()
-                        )
-                    } while (cursor.moveToNext())
-                }
-            }
-        }
-
-        return listaActivos
-    }
-
-    /**
-     * Devuelve los medicamentos activos agrupados por hora
-     * @param dia día del que se quieren obtener los medicamentos
-     */
-    fun getActivosCalendario(dia: Long): Map<Long, List<Medicamento>> {
-        val map = mutableMapOf<Long, MutableList<Medicamento>>()
-
-        readableDatabase.use { db ->
-            db.query(
-                ContratoMedicamentos.NOMBRE_TABLA + " INNER JOIN " + ContratoActivos.NOMBRE_TABLA + " ON " + ContratoMedicamentos.NOMBRE_TABLA + "." + ContratoMedicamentos.Columnas._ID + " = " + ContratoActivos.NOMBRE_TABLA + "." + ContratoActivos.Columnas._ID
-                        + " INNER JOIN " + ContratoCalendario.NOMBRE_TABLA + " ON " + ContratoMedicamentos.NOMBRE_TABLA + "." + ContratoMedicamentos.Columnas._ID + " = " + ContratoCalendario.NOMBRE_TABLA + "." + ContratoCalendario.Columnas._ID,
-                null,
-                "(${ContratoActivos.Columnas.COLUMN_INICIO} <= ? AND ${ContratoActivos.Columnas.COLUMN_FIN} >= ?)",
-                arrayOf(dia.toString(), dia.toString()),
-                null,
-                null,
-                ContratoActivos.Columnas.COLUMN_INICIO
-            ).use { cursor ->
-                if (cursor.moveToFirst()) {
-                    val colNombre = cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
-
-                    val colHora = cursor.getColumnIndex(ContratoCalendario.Columnas.COLUMN_HORA)
-
-                    val colSeHaTomado =
-                        cursor.getColumnIndex(ContratoCalendario.Columnas.COLUMN_SE_HA_TOMADO)
-
-                    do {
-                        val medicamento =
-                            MedicamentoBuilder().setNombre(cursor.getString(colNombre))
-                                .setSeHaTomado(cursor.getInt(colSeHaTomado) == 1)
-                                .build()
-
-                        if (map.containsKey(cursor.getLong(colHora))) {
-                            map[cursor.getLong(colHora)]!!.add(medicamento)
-                        } else {
-                            map[cursor.getLong(colHora)] = mutableListOf(medicamento)
-                        }
-                    } while (cursor.moveToNext())
-                }
-            }
-        }
-
-        return map
-    }
-
-    private fun updateCalendario(med: Medicamento, hora: Long, dia: Long, update: Int): Boolean {
-        val values = ContentValues().apply {
-            put(ContratoCalendario.Columnas.COLUMN_SE_HA_TOMADO, update)
-        }
-
-        writableDatabase.use { db ->
-            return db.update(
-                ContratoCalendario.NOMBRE_TABLA,
-                values,
-                "${ContratoCalendario.Columnas._ID} = ? AND ${ContratoCalendario.Columnas.COLUMN_FECHA} = ? AND ${ContratoCalendario.Columnas.COLUMN_HORA} = ?",
-                arrayOf(med.nombre, dia.toString(), hora.toString())
-            ) != 0
-        }
-    }
-
-    fun desmarcarToma(med: Medicamento, hora: Long, dia: Long): Boolean {
-        return updateCalendario(med, hora, dia, 0)
-    }
-
-    fun marcarToma(med: Medicamento, hora: Long, dia: Long): Boolean {
-        return updateCalendario(med, hora, dia, 1)
     }
 
     /**

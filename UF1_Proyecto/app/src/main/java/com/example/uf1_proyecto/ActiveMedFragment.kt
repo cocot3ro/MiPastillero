@@ -1,6 +1,7 @@
 package com.example.uf1_proyecto
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -187,12 +188,13 @@ class ActiveMedFragment : Fragment() {
         medicamento.horario!!.forEach {
             val textView = TextView(requireContext())
             val layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             textView.layoutParams = layoutParams
+            textView.gravity = Gravity.END
 
-            textView.text = DateTimeUtils.millisToHour(it)
+            textView.text = DateTimeUtils.millisToTime(it)
 
             cardViewBinding.scheduleLayout.addView(textView)
         }

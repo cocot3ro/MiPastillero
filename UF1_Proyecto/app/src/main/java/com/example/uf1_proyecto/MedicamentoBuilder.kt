@@ -7,7 +7,7 @@ class MedicamentoBuilder {
     private var prospecto: String? = null
     private var fechaInicio: Long? = null
     private var fechaFin: Long? = null
-    private var horario: List<Long>? = null
+    private var horario: Set<Long>? = null
     private var isFavorite: Boolean? = null
     private var seHaTomado: Boolean? = null
 
@@ -37,7 +37,7 @@ class MedicamentoBuilder {
 
     fun setFechaFin(fechaFin: Long) = apply { this.fechaFin = fechaFin }
 
-    fun setHorario(horario: List<Long>) = apply { this.horario = horario }
+    fun setHorario(horario: Set<Long>) = apply { this.horario = horario }
 
     fun setFavorito(isFavorite: Boolean) = apply { this.isFavorite = isFavorite }
 

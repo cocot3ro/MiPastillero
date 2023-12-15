@@ -68,8 +68,6 @@ class CalendarFragment : Fragment() {
         return view
     }
 
-    // FIXME: medicamentos marcados hoy se muestran como marcados siempre
-
     private fun updateView() {
         @Suppress("SetTextI18n")
         binding.calendarDay.text = "${
@@ -87,7 +85,7 @@ class CalendarFragment : Fragment() {
             val groupBinding =
                 CalendarMedGroupLayoutBinding.inflate(layoutInflater, binding.calendarLayout, true)
 
-            groupBinding.hora.text = DateTimeUtils.millisToHour(entry.key)
+            groupBinding.hora.text = DateTimeUtils.millisToTime(entry.key)
 
             for (med in entry.value) {
                 val calendarEntryBinding = CalendarMedLayoutBinding.inflate(
@@ -102,6 +100,7 @@ class CalendarFragment : Fragment() {
 
 //                View#setImageResource(`resource`)
 //                favBtn.setImageResource(android.R.drawable.star_big_on)
+                // TODO: probar a recargar vista despues de marcar/desmarcar toma si funciona
                 calendarEntryBinding.btn.setOnClickListener {
                     if (med.seHaTomado!!) {
                         if (pillboxViewModel.desmarcarToma(med, entry.key, pillboxViewModel.getCalendarCurrDate())) {

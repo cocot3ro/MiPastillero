@@ -20,7 +20,7 @@ data class Medicamento(
     val prospecto: String?,
     val fechaInicio: Long?,
     val fechaFin: Long?,
-    val horario: List<Long>?,
+    val horario: Set<Long>?,
     var isFavorite: Boolean?,
     var seHaTomado: Boolean?
 ) : Serializable

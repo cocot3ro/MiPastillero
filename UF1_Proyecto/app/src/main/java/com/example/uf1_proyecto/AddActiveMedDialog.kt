@@ -169,13 +169,13 @@ class AddActiveMedDialog(
         return true
     }
 
-    private fun getSchedule(): List<Long> {
-        val horario = mutableListOf<Long>()
+    private fun getSchedule(): Set<Long> {
+        val horario = sortedSetOf<Long>()
 
         for (child in (binding.scheduleLayout.children)) {
             val time = child.findViewById<TextView>(R.id.timer_hour).text.toString()
-            if (!horario.contains(DateTimeUtils.hourToMillis(time))) {
-                horario.add(DateTimeUtils.hourToMillis(time))
+            if (!horario.contains(DateTimeUtils.timeToMillis(time))) {
+                horario.add(DateTimeUtils.timeToMillis(time))
             }
         }
 
@@ -185,13 +185,13 @@ class AddActiveMedDialog(
     private fun addTimePicker(showAfterAdd: Boolean) {
         val timerBinding = TimePickerLayoutBinding.inflate(LayoutInflater.from(context), binding.scheduleLayout, true)
 
-        timerBinding.timerHour.text = DateTimeUtils.millisToHour(-3600000) // 0:00:00 - 12:00:00 AM
+        timerBinding.timerHour.text = DateTimeUtils.millisToTime(-3600000) // 0:00:00 - 12:00:00 AM
 
         timerBinding.timePicker.setOnClickListener {
             val timePickerDialog = TimePickerDialog(
                 context, { _, hourOfDay, minute ->
-                    val time = DateTimeUtils.millisToHour(
-                        DateTimeUtils.createHour(
+                    val time = DateTimeUtils.millisToTime(
+                        DateTimeUtils.createTime(
                             hourOfDay, minute
                         )
                     )
@@ -200,7 +200,7 @@ class AddActiveMedDialog(
                 // Establece las 00:00 como hora predeterminada
                 0,
                 0,
-                DateTimeUtils.is24HourFormat(context)
+                DateTimeUtils.is24TimeFormat(context)
             )
 
             timePickerDialog.show()

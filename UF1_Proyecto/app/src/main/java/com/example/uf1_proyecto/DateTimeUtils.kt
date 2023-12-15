@@ -55,7 +55,7 @@ object DateTimeUtils {
     /**
      * Convierte milisegundos a hora en el formato de la configuración regional
      */
-    fun millisToHour(millis: Long): String = SimpleDateFormat.getTimeInstance().format(Date(millis))
+    fun millisToTime(millis: Long): String = SimpleDateFormat.getTimeInstance().format(Date(millis))
 
     /**
      * Convierte milisegundos a fecha en el formato de la configuración regional
@@ -65,7 +65,7 @@ object DateTimeUtils {
     /**
      * Convierte hora en el formato de la configuración regional a milisegundos
      */
-    fun hourToMillis(hour: String): Long = SimpleDateFormat.getTimeInstance().parse(hour).time
+    fun timeToMillis(hour: String): Long = SimpleDateFormat.getTimeInstance().parse(hour).time
 
     /**
      * Convierte fecha en el formato de la configuración regional a milisegundos
@@ -76,7 +76,7 @@ object DateTimeUtils {
      * Comprueba si el formato de la hora es de 24 horas
      * @return true si el formato de la hora es de 24 horas, false si es de 12 horas
      */
-    fun is24HourFormat(context: Context) = DateFormat.is24HourFormat(context)
+    fun is24TimeFormat(context: Context) = DateFormat.is24HourFormat(context)
 
     /**
      * Convierte una fecha a milisegundos
@@ -99,7 +99,7 @@ object DateTimeUtils {
      * @param minute minuto
      * @return hora en milisegundos
      */
-    fun createHour(hourOfDay: Int, minute: Int): Long {
+    fun createTime(hourOfDay: Int, minute: Int): Long {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
