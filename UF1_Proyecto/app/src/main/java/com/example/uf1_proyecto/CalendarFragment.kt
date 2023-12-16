@@ -32,8 +32,6 @@ class CalendarFragment : Fragment() {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         pillboxViewModel = PillboxViewModel.getInstance(requireContext())
 
-        val view = binding.root
-
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         setHasOptionsMenu(true)
@@ -53,8 +51,7 @@ class CalendarFragment : Fragment() {
 
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
-        val navigationView = binding.navView
-        navigationView.setupWithNavController(navController)
+        binding.navView.setupWithNavController(navController)
 
         binding.prevDay.setOnClickListener {
             pillboxViewModel.calendarPrevDay()
@@ -66,9 +63,11 @@ class CalendarFragment : Fragment() {
             updateView()
         }
 
+        // TODO: Funcionalidad a menu de drawer layout
+
         updateView()
 
-        return view
+        return binding.root
     }
 
     private fun updateView() {
@@ -87,7 +86,7 @@ class CalendarFragment : Fragment() {
         if (map.isEmpty()) {
             binding.calendarLayout.addView(
                 TextView(requireContext()).apply {
-                    text = getString(R.string.no_meds_for_this_day)
+                    text = getString(R.string.sin_meds_en_dia)
                 }
             )
         } else {
@@ -122,7 +121,7 @@ class CalendarFragment : Fragment() {
                             ) {
                                 Toast.makeText(
                                     context,
-                                    getString(R.string.medUnmarkOk),
+                                    getString(R.string.desmarcar_ok),
                                     Toast.LENGTH_LONG
                                 ).show()
                                 med.seHaTomado = false
@@ -130,7 +129,7 @@ class CalendarFragment : Fragment() {
                             } else {
                                 Toast.makeText(
                                     context,
-                                    getString(R.string.medUnmarkFail), Toast.LENGTH_LONG
+                                    getString(R.string.desmarcar_error), Toast.LENGTH_LONG
                                 ).show()
                             }
                         } else {
@@ -142,14 +141,14 @@ class CalendarFragment : Fragment() {
                             ) {
                                 Toast.makeText(
                                     context,
-                                    getString(R.string.medMarkOk), Toast.LENGTH_LONG
+                                    getString(R.string.marcar_ok), Toast.LENGTH_LONG
                                 ).show()
                                 med.seHaTomado = true
                                 calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_on_background)
                             } else {
                                 Toast.makeText(
                                     context,
-                                    getString(R.string.medMarkFail), Toast.LENGTH_LONG
+                                    getString(R.string.marcar_error), Toast.LENGTH_LONG
                                 ).show()
                             }
                         }

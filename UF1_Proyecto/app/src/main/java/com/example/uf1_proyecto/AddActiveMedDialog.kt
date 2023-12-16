@@ -45,9 +45,9 @@ class AddActiveMedDialog(
 
     private val alertDialog: AlertDialog = AlertDialog.Builder(context)
         .setView(binding.root)
-        .setTitle(context.getString(R.string.add_medicament))
-        .setPositiveButton(context.getString(R.string.accept), null)
-        .setNegativeButton(context.getString(R.string.cancel), null)
+        .setTitle(context.getString(R.string.añadir_medicamento))
+        .setPositiveButton(context.getString(R.string.aceptar), null)
+        .setNegativeButton(context.getString(R.string.cancelar), null)
         .create()
 
     init {
@@ -65,7 +65,7 @@ class AddActiveMedDialog(
             }
 
             val searchingToast = Toast.makeText(
-                context, context.getString(R.string.searching), Toast.LENGTH_LONG
+                context, context.getString(R.string.buscando), Toast.LENGTH_LONG
             ).also { it.show() }
 
             GlobalScope.launch(Dispatchers.Main) {
@@ -78,7 +78,7 @@ class AddActiveMedDialog(
                     if (medicamento == null) {
                         Toast.makeText(
                             context,
-                            context.getString(R.string.codNacional_not_found),
+                            context.getString(R.string.codigo_nacional_no_encontrado),
                             Toast.LENGTH_LONG
                         ).show()
                     } else {
@@ -92,7 +92,7 @@ class AddActiveMedDialog(
         }
 
         binding.btnHelp.setOnClickListener {
-            Toast.makeText(context, context.getString(R.string.codNacional_help), Toast.LENGTH_LONG)
+            Toast.makeText(context, context.getString(R.string.codigo_nacional_ayuda), Toast.LENGTH_LONG)
                 .show()
         }
 
@@ -137,7 +137,7 @@ class AddActiveMedDialog(
 
     private fun validateForm(): Boolean {
         if (inputNombre.text.isNullOrBlank()) {
-            Toast.makeText(context, context.getString(R.string.empty_name), Toast.LENGTH_LONG)
+            Toast.makeText(context, context.getString(R.string.sin_nombre), Toast.LENGTH_LONG)
                 .show()
             return false
         }
@@ -147,21 +147,21 @@ class AddActiveMedDialog(
             ) || (DateTimeUtils.dateToMillis(inputFechaFin.text.toString()) < DateTimeUtils.getTodayAsMillis()))
         ) {
             Toast.makeText(
-                context, context.getString(R.string.invalid_date), Toast.LENGTH_LONG
+                context, context.getString(R.string.fecha_invalida), Toast.LENGTH_LONG
             ).show()
             return false
         }
 
         if (getSchedule().isEmpty()) {
             Toast.makeText(
-                context, context.getString(R.string.no_schedule), Toast.LENGTH_LONG
+                context, context.getString(R.string.sin_horario), Toast.LENGTH_LONG
             ).show()
             return false
         }
 
         if (getSchedule().size < binding.scheduleLayout.childCount) {
             Toast.makeText(
-                context, context.getString(R.string.invalid_schedule), Toast.LENGTH_LONG
+                context, context.getString(R.string.horario_invalido), Toast.LENGTH_LONG
             ).show()
             return false
         }

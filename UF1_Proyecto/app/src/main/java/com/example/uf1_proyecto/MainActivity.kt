@@ -5,9 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.uf1_proyecto.databinding.ActivityMainBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,18 +22,13 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        // TODO: traducir a idiomas de españa (gallego, catalán, euskera, etc.)
-        // TODO: Funcionalidad a menu de drawer layout
-        
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
         binding.bottomNavigation.setupWithNavController(navController)
 
-        GlobalScope.launch(Dispatchers.IO) {
-            pillboxViewModel.comprobarTerminados()
-        }
+        pillboxViewModel.comprobarTerminados()
     }
 
 }

@@ -69,6 +69,8 @@ class DiaryFragment : Fragment() {
         // Por defecto, muestra el renderer de la entrada de la agenda del día actual
         initRenderer()
 
+        // TODO: Funcionalidad a menu de drawer layout
+
         return view
     }
 
@@ -128,11 +130,11 @@ class DiaryFragment : Fragment() {
                 if (pillboxViewModel.insertIntoAgenda(text)) {
                     changeToRenderer()
                     Toast.makeText(
-                        requireContext(), getString(R.string.saveDiaryOk), Toast.LENGTH_LONG
+                        requireContext(), getString(R.string.guardar_agenda_ok), Toast.LENGTH_LONG
                     ).show()
                 } else {
                     Toast.makeText(
-                        requireContext(), getString(R.string.saveDiaryFail), Toast.LENGTH_LONG
+                        requireContext(), getString(R.string.guardar_agenda_error), Toast.LENGTH_LONG
                     ).show()
                 }
             }

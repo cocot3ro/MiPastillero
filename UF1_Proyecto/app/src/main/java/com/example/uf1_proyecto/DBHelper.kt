@@ -14,7 +14,7 @@ class DBHelper private constructor(context: Context) :
         private const val DB_NAME = "pillbox.db"
 
         // TODO: Cambiar a version 1 al finalizar proyecto
-        private const val DB_VERSION = 60
+        private const val DB_VERSION = 61
 
         /**
          * Instancia única de la clase [DBHelper]
@@ -429,7 +429,7 @@ class DBHelper private constructor(context: Context) :
         val values = ContentValues().apply {
             put(ContratoHistorial.Columnas._ID, medicamento.nombre)
             put(ContratoHistorial.Columnas.COLUMN_INICIO, medicamento.fechaInicio)
-            put(ContratoHistorial.Columnas.COLUMN_FIN, medicamento.fechaInicio)
+            put(ContratoHistorial.Columnas.COLUMN_FIN, medicamento.fechaFin)
             put(ContratoHistorial.Columnas.COLUMN_HORARIO, Gson().toJson(medicamento.horario))
         }
 
@@ -623,8 +623,8 @@ class DBHelper private constructor(context: Context) :
         }
     }
 
-    fun getHistorial(): List<Medicamento> {
-        val listaHistorial = mutableListOf<Medicamento>()
+    fun getHistorial(): Map<Long, List<Medicamento>> {
+        val historial = sortedMapOf<Long, MutableList<Medicamento>>()
 
         readableDatabase.use { db ->
             db.query(
@@ -642,38 +642,46 @@ class DBHelper private constructor(context: Context) :
                     val colCodNacional =
                         cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD)
 
-                    val colFichaTecnica = cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA)
+                    val colFichaTecnica =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA)
 
-                    val colProspecto = cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_PROSPECTO)
+                    val colProspecto =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_PROSPECTO)
 
-                    val colFechaInicio = cursor.getColumnIndex(ContratoHistorial.Columnas.COLUMN_INICIO)
+                    val colFechaInicio =
+                        cursor.getColumnIndex(ContratoHistorial.Columnas.COLUMN_INICIO)
 
                     val colFechaFin = cursor.getColumnIndex(ContratoHistorial.Columnas.COLUMN_FIN)
 
-                    val colHorario = cursor.getColumnIndex(ContratoHistorial.Columnas.COLUMN_HORARIO)
+                    val colHorario =
+                        cursor.getColumnIndex(ContratoHistorial.Columnas.COLUMN_HORARIO)
 
                     do {
-                        listaHistorial.add(
-                            MedicamentoBuilder().setNombre(cursor.getString(colNombre))
-                                .setCodNacional(cursor.getInt(colCodNacional))
-                                .setFichaTecnica(cursor.getString(colFichaTecnica))
-                                .setProspecto(cursor.getString(colProspecto))
-                                .setFechaInicio(cursor.getLong(colFechaInicio))
-                                .setFechaFin(cursor.getLong(colFechaFin))
-                                .setHorario(
-                                    Gson().fromJson(
-                                        cursor.getString(colHorario),
-                                        object : TypeToken<Set<Long>>() {}.type
-                                    )
-                                ).setFavorito(existeEnFavoritos(cursor.getString(colNombre)))
-                                .build()
-                        )
+                        val medicamento = MedicamentoBuilder()
+                            .setNombre(cursor.getString(colNombre))
+                            .setFichaTecnica(cursor.getString(colFichaTecnica))
+                            .setProspecto(cursor.getString(colProspecto))
+                            .setFechaInicio(cursor.getLong(colFechaInicio))
+                            .setFechaFin(cursor.getLong(colFechaFin))
+                            .setHorario(
+                                Gson().fromJson(
+                                    cursor.getString(colHorario),
+                                    object : TypeToken<Set<Long>>() {}.type
+                                )
+                            )
+                            .build()
+
+                        if (historial.containsKey(cursor.getLong(colFechaInicio))) {
+                            historial[cursor.getLong(colFechaInicio)]!!.add(medicamento)
+                        } else {
+                            historial[cursor.getLong(colFechaInicio)] = mutableListOf(medicamento)
+                        }
                     } while (cursor.moveToNext())
                 }
             }
         }
 
-        return listaHistorial
+        return historial
     }
 
 }

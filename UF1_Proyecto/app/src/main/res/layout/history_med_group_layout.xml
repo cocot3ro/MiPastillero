@@ -14,15 +14,15 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/hora"
+            android:id="@+id/mes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/card_header_bg"
             android:paddingHorizontal="4dp"
-            android:textSize="20sp" />
+            android:textSize="22sp" />
 
         <LinearLayout
-            android:id="@+id/calendar_meds_layout"
+            android:id="@+id/history_meds_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="4dp"

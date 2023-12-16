@@ -58,6 +58,8 @@ class ActiveMedFragment : Fragment() {
 
         cargarActivos()
 
+        // TODO: Funcionalidad a menu de drawer layout
+
         return view
     }
 
@@ -73,7 +75,7 @@ class ActiveMedFragment : Fragment() {
             activos.forEach { addCardView(it) }
         } else {
             binding.activeMedLayout.addView(TextView(requireContext()).apply {
-                text = getString(R.string.no_active_meds)
+                text = getString(R.string.sin_meds_activos)
             })
         }
     }
@@ -102,11 +104,11 @@ class ActiveMedFragment : Fragment() {
         cardViewBinding.summaryBtn.setOnClickListener {
             if (medicamento.codNacional != -1) {
                 if (!pillboxViewModel.openURL(requireContext(), medicamento.fichaTecnica)) {
-                    Toast.makeText(activity, getString(R.string.openURLFail), Toast.LENGTH_LONG)
+                    Toast.makeText(activity, getString(R.string.abrir_url_error), Toast.LENGTH_LONG)
                         .show()
                 }
             } else {
-                Toast.makeText(activity, getString(R.string.noURL), Toast.LENGTH_LONG)
+                Toast.makeText(activity, getString(R.string.sin_url), Toast.LENGTH_LONG)
                     .show()
             }
         }
@@ -115,11 +117,11 @@ class ActiveMedFragment : Fragment() {
         cardViewBinding.leafletBtn.setOnClickListener {
             if (medicamento.codNacional != -1) {
                 if (!pillboxViewModel.openURL(requireContext(), medicamento.prospecto)) {
-                    Toast.makeText(activity, getString(R.string.openURLFail), Toast.LENGTH_LONG)
+                    Toast.makeText(activity, getString(R.string.abrir_url_error), Toast.LENGTH_LONG)
                         .show()
                 }
             } else {
-                Toast.makeText(activity, getString(R.string.noURL), Toast.LENGTH_LONG)
+                Toast.makeText(activity, getString(R.string.sin_url), Toast.LENGTH_LONG)
                     .show()
             }
         }
@@ -135,21 +137,21 @@ class ActiveMedFragment : Fragment() {
             if (medicamento.isFavorite!!) {
                 if (pillboxViewModel.deleteFavMed(medicamento)) {
                     favBtn.setImageResource(android.R.drawable.star_big_off)
-                    Toast.makeText(activity, getString(R.string.removeFavOk), Toast.LENGTH_SHORT)
+                    Toast.makeText(activity, getString(R.string.borrar_fav_ok), Toast.LENGTH_SHORT)
                         .show()
                     cargarActivos()
                 } else {
-                    Toast.makeText(activity, getString(R.string.removeFavFail), Toast.LENGTH_SHORT)
+                    Toast.makeText(activity, getString(R.string.borrar_fav_error), Toast.LENGTH_SHORT)
                         .show()
                 }
             } else {
                 if (pillboxViewModel.addFavMed(medicamento)) {
                     favBtn.setImageResource(android.R.drawable.star_big_on)
-                    Toast.makeText(activity, getString(R.string.addFavOk), Toast.LENGTH_SHORT)
+                    Toast.makeText(activity, getString(R.string.añadir_fav_ok), Toast.LENGTH_SHORT)
                         .show()
                     cargarActivos()
                 } else {
-                    Toast.makeText(activity, getString(R.string.addFavFail), Toast.LENGTH_SHORT)
+                    Toast.makeText(activity, getString(R.string.añadir_fav_error), Toast.LENGTH_SHORT)
                         .show()
                 }
             }
@@ -163,13 +165,13 @@ class ActiveMedFragment : Fragment() {
                     if (pillboxViewModel.addActiveMed(medicamento)) {
                         Toast.makeText(
                             activity,
-                            getString(R.string.addActiveOk),
+                            getString(R.string.añadir_activo_ok),
                             Toast.LENGTH_LONG
                         ).show()
                     } else {
                         Toast.makeText(
                             activity,
-                            getString(R.string.addActiveFail),
+                            getString(R.string.añadir_activo_error),
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -183,17 +185,17 @@ class ActiveMedFragment : Fragment() {
                 val index = binding.activeMedLayout.indexOfChild(cardViewBinding.root)
                 binding.activeMedLayout.removeView(cardViewBinding.root)
                 val snackBar =
-                    Snackbar.make(requireView(), getString(R.string.deleteOk), Snackbar.LENGTH_LONG)
+                    Snackbar.make(requireView(), getString(R.string.borrar_ok), Snackbar.LENGTH_LONG)
 
-                snackBar.setAction(getString(R.string.undo)) {
+                snackBar.setAction(getString(R.string.deshacer)) {
                     if (pillboxViewModel.addActiveMed(medicamento)) {
-                        Toast.makeText(activity, getString(R.string.reinsertOk), Toast.LENGTH_LONG)
+                        Toast.makeText(activity, getString(R.string.reinsertar_ok), Toast.LENGTH_LONG)
                             .show()
                         binding.activeMedLayout.addView(cardViewBinding.root, index)
                     } else {
                         Toast.makeText(
                             activity,
-                            getString(R.string.reinsertFail),
+                            getString(R.string.reinsertar_error),
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -201,7 +203,7 @@ class ActiveMedFragment : Fragment() {
                 snackBar.show()
                 cargarActivos()
             } else {
-                Toast.makeText(activity, getString(R.string.deleteFail), Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, getString(R.string.borrar_error), Toast.LENGTH_LONG).show()
             }
         }
 
@@ -230,14 +232,14 @@ class ActiveMedFragment : Fragment() {
                         if (pillboxViewModel.addActiveMed(medicamento)) {
                             Toast.makeText(
                                 context,
-                                getString(R.string.addActiveOk),
+                                getString(R.string.añadir_activo_ok),
                                 Toast.LENGTH_LONG
                             ).show()
                             cargarActivos()
                         } else {
                             Toast.makeText(
                                 context,
-                                getString(R.string.addActiveFail),
+                                getString(R.string.añadir_activo_error),
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -249,21 +251,21 @@ class ActiveMedFragment : Fragment() {
                         if (addActive && addFav) {
                             Toast.makeText(
                                 context,
-                                getString(R.string.addActiveOk),
+                                getString(R.string.añadir_activo_ok),
                                 Toast.LENGTH_LONG
                             ).show()
                             cargarActivos()
                         } else if (addActive) {
                             Toast.makeText(
                                 context,
-                                getString(R.string.addFavFail),
+                                getString(R.string.añadir_fav_error),
                                 Toast.LENGTH_LONG
                             ).show()
                             cargarActivos()
                         } else {
                             Toast.makeText(
                                 context,
-                                getString(R.string.addActiveFail),
+                                getString(R.string.añadir_activo_error),
                                 Toast.LENGTH_LONG
                             ).show()
                         }

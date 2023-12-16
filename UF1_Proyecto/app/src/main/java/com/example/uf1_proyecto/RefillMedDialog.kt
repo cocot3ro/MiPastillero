@@ -32,9 +32,9 @@ class RefillMedDialog(
 
     private val alertDialog: AlertDialog = AlertDialog.Builder(context)
         .setView(binding.root)
-        .setTitle(context.getString(R.string.add_medicament))
-        .setPositiveButton(context.getString(R.string.accept), null)
-        .setNegativeButton(context.getString(R.string.cancel), null)
+        .setTitle(context.getString(R.string.añadir_medicamento))
+        .setPositiveButton(context.getString(R.string.aceptar), null)
+        .setNegativeButton(context.getString(R.string.cancelar), null)
         .create()
 
     init {
@@ -146,21 +146,21 @@ class RefillMedDialog(
             ) || (DateTimeUtils.dateToMillis(inputFechaFin.text.toString()) < DateTimeUtils.getTodayAsMillis()))
         ) {
             Toast.makeText(
-                context, context.getString(R.string.invalid_date), Toast.LENGTH_LONG
+                context, context.getString(R.string.fecha_invalida), Toast.LENGTH_LONG
             ).show()
             return false
         }
 
         if (getSchedule().isEmpty()) {
             Toast.makeText(
-                context, context.getString(R.string.no_schedule), Toast.LENGTH_LONG
+                context, context.getString(R.string.sin_horario), Toast.LENGTH_LONG
             ).show()
             return false
         }
 
         if (getSchedule().size < binding.scheduleLayout.childCount) {
             Toast.makeText(
-                context, context.getString(R.string.invalid_schedule), Toast.LENGTH_LONG
+                context, context.getString(R.string.horario_invalido), Toast.LENGTH_LONG
             ).show()
             return false
         }

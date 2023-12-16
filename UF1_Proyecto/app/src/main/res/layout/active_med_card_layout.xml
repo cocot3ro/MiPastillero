@@ -51,7 +51,7 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/remove_btn"
-                    app:layout_constraintStart_toEndOf="@id/fill_btn"
+                    app:layout_constraintStart_toEndOf="@id/refill_btn"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
@@ -102,7 +102,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="4dp"
-                                android:text="@string/start" />
+                                android:text="@string/inicio" />
 
                             <Space
                                 android:layout_width="0dp"
@@ -125,7 +125,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="4dp"
-                                android:text="@string/end" />
+                                android:text="@string/fin" />
 
                             <Space
                                 android:layout_width="0dp"
@@ -150,7 +150,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/schedule" />
+                            android:text="@string/horario" />
 
                         <LinearLayout
                             android:id="@+id/schedule_layout"
@@ -190,7 +190,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="4dp"
-                            android:text="@string/summary" />
+                            android:text="@string/ficha_tecnica" />
 
                     </LinearLayout>
 
@@ -212,7 +212,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="4dp"
-                            android:text="@string/leaflet" />
+                            android:text="@string/prospecto" />
 
                     </LinearLayout>
 

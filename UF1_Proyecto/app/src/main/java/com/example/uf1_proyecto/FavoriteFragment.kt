@@ -52,6 +52,8 @@ class FavoriteFragment : Fragment() {
 
         cargarFavoritos()
 
+        // TODO: Funcionalidad a menu de drawer layout
+
         return binding.root
     }
 
@@ -67,7 +69,7 @@ class FavoriteFragment : Fragment() {
             favoritos.forEach { addCardView(it) }
         } else {
             binding.favoriteLayout.addView(TextView(requireContext()).apply {
-                text = getString(R.string.no_fav_meds)
+                text = getString(R.string.sin_meds_favoritos)
             })
         }
     }
@@ -88,7 +90,7 @@ class FavoriteFragment : Fragment() {
         cardViewBinding.summaryBtn.setOnClickListener {
             if (medicamento.codNacional != null && medicamento.codNacional != -1) {
                 if (!pillboxViewModel.openURL(requireContext(), medicamento.fichaTecnica)) {
-                    Toast.makeText(activity, getString(R.string.openURLFail), Toast.LENGTH_LONG)
+                    Toast.makeText(activity, getString(R.string.abrir_url_error), Toast.LENGTH_LONG)
                         .show()
                 }
             }
@@ -98,7 +100,7 @@ class FavoriteFragment : Fragment() {
         cardViewBinding.leafletBtn.setOnClickListener {
             if (medicamento.codNacional != null && medicamento.codNacional != -1) {
                 if (!pillboxViewModel.openURL(requireContext(), medicamento.prospecto)) {
-                    Toast.makeText(activity, getString(R.string.openURLFail), Toast.LENGTH_LONG)
+                    Toast.makeText(activity, getString(R.string.abrir_url_error), Toast.LENGTH_LONG)
                         .show()
                 }
             }
@@ -115,17 +117,17 @@ class FavoriteFragment : Fragment() {
                 val index = binding.favoriteLayout.indexOfChild(cardViewBinding.root)
                 binding.favoriteLayout.removeView(cardViewBinding.root)
                 val snackBar = Snackbar.make(
-                    requireView(), getString(R.string.removeFavOk), Snackbar.LENGTH_LONG
+                    requireView(), getString(R.string.borrar_fav_ok), Snackbar.LENGTH_LONG
                 )
 
-                snackBar.setAction(getString(R.string.undo)) {
+                snackBar.setAction(getString(R.string.deshacer)) {
                     if (pillboxViewModel.addFavMed(medicamento)) {
-                        Toast.makeText(activity, getString(R.string.reinsertOk), Toast.LENGTH_LONG)
+                        Toast.makeText(activity, getString(R.string.reinsertar_ok), Toast.LENGTH_LONG)
                             .show()
                         binding.favoriteLayout.addView(cardViewBinding.root, index)
                     } else {
                         Toast.makeText(
-                            activity, getString(R.string.reinsertFail), Toast.LENGTH_LONG
+                            activity, getString(R.string.reinsertar_error), Toast.LENGTH_LONG
                         ).show()
                     }
                 }
@@ -133,7 +135,7 @@ class FavoriteFragment : Fragment() {
                 snackBar.show()
                 cargarFavoritos()
             } else {
-                Toast.makeText(activity, getString(R.string.removeFavFail), Toast.LENGTH_SHORT)
+                Toast.makeText(activity, getString(R.string.borrar_fav_error), Toast.LENGTH_SHORT)
                     .show()
             }
         }
@@ -145,13 +147,13 @@ class FavoriteFragment : Fragment() {
                 if (pillboxViewModel.addActiveMed(medicamento)) {
                     Toast.makeText(
                         activity,
-                        getString(R.string.addActiveOk),
+                        getString(R.string.añadir_activo_ok),
                         Toast.LENGTH_LONG
                     ).show()
                 } else {
                     Toast.makeText(
                         activity,
-                        getString(R.string.addActiveFail),
+                        getString(R.string.añadir_activo_error),
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -165,14 +167,14 @@ class FavoriteFragment : Fragment() {
                 if (pillboxViewModel.addFavMed(medicamento)) {
                     Toast.makeText(
                         activity,
-                        getString(R.string.addFavOk),
+                        getString(R.string.añadir_fav_ok),
                         Toast.LENGTH_LONG
                     ).show()
                     cargarFavoritos()
                 } else {
                     Toast.makeText(
                         activity,
-                        getString(R.string.addFavFail),
+                        getString(R.string.añadir_fav_error),
                         Toast.LENGTH_LONG
                     ).show()
                 }

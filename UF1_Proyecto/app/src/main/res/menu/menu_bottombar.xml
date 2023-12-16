@@ -5,24 +5,24 @@
     <item
         android:id="@+id/calendarFragment"
         android:icon="@android:drawable/ic_menu_today"
-        android:title="@string/calendar"
+        android:title="@string/calendario"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/activeMedFragment"
         android:icon="@android:drawable/alert_dark_frame"
-        android:title="@string/active_medication"
+        android:title="@string/medicacion_activa"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/favoriteFragment"
         android:icon="@android:drawable/btn_star"
-        android:title="@string/favorites"
+        android:title="@string/favoritos"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/diaryFragment"
         android:icon="@android:drawable/ic_menu_agenda"
-        android:title="@string/diary"
+        android:title="@string/agenda"
         app:showAsAction="always" />
 </menu>

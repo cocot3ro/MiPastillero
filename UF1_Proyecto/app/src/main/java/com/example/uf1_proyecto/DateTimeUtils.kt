@@ -13,15 +13,37 @@ object DateTimeUtils {
      */
     fun getTodayAsDayOfWeek(context: Context): String {
         return when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
-            Calendar.MONDAY -> context.getString(R.string.monday)
-            Calendar.TUESDAY -> context.getString(R.string.tuesday)
-            Calendar.WEDNESDAY -> context.getString(R.string.wednesday)
-            Calendar.THURSDAY -> context.getString(R.string.thursday)
-            Calendar.FRIDAY -> context.getString(R.string.friday)
-            Calendar.SATURDAY -> context.getString(R.string.saturday)
-            Calendar.SUNDAY -> context.getString(R.string.sunday)
+            Calendar.MONDAY -> context.getString(R.string.lunes)
+            Calendar.TUESDAY -> context.getString(R.string.martes)
+            Calendar.WEDNESDAY -> context.getString(R.string.miercoles)
+            Calendar.THURSDAY -> context.getString(R.string.jueves)
+            Calendar.FRIDAY -> context.getString(R.string.viernes)
+            Calendar.SATURDAY -> context.getString(R.string.sabado)
+            Calendar.SUNDAY -> context.getString(R.string.domingo)
             else -> ""
         }
+    }
+
+    fun millisToMonth(millis: Long, context: Context): String {
+        return when (Calendar.getInstance().also { it.timeInMillis = millis }.get(Calendar.MONTH)) {
+            Calendar.JANUARY -> context.getString(R.string.enero)
+            Calendar.FEBRUARY -> context.getString(R.string.febrero)
+            Calendar.MARCH -> context.getString(R.string.marzo)
+            Calendar.APRIL -> context.getString(R.string.abril)
+            Calendar.MAY -> context.getString(R.string.mayo)
+            Calendar.JUNE -> context.getString(R.string.junio)
+            Calendar.JULY -> context.getString(R.string.julio)
+            Calendar.AUGUST -> context.getString(R.string.agosto)
+            Calendar.SEPTEMBER -> context.getString(R.string.septiembre)
+            Calendar.OCTOBER -> context.getString(R.string.octubre)
+            Calendar.NOVEMBER -> context.getString(R.string.noviembre)
+            Calendar.DECEMBER -> context.getString(R.string.diciembre)
+            else -> ""
+        }
+    }
+
+    fun millisToYear(millis: Long, context: Context): String {
+        return SimpleDateFormat("yyyy", context.resources.configuration.locales[0]).format(Date(millis))
     }
 
     /**
@@ -31,13 +53,13 @@ object DateTimeUtils {
     fun millisToDayOfWeek(millis: Long, context: Context): Any {
         return when (Calendar.getInstance().also { it.timeInMillis = millis }
             .get(Calendar.DAY_OF_WEEK)) {
-            Calendar.MONDAY -> context.getString(R.string.monday)
-            Calendar.TUESDAY -> context.getString(R.string.tuesday)
-            Calendar.WEDNESDAY -> context.getString(R.string.wednesday)
-            Calendar.THURSDAY -> context.getString(R.string.thursday)
-            Calendar.FRIDAY -> context.getString(R.string.friday)
-            Calendar.SATURDAY -> context.getString(R.string.saturday)
-            Calendar.SUNDAY -> context.getString(R.string.sunday)
+            Calendar.MONDAY -> context.getString(R.string.lunes)
+            Calendar.TUESDAY -> context.getString(R.string.martes)
+            Calendar.WEDNESDAY -> context.getString(R.string.miercoles)
+            Calendar.THURSDAY -> context.getString(R.string.jueves)
+            Calendar.FRIDAY -> context.getString(R.string.viernes)
+            Calendar.SATURDAY -> context.getString(R.string.sabado)
+            Calendar.SUNDAY -> context.getString(R.string.domingo)
             else -> ""
         }
     }
