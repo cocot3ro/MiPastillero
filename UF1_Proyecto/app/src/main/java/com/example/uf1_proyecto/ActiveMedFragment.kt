@@ -18,7 +18,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.uf1_proyecto.databinding.ActiveMedCardLayoutBinding
 import com.example.uf1_proyecto.databinding.FragmentActiveMedBinding
-import com.example.uf1_proyecto.databinding.NoActiveMedsLayoutBinding
 import com.google.android.material.snackbar.Snackbar
 
 class ActiveMedFragment : Fragment() {
@@ -73,7 +72,10 @@ class ActiveMedFragment : Fragment() {
         if (activos.isNotEmpty()) {
             activos.forEach { addCardView(it) }
         } else {
-            NoActiveMedsLayoutBinding.inflate(layoutInflater, binding.activeMedLayout, true)
+//            NoActiveMedsLayoutBinding.inflate(layoutInflater, binding.activeMedLayout, true)
+            binding.activeMedLayout.addView(TextView(requireContext()).apply {
+                text = getString(R.string.no_active_meds)
+            })
         }
     }
 

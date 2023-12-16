@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -15,7 +16,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.uf1_proyecto.databinding.FavoriteCardLayoutBinding
 import com.example.uf1_proyecto.databinding.FragmentFavoriteBinding
-import com.example.uf1_proyecto.databinding.NoFavMedsLayoutBinding
 import com.google.android.material.snackbar.Snackbar
 
 class FavoriteFragment : Fragment() {
@@ -66,7 +66,9 @@ class FavoriteFragment : Fragment() {
         if (favoritos.isNotEmpty()) {
             favoritos.forEach { addCardView(it) }
         } else {
-            NoFavMedsLayoutBinding.inflate(layoutInflater, binding.favoriteLayout, true)
+            binding.favoriteLayout.addView(TextView(requireContext()).apply {
+                text = getString(R.string.no_fav_meds)
+            })
         }
     }
 
