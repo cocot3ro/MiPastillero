@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -46,12 +47,22 @@ class CalendarFragment : Fragment() {
                 R.id.activeMedFragment,
                 R.id.favoriteFragment,
                 R.id.diaryFragment
-            ), binding.drawerLayout
+            ),
+            binding.drawerLayout
         )
 
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
+        // TODO: replicar esto no resto de fragmentos
+        binding.toolbar.setOnMenuItemClickListener { menuItem -> menuItemSelected(menuItem) }
+
         binding.navView.setupWithNavController(navController)
+
+        // TODO: replicar esto no resto de fragmentos
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            menuItemSelected(menuItem)
+        }
 
         binding.prevDay.setOnClickListener {
             pillboxViewModel.calendarPrevDay()
@@ -62,8 +73,6 @@ class CalendarFragment : Fragment() {
             pillboxViewModel.calendarNextDay()
             updateView()
         }
-
-        // TODO: Funcionalidad a menu de drawer layout
 
         updateView()
 
@@ -183,13 +192,65 @@ class CalendarFragment : Fragment() {
         updateView()
     }
 
+    private fun addMedDialog() {
+        AddActiveMedDialog(
+            requireContext(),
+            object : AddActiveMedDialog.OnDataEnteredListener {
+                override fun onDataEntered(medicamento: Medicamento) {
+                    if (!medicamento.isFavorite!!) {
+                        if (pillboxViewModel.addActiveMed(medicamento)) {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.añadir_activo_ok),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            updateView()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.añadir_activo_error),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    } else {
+                        // Si se elige guardar tambien como favorito, se añade a la lista de favoritos
+                        val addActive = pillboxViewModel.addActiveMed(medicamento)
+                        val addFav = pillboxViewModel.addFavMed(medicamento)
+
+                        if (addActive && addFav) {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.añadir_activo_ok),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            updateView()
+                        } else if (addActive) {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.añadir_fav_error),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            updateView()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.añadir_activo_error),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
+            }).show()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_toolbar_calendar, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+    // TODO: replicar esto no resto de fragmentos
+    private fun menuItemSelected(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
             R.id.search -> {
                 search()
                 true
@@ -200,7 +261,18 @@ class CalendarFragment : Fragment() {
                 true
             }
 
-            else -> super.onOptionsItemSelected(item)
+            R.id.addActiveMed -> {
+                addMedDialog()
+                true
+            }
+
+            R.id.historyFragment -> {
+                NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_calendarFragment_to_historyFragment)
+                true
+            }
+
+            else -> false
         }
     }
 }
