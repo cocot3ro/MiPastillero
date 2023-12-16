@@ -32,7 +32,7 @@ class HistoryFragment : Fragment() {
         val historial = pillboxViewModel.getHistorial()
 
         for (med in historial) {
-            binding.historyText.text = med.toString()
+
         }
     }
 

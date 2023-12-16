@@ -155,6 +155,31 @@ class DiaryFragment : Fragment() {
         initRenderer()
     }
 
+    private fun search() {
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, year, monthOfYear, dayOfMonth ->
+                pillboxViewModel.setDiaryCurrDate(
+                    DateTimeUtils.createDate(
+                        year, monthOfYear, dayOfMonth
+                    )
+                )
+                changeToRenderer()
+            },
+            // Establece la fecha actual como predeterminada
+            Calendar.getInstance().get(Calendar.YEAR),
+            Calendar.getInstance().get(Calendar.MONTH),
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        )
+
+        datePickerDialog.show()
+    }
+
+    private fun today() {
+        pillboxViewModel.setDiaryCurrDate(DateTimeUtils.getTodayAsMillis())
+        changeToRenderer()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_toolbar_diary, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -164,30 +189,13 @@ class DiaryFragment : Fragment() {
         return when (item.itemId) {
             // Abre un dialogo para seleccionar una fecha y mostrar la entrada de la agenda de ese día
             R.id.search -> {
-                val datePickerDialog = DatePickerDialog(
-                    requireContext(),
-                    { _, year, monthOfYear, dayOfMonth ->
-                        pillboxViewModel.setDiaryCurrDate(
-                            DateTimeUtils.createDate(
-                                year, monthOfYear, dayOfMonth
-                            )
-                        )
-                        changeToRenderer()
-                    },
-                    // Establece la fecha actual como predeterminada
-                    Calendar.getInstance().get(Calendar.YEAR),
-                    Calendar.getInstance().get(Calendar.MONTH),
-                    Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-                )
-
-                datePickerDialog.show()
+                search()
                 true
             }
 
             // Muestra la entrada de la agenda del día actual
             R.id.today -> {
-                pillboxViewModel.setDiaryCurrDate(DateTimeUtils.getTodayAsMillis())
-                changeToRenderer()
+                today()
                 true
             }
 

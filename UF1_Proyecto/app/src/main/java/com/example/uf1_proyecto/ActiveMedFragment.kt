@@ -72,7 +72,6 @@ class ActiveMedFragment : Fragment() {
         if (activos.isNotEmpty()) {
             activos.forEach { addCardView(it) }
         } else {
-//            NoActiveMedsLayoutBinding.inflate(layoutInflater, binding.activeMedLayout, true)
             binding.activeMedLayout.addView(TextView(requireContext()).apply {
                 text = getString(R.string.no_active_meds)
             })
@@ -202,6 +201,57 @@ class ActiveMedFragment : Fragment() {
         }
     }
 
+    private fun addMedDialog() {
+        AddActiveMedDialog(
+            requireContext(),
+            object : AddActiveMedDialog.OnDataEnteredListener {
+                override fun onDataEntered(medicamento: Medicamento) {
+                    if (!medicamento.isFavorite!!) {
+                        if (pillboxViewModel.addActiveMed(medicamento)) {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.addActiveOk),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            cargarActivos()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.addActiveFail),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    } else {
+                        // Si se elige guardar tambien como favorito, se añade a la lista de favoritos
+                        val addActive = pillboxViewModel.addActiveMed(medicamento)
+                        val addFav = pillboxViewModel.addFavMed(medicamento)
+
+                        if (addActive && addFav) {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.addActiveOk),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            cargarActivos()
+                        } else if (addActive) {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.addFavFail),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            cargarActivos()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.addActiveFail),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
+            }).show()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_toolbar_active_med, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -211,54 +261,7 @@ class ActiveMedFragment : Fragment() {
         return when (item.itemId) {
             // Dialogo para añadir un nuevo medicamento
             R.id.addActiveMed -> {
-                AddActiveMedDialog(
-                    requireContext(),
-                    object : AddActiveMedDialog.OnDataEnteredListener {
-                        override fun onDataEntered(medicamento: Medicamento) {
-                            if (!medicamento.isFavorite!!) {
-                                if (pillboxViewModel.addActiveMed(medicamento)) {
-                                    Toast.makeText(
-                                        context,
-                                        getString(R.string.addActiveOk),
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                    cargarActivos()
-                                } else {
-                                    Toast.makeText(
-                                        context,
-                                        getString(R.string.addActiveFail),
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            } else {
-                                // Si se elige guardar tambien como favorito, se añade a la lista de favoritos
-                                val addActive = pillboxViewModel.addActiveMed(medicamento)
-                                val addFav = pillboxViewModel.addFavMed(medicamento)
-
-                                if (addActive && addFav) {
-                                    Toast.makeText(
-                                        context,
-                                        getString(R.string.addActiveOk),
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                    cargarActivos()
-                                } else if (addActive) {
-                                    Toast.makeText(
-                                        context,
-                                        getString(R.string.addFavFail),
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                    cargarActivos()
-                                } else {
-                                    Toast.makeText(
-                                        context,
-                                        getString(R.string.addActiveFail),
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            }
-                        }
-                    }).show()
+                addMedDialog()
                 true
             }
 

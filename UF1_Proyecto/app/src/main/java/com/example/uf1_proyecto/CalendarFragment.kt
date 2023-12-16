@@ -1,5 +1,6 @@
 package com.example.uf1_proyecto
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -16,6 +17,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.uf1_proyecto.databinding.CalendarMedGroupLayoutBinding
 import com.example.uf1_proyecto.databinding.CalendarMedLayoutBinding
 import com.example.uf1_proyecto.databinding.FragmentCalendarBinding
+import java.util.Calendar
 
 class CalendarFragment : Fragment() {
     private var _binding: FragmentCalendarBinding? = null
@@ -98,9 +100,6 @@ class CalendarFragment : Fragment() {
                     calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_on_background)
                 }
 
-//                View#setImageResource(`resource`)
-//                favBtn.setImageResource(android.R.drawable.star_big_on)
-                // TODO: probar a recargar vista despues de marcar/desmarcar toma si funciona
                 calendarEntryBinding.btn.setOnClickListener {
                     if (med.seHaTomado!!) {
                         if (pillboxViewModel.desmarcarToma(med, entry.key, pillboxViewModel.getCalendarCurrDate())) {
@@ -127,6 +126,31 @@ class CalendarFragment : Fragment() {
         }
     }
 
+    private fun search() {
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, year, monthOfYear, dayOfMonth ->
+                pillboxViewModel.setCalendarCurrDate(
+                    DateTimeUtils.createDate(
+                        year, monthOfYear, dayOfMonth
+                    )
+                )
+                updateView()
+            },
+            // Establece la fecha actual como predeterminada
+            Calendar.getInstance().get(Calendar.YEAR),
+            Calendar.getInstance().get(Calendar.MONTH),
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        )
+
+        datePickerDialog.show()
+    }
+
+    private fun today() {
+        pillboxViewModel.setCalendarCurrDate(DateTimeUtils.getTodayAsMillis())
+        updateView()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_toolbar_calendar, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -134,17 +158,13 @@ class CalendarFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            // TODO: Preguntar por fecha y buscar (date picker)
-            //  ver en DiaryFragment
             R.id.search -> {
-                Toast.makeText(activity, "SEARCH", Toast.LENGTH_LONG).show()
+                search()
                 true
             }
 
-            // TODO: ir a la fecha actual
-            //  ver en DiaryFragment
             R.id.today -> {
-                Toast.makeText(activity, "TODAY", Toast.LENGTH_LONG).show()
+                today()
                 true
             }
 

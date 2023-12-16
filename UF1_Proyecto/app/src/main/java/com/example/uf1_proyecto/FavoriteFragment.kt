@@ -139,6 +139,27 @@ class FavoriteFragment : Fragment() {
         }
     }
 
+    private fun addFavMedDialog() {
+        AddFavMedDialog(requireContext(), object : AddFavMedDialog.OnDataEnteredListener {
+            override fun onDataEntered(medicamento: Medicamento) {
+                if (pillboxViewModel.addFavMed(medicamento)) {
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.addFavOk),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    cargarFavoritos()
+                } else {
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.addFavFail),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }).show()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_toolbar_fav_med, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -147,24 +168,7 @@ class FavoriteFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.addFavMed -> {
-                AddFavMedDialog(requireContext(), object : AddFavMedDialog.OnDataEnteredListener {
-                    override fun onDataEntered(medicamento: Medicamento) {
-                        if (pillboxViewModel.addFavMed(medicamento)) {
-                            Toast.makeText(
-                                activity,
-                                getString(R.string.addFavOk),
-                                Toast.LENGTH_LONG
-                            ).show()
-                            cargarFavoritos()
-                        } else {
-                            Toast.makeText(
-                                activity,
-                                getString(R.string.addFavFail),
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                }).show()
+                addFavMedDialog()
                 true
             }
 
