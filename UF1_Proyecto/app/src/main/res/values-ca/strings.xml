@@ -60,4 +60,17 @@
     <string name="desmarcar_ok">Medicament desmarcat correctament</string>
     <string name="desmarcar_error">Error en desmarcar el medicament</string>
     <string name="sin_meds_en_dia">Sembla que no tens medicaments per a aquest dia…</string>
+    <string name="enero">Gener</string>
+    <string name="febrero">Febrer</string>
+    <string name="marzo">Març</string>
+    <string name="abril">Abril</string>
+    <string name="mayo">Maig</string>
+    <string name="junio">Juny</string>
+    <string name="julio">Juliol</string>
+    <string name="agosto">Agost</string>
+    <string name="septiembre">Setembre</string>
+    <string name="octubre">Octubre</string>
+    <string name="noviembre">Novembre</string>
+    <string name="diciembre">Desembre</string>
+    <string name="historial_vacio">L\'historial està buit</string>
 </resources>
