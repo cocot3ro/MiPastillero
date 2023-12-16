@@ -157,6 +157,26 @@ class ActiveMedFragment : Fragment() {
             medicamento.isFavorite = !medicamento.isFavorite!!
         }
 
+        cardViewBinding.refillBtn.setOnClickListener {
+            RefillMedDialog(requireContext(), medicamento, object : RefillMedDialog.OnDataEnteredListener {
+                override fun onDataEntered(medicamento: Medicamento) {
+                    if (pillboxViewModel.addActiveMed(medicamento)) {
+                        Toast.makeText(
+                            activity,
+                            getString(R.string.addActiveOk),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            activity,
+                            getString(R.string.addActiveFail),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }).show()
+        }
+
         // Botón para eliminar el medicamento activo
         cardViewBinding.removeBtn.setOnClickListener {
             if (pillboxViewModel.deleteActiveMed(medicamento)) {
@@ -167,7 +187,7 @@ class ActiveMedFragment : Fragment() {
 
                 snackBar.setAction(getString(R.string.undo)) {
                     if (pillboxViewModel.addActiveMed(medicamento)) {
-                        Toast.makeText(activity, getString(R.string.reinsertOK), Toast.LENGTH_LONG)
+                        Toast.makeText(activity, getString(R.string.reinsertOk), Toast.LENGTH_LONG)
                             .show()
                         binding.activeMedLayout.addView(cardViewBinding.root, index)
                     } else {

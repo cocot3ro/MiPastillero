@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private var _pillboxViewModel: PillboxViewModel? = null
-
     private val pillboxViewModel get() = _pillboxViewModel!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,8 +25,9 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        // TODO: traducir a idiomas de españa
-
+        // TODO: traducir a idiomas de españa (gallego, catalán, euskera, etc.)
+        // TODO: Funcionalidad a menu de drawer layout
+        
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController

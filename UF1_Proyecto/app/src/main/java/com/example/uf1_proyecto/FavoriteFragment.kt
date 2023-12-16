@@ -86,7 +86,7 @@ class FavoriteFragment : Fragment() {
 
         // Botón para abrir URL de la ficha técnica
         cardViewBinding.summaryBtn.setOnClickListener {
-            if (medicamento.codNacional != -1) {
+            if (medicamento.codNacional != null && medicamento.codNacional != -1) {
                 if (!pillboxViewModel.openURL(requireContext(), medicamento.fichaTecnica)) {
                     Toast.makeText(activity, getString(R.string.openURLFail), Toast.LENGTH_LONG)
                         .show()
@@ -96,7 +96,7 @@ class FavoriteFragment : Fragment() {
 
         // Botón para abrir URL del prospecto
         cardViewBinding.leafletBtn.setOnClickListener {
-            if (medicamento.codNacional != -1) {
+            if (medicamento.codNacional != null && medicamento.codNacional != -1) {
                 if (!pillboxViewModel.openURL(requireContext(), medicamento.prospecto)) {
                     Toast.makeText(activity, getString(R.string.openURLFail), Toast.LENGTH_LONG)
                         .show()
@@ -106,7 +106,7 @@ class FavoriteFragment : Fragment() {
 
         // Botón para añadir el medicamento a la lista de medicamentos activos
         cardViewBinding.fillBtn.setOnClickListener {
-            // TODO: add refill med dialog
+            refillMedDialog(medicamento)
         }
 
         // Botón para eliminar el medicamento de la lista de medicamentos favoritos
@@ -120,7 +120,7 @@ class FavoriteFragment : Fragment() {
 
                 snackBar.setAction(getString(R.string.undo)) {
                     if (pillboxViewModel.addFavMed(medicamento)) {
-                        Toast.makeText(activity, getString(R.string.reinsertOK), Toast.LENGTH_LONG)
+                        Toast.makeText(activity, getString(R.string.reinsertOk), Toast.LENGTH_LONG)
                             .show()
                         binding.favoriteLayout.addView(cardViewBinding.root, index)
                     } else {
@@ -137,6 +137,26 @@ class FavoriteFragment : Fragment() {
                     .show()
             }
         }
+    }
+
+    private fun refillMedDialog(medicamento: Medicamento) {
+        RefillMedDialog(requireContext(), medicamento, object : RefillMedDialog.OnDataEnteredListener {
+            override fun onDataEntered(medicamento: Medicamento) {
+                if (pillboxViewModel.addActiveMed(medicamento)) {
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.addActiveOk),
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.addActiveFail),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }).show()
     }
 
     private fun addFavMedDialog() {

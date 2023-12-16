@@ -122,7 +122,7 @@ class CalendarFragment : Fragment() {
                             ) {
                                 Toast.makeText(
                                     context,
-                                    getString(R.string.medUnmarkOK),
+                                    getString(R.string.medUnmarkOk),
                                     Toast.LENGTH_LONG
                                 ).show()
                                 med.seHaTomado = false
@@ -142,7 +142,7 @@ class CalendarFragment : Fragment() {
                             ) {
                                 Toast.makeText(
                                     context,
-                                    getString(R.string.medMarkOK), Toast.LENGTH_LONG
+                                    getString(R.string.medMarkOk), Toast.LENGTH_LONG
                                 ).show()
                                 med.seHaTomado = true
                                 calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_on_background)

@@ -28,6 +28,10 @@ class HistoryFragment : Fragment() {
         return binding.root
     }
 
+    // TODO: Crear CardView para medicamentos en historial
+
+    // TODO: Completar xml: añadir toolbar y layout para CardViews
+
     private fun cargarHistorial() {
         val historial = pillboxViewModel.getHistorial()
 
