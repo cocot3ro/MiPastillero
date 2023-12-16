@@ -14,7 +14,7 @@ class DBHelper private constructor(context: Context) :
         private const val DB_NAME = "pillbox.db"
 
         // TODO: Cambiar a version 1 al finalizar proyecto
-        private const val DB_VERSION = 59
+        private const val DB_VERSION = 60
 
         /**
          * Instancia única de la clase [DBHelper]
@@ -97,6 +97,7 @@ class DBHelper private constructor(context: Context) :
                 ${ContratoHistorial.Columnas._ID} TEXT,
                 ${ContratoHistorial.Columnas.COLUMN_INICIO} INTEGER,
                 ${ContratoHistorial.Columnas.COLUMN_FIN} INTEGER,
+                ${ContratoHistorial.Columnas.COLUMN_HORARIO} TEXT,
                 PRIMARY KEY (${ContratoHistorial.Columnas._ID}, ${ContratoHistorial.Columnas.COLUMN_INICIO}, ${ContratoHistorial.Columnas.COLUMN_FIN}),
                 FOREIGN KEY (${ContratoHistorial.Columnas._ID}) REFERENCES ${ContratoMedicamentos.NOMBRE_TABLA}(${ContratoMedicamentos.Columnas._ID})
             )
@@ -424,11 +425,12 @@ class DBHelper private constructor(context: Context) :
      * @param medicamento medicamento a insertar
      * @return true si se ha insertado correctamente, false si no
      */
-    fun insertIntoHistorial(medicamento: Medicamento): Boolean {
+    private fun insertIntoHistorial(medicamento: Medicamento): Boolean {
         val values = ContentValues().apply {
             put(ContratoHistorial.Columnas._ID, medicamento.nombre)
             put(ContratoHistorial.Columnas.COLUMN_INICIO, medicamento.fechaInicio)
             put(ContratoHistorial.Columnas.COLUMN_FIN, medicamento.fechaInicio)
+            put(ContratoHistorial.Columnas.COLUMN_HORARIO, Gson().toJson(medicamento.horario))
         }
 
         writableDatabase.use { db ->
@@ -569,6 +571,109 @@ class DBHelper private constructor(context: Context) :
         }
 
         return null
+    }
+
+    fun comprobarTerminados() {
+        val dia = DateTimeUtils.getTodayAsMillis()
+        val listaTerminados = mutableListOf<Medicamento>()
+        readableDatabase.use { db ->
+            db.query(
+                "${ContratoMedicamentos.NOMBRE_TABLA} INNER JOIN ${ContratoActivos.NOMBRE_TABLA} ON ${ContratoMedicamentos.NOMBRE_TABLA}.${ContratoMedicamentos.Columnas._ID} = ${ContratoActivos.NOMBRE_TABLA}.${ContratoActivos.Columnas._ID}",
+                null,
+                "${ContratoActivos.Columnas.COLUMN_FIN} < ?",
+                arrayOf(dia.toString()),
+                null,
+                null,
+                null
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val colNombre = cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
+
+                    val colFechaInicio =
+                        cursor.getColumnIndex(ContratoActivos.Columnas.COLUMN_INICIO)
+
+                    val colFechaFin = cursor.getColumnIndex(ContratoActivos.Columnas.COLUMN_FIN)
+
+                    val colHorario = cursor.getColumnIndex(ContratoActivos.Columnas.COLUMN_HORARIO)
+
+                    do {
+                        listaTerminados.add(
+                            MedicamentoBuilder()
+                                .setNombre(cursor.getString(colNombre))
+                                .setFechaInicio(cursor.getLong(colFechaInicio))
+                                .setFechaFin(cursor.getLong(colFechaFin))
+                                .setHorario(
+                                    Gson().fromJson(
+                                        cursor.getString(colHorario),
+                                        object : TypeToken<Set<Long>>() {}.type
+                                    )
+                                ).build()
+                        )
+
+                    } while (cursor.moveToNext())
+                }
+            }
+        }
+
+        if (listaTerminados.isNotEmpty()) {
+            for (med in listaTerminados) {
+                deleteFromActivos(med)
+                insertIntoHistorial(med)
+            }
+        }
+    }
+
+    fun getHistorial(): List<Medicamento> {
+        val listaHistorial = mutableListOf<Medicamento>()
+
+        readableDatabase.use { db ->
+            db.query(
+                "${ContratoMedicamentos.NOMBRE_TABLA} INNER JOIN ${ContratoHistorial.NOMBRE_TABLA} ON ${ContratoMedicamentos.NOMBRE_TABLA}.${ContratoMedicamentos.Columnas._ID} = ${ContratoHistorial.NOMBRE_TABLA}.${ContratoHistorial.Columnas._ID}",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val colNombre = cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
+
+                    val colCodNacional =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD)
+
+                    val colFichaTecnica = cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA)
+
+                    val colProspecto = cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_PROSPECTO)
+
+                    val colFechaInicio = cursor.getColumnIndex(ContratoHistorial.Columnas.COLUMN_INICIO)
+
+                    val colFechaFin = cursor.getColumnIndex(ContratoHistorial.Columnas.COLUMN_FIN)
+
+                    val colHorario = cursor.getColumnIndex(ContratoHistorial.Columnas.COLUMN_HORARIO)
+
+                    do {
+                        listaHistorial.add(
+                            MedicamentoBuilder().setNombre(cursor.getString(colNombre))
+                                .setCodNacional(cursor.getInt(colCodNacional))
+                                .setFichaTecnica(cursor.getString(colFichaTecnica))
+                                .setProspecto(cursor.getString(colProspecto))
+                                .setFechaInicio(cursor.getLong(colFechaInicio))
+                                .setFechaFin(cursor.getLong(colFechaFin))
+                                .setHorario(
+                                    Gson().fromJson(
+                                        cursor.getString(colHorario),
+                                        object : TypeToken<Set<Long>>() {}.type
+                                    )
+                                ).setFavorito(existeEnFavoritos(cursor.getString(colNombre)))
+                                .build()
+                        )
+                    } while (cursor.moveToNext())
+                }
+            }
+        }
+
+        return listaHistorial
     }
 
 }

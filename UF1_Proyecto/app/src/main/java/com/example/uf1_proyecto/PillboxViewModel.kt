@@ -184,4 +184,8 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
         }
     }
 
+    fun comprobarTerminados() = dbHelper.comprobarTerminados()
+
+    fun getHistorial() = dbHelper.getHistorial()
+
 }
