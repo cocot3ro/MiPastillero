@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -83,42 +84,74 @@ class CalendarFragment : Fragment() {
 
         val map = pillboxViewModel.getActivosCalendario(pillboxViewModel.getCalendarCurrDate())
 
-        for (entry in map) {
-            val groupBinding =
-                CalendarMedGroupLayoutBinding.inflate(layoutInflater, binding.calendarLayout, true)
-
-            groupBinding.hora.text = DateTimeUtils.millisToTime(entry.key)
-
-            for (med in entry.value) {
-                val calendarEntryBinding = CalendarMedLayoutBinding.inflate(
-                    layoutInflater, groupBinding.calendarMedsLayout, true
-                )
-
-                calendarEntryBinding.nombre.text = med.nombre
-
-                if (med.seHaTomado!!) {
-                    calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_on_background)
+        if (map.isEmpty()) {
+            binding.calendarLayout.addView(
+                TextView(requireContext()).apply {
+                    text = getString(R.string.no_meds_for_this_day)
                 }
+            )
+        } else {
+            for (entry in map) {
+                val groupBinding =
+                    CalendarMedGroupLayoutBinding.inflate(
+                        layoutInflater,
+                        binding.calendarLayout,
+                        true
+                    )
 
-                calendarEntryBinding.btn.setOnClickListener {
+                groupBinding.hora.text = DateTimeUtils.millisToTime(entry.key)
+
+                for (med in entry.value) {
+                    val calendarEntryBinding = CalendarMedLayoutBinding.inflate(
+                        layoutInflater, groupBinding.calendarMedsLayout, true
+                    )
+
+                    calendarEntryBinding.nombre.text = med.nombre
+
                     if (med.seHaTomado!!) {
-                        if (pillboxViewModel.desmarcarToma(med, entry.key, pillboxViewModel.getCalendarCurrDate())) {
-                            Toast.makeText(context, getString(R.string.medUnmarkOK), Toast.LENGTH_LONG).show()
-                            med.seHaTomado = false
-                            calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_off_background)
+                        calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_on_background)
+                    }
+
+                    calendarEntryBinding.btn.setOnClickListener {
+                        if (med.seHaTomado!!) {
+                            if (pillboxViewModel.desmarcarToma(
+                                    med,
+                                    entry.key,
+                                    pillboxViewModel.getCalendarCurrDate()
+                                )
+                            ) {
+                                Toast.makeText(
+                                    context,
+                                    getString(R.string.medUnmarkOK),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                med.seHaTomado = false
+                                calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_off_background)
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    getString(R.string.medUnmarkFail), Toast.LENGTH_LONG
+                                ).show()
+                            }
                         } else {
-                            Toast.makeText(context,
-                                getString(R.string.medUnmarkFail), Toast.LENGTH_LONG).show()
-                        }
-                    } else {
-                        if (pillboxViewModel.marcarToma(med, entry.key, pillboxViewModel.getCalendarCurrDate())) {
-                            Toast.makeText(context,
-                                getString(R.string.medMarkOK), Toast.LENGTH_LONG).show()
-                            med.seHaTomado = true
-                            calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_on_background)
-                        } else {
-                            Toast.makeText(context,
-                                getString(R.string.medMarkFail), Toast.LENGTH_LONG).show()
+                            if (pillboxViewModel.marcarToma(
+                                    med,
+                                    entry.key,
+                                    pillboxViewModel.getCalendarCurrDate()
+                                )
+                            ) {
+                                Toast.makeText(
+                                    context,
+                                    getString(R.string.medMarkOK), Toast.LENGTH_LONG
+                                ).show()
+                                med.seHaTomado = true
+                                calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_on_background)
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    getString(R.string.medMarkFail), Toast.LENGTH_LONG
+                                ).show()
+                            }
                         }
                     }
                 }

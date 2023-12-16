@@ -63,4 +63,5 @@
     <string name="medMarkFail">Error marking medication</string>
     <string name="medUnmarkOK">Correctly unmarked medication</string>
     <string name="medUnmarkFail">Error unchecking medication</string>
+    <string name="no_meds_for_this_day">It seems that you have no medicine for this day…</string>
 </resources>

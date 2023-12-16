@@ -63,4 +63,5 @@
     <string name="medMarkFail">Error al marcar el medicamento</string>
     <string name="medUnmarkOK">Medicamento desmarcado correctamente</string>
     <string name="medUnmarkFail">Error al desmarcar el medicamento</string>
+    <string name="no_meds_for_this_day">Parece que no tienes medicamentos para este día…</string>
 </resources>
