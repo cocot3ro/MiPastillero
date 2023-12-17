@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -50,9 +51,16 @@ class FavoriteFragment : Fragment() {
 
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
-        cargarFavoritos()
+        binding.toolbar.setOnMenuItemClickListener { menuItem -> menuItemSelected(menuItem) }
 
-        // TODO: Funcionalidad a menu de drawer layout
+        binding.navView.setupWithNavController(navController)
+
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            menuItemSelected(menuItem)
+        }
+
+        cargarFavoritos()
 
         return binding.root
     }
@@ -187,14 +195,75 @@ class FavoriteFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+    private fun addMedDialog() {
+        AddActiveMedDialog(
+            requireContext(),
+            object : AddActiveMedDialog.OnDataEnteredListener {
+                override fun onDataEntered(medicamento: Medicamento) {
+                    if (!medicamento.isFavorite!!) {
+                        if (pillboxViewModel.addActiveMed(medicamento)) {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.añadir_activo_ok),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.añadir_activo_error),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    } else {
+                        // Si se elige guardar tambien como favorito, se añade a la lista de favoritos
+                        val addActive = pillboxViewModel.addActiveMed(medicamento)
+                        val addFav = pillboxViewModel.addFavMed(medicamento)
+
+                        if (addActive && addFav) {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.añadir_activo_ok),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            cargarFavoritos()
+                        } else if (addActive) {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.añadir_fav_error),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            cargarFavoritos()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.añadir_activo_error),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
+            }).show()
+    }
+
+    private fun menuItemSelected(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
             R.id.addFavMed -> {
                 addFavMedDialog()
                 true
             }
 
-            else -> super.onOptionsItemSelected(item)
+            R.id.addActiveMed -> {
+                addMedDialog()
+                true
+            }
+
+            R.id.historyFragment -> {
+                NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_favoriteFragment_to_historyFragment)
+                true
+            }
+
+            else -> false
         }
     }
 }

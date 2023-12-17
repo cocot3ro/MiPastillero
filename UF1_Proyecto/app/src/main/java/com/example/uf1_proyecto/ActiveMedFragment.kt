@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -54,11 +55,18 @@ class ActiveMedFragment : Fragment() {
             binding.drawerLayout
         )
 
+        binding.navView.setupWithNavController(navController)
+
+        binding.toolbar.setOnMenuItemClickListener { menuItem -> menuItemSelected(menuItem) }
+
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
-        cargarActivos()
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            menuItemSelected(menuItem)
+        }
 
-        // TODO: Funcionalidad a menu de drawer layout
+        cargarActivos()
 
         return view
     }
@@ -279,15 +287,21 @@ class ActiveMedFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            // Dialogo para añadir un nuevo medicamento
+    private fun menuItemSelected(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
             R.id.addActiveMed -> {
                 addMedDialog()
                 true
             }
 
-            else -> super.onOptionsItemSelected(item)
+            R.id.historyFragment -> {
+                NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_activeMedFragment_to_historyFragment)
+                true
+            }
+
+            else -> false
         }
     }
+
 }

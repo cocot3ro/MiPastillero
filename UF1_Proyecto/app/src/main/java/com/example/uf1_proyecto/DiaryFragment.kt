@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -53,6 +54,15 @@ class DiaryFragment : Fragment() {
         )
 
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+
+        binding.toolbar.setOnMenuItemClickListener { menuItem -> menuItemSelected(menuItem) }
+
+        binding.navView.setupWithNavController(navController)
+
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            menuItemSelected(menuItem)
+        }
 
         // Muestra la entrada de la agenda del día anterior
         binding.fabPrev.setOnClickListener {
@@ -182,26 +192,84 @@ class DiaryFragment : Fragment() {
         changeToRenderer()
     }
 
+    private fun addMedDialog() {
+        AddActiveMedDialog(
+            requireContext(),
+            object : AddActiveMedDialog.OnDataEnteredListener {
+                override fun onDataEntered(medicamento: Medicamento) {
+                    if (!medicamento.isFavorite!!) {
+                        if (pillboxViewModel.addActiveMed(medicamento)) {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.añadir_activo_ok),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.añadir_activo_error),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    } else {
+                        // Si se elige guardar tambien como favorito, se añade a la lista de favoritos
+                        val addActive = pillboxViewModel.addActiveMed(medicamento)
+                        val addFav = pillboxViewModel.addFavMed(medicamento)
+
+                        if (addActive && addFav) {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.añadir_activo_ok),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else if (addActive) {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.añadir_fav_error),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.añadir_activo_error),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
+            }).show()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_toolbar_diary, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            // Abre un dialogo para seleccionar una fecha y mostrar la entrada de la agenda de ese día
+    private fun menuItemSelected(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
             R.id.search -> {
                 search()
                 true
             }
 
-            // Muestra la entrada de la agenda del día actual
             R.id.today -> {
                 today()
                 true
             }
 
-            else -> super.onOptionsItemSelected(item)
+            R.id.addActiveMed -> {
+                addMedDialog()
+                true
+            }
+
+            R.id.historyFragment -> {
+                NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_diaryFragment_to_historyFragment)
+                true
+            }
+
+            else -> false
         }
     }
+
 }

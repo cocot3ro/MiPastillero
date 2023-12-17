@@ -53,12 +53,10 @@ class CalendarFragment : Fragment() {
 
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
-        // TODO: replicar esto no resto de fragmentos
         binding.toolbar.setOnMenuItemClickListener { menuItem -> menuItemSelected(menuItem) }
 
         binding.navView.setupWithNavController(navController)
 
-        // TODO: replicar esto no resto de fragmentos
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             menuItemSelected(menuItem)
@@ -77,6 +75,11 @@ class CalendarFragment : Fragment() {
         updateView()
 
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_toolbar_calendar, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun updateView() {
@@ -243,12 +246,6 @@ class CalendarFragment : Fragment() {
             }).show()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_toolbar_calendar, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    // TODO: replicar esto no resto de fragmentos
     private fun menuItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
             R.id.search -> {

@@ -18,7 +18,7 @@
             style="@style/Widget.MaterialComponents.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/menu_toolbar_active_med">
+            app:menu="@menu/menu_toolbar_fav_med">
 
             <TextView
                 android:layout_width="match_parent"
@@ -49,6 +49,7 @@
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start" />
+        android:layout_gravity="start"
+        app:menu="@menu/menu_main" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
