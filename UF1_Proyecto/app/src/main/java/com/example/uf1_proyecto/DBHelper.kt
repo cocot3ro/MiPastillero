@@ -659,6 +659,7 @@ class DBHelper private constructor(context: Context) :
                     do {
                         val medicamento = MedicamentoBuilder()
                             .setNombre(cursor.getString(colNombre))
+                            .setCodNacional(cursor.getInt(colCodNacional))
                             .setFichaTecnica(cursor.getString(colFichaTecnica))
                             .setProspecto(cursor.getString(colProspecto))
                             .setFechaInicio(cursor.getLong(colFechaInicio))
@@ -671,10 +672,12 @@ class DBHelper private constructor(context: Context) :
                             )
                             .build()
 
-                        if (historial.containsKey(cursor.getLong(colFechaInicio))) {
-                            historial[cursor.getLong(colFechaInicio)]!!.add(medicamento)
+                        val mes = DateTimeUtils.monthFromMillis(medicamento.fechaInicio!!)
+
+                        if (historial.containsKey(mes)) {
+                            historial[mes]!!.add(medicamento)
                         } else {
-                            historial[cursor.getLong(colFechaInicio)] = mutableListOf(medicamento)
+                            historial[mes] = mutableListOf(medicamento)
                         }
                     } while (cursor.moveToNext())
                 }

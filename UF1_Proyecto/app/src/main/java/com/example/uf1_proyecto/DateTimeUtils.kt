@@ -42,6 +42,12 @@ object DateTimeUtils {
         }
     }
 
+    fun monthFromMillis(millis: Long): Long {
+        return Calendar.getInstance().also { it.timeInMillis = millis }.apply {
+            set(Calendar.DAY_OF_MONTH, 1)
+        }.timeInMillis
+    }
+
     fun millisToYear(millis: Long, context: Context): String {
         return SimpleDateFormat("yyyy", context.resources.configuration.locales[0]).format(Date(millis))
     }
