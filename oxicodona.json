@@ -1,0 +1,151 @@
+{
+    "nregistro": "70686",
+    "nombre": "OXICODONA SANDOZ 20 mg COMPRIMIDOS DE LIBERACION PROLONGADA EFG",
+    "pactivos": "OXICODONA HIDROCLORURO",
+    "labtitular": "Sandoz Farmaceutica S.A.",
+    "cpresc": "Medicamento Sujeto A Prescripci\u00F3n M\u00E9dica. Estupefacientes",
+    "estado": {
+        "aut": 1277676000000
+    },
+    "comerc": true,
+    "receta": true,
+    "generico": true,
+    "conduc": true,
+    "triangulo": false,
+    "huerfano": false,
+    "biosimilar": false,
+    "nosustituible": {
+        "id": 0,
+        "nombre": "N/A"
+    },
+    "psum": true,
+    "notas": false,
+    "materialesInf": false,
+    "ema": false,
+    "docs": [
+        {
+            "tipo": 1,
+            "url": "https://cima.aemps.es/cima/pdfs/ft/70686/FT_70686.pdf",
+            "urlHtml": "https://cima.aemps.es/cima/dochtml/ft/70686/FT_70686.html",
+            "secc": true,
+            "fecha": 1697754652000
+        },
+        {
+            "tipo": 2,
+            "url": "https://cima.aemps.es/cima/pdfs/p/70686/P_70686.pdf",
+            "urlHtml": "https://cima.aemps.es/cima/dochtml/p/70686/P_70686.html",
+            "secc": true,
+            "fecha": 1697754667000
+        }
+    ],
+    "fotos": [
+        {
+            "tipo": "materialas",
+            "url": "https://cima.aemps.es/cima/fotos/thumbnails/materialas/70686/70686_materialas.jpg",
+            "fecha": 1514301499000
+        },
+        {
+            "tipo": "formafarmac",
+            "url": "https://cima.aemps.es/cima/fotos/thumbnails/formafarmac/70686/70686_formafarmac.jpg",
+            "fecha": 1514301500000
+        }
+    ],
+    "atcs": [
+        {
+            "codigo": "N02A",
+            "nombre": "OPIOIDES",
+            "nivel": 3
+        },
+        {
+            "codigo": "N02AA",
+            "nombre": "Alcaloides naturales del opio",
+            "nivel": 4
+        },
+        {
+            "codigo": "N02AA05",
+            "nombre": "Oxicodona",
+            "nivel": 5
+        }
+    ],
+    "principiosActivos": [
+        {
+            "id": 1348,
+            "codigo": "1348CH",
+            "nombre": "OXICODONA HIDROCLORURO",
+            "cantidad": "20.00",
+            "unidad": "mg",
+            "orden": 1,
+            "listaEstupefacientes": 1
+        }
+    ],
+    "excipientes": [
+        {
+            "id": 15134,
+            "nombre": "BEHENATO DE GLICEROL",
+            "cantidad": "25.00",
+            "unidad": "mg",
+            "orden": 2
+        },
+        {
+            "id": 15547,
+            "nombre": "LACTOSA MONOHIDRATO",
+            "cantidad": "63.50",
+            "unidad": "mg",
+            "orden": 3
+        }
+    ],
+    "viasAdministracion": [
+        {
+            "id": 48,
+            "nombre": "V\u00CDA ORAL"
+        }
+    ],
+    "presentaciones": [
+        {
+            "cn": "667929",
+            "nombre": "OXICODONA SANDOZ 20 mg COMPRIMIDOS DE LIBERACION PROLONGADA EFG , 112 comprimidos",
+            "estado": {
+                "aut": 1277676000000
+            },
+            "comerc": false,
+            "psum": false
+        },
+        {
+            "cn": "667934",
+            "nombre": "OXICODONA SANDOZ 20 mg COMPRIMIDOS DE LIBERACION PROLONGADA EFG , 28 comprimidos",
+            "estado": {
+                "aut": 1277676000000
+            },
+            "comerc": true,
+            "psum": true,
+            "detalleProblemaSuministro": {
+                "cn": "667934",
+                "fini": 1690408800000,
+                "activo": true,
+                "observ": "Existe/n otro/s medicamento/s con el mismo principio activo y para la misma v\u00EDa de administraci\u00F3n."
+            }
+        },
+        {
+            "cn": "667937",
+            "nombre": "OXICODONA SANDOZ 20 mg COMPRIMIDOS DE LIBERACION PROLONGADA EFG , 56 comprimidos",
+            "estado": {
+                "aut": 1277676000000
+            },
+            "comerc": false,
+            "psum": false
+        }
+    ],
+    "formaFarmaceutica": {
+        "id": 47,
+        "nombre": "COMPRIMIDO DE LIBERACIÓN PROLONGADA"
+    },
+    "formaFarmaceuticaSimplificada": {
+        "id": 14,
+        "nombre": "COMPRIMIDO LIBERACION MODIFICADA"
+    },
+    "vtm": {
+        "id": 414984009,
+        "nombre": "oxicodona"
+    },
+    "dosis": "20 mg"
+}
