@@ -2,7 +2,6 @@ package com.example.uf1_proyecto
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Menu
@@ -123,9 +122,12 @@ class ActiveMedFragment : Fragment() {
         cardViewBinding.dateEnd.text =
             DateTimeUtils.millisToDate(medicamento.fechaFin!!)
 
-        if (medicamento.imagen != null) {
-            val bitmap = BitmapFactory.decodeByteArray(medicamento.imagen, 0, medicamento.imagen.size)
+        if (medicamento.imagen != null && medicamento.imagen.isNotEmpty()) {
+            val bitmap =
+                BitmapFactory.decodeByteArray(medicamento.imagen, 0, medicamento.imagen.size)
             cardViewBinding.img.setImageBitmap(bitmap)
+        } else {
+            cardViewBinding.img.setImageResource(R.mipmap.no_image_available)
         }
 
         // Cambia el icono de favorito si el medicamento es favorito
@@ -143,7 +145,11 @@ class ActiveMedFragment : Fragment() {
                         .show()
                     updateView()
                 } else {
-                    Toast.makeText(activity, getString(R.string.borrar_fav_error), Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.borrar_fav_error),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             } else {
@@ -153,8 +159,11 @@ class ActiveMedFragment : Fragment() {
                         .show()
                     updateView()
                 } else {
-                    Toast.makeText(activity, getString(R.string.añadir_fav_error), Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.añadir_fav_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
@@ -162,23 +171,26 @@ class ActiveMedFragment : Fragment() {
         }
 
         cardViewBinding.refillBtn.setOnClickListener {
-            RefillMedDialog(requireContext(), medicamento, object : RefillMedDialog.OnDataEnteredListener {
-                override fun onDataEntered(medicamento: Medicamento) {
-                    if (pillboxViewModel.addActiveMed(medicamento)) {
-                        Toast.makeText(
-                            activity,
-                            getString(R.string.añadir_activo_ok),
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else {
-                        Toast.makeText(
-                            activity,
-                            getString(R.string.añadir_activo_error),
-                            Toast.LENGTH_LONG
-                        ).show()
+            RefillMedDialog(
+                requireContext(),
+                medicamento,
+                object : RefillMedDialog.OnDataEnteredListener {
+                    override fun onDataEntered(medicamento: Medicamento) {
+                        if (pillboxViewModel.addActiveMed(medicamento)) {
+                            Toast.makeText(
+                                activity,
+                                getString(R.string.añadir_activo_ok),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                activity,
+                                getString(R.string.añadir_activo_error),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
-                }
-            }).show()
+                }).show()
         }
 
         // Botón para eliminar el medicamento activo
@@ -187,11 +199,19 @@ class ActiveMedFragment : Fragment() {
                 val index = binding.activeMedLayout.indexOfChild(cardViewBinding.root)
                 binding.activeMedLayout.removeView(cardViewBinding.root)
                 val snackBar =
-                    Snackbar.make(requireView(), getString(R.string.borrar_ok), Snackbar.LENGTH_LONG)
+                    Snackbar.make(
+                        requireView(),
+                        getString(R.string.borrar_ok),
+                        Snackbar.LENGTH_LONG
+                    )
 
                 snackBar.setAction(getString(R.string.deshacer)) {
                     if (pillboxViewModel.addActiveMed(medicamento)) {
-                        Toast.makeText(activity, getString(R.string.reinsertar_ok), Toast.LENGTH_LONG)
+                        Toast.makeText(
+                            activity,
+                            getString(R.string.reinsertar_ok),
+                            Toast.LENGTH_LONG
+                        )
                             .show()
                         binding.activeMedLayout.addView(cardViewBinding.root, index)
                     } else {

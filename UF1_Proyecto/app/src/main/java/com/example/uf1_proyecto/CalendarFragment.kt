@@ -9,7 +9,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -136,13 +135,15 @@ class CalendarFragment : Fragment() {
 
                     calendarEntryBinding.nombre.text = medicamento.nombre
 
-                    if (medicamento.imagen != null) {
+                    if (medicamento.imagen != null && medicamento.imagen.isNotEmpty()) {
                         val bitmap = BitmapFactory.decodeByteArray(
                             medicamento.imagen,
                             0,
                             medicamento.imagen.size
                         )
                         calendarEntryBinding.img.setImageBitmap(bitmap)
+                    } else {
+                        calendarEntryBinding.img.setImageResource(R.mipmap.no_image_available)
                     }
 
                     if (medicamento.seHaTomado!!) {

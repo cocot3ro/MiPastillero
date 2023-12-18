@@ -3,7 +3,6 @@ package com.example.uf1_proyecto
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View.OnClickListener
 import android.widget.TextView
@@ -32,14 +31,16 @@ class InfoDialog(
         _pillboxViewModel = PillboxViewModel.getInstance(context)
 
         medicamento.nombre.let { binding.nombre.text = it }
-        medicamento.imagen?.let {
+        if (medicamento.imagen != null && medicamento.imagen.isNotEmpty()) {
             binding.img.setImageBitmap(
                 BitmapFactory.decodeByteArray(
-                    it,
+                    medicamento.imagen,
                     0,
-                    it.size
+                    medicamento.imagen.size
                 )
             )
+        } else {
+            binding.img.setImageResource(R.mipmap.no_image_available)
         }
 
         if (!medicamento.url.isNullOrBlank()) {

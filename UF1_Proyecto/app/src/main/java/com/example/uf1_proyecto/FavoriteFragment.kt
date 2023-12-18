@@ -8,7 +8,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -104,9 +103,12 @@ class FavoriteFragment : Fragment() {
             )
         )
 
-        if (medicamento.imagen != null) {
-            val bitmap = BitmapFactory.decodeByteArray(medicamento.imagen, 0, medicamento.imagen.size)
+        if (medicamento.imagen != null && medicamento.imagen.isNotEmpty()) {
+            val bitmap =
+                BitmapFactory.decodeByteArray(medicamento.imagen, 0, medicamento.imagen.size)
             cardViewBinding.img.setImageBitmap(bitmap)
+        } else {
+            cardViewBinding.img.setImageResource(R.mipmap.no_image_available)
         }
 
         cardViewBinding.infoBtn.setOnClickListener {
@@ -129,7 +131,11 @@ class FavoriteFragment : Fragment() {
 
                 snackBar.setAction(getString(R.string.deshacer)) {
                     if (pillboxViewModel.addFavMed(medicamento)) {
-                        Toast.makeText(activity, getString(R.string.reinsertar_ok), Toast.LENGTH_LONG)
+                        Toast.makeText(
+                            activity,
+                            getString(R.string.reinsertar_ok),
+                            Toast.LENGTH_LONG
+                        )
                             .show()
                         binding.favoriteLayout.addView(cardViewBinding.root, index)
                     } else {
@@ -149,23 +155,26 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun refillMedDialog(medicamento: Medicamento) {
-        RefillMedDialog(requireContext(), medicamento, object : RefillMedDialog.OnDataEnteredListener {
-            override fun onDataEntered(medicamento: Medicamento) {
-                if (pillboxViewModel.addActiveMed(medicamento)) {
-                    Toast.makeText(
-                        activity,
-                        getString(R.string.añadir_activo_ok),
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    Toast.makeText(
-                        activity,
-                        getString(R.string.añadir_activo_error),
-                        Toast.LENGTH_LONG
-                    ).show()
+        RefillMedDialog(
+            requireContext(),
+            medicamento,
+            object : RefillMedDialog.OnDataEnteredListener {
+                override fun onDataEntered(medicamento: Medicamento) {
+                    if (pillboxViewModel.addActiveMed(medicamento)) {
+                        Toast.makeText(
+                            activity,
+                            getString(R.string.añadir_activo_ok),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            activity,
+                            getString(R.string.añadir_activo_error),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
-            }
-        }).show()
+            }).show()
     }
 
     private fun addFavMedDialog() {
