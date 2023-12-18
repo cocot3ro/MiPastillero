@@ -1,6 +1,7 @@
 package com.example.uf1_proyecto
 
 import android.app.DatePickerDialog
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
@@ -110,23 +112,48 @@ class CalendarFragment : Fragment() {
                         true
                     )
 
-                groupBinding.hora.text = DateTimeUtils.millisToTime(entry.key)
+                val colores =
+                    pillboxViewModel.getEstacionColor(pillboxViewModel.getCalendarCurrDate())
 
-                for (med in entry.value) {
+                groupBinding.cuerpo.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        colores.second
+                    )
+                )
+
+                groupBinding.hora.text = DateTimeUtils.millisToTime(entry.key)
+                groupBinding.hora.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        colores.first
+                    )
+                )
+
+                for (medicamento in entry.value) {
                     val calendarEntryBinding = CalendarMedLayoutBinding.inflate(
                         layoutInflater, groupBinding.calendarMedsLayout, true
                     )
 
-                    calendarEntryBinding.nombre.text = med.nombre
+                    calendarEntryBinding.nombre.text = medicamento.nombre
 
-                    if (med.seHaTomado!!) {
+                    if (medicamento.imagen != null) {
+                        val bitmap = BitmapFactory.decodeByteArray(
+                            medicamento.imagen,
+                            0,
+                            medicamento.imagen.size
+                        )
+                        calendarEntryBinding.img.setImageBitmap(bitmap)
+                    }
+
+                    if (medicamento.seHaTomado!!) {
                         calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_on_background)
                     }
 
                     calendarEntryBinding.btn.setOnClickListener {
-                        if (med.seHaTomado!!) {
+                        if (medicamento.seHaTomado!!) {
                             if (pillboxViewModel.desmarcarToma(
-                                    med,
+                                    medicamento,
                                     entry.key,
                                     pillboxViewModel.getCalendarCurrDate()
                                 )
@@ -136,7 +163,7 @@ class CalendarFragment : Fragment() {
                                     getString(R.string.desmarcar_ok),
                                     Toast.LENGTH_LONG
                                 ).show()
-                                med.seHaTomado = false
+                                medicamento.seHaTomado = false
                                 calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_off_background)
                             } else {
                                 Toast.makeText(
@@ -146,7 +173,7 @@ class CalendarFragment : Fragment() {
                             }
                         } else {
                             if (pillboxViewModel.marcarToma(
-                                    med,
+                                    medicamento,
                                     entry.key,
                                     pillboxViewModel.getCalendarCurrDate()
                                 )
@@ -155,7 +182,7 @@ class CalendarFragment : Fragment() {
                                     context,
                                     getString(R.string.marcar_ok), Toast.LENGTH_LONG
                                 ).show()
-                                med.seHaTomado = true
+                                medicamento.seHaTomado = true
                                 calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_on_background)
                             } else {
                                 Toast.makeText(
@@ -179,6 +206,7 @@ class CalendarFragment : Fragment() {
                         year, monthOfYear, dayOfMonth
                     )
                 )
+
                 updateView()
             },
             // Establece la fecha actual como predeterminada

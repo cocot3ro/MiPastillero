@@ -3,12 +3,14 @@ package com.example.uf1_proyecto
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.GsonBuilder
 import khttp.responses.Response
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.Calendar
 
 class PillboxViewModel private constructor(context: Context) : ViewModel() {
     private var dbHelper: DBHelper = DBHelper.getInstance(context)
@@ -153,7 +155,8 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
         return dbHelper.insertIntoAgenda(getDiaryCurrDate(), descripcion)
     }
 
-    fun desmarcarToma(med: Medicamento, hora: Long, dia: Long) = dbHelper.desmarcarToma(med, hora, dia)
+    fun desmarcarToma(med: Medicamento, hora: Long, dia: Long) =
+        dbHelper.desmarcarToma(med, hora, dia)
 
     fun marcarToma(med: Medicamento, hora: Long, dia: Long) = dbHelper.marcarToma(med, hora, dia)
 
@@ -162,7 +165,7 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      * @param codNacional código nacional del medicamento
      * @return medicamento si se ha encontrado, null si no
      */
-    suspend fun searchMedicamento(codNacional: String): Medicamento? {
+    suspend fun searchMedicamento(codNacional: String): Medicamento.Builder? {
         return withContext(Dispatchers.IO) {
             val apiUrl = "https://cima.aemps.es/cima/rest/medicamento?cn=$codNacional"
 
@@ -170,15 +173,17 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
                 val response: Response = khttp.get(apiUrl, timeout = 5.0)
 
                 if (response.statusCode != 200) {
+                    Log.e("API", "Error ${response.statusCode} al consultar el API")
                     return@withContext null
                 }
 
                 GsonBuilder()
-                    .registerTypeAdapter(Medicamento::class.java, APITypeAdapter())
+                    .registerTypeAdapter(Medicamento.Builder::class.java, APITypeAdapter())
                     .create()
-                    .fromJson(response.text, Medicamento::class.java)
+                    .fromJson(response.text, Medicamento.Builder::class.java)
 
             } catch (e: Exception) {
+                Log.e("API", "Error al consultar el API", e)
                 null
             }
         }
@@ -187,5 +192,43 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
     fun comprobarTerminados() = dbHelper.comprobarTerminados()
 
     fun getHistorial() = dbHelper.getHistorial()
+
+    private fun getEstacion(): Estaciones? {
+        return when (Calendar.getInstance().get(Calendar.MONTH)) {
+            Calendar.DECEMBER, Calendar.JANUARY, Calendar.FEBRUARY -> Estaciones.INVIERNO
+            Calendar.MARCH, Calendar.APRIL, Calendar.MAY -> Estaciones.PRIMAVERA
+            Calendar.JUNE, Calendar.JULY, Calendar.AUGUST -> Estaciones.VERANO
+            Calendar.SEPTEMBER, Calendar.OCTOBER, Calendar.NOVEMBER -> Estaciones.OTONHO
+            else -> null
+        }
+    }
+
+    fun getEstacionColor(): Pair<Int, Int> {
+        return when (getEstacion()!!) {
+            Estaciones.INVIERNO -> R.color.card_header_bg_invierno to R.color.card_bg_invierno
+            Estaciones.PRIMAVERA -> R.color.card_header_bg_primavera to R.color.card_bg_primavera
+            Estaciones.VERANO -> R.color.card_header_bg_verano to R.color.card_bg_verano
+            Estaciones.OTONHO -> R.color.card_header_bg_otoño to R.color.card_bg_otoño
+        }
+    }
+
+    private fun getEstacion(date: Long): Estaciones? {
+        return when (Calendar.getInstance().also { it.timeInMillis = date }.get(Calendar.MONTH)) {
+            Calendar.DECEMBER, Calendar.JANUARY, Calendar.FEBRUARY -> Estaciones.INVIERNO
+            Calendar.MARCH, Calendar.APRIL, Calendar.MAY -> Estaciones.PRIMAVERA
+            Calendar.JUNE, Calendar.JULY, Calendar.AUGUST -> Estaciones.VERANO
+            Calendar.SEPTEMBER, Calendar.OCTOBER, Calendar.NOVEMBER -> Estaciones.OTONHO
+            else -> null
+        }
+    }
+
+    fun getEstacionColor(date: Long): Pair<Int, Int> {
+        return when (getEstacion(date)!!) {
+            Estaciones.INVIERNO -> R.color.card_header_bg_invierno to R.color.card_bg_invierno
+            Estaciones.PRIMAVERA -> R.color.card_header_bg_primavera to R.color.card_bg_primavera
+            Estaciones.VERANO -> R.color.card_header_bg_verano to R.color.card_bg_verano
+            Estaciones.OTONHO -> R.color.card_header_bg_otoño to R.color.card_bg_otoño
+        }
+    }
 
 }

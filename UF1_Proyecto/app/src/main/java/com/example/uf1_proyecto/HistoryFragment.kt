@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavHostController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -35,7 +32,8 @@ class HistoryFragment : Fragment() {
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
-        val navHostFragment = (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         val builder = AppBarConfiguration.Builder(navController.graph)
         val appBarConfiguration = builder.build()
@@ -63,6 +61,7 @@ class HistoryFragment : Fragment() {
                     true
                 )
 
+                @Suppress("SetTextI18n")
                 groupBinding.mes.text = "${
                     DateTimeUtils.millisToYear(
                         entry.key,

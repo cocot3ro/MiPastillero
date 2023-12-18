@@ -79,8 +79,6 @@ class DiaryFragment : Fragment() {
         // Por defecto, muestra el renderer de la entrada de la agenda del día actual
         initRenderer()
 
-        // TODO: Funcionalidad a menu de drawer layout
-
         return view
     }
 

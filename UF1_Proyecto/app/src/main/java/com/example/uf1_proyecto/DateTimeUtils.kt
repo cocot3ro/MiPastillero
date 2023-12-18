@@ -49,7 +49,11 @@ object DateTimeUtils {
     }
 
     fun millisToYear(millis: Long, context: Context): String {
-        return SimpleDateFormat("yyyy", context.resources.configuration.locales[0]).format(Date(millis))
+        return SimpleDateFormat("yyyy", context.resources.configuration.locales[0]).format(
+            Date(
+                millis
+            )
+        )
     }
 
     /**
@@ -111,13 +115,17 @@ object DateTimeUtils {
      * @param year año
      * @param monthOfYear mes
      * @param dayOfMonth día
-     * @return fecha en milisegundos
+     * @return la representación de la fecha en milisegundos a las 00:00:00:000 (12:00:00:000 AM)
      */
     fun createDate(year: Int, monthOfYear: Int, dayOfMonth: Int): Long {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.YEAR, year)
         calendar.set(Calendar.MONTH, monthOfYear)
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
         return calendar.timeInMillis
     }
 

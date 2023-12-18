@@ -81,7 +81,7 @@
                     android:id="@+id/btn_date_picker1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded"
+                    android:background="@drawable/rounded_no_bg"
                     android:src="@android:drawable/ic_menu_today" />
 
             </LinearLayout>
@@ -112,7 +112,7 @@
                     android:id="@+id/btn_date_picker2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded"
+                    android:background="@drawable/rounded_no_bg"
                     android:src="@android:drawable/ic_menu_today" />
 
             </LinearLayout>
@@ -142,7 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:background="@drawable/rounded"
+                    android:background="@drawable/rounded_no_bg"
                     android:src="@android:drawable/ic_input_add" />
 
             </LinearLayout>

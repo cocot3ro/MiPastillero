@@ -131,7 +131,7 @@ class RefillMedDialog(
             val horario = getSchedule()
 
             alertDialog.dismiss()
-            val builder = MedicamentoBuilder()
+            val builder = Medicamento.Builder()
                 .setNombre(nombre)
                 .setFechaInicio(fechaInicio)
                 .setFechaFin(fechaFin)

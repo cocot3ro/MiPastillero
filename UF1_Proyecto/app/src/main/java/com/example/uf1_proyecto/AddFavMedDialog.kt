@@ -29,8 +29,15 @@ class AddFavMedDialog(
 
     private val inputCodNacional: EditText = binding.codNacional
     private val inputNombre: EditText = binding.nombre
+    private var numRegistro: String? = null
+    private var url: String? = null
     private var fichaTecnica: String? = null
     private var prospecto: String? = null
+    private var imagen: ByteArray? = null
+    private var laboratorio: String? = null
+    private var dosis: String? = null
+    private var principiosActivos: List<String>? = null
+    private var receta: String? = null
 
     private val alertDialog: AlertDialog = AlertDialog.Builder(context)
         .setView(binding.root)
@@ -58,7 +65,7 @@ class AddFavMedDialog(
             GlobalScope.launch(Dispatchers.Main) {
                 val codNacional = inputCodNacional.text.toString().split(".")[0].trim()
 
-                val medicamento = pillboxViewModel.searchMedicamento(codNacional)
+                val medicamento = pillboxViewModel.searchMedicamento(codNacional)?.setCodNacional(codNacional.toInt())?.build()
 
                 withContext(Dispatchers.Main) {
                     searchingToast.cancel()
@@ -70,8 +77,15 @@ class AddFavMedDialog(
                         ).show()
                     } else {
                         inputNombre.setText(medicamento.nombre)
+                        numRegistro = medicamento.numRegistro
+                        url = medicamento.url
                         fichaTecnica = medicamento.fichaTecnica
                         prospecto = medicamento.prospecto
+                        imagen = medicamento.imagen
+                        laboratorio = medicamento.laboratorio
+                        dosis = medicamento.dosis
+                        principiosActivos = medicamento.principiosActivos
+                        receta = medicamento.receta
                     }
                 }
             }
@@ -101,17 +115,27 @@ class AddFavMedDialog(
             }
 
             val nombre = inputNombre.text.toString()
-            val codNacional = inputCodNacional.text.toString().split(".")[0].trim()
+            var codNacional = inputCodNacional.text.toString().split(".")[0].trim()
+            if (codNacional.isBlank()) {
+                codNacional = "-1"
+            }
             val fichaTecnica = fichaTecnica
             val prospecto = prospecto
 
             alertDialog.dismiss()
             listener.onDataEntered(
-                MedicamentoBuilder()
+                Medicamento.Builder()
                     .setNombre(nombre)
                     .setCodNacional(codNacional.toInt())
-                    .setFichaTecnica(fichaTecnica!!)
-                    .setProspecto(prospecto!!)
+                    .setNumRegistro(numRegistro ?: "")
+                    .setUrl(url ?: "")
+                    .setFichaTecnica(fichaTecnica ?: "")
+                    .setProspecto(prospecto ?: "")
+                    .setImagen(imagen ?: byteArrayOf())
+                    .setLaboratorio(laboratorio ?: "")
+                    .setDosis(dosis ?: "")
+                    .setPrincipiosActivos(principiosActivos ?: listOf())
+                    .setReceta(receta ?: "")
                     .setFavorito(true)
                     .build()
             )

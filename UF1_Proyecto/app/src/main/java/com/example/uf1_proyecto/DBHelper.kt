@@ -13,8 +13,7 @@ class DBHelper private constructor(context: Context) :
     companion object {
         private const val DB_NAME = "pillbox.db"
 
-        // TODO: Cambiar a version 1 al finalizar proyecto
-        private const val DB_VERSION = 61
+        private const val DB_VERSION = 1
 
         /**
          * Instancia única de la clase [DBHelper]
@@ -35,9 +34,16 @@ class DBHelper private constructor(context: Context) :
         private const val CREATE_MEDICATION_TABLE = """
             CREATE TABLE IF NOT EXISTS ${ContratoMedicamentos.NOMBRE_TABLA} (
                 ${ContratoMedicamentos.Columnas._ID} TEXT PRIMARY KEY,
-                ${ContratoMedicamentos.Columnas.COLUMN_COD} INTEGER DEFAULT -1,
+                ${ContratoMedicamentos.Columnas.COLUMN_COD_NACIONAL} INTEGER DEFAULT -1,
+                ${ContratoMedicamentos.Columnas.COLUMN_NUM_REGISTRO} INTEGER DEFAULT -1,
+                ${ContratoMedicamentos.Columnas.COLUMN_URL} TEXT,
                 ${ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA} TEXT,
-                ${ContratoMedicamentos.Columnas.COLUMN_PROSPECTO} TEXT
+                ${ContratoMedicamentos.Columnas.COLUMN_PROSPECTO} TEXT,
+                ${ContratoMedicamentos.Columnas.COLUMN_IMAGEN} BLOB,
+                ${ContratoMedicamentos.Columnas.COLUMN_LABORATORIO} TEXT,
+                ${ContratoMedicamentos.Columnas.COLUMN_DOSIS} TEXT,
+                ${ContratoMedicamentos.Columnas.COLUMN_PRINCIPIOS_ACTIVOS} TEXT,
+                ${ContratoMedicamentos.Columnas.COLUMN_RECETA} TEXT
             )
         """
 
@@ -133,9 +139,19 @@ class DBHelper private constructor(context: Context) :
 
         val values = ContentValues().apply {
             put(ContratoMedicamentos.Columnas._ID, medicamento.nombre)
-            put(ContratoMedicamentos.Columnas.COLUMN_COD, medicamento.codNacional)
-            put(ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA, medicamento.fichaTecnica)
-            put(ContratoMedicamentos.Columnas.COLUMN_PROSPECTO, medicamento.prospecto)
+            put(ContratoMedicamentos.Columnas.COLUMN_COD_NACIONAL, medicamento.codNacional ?: -1)
+            put(ContratoMedicamentos.Columnas.COLUMN_NUM_REGISTRO, medicamento.numRegistro ?: "")
+            put(ContratoMedicamentos.Columnas.COLUMN_URL, medicamento.url ?: "")
+            put(ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA, medicamento.fichaTecnica ?: "")
+            put(ContratoMedicamentos.Columnas.COLUMN_PROSPECTO, medicamento.prospecto ?: "")
+            put(ContratoMedicamentos.Columnas.COLUMN_IMAGEN, medicamento.imagen ?: ByteArray(0))
+            put(ContratoMedicamentos.Columnas.COLUMN_LABORATORIO, medicamento.laboratorio ?: "")
+            put(ContratoMedicamentos.Columnas.COLUMN_DOSIS, medicamento.dosis ?: "")
+            put(
+                ContratoMedicamentos.Columnas.COLUMN_PRINCIPIOS_ACTIVOS,
+                Gson().toJson(medicamento.principiosActivos ?: listOf(""))
+            )
+            put(ContratoMedicamentos.Columnas.COLUMN_RECETA, medicamento.receta ?: "")
         }
 
         writableDatabase.use { db ->
@@ -245,13 +261,32 @@ class DBHelper private constructor(context: Context) :
                     val colNombre = cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
 
                     val colCodNacional =
-                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD)
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD_NACIONAL)
+
+                    val colNumRegistro =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_NUM_REGISTRO)
+
+                    val colUrl = cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_URL)
 
                     val colFichaTecnica =
                         cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA)
 
                     val colProspecto =
                         cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_PROSPECTO)
+
+                    val colImagen =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_IMAGEN)
+
+                    val colLaboratorio =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_LABORATORIO)
+
+                    val colDosis = cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_DOSIS)
+
+                    val colPrincipiosActivos =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_PRINCIPIOS_ACTIVOS)
+
+                    val colReceta =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_RECETA)
 
                     val colFechaInicio =
                         cursor.getColumnIndex(ContratoActivos.Columnas.COLUMN_INICIO)
@@ -262,10 +297,23 @@ class DBHelper private constructor(context: Context) :
 
                     do {
                         listaActivos.add(
-                            MedicamentoBuilder().setNombre(cursor.getString(colNombre))
+                            Medicamento.Builder()
+                                .setNombre(cursor.getString(colNombre))
                                 .setCodNacional(cursor.getInt(colCodNacional))
+                                .setNumRegistro(cursor.getString(colNumRegistro))
+                                .setUrl(cursor.getString(colUrl))
                                 .setFichaTecnica(cursor.getString(colFichaTecnica))
                                 .setProspecto(cursor.getString(colProspecto))
+                                .setImagen(cursor.getBlob(colImagen))
+                                .setLaboratorio(cursor.getString(colLaboratorio))
+                                .setDosis(cursor.getString(colDosis))
+                                .setPrincipiosActivos(
+                                    Gson().fromJson(
+                                        cursor.getString(colPrincipiosActivos),
+                                        object : TypeToken<List<String>>() {}.type
+                                    )
+                                )
+                                .setReceta(cursor.getString(colReceta))
                                 .setFechaInicio(cursor.getLong(colFechaInicio))
                                 .setFechaFin(cursor.getLong(colFechaFin))
                                 .setHorario(
@@ -273,7 +321,8 @@ class DBHelper private constructor(context: Context) :
                                         cursor.getString(colHorario),
                                         object : TypeToken<Set<Long>>() {}.type
                                     )
-                                ).setFavorito(existeEnFavoritos(cursor.getString(colNombre)))
+                                )
+                                .setFavorito(existeEnFavoritos(cursor.getString(colNombre)))
                                 .build()
                         )
                     } while (cursor.moveToNext())
@@ -307,12 +356,17 @@ class DBHelper private constructor(context: Context) :
 
                     val colHora = cursor.getColumnIndex(ContratoCalendario.Columnas.COLUMN_HORA)
 
+                    val colImagen =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_IMAGEN)
+
                     val colSeHaTomado =
                         cursor.getColumnIndex(ContratoCalendario.Columnas.COLUMN_SE_HA_TOMADO)
 
                     do {
                         val medicamento =
-                            MedicamentoBuilder().setNombre(cursor.getString(colNombre))
+                            Medicamento.Builder()
+                                .setNombre(cursor.getString(colNombre))
+                                .setImagen(cursor.getBlob(colImagen))
                                 .setSeHaTomado(cursor.getInt(colSeHaTomado) == 1)
                                 .build()
 
@@ -521,7 +575,12 @@ class DBHelper private constructor(context: Context) :
                     val colNombre = cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
 
                     val colCodNacional =
-                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD)
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD_NACIONAL)
+
+                    val colNumRegistro =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_NUM_REGISTRO)
+
+                    val colUrl = cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_URL)
 
                     val colFichaTecnica =
                         cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA)
@@ -529,12 +588,37 @@ class DBHelper private constructor(context: Context) :
                     val colProspecto =
                         cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_PROSPECTO)
 
+                    val colImagen =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_IMAGEN)
+
+                    val colLaboratorio =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_LABORATORIO)
+
+                    val colDosis = cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_DOSIS)
+
+                    val colPrincipiosActivos =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_PRINCIPIOS_ACTIVOS)
+
+                    val colReceta = cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_RECETA)
+
                     do {
                         listaFavoritos.add(
-                            MedicamentoBuilder().setNombre(cursor.getString(colNombre))
+                            Medicamento.Builder().setNombre(cursor.getString(colNombre))
                                 .setCodNacional(cursor.getInt(colCodNacional))
+                                .setNumRegistro(cursor.getString(colNumRegistro))
+                                .setUrl(cursor.getString(colUrl))
                                 .setFichaTecnica(cursor.getString(colFichaTecnica))
                                 .setProspecto(cursor.getString(colProspecto)).setFavorito(true)
+                                .setImagen(cursor.getBlob(colImagen))
+                                .setLaboratorio(cursor.getString(colLaboratorio))
+                                .setDosis(cursor.getString(colDosis))
+                                .setPrincipiosActivos(
+                                    Gson().fromJson(
+                                        cursor.getString(colPrincipiosActivos),
+                                        object : TypeToken<List<String>>() {}.type
+                                    )
+                                )
+                                .setReceta(cursor.getString(colReceta))
                                 .build()
                         )
                     } while (cursor.moveToNext())
@@ -598,7 +682,7 @@ class DBHelper private constructor(context: Context) :
 
                     do {
                         listaTerminados.add(
-                            MedicamentoBuilder()
+                            Medicamento.Builder()
                                 .setNombre(cursor.getString(colNombre))
                                 .setFechaInicio(cursor.getLong(colFechaInicio))
                                 .setFechaFin(cursor.getLong(colFechaFin))
@@ -640,7 +724,7 @@ class DBHelper private constructor(context: Context) :
                     val colNombre = cursor.getColumnIndex(ContratoMedicamentos.Columnas._ID)
 
                     val colCodNacional =
-                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD)
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_COD_NACIONAL)
 
                     val colFichaTecnica =
                         cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA)
@@ -657,7 +741,7 @@ class DBHelper private constructor(context: Context) :
                         cursor.getColumnIndex(ContratoHistorial.Columnas.COLUMN_HORARIO)
 
                     do {
-                        val medicamento = MedicamentoBuilder()
+                        val medicamento = Medicamento.Builder()
                             .setNombre(cursor.getString(colNombre))
                             .setCodNacional(cursor.getInt(colCodNacional))
                             .setFichaTecnica(cursor.getString(colFichaTecnica))

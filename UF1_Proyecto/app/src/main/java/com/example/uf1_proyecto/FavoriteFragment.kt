@@ -1,5 +1,6 @@
 package com.example.uf1_proyecto
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
@@ -60,7 +62,7 @@ class FavoriteFragment : Fragment() {
             menuItemSelected(menuItem)
         }
 
-        cargarFavoritos()
+        updateView()
 
         return binding.root
     }
@@ -69,7 +71,7 @@ class FavoriteFragment : Fragment() {
      * Carga los medicamentos favoritos en la vista
      * Si no hay medicamentos favoritos, muestra un texto indicándolo
      */
-    private fun cargarFavoritos() {
+    private fun updateView() {
         binding.favoriteLayout.removeAllViews()
         val favoritos = pillboxViewModel.getFavoritos()
 
@@ -94,24 +96,20 @@ class FavoriteFragment : Fragment() {
         // Nombre del medicamento
         cardViewBinding.name.text = medicamento.nombre
 
-        // Botón para abrir URL de la ficha técnica
-        cardViewBinding.summaryBtn.setOnClickListener {
-            if (medicamento.codNacional != null && medicamento.codNacional != -1) {
-                if (!pillboxViewModel.openURL(requireContext(), medicamento.fichaTecnica)) {
-                    Toast.makeText(activity, getString(R.string.abrir_url_error), Toast.LENGTH_LONG)
-                        .show()
-                }
-            }
+        cardViewBinding.cuerpo.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                pillboxViewModel.getEstacionColor().second
+            )
+        )
+
+        if (medicamento.imagen != null) {
+            val bitmap = BitmapFactory.decodeByteArray(medicamento.imagen, 0, medicamento.imagen.size)
+            cardViewBinding.img.setImageBitmap(bitmap)
         }
 
-        // Botón para abrir URL del prospecto
-        cardViewBinding.leafletBtn.setOnClickListener {
-            if (medicamento.codNacional != null && medicamento.codNacional != -1) {
-                if (!pillboxViewModel.openURL(requireContext(), medicamento.prospecto)) {
-                    Toast.makeText(activity, getString(R.string.abrir_url_error), Toast.LENGTH_LONG)
-                        .show()
-                }
-            }
+        cardViewBinding.infoBtn.setOnClickListener {
+            InfoDialog(requireContext(), medicamento).show()
         }
 
         // Botón para añadir el medicamento a la lista de medicamentos activos
@@ -141,7 +139,7 @@ class FavoriteFragment : Fragment() {
                 }
 
                 snackBar.show()
-                cargarFavoritos()
+                updateView()
             } else {
                 Toast.makeText(activity, getString(R.string.borrar_fav_error), Toast.LENGTH_SHORT)
                     .show()
@@ -178,7 +176,7 @@ class FavoriteFragment : Fragment() {
                         getString(R.string.añadir_fav_ok),
                         Toast.LENGTH_LONG
                     ).show()
-                    cargarFavoritos()
+                    updateView()
                 } else {
                     Toast.makeText(
                         activity,
@@ -225,14 +223,14 @@ class FavoriteFragment : Fragment() {
                                 getString(R.string.añadir_activo_ok),
                                 Toast.LENGTH_LONG
                             ).show()
-                            cargarFavoritos()
+                            updateView()
                         } else if (addActive) {
                             Toast.makeText(
                                 context,
                                 getString(R.string.añadir_fav_error),
                                 Toast.LENGTH_LONG
                             ).show()
-                            cargarFavoritos()
+                            updateView()
                         } else {
                             Toast.makeText(
                                 context,

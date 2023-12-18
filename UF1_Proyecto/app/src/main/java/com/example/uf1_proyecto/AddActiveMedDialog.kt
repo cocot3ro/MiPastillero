@@ -35,13 +35,20 @@ class AddActiveMedDialog(
     private var _pillboxViewModel: PillboxViewModel? = null
     private val pillboxViewModel get() = _pillboxViewModel!!
 
-    private val inputCodNacional: EditText = binding.codNacional
     private val inputNombre: EditText = binding.nombre
-    private val inputFavorite: CheckBox = binding.saveAsFavorite
-    private val inputFechaInicio: TextView = binding.dateStart
-    private val inputFechaFin: TextView = binding.dateEnd
+    private val inputCodNacional: EditText = binding.codNacional
+    private var numRegistro: String? = null
+    private var url: String? = null
     private var fichaTecnica: String? = null
     private var prospecto: String? = null
+    private var imagen: ByteArray? = null
+    private var laboratorio: String? = null
+    private var dosis: String? = null
+    private var principiosActivos: List<String>? = null
+    private var receta: String? = null
+    private val inputFechaInicio: TextView = binding.dateStart
+    private val inputFechaFin: TextView = binding.dateEnd
+    private val inputFavorite: CheckBox = binding.saveAsFavorite
 
     private val alertDialog: AlertDialog = AlertDialog.Builder(context)
         .setView(binding.root)
@@ -71,7 +78,7 @@ class AddActiveMedDialog(
             GlobalScope.launch(Dispatchers.Main) {
                 val codNacional = inputCodNacional.text.toString().split(".")[0].trim()
 
-                val medicamento = pillboxViewModel.searchMedicamento(codNacional)
+                val medicamento = pillboxViewModel.searchMedicamento(codNacional)?.setCodNacional(codNacional.toInt())?.build()
 
                 withContext(Dispatchers.Main) {
                     searchingToast.cancel()
@@ -83,8 +90,15 @@ class AddActiveMedDialog(
                         ).show()
                     } else {
                         inputNombre.setText(medicamento.nombre)
+                        numRegistro = medicamento.numRegistro
+                        url = medicamento.url
                         fichaTecnica = medicamento.fichaTecnica
                         prospecto = medicamento.prospecto
+                        imagen = medicamento.imagen
+                        laboratorio = medicamento.laboratorio
+                        dosis = medicamento.dosis
+                        principiosActivos = medicamento.principiosActivos
+                        receta = medicamento.receta
                     }
                 }
             }
@@ -232,16 +246,26 @@ class AddActiveMedDialog(
             val isFavorite = inputFavorite.isChecked
 
             alertDialog.dismiss()
-            val builder = MedicamentoBuilder()
+
+            val medicamento = Medicamento.Builder()
                 .setNombre(nombre)
                 .setCodNacional(codNacional.toInt())
+                .setNumRegistro(numRegistro ?: "")
+                .setUrl(url ?: "")
                 .setFichaTecnica(fichaTecnica ?: "")
                 .setProspecto(prospecto ?: "")
+                .setImagen(imagen ?: byteArrayOf())
+                .setLaboratorio(laboratorio ?: "")
+                .setDosis(dosis ?: "")
+                .setPrincipiosActivos(principiosActivos ?: listOf())
+                .setReceta(receta ?: "")
                 .setFechaInicio(fechaInicio)
                 .setFechaFin(fechaFin)
                 .setHorario(horario)
                 .setFavorito(isFavorite)
-            listener.onDataEntered(builder.build())
+                .build()
+
+            listener.onDataEntered(medicamento)
         }
     }
 

@@ -7,123 +7,79 @@
     app:cardCornerRadius="8dp">
 
     <LinearLayout
+        android:id="@+id/cuerpo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/card_bg"
         android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginTop="8dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/img_layout"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginTop="8dp">
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@id/name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop" />
 
                 <ImageButton
                     android:id="@+id/fill_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded"
+                    android:background="@drawable/rounded_no_bg"
                     android:src="@android:drawable/ic_input_add"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/remove_btn"
-                    app:layout_constraintStart_toEndOf="@id/fill_btn"
-                    app:layout_constraintTop_toTopOf="parent"/>
+            </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/remove_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/rounded"
-                    android:src="@android:drawable/ic_delete"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/info_btn"
+                app:layout_constraintStart_toEndOf="@id/img_layout"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageButton
+                android:id="@+id/info_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/rounded_no_bg"
+                android:src="@android:drawable/ic_dialog_info"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/remove_btn"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginTop="4dp"
-                android:background="@color/black" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
-            android:gravity="end"
-            android:orientation="horizontal"
-            android:paddingBottom="4dp">
-
-            <LinearLayout
-                android:id="@+id/summary_btn_layout"
+            <ImageButton
+                android:id="@+id/remove_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/summary_btn"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:background="@drawable/rounded_no_bg"
+                android:src="@android:drawable/ic_delete"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageButton
-                    android:id="@+id/summary_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rounded"
-                    android:src="@android:drawable/ic_dialog_info" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="4dp"
-                    android:text="@string/ficha_tecnica" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/leaflet_btn_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/leaflet_btn"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:id="@+id/leaflet_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rounded"
-                    android:src="@android:drawable/ic_dialog_info" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="4dp"
-                    android:text="@string/prospecto" />
-
-            </LinearLayout>
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

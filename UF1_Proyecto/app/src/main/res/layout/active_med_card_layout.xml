@@ -8,9 +8,9 @@
     app:cardCornerRadius="8dp">
 
     <LinearLayout
+        android:id="@+id/cuerpo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/card_bg"
         android:orientation="vertical">
 
         <LinearLayout
@@ -23,24 +23,51 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp">
 
-                <ImageButton
-                    android:id="@+id/fav_btn"
+                <LinearLayout
+                    android:id="@+id/img_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded"
-                    android:src="@android:drawable/star_big_off"
+                    android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <ImageButton
-                    android:id="@+id/refill_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:background="@drawable/rounded"
-                    android:src="@android:drawable/ic_input_add"
-                    app:layout_constraintStart_toEndOf="@id/fav_btn"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <ImageView
+                        android:id="@+id/img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/fav_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rounded_no_bg"
+                            android:src="@android:drawable/star_big_off"
+                            app:layout_constraintStart_toEndOf="@id/img"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageButton
+                            android:id="@+id/refill_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:background="@drawable/rounded_no_bg"
+                            android:src="@android:drawable/ic_input_add"
+                            app:layout_constraintStart_toEndOf="@id/fav_btn"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/name"
@@ -50,16 +77,28 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/info_btn"
+                    app:layout_constraintStart_toEndOf="@id/img_layout"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/info_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:background="@drawable/rounded_no_bg"
+                    android:src="@android:drawable/ic_dialog_info"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/remove_btn"
-                    app:layout_constraintStart_toEndOf="@id/refill_btn"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
                     android:id="@+id/remove_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded"
+                    android:background="@drawable/rounded_no_bg"
                     android:src="@android:drawable/ic_delete"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -159,60 +198,6 @@
                             android:layout_gravity="end"
                             android:layout_marginStart="8dp"
                             android:orientation="vertical" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="4dp"
-                    android:gravity="end"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/summary_btn"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageButton
-                            android:id="@+id/summary_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded"
-                            android:src="@android:drawable/ic_dialog_info" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="4dp"
-                            android:text="@string/ficha_tecnica" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/leaflet_btn"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageButton
-                            android:id="@+id/leaflet_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded"
-                            android:src="@android:drawable/ic_dialog_info" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="4dp"
-                            android:text="@string/prospecto" />
 
                     </LinearLayout>
 

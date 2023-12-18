@@ -73,4 +73,11 @@
     <string name="noviembre">Novembro</string>
     <string name="diciembre">Decembro</string>
     <string name="historial_vacio">O historial está baleiro</string>
+    <string name="cerrar">Pechar</string>
+    <string name="info_medicamento">Información do medicamento</string>
+    <string name="numero_registro">Número de rexistro:</string>
+    <string name="laboratorio">Laboratorio:</string>
+    <string name="principios_activos">Principios activos:</string>
+    <string name="dosis">Dose:</string>
+    <string name="ver_en_web">Ver na web</string>
 </resources>

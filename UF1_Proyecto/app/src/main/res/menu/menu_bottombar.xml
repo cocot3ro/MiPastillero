@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/activeMedFragment"
-        android:icon="@android:drawable/alert_dark_frame"
+        android:icon="@mipmap/pildora"
         android:title="@string/medicacion_activa"
         app:showAsAction="always" />
 
