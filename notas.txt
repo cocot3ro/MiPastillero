@@ -1,6 +1,0 @@
-API:
-  https://cima.aemps.es/cima/publico/home.html
-  https://sede.aemps.gob.es/docs/CIMA-REST-API_1_19.pdf
-
-Pantalla para libro de nanotaciones por día
-
