@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.example.uf1_proyecto.databinding.EmptyLayoutBinding
 import com.example.uf1_proyecto.databinding.FavoriteCardLayoutBinding
 import com.example.uf1_proyecto.databinding.FragmentFavoriteBinding
 import com.google.android.material.snackbar.Snackbar
@@ -78,9 +79,9 @@ class FavoriteFragment : Fragment() {
         if (favoritos.isNotEmpty()) {
             favoritos.forEach { addCardView(it) }
         } else {
-            binding.favoriteLayout.addView(TextView(requireContext()).apply {
-                text = getString(R.string.sin_meds_favoritos)
-            })
+            EmptyLayoutBinding.inflate(layoutInflater, binding.favoriteLayout, true).apply {
+                texto.text = getString(R.string.sin_meds_favoritos)
+            }
         }
     }
 

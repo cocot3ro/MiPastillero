@@ -20,6 +20,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.uf1_proyecto.databinding.CalendarMedGroupLayoutBinding
 import com.example.uf1_proyecto.databinding.CalendarMedLayoutBinding
+import com.example.uf1_proyecto.databinding.EmptyLayoutBinding
 import com.example.uf1_proyecto.databinding.FragmentCalendarBinding
 import java.util.Calendar
 
@@ -98,11 +99,9 @@ class CalendarFragment : Fragment() {
         val map = pillboxViewModel.getActivosCalendario(pillboxViewModel.getCalendarCurrDate())
 
         if (map.isEmpty()) {
-            binding.calendarLayout.addView(
-                TextView(requireContext()).apply {
-                    text = getString(R.string.sin_meds_en_dia)
-                }
-            )
+            EmptyLayoutBinding.inflate(layoutInflater, binding.calendarLayout, true).apply {
+                texto.text = getString(R.string.sin_meds_en_dia)
+            }
         } else {
             for (entry in map) {
                 val groupBinding =
