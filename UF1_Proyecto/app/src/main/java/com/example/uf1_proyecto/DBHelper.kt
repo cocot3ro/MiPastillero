@@ -599,7 +599,8 @@ class DBHelper private constructor(context: Context) :
                     val colPrincipiosActivos =
                         cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_PRINCIPIOS_ACTIVOS)
 
-                    val colReceta = cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_RECETA)
+                    val colReceta =
+                        cursor.getColumnIndex(ContratoMedicamentos.Columnas.COLUMN_RECETA)
 
                     do {
                         listaFavoritos.add(

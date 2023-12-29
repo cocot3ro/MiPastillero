@@ -14,14 +14,18 @@ import java.util.Calendar
 class PillboxViewModel private constructor(context: Context) : ViewModel() {
     private var dbHelper: DBHelper = DBHelper.getInstance(context)
 
-    private var calendarCurrDate =
-        Triple<MutableLiveData<Pair<Long, Map<Long, List<Medicamento>>>>, MutableLiveData<Pair<Long, Map<Long, List<Medicamento>>>>, MutableLiveData<Pair<Long, Map<Long, List<Medicamento>>>>>(
+    private var calendarCurrDate: Triple<MutableLiveData<Pair<Long, Map<Long, List<Medicamento>>>>,
+            MutableLiveData<Pair<Long, Map<Long, List<Medicamento>>>>,
+            MutableLiveData<Pair<Long, Map<Long, List<Medicamento>>>>> =
+        Triple(
             MutableLiveData(
                 DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis()) to getActivosCalendario(
                     DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis())
                 )
             ),
+
             MutableLiveData(DateTimeUtils.getTodayAsMillis() to getActivosCalendario(DateTimeUtils.getTodayAsMillis())),
+
             MutableLiveData(
                 DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis()) to getActivosCalendario(
                     DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis())
@@ -29,7 +33,7 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
             )
         )
 
-    private var diaryCurrDate = MutableLiveData(DateTimeUtils.getTodayAsMillis())
+    private var diaryCurrDate: MutableLiveData<Pair<Long, String>> = MutableLiveData(DateTimeUtils.getTodayAsMillis() to getDiaryText(DateTimeUtils.getTodayAsMillis()))
 
     companion object {
         /**
@@ -111,7 +115,7 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      */
     private fun getActivosCalendario(dia: Long) = dbHelper.getActivosCalendario(dia)
 
-    fun refreshCalendar() {
+    private fun refreshCalendar() {
         calendarCurrDate.first.value =
             calendarCurrDate.first.value!!.first to getActivosCalendario(calendarCurrDate.first.value!!.first)
         calendarCurrDate.second.value =
@@ -123,34 +127,36 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
     /**
      * Devuelve la fecha que se está mostrando en la agenda
      */
-    fun getDiaryCurrDate(): Long = diaryCurrDate.value!!
+    fun getDiaryCurrDate(): Pair<Long, String> = diaryCurrDate.value!!
 
     /**
      * Establece la fecha que se está mostrando en la agenda
      * @param date fecha en milisegundos
      */
     fun setDiaryCurrDate(date: Long) {
-        diaryCurrDate.value = date
+        diaryCurrDate.value = date to (getDiaryText(date))
     }
 
     /**
      * Avanza un día en la agenda
      */
     fun diaryNextDay() {
-        diaryCurrDate.value = DateTimeUtils.nextDay(diaryCurrDate.value!!)
+        diaryCurrDate.value = DateTimeUtils.nextDay(diaryCurrDate.value!!.first) to getDiaryText(
+            DateTimeUtils.nextDay(diaryCurrDate.value!!.first))
     }
 
     /**
      * Retrocede un día en la agenda
      */
     fun diaryPrevDay() {
-        diaryCurrDate.value = DateTimeUtils.prevDay(diaryCurrDate.value!!)
+        diaryCurrDate.value = DateTimeUtils.prevDay(diaryCurrDate.value!!.first) to getDiaryText(
+            DateTimeUtils.prevDay(diaryCurrDate.value!!.first))
     }
 
     /**
      * Devuelve el texto de la entrada de la agenda del dia correspondiente
      */
-    fun getDiaryText() = dbHelper.getDiaryEntry(getDiaryCurrDate())
+    private fun getDiaryText(dia: Long) = dbHelper.getDiaryEntry(dia) ?: ""
 
     /**
      * Devuelve todos los medicamentos activos
@@ -189,7 +195,7 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      * @return true si se ha insertado correctamente, false si no
      */
     fun insertIntoAgenda(descripcion: String): Boolean {
-        return dbHelper.insertIntoAgenda(getDiaryCurrDate(), descripcion)
+        return dbHelper.insertIntoAgenda(getDiaryCurrDate().first, descripcion)
     }
 
     fun desmarcarToma(med: Medicamento, hora: Long, dia: Long) =
