@@ -8,13 +8,15 @@
         android:title="@string/añadir_medicamento"
         app:showAsAction="withText" />
 
-    <item android:title="@string/extra">
-        <menu>
-            <item
-                android:id="@+id/historyFragment"
-                android:icon="@android:drawable/ic_menu_recent_history"
-                android:title="@string/historial"
-                app:showAsAction="always" />
-        </menu>
-    </item>
+    <item
+        android:id="@+id/diaryFragment"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="@string/agenda"
+        app:showAsAction="withText" />
+
+    <item
+        android:id="@+id/historyFragment"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:title="@string/historial"
+        app:showAsAction="withText" />
 </menu>

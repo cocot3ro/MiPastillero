@@ -20,9 +20,9 @@
         android:title="@string/favoritos"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/diaryFragment"
-        android:icon="@android:drawable/ic_menu_agenda"
-        android:title="@string/agenda"
-        app:showAsAction="always" />
+<!--    <item-->
+<!--        android:id="@+id/diaryFragment"-->
+<!--        android:icon="@android:drawable/ic_menu_agenda"-->
+<!--        android:title="@string/agenda"-->
+<!--        app:showAsAction="always" />-->
 </menu>

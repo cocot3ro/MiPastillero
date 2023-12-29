@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -29,19 +30,18 @@ class CalendarFragment : Fragment() {
 
     private lateinit var pillboxViewModel: PillboxViewModel
 
+    private lateinit var navController: NavController
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         pillboxViewModel = PillboxViewModel.getInstance(requireContext())
+        navController = ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         setHasOptionsMenu(true)
-
-        val navHostFragment =
-            (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -56,6 +56,8 @@ class CalendarFragment : Fragment() {
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
         binding.toolbar.setOnMenuItemClickListener { menuItem -> menuItemSelected(menuItem) }
+
+        binding.bottomNavigation.setupWithNavController(navController)
 
         binding.navView.setupWithNavController(navController)
 
@@ -291,9 +293,8 @@ class CalendarFragment : Fragment() {
                 true
             }
 
-            R.id.historyFragment -> {
-                NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_calendarFragment_to_historyFragment)
+            R.id.diaryFragment, R.id.historyFragment -> {
+                navController.navigate(menuItem.itemId)
                 true
             }
 

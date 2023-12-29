@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -31,22 +32,20 @@ class ActiveMedFragment : Fragment() {
     private var _pillboxViewModel: PillboxViewModel? = null
     private val pillboxViewModel get() = _pillboxViewModel!!
 
+    private lateinit var navController: NavController
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentActiveMedBinding.inflate(inflater, container, false)
         _pillboxViewModel = PillboxViewModel.getInstance(requireContext())
+        navController = ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
 
         val view = binding.root
 
         setHasOptionsMenu(true)
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-
-        val navHostFragment =
-            (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-
-        val navController = navHostFragment.navController
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -63,6 +62,8 @@ class ActiveMedFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener { menuItem -> menuItemSelected(menuItem) }
 
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+
+        binding.bottomNavigation.setupWithNavController(navController)
 
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -308,9 +309,8 @@ class ActiveMedFragment : Fragment() {
                 true
             }
 
-            R.id.historyFragment -> {
-                NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_activeMedFragment_to_historyFragment)
+            R.id.diaryFragment, R.id.historyFragment -> {
+                navController.navigate(menuItem.itemId)
                 true
             }
 

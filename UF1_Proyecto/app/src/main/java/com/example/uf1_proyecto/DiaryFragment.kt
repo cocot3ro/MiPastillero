@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -27,32 +28,23 @@ class DiaryFragment : Fragment() {
     private var _pillboxViewModel: PillboxViewModel? = null
     private val pillboxViewModel get() = _pillboxViewModel!!
 
+    private lateinit var navController: NavController
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDiaryBinding.inflate(inflater, container, false)
         _pillboxViewModel = PillboxViewModel.getInstance(requireContext())
+        navController = ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
         val view = binding.root
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         setHasOptionsMenu(true)
 
-        val navHostFragment =
-            (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.calendarFragment,
-                R.id.activeMedFragment,
-                R.id.favoriteFragment,
-                R.id.diaryFragment
-            ),
-            binding.drawerLayout
-        )
-
+        val builder = AppBarConfiguration.Builder(navController.graph)
+        val appBarConfiguration = builder.build()
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
         binding.toolbar.setOnMenuItemClickListener { menuItem -> menuItemSelected(menuItem) }
@@ -87,7 +79,8 @@ class DiaryFragment : Fragment() {
      */
     private fun initRenderer() {
         // Infla el layout del renderer
-        val rendererBinding = DiaryRendererBinding.inflate(layoutInflater, binding.diaryLayout, true)
+        val rendererBinding =
+            DiaryRendererBinding.inflate(layoutInflater, binding.diaryLayout, true)
 
         // Establece la fecha actual
         @Suppress("SetTextI18n")
@@ -142,7 +135,9 @@ class DiaryFragment : Fragment() {
                     ).show()
                 } else {
                     Toast.makeText(
-                        requireContext(), getString(R.string.guardar_agenda_error), Toast.LENGTH_LONG
+                        requireContext(),
+                        getString(R.string.guardar_agenda_error),
+                        Toast.LENGTH_LONG
                     ).show()
                 }
             }
@@ -260,9 +255,8 @@ class DiaryFragment : Fragment() {
                 true
             }
 
-            R.id.historyFragment -> {
-                NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_diaryFragment_to_historyFragment)
+            R.id.calendarFragment, R.id.activeMedFragment, R.id.favoriteFragment,  R.id.diaryFragment, R.id.historyFragment -> {
+                navController.navigate(menuItem.itemId)
                 true
             }
 
