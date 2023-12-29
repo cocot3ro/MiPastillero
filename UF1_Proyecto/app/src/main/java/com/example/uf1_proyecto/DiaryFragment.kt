@@ -94,12 +94,12 @@ class DiaryFragment : Fragment() {
         rendererBinding.diaryDate.text =
             "${DateTimeUtils.getTodayAsDayOfWeek(requireContext())} - ${
                 DateTimeUtils.millisToDate(
-                    pillboxViewModel.getDiaryCurrDate()
+                    pillboxViewModel.getDiaryCurrDate().first
                 )
             }"
 
         // Establece el texto de la entrada de la agenda
-        rendererBinding.diaryText.text = pillboxViewModel.getDiaryText()
+        rendererBinding.diaryText.text = pillboxViewModel.getDiaryCurrDate().second
 
         // Botón para cambiar al editor
         rendererBinding.diaryEditButton.setOnClickListener {
@@ -119,12 +119,12 @@ class DiaryFragment : Fragment() {
         editorBinding.diaryDate.text =
             "${DateTimeUtils.getTodayAsDayOfWeek(requireContext())} - ${
                 DateTimeUtils.millisToDate(
-                    pillboxViewModel.getDiaryCurrDate()
+                    pillboxViewModel.getDiaryCurrDate().first
                 )
             }"
 
         // Establece el texto de la entrada de la agenda
-        editorBinding.diaryText.setText(pillboxViewModel.getDiaryText())
+        editorBinding.diaryText.setText(pillboxViewModel.getDiaryCurrDate().second)
 
         // Botón para cambiar al renderer
         editorBinding.diaryDeleteButton.setOnClickListener {
@@ -134,7 +134,7 @@ class DiaryFragment : Fragment() {
         // Botón para guardar la entrada de la agenda
         editorBinding.diarySaveButton.setOnClickListener {
             val text = editorBinding.diaryText.text.toString()
-            if (text != pillboxViewModel.getDiaryText()) {
+            if (text != pillboxViewModel.getDiaryCurrDate().second) {
                 if (pillboxViewModel.insertIntoAgenda(text)) {
                     changeToRenderer()
                     Toast.makeText(

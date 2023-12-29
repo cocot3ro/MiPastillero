@@ -33,7 +33,24 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
             )
         )
 
-    private var diaryCurrDate: MutableLiveData<Pair<Long, String>> = MutableLiveData(DateTimeUtils.getTodayAsMillis() to getDiaryText(DateTimeUtils.getTodayAsMillis()))
+    private var diaryCurrDate: Triple<MutableLiveData<Pair<Long, String>>,
+            MutableLiveData<Pair<Long, String>>,
+            MutableLiveData<Pair<Long, String>>> =
+        Triple(
+            MutableLiveData(
+                DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis()) to getDiaryText(
+                    DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis())
+                )
+            ),
+
+            MutableLiveData(DateTimeUtils.getTodayAsMillis() to getDiaryText(DateTimeUtils.getTodayAsMillis())),
+
+            MutableLiveData(
+                DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis()) to getDiaryText(
+                    DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis())
+                )
+            )
+        )
 
     companion object {
         /**
@@ -127,30 +144,51 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
     /**
      * Devuelve la fecha que se está mostrando en la agenda
      */
-    fun getDiaryCurrDate(): Pair<Long, String> = diaryCurrDate.value!!
+    fun getDiaryCurrDate(): Pair<Long, String> = diaryCurrDate.second.value!!
 
     /**
      * Establece la fecha que se está mostrando en la agenda
      * @param date fecha en milisegundos
      */
     fun setDiaryCurrDate(date: Long) {
-        diaryCurrDate.value = date to (getDiaryText(date))
+        diaryCurrDate.first.value =
+            DateTimeUtils.prevDay(date) to (getDiaryText(DateTimeUtils.prevDay(date)))
+        diaryCurrDate.second.value = date to (getDiaryText(date))
+        diaryCurrDate.third.value =
+            DateTimeUtils.nextDay(date) to (getDiaryText(DateTimeUtils.nextDay(date)))
     }
 
     /**
      * Avanza un día en la agenda
      */
     fun diaryNextDay() {
-        diaryCurrDate.value = DateTimeUtils.nextDay(diaryCurrDate.value!!.first) to getDiaryText(
-            DateTimeUtils.nextDay(diaryCurrDate.value!!.first))
+        diaryCurrDate.first.value = diaryCurrDate.second.value
+        diaryCurrDate.second.value = diaryCurrDate.third.value
+        diaryCurrDate.third.value =
+            DateTimeUtils.nextDay(diaryCurrDate.third.value!!.first) to getDiaryText(
+                DateTimeUtils.nextDay(diaryCurrDate.third.value!!.first)
+            )
     }
 
     /**
      * Retrocede un día en la agenda
      */
     fun diaryPrevDay() {
-        diaryCurrDate.value = DateTimeUtils.prevDay(diaryCurrDate.value!!.first) to getDiaryText(
-            DateTimeUtils.prevDay(diaryCurrDate.value!!.first))
+        diaryCurrDate.third.value = diaryCurrDate.second.value
+        diaryCurrDate.second.value = diaryCurrDate.first.value
+        diaryCurrDate.first.value =
+            DateTimeUtils.prevDay(diaryCurrDate.first.value!!.first) to getDiaryText(
+                DateTimeUtils.prevDay(diaryCurrDate.first.value!!.first)
+            )
+    }
+
+    private fun refreshDiary() {
+        diaryCurrDate.first.value =
+            diaryCurrDate.first.value!!.first to getDiaryText(diaryCurrDate.first.value!!.first)
+        diaryCurrDate.second.value =
+            diaryCurrDate.second.value!!.first to getDiaryText(diaryCurrDate.second.value!!.first)
+        diaryCurrDate.third.value =
+            diaryCurrDate.third.value!!.first to getDiaryText(diaryCurrDate.third.value!!.first)
     }
 
     /**
@@ -177,7 +215,8 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
     /**
      * Elimina un medicamento de la lista de medicamentos activos
      */
-    fun deleteActiveMed(medicamento: Medicamento) = dbHelper.deleteFromActivos(medicamento).also { if (it) refreshCalendar() }
+    fun deleteActiveMed(medicamento: Medicamento) =
+        dbHelper.deleteFromActivos(medicamento).also { if (it) refreshCalendar() }
 
     /**
      * Añade un medicamento a la lista de medicamentos favoritos
@@ -195,7 +234,7 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      * @return true si se ha insertado correctamente, false si no
      */
     fun insertIntoAgenda(descripcion: String): Boolean {
-        return dbHelper.insertIntoAgenda(getDiaryCurrDate().first, descripcion)
+        return dbHelper.insertIntoAgenda(getDiaryCurrDate().first, descripcion).also { if (it) refreshDiary() }
     }
 
     fun desmarcarToma(med: Medicamento, hora: Long, dia: Long) =
