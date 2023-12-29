@@ -88,14 +88,14 @@ class CalendarFragment : Fragment() {
         @Suppress("SetTextI18n")
         binding.calendarDay.text = "${
             DateTimeUtils.millisToDayOfWeek(
-                pillboxViewModel.getCalendarCurrDate(),
+                pillboxViewModel.getCalendarCurrDate().first,
                 requireContext()
             )
-        } - ${DateTimeUtils.millisToDate(pillboxViewModel.getCalendarCurrDate())}"
+        } - ${DateTimeUtils.millisToDate(pillboxViewModel.getCalendarCurrDate().first)}"
 
         binding.calendarLayout.removeAllViews()
 
-        val map = pillboxViewModel.getActivosCalendario(pillboxViewModel.getCalendarCurrDate())
+        val map = pillboxViewModel.getCalendarCurrDate().second
 
         if (map.isEmpty()) {
             EmptyLayoutBinding.inflate(layoutInflater, binding.calendarLayout, true).apply {
@@ -111,7 +111,7 @@ class CalendarFragment : Fragment() {
                     )
 
                 val colores =
-                    pillboxViewModel.getEstacionColor(pillboxViewModel.getCalendarCurrDate())
+                    pillboxViewModel.getEstacionColor(pillboxViewModel.getCalendarCurrDate().first)
 
                 groupBinding.cuerpo.setBackgroundColor(
                     ContextCompat.getColor(
@@ -155,7 +155,7 @@ class CalendarFragment : Fragment() {
                             if (pillboxViewModel.desmarcarToma(
                                     medicamento,
                                     entry.key,
-                                    pillboxViewModel.getCalendarCurrDate()
+                                    pillboxViewModel.getCalendarCurrDate().first
                                 )
                             ) {
                                 Toast.makeText(
@@ -175,7 +175,7 @@ class CalendarFragment : Fragment() {
                             if (pillboxViewModel.marcarToma(
                                     medicamento,
                                     entry.key,
-                                    pillboxViewModel.getCalendarCurrDate()
+                                    pillboxViewModel.getCalendarCurrDate().first
                                 )
                             ) {
                                 Toast.makeText(

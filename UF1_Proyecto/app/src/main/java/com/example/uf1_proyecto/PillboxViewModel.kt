@@ -3,7 +3,6 @@ package com.example.uf1_proyecto
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.GsonBuilder
@@ -15,7 +14,20 @@ import java.util.Calendar
 class PillboxViewModel private constructor(context: Context) : ViewModel() {
     private var dbHelper: DBHelper = DBHelper.getInstance(context)
 
-    private var calendarCurrDate = MutableLiveData(DateTimeUtils.getTodayAsMillis())
+    private var calendarCurrDate =
+        Triple<MutableLiveData<Pair<Long, Map<Long, List<Medicamento>>>>, MutableLiveData<Pair<Long, Map<Long, List<Medicamento>>>>, MutableLiveData<Pair<Long, Map<Long, List<Medicamento>>>>>(
+            MutableLiveData(
+                DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis()) to getActivosCalendario(
+                    DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis())
+                )
+            ),
+            MutableLiveData(DateTimeUtils.getTodayAsMillis() to getActivosCalendario(DateTimeUtils.getTodayAsMillis())),
+            MutableLiveData(
+                DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis()) to getActivosCalendario(
+                    DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis())
+                )
+            )
+        )
 
     private var diaryCurrDate = MutableLiveData(DateTimeUtils.getTodayAsMillis())
 
@@ -54,35 +66,59 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
     /**
      * Devuelve la fecha que se está mostrando en el calendario
      */
-    fun getCalendarCurrDate(): Long = calendarCurrDate.value!!
+    fun getCalendarCurrDate(): Pair<Long, Map<Long, List<Medicamento>>> =
+        calendarCurrDate.second.value!!
 
     /**
      * Establece la fecha que se está mostrando en el calendario
      * @param date fecha en milisegundos
      */
     fun setCalendarCurrDate(date: Long) {
-        calendarCurrDate.value = date
+        calendarCurrDate.first.value =
+            DateTimeUtils.prevDay(date) to getActivosCalendario(DateTimeUtils.prevDay(date))
+        calendarCurrDate.second.value = date to getActivosCalendario(date)
+        calendarCurrDate.third.value =
+            DateTimeUtils.nextDay(date) to getActivosCalendario(DateTimeUtils.nextDay(date))
     }
 
     /**
      * Avanza un día en el calendario
      */
     fun calendarNextDay() {
-        calendarCurrDate.value = DateTimeUtils.nextDay(calendarCurrDate.value!!)
+        calendarCurrDate.first.value = calendarCurrDate.second.value
+        calendarCurrDate.second.value = calendarCurrDate.third.value
+        calendarCurrDate.third.value =
+            DateTimeUtils.nextDay(calendarCurrDate.third.value!!.first) to getActivosCalendario(
+                DateTimeUtils.nextDay(calendarCurrDate.third.value!!.first)
+            )
     }
 
     /**
      * Retrocede un día en el calendario
      */
     fun calendarPrevDay() {
-        calendarCurrDate.value = DateTimeUtils.prevDay(calendarCurrDate.value!!)
+        calendarCurrDate.third.value = calendarCurrDate.second.value
+        calendarCurrDate.second.value = calendarCurrDate.first.value
+        calendarCurrDate.first.value =
+            DateTimeUtils.prevDay(calendarCurrDate.first.value!!.first) to getActivosCalendario(
+                DateTimeUtils.prevDay(calendarCurrDate.first.value!!.first)
+            )
     }
 
     /**
      * Devuelve los medicamentos activos de un día agrupados por hora
      * @param dia día en milisegundos
      */
-    fun getActivosCalendario(dia: Long) = dbHelper.getActivosCalendario(dia)
+    private fun getActivosCalendario(dia: Long) = dbHelper.getActivosCalendario(dia)
+
+    fun refreshCalendar() {
+        calendarCurrDate.first.value =
+            calendarCurrDate.first.value!!.first to getActivosCalendario(calendarCurrDate.first.value!!.first)
+        calendarCurrDate.second.value =
+            calendarCurrDate.second.value!!.first to getActivosCalendario(calendarCurrDate.second.value!!.first)
+        calendarCurrDate.third.value =
+            calendarCurrDate.third.value!!.first to getActivosCalendario(calendarCurrDate.third.value!!.first)
+    }
 
     /**
      * Devuelve la fecha que se está mostrando en la agenda
@@ -129,12 +165,13 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
     /**
      * Añade un medicamento a la lista de medicamentos activos
      */
-    fun addActiveMed(medicamento: Medicamento) = dbHelper.insertIntoActivos(medicamento)
+    fun addActiveMed(medicamento: Medicamento) =
+        dbHelper.insertIntoActivos(medicamento).also { if (it) refreshCalendar() }
 
     /**
      * Elimina un medicamento de la lista de medicamentos activos
      */
-    fun deleteActiveMed(medicamento: Medicamento) = dbHelper.deleteFromActivos(medicamento)
+    fun deleteActiveMed(medicamento: Medicamento) = dbHelper.deleteFromActivos(medicamento).also { if (it) refreshCalendar() }
 
     /**
      * Añade un medicamento a la lista de medicamentos favoritos
@@ -173,7 +210,6 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
                 val response: Response = khttp.get(apiUrl, timeout = 5.0)
 
                 if (response.statusCode != 200) {
-                    Log.e("API", "Error ${response.statusCode} al consultar el API")
                     return@withContext null
                 }
 
@@ -183,7 +219,6 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
                     .fromJson(response.text, Medicamento.Builder::class.java)
 
             } catch (e: Exception) {
-                Log.e("API", "Error al consultar el API", e)
                 null
             }
         }
