@@ -22,6 +22,7 @@ import com.example.uf1_proyecto.databinding.CalendarMedGroupLayoutBinding
 import com.example.uf1_proyecto.databinding.CalendarMedLayoutBinding
 import com.example.uf1_proyecto.databinding.EmptyLayoutBinding
 import com.example.uf1_proyecto.databinding.FragmentCalendarBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Calendar
 
 class CalendarFragment : Fragment() {
@@ -43,6 +44,8 @@ class CalendarFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility = View.VISIBLE
+
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.calendarFragment,
@@ -56,8 +59,6 @@ class CalendarFragment : Fragment() {
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
         binding.toolbar.setOnMenuItemClickListener { menuItem -> menuItemSelected(menuItem) }
-
-        binding.bottomNavigation.setupWithNavController(navController)
 
         binding.navView.setupWithNavController(navController)
 

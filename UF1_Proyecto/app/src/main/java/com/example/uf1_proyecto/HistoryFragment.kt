@@ -12,9 +12,11 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.example.uf1_proyecto.databinding.EmptyLayoutBinding
 import com.example.uf1_proyecto.databinding.FragmentHistoryBinding
 import com.example.uf1_proyecto.databinding.HistoryMedGroupLayoutBinding
 import com.example.uf1_proyecto.databinding.HistoryMedLayoutBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HistoryFragment : Fragment() {
     private var _binding: FragmentHistoryBinding? = null
@@ -38,6 +40,8 @@ class HistoryFragment : Fragment() {
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility = View.GONE
+
         val builder = AppBarConfiguration.Builder(navController.graph)
         val appBarConfiguration = builder.build()
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
@@ -53,11 +57,9 @@ class HistoryFragment : Fragment() {
         val historial = pillboxViewModel.getHistorial()
 
         if (historial.isEmpty()) {
-            binding.historyLayout.addView(
-                TextView(requireContext()).apply {
-                    text = getString(R.string.historial_vacio)
-                }
-            )
+            EmptyLayoutBinding.inflate(layoutInflater, binding.historyLayout, true).apply {
+                texto.text = getString(R.string.historial_vacio)
+            }
         } else {
             for (entry in historial) {
                 val groupBinding = HistoryMedGroupLayoutBinding.inflate(

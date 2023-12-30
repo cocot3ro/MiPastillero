@@ -19,6 +19,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.uf1_proyecto.databinding.DiaryEditorBinding
 import com.example.uf1_proyecto.databinding.DiaryRendererBinding
 import com.example.uf1_proyecto.databinding.FragmentDiaryBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Calendar
 
 class DiaryFragment : Fragment() {
@@ -40,6 +41,8 @@ class DiaryFragment : Fragment() {
         val view = binding.root
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility = View.GONE
 
         setHasOptionsMenu(true)
 

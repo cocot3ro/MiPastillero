@@ -20,6 +20,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.uf1_proyecto.databinding.EmptyLayoutBinding
 import com.example.uf1_proyecto.databinding.FavoriteCardLayoutBinding
 import com.example.uf1_proyecto.databinding.FragmentFavoriteBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 
 class FavoriteFragment : Fragment() {
@@ -40,6 +41,8 @@ class FavoriteFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility = View.VISIBLE
+
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         val appBarConfiguration = AppBarConfiguration(
@@ -54,8 +57,6 @@ class FavoriteFragment : Fragment() {
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
         binding.toolbar.setOnMenuItemClickListener { menuItem -> menuItemSelected(menuItem) }
-
-        binding.bottomNavigation.setupWithNavController(navController)
 
         binding.navView.setupWithNavController(navController)
 
