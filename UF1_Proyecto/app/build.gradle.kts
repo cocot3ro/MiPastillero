@@ -48,6 +48,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
     implementation("org.danilopianini:khttp:1.4.2")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     testImplementation("junit:junit:4.13.2")

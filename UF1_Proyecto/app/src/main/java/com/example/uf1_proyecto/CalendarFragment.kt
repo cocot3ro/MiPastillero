@@ -68,12 +68,12 @@ class CalendarFragment : Fragment() {
         }
 
         binding.prevDay.setOnClickListener {
-            pillboxViewModel.calendarPrevDay()
+            pillboxViewModel.calendarMoveBackward()
             updateView()
         }
 
         binding.nextDay.setOnClickListener {
-            pillboxViewModel.calendarNextDay()
+            pillboxViewModel.calendarMoveForward()
             updateView()
         }
 
@@ -91,14 +91,14 @@ class CalendarFragment : Fragment() {
         @Suppress("SetTextI18n")
         binding.calendarDay.text = "${
             DateTimeUtils.millisToDayOfWeek(
-                pillboxViewModel.getCalendarCurrDate().first,
+                pillboxViewModel.getCalendarCurrDayData().first,
                 requireContext()
             )
-        } - ${DateTimeUtils.millisToDate(pillboxViewModel.getCalendarCurrDate().first)}"
+        } - ${DateTimeUtils.millisToDate(pillboxViewModel.getCalendarCurrDayData().first)}"
 
         binding.calendarLayout.removeAllViews()
 
-        val map = pillboxViewModel.getCalendarCurrDate().second
+        val map = pillboxViewModel.getCalendarCurrDayData().second
 
         if (map.isEmpty()) {
             EmptyLayoutBinding.inflate(layoutInflater, binding.calendarLayout, true).apply {
@@ -114,7 +114,7 @@ class CalendarFragment : Fragment() {
                     )
 
                 val colores =
-                    pillboxViewModel.getEstacionColor(pillboxViewModel.getCalendarCurrDate().first)
+                    pillboxViewModel.getEstacionColor(pillboxViewModel.getCalendarCurrDayData().first)
 
                 groupBinding.cuerpo.setBackgroundColor(
                     ContextCompat.getColor(
@@ -158,7 +158,7 @@ class CalendarFragment : Fragment() {
                             if (pillboxViewModel.desmarcarToma(
                                     medicamento,
                                     entry.key,
-                                    pillboxViewModel.getCalendarCurrDate().first
+                                    pillboxViewModel.getCalendarCurrDayData().first
                                 )
                             ) {
                                 Toast.makeText(
@@ -178,7 +178,7 @@ class CalendarFragment : Fragment() {
                             if (pillboxViewModel.marcarToma(
                                     medicamento,
                                     entry.key,
-                                    pillboxViewModel.getCalendarCurrDate().first
+                                    pillboxViewModel.getCalendarCurrDayData().first
                                 )
                             ) {
                                 Toast.makeText(
