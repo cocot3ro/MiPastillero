@@ -128,8 +128,6 @@ class ActiveMedFragment : Fragment() {
             val bitmap =
                 BitmapFactory.decodeByteArray(medicamento.imagen, 0, medicamento.imagen.size)
             cardViewBinding.img.setImageBitmap(bitmap)
-        } else {
-            cardViewBinding.img.setImageResource(R.mipmap.no_image_available)
         }
 
         // Cambia el icono de favorito si el medicamento es favorito
