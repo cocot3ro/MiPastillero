@@ -172,8 +172,10 @@ class RefillMedDialog(
         val horario = sortedSetOf<Long>()
 
         for (child in (binding.scheduleLayout.children)) {
-            val time = child.findViewById<TextView>(R.id.timer_hour).text.toString()
-            horario.add(DateTimeUtils.timeToMillis(time))
+            TimePickerLayoutBinding.bind(child).apply {
+                val time = timerHour.text.toString()
+                horario.add(DateTimeUtils.timeToMillis(time))
+            }
         }
 
         return horario

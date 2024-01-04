@@ -14,26 +14,20 @@ import java.util.Calendar
 class PillboxViewModel private constructor(context: Context) : ViewModel() {
     private var dbHelper: DBHelper = DBHelper.getInstance(context)
 
-    private var calendarCurrDate: Triple<MutableLiveData<Pair<Long, Map<Long, List<Medicamento>>>>,
-            MutableLiveData<Pair<Long, Map<Long, List<Medicamento>>>>,
-            MutableLiveData<Pair<Long, Map<Long, List<Medicamento>>>>> =
-        Triple(
-            MutableLiveData(
+    private var calendarData: MutableLiveData<Triple<Pair<Long, Map<Long, List<Medicamento>>>, Pair<Long, Map<Long, List<Medicamento>>>, Pair<Long, Map<Long, List<Medicamento>>>>> =
+        MutableLiveData(
+            Triple(
                 DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis()) to getActivosCalendario(
                     DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis())
-                )
-            ),
-
-            MutableLiveData(DateTimeUtils.getTodayAsMillis() to getActivosCalendario(DateTimeUtils.getTodayAsMillis())),
-
-            MutableLiveData(
+                ),
+                DateTimeUtils.getTodayAsMillis() to getActivosCalendario(DateTimeUtils.getTodayAsMillis()),
                 DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis()) to getActivosCalendario(
                     DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis())
                 )
             )
         )
 
-    private var diaryCurrDate: Triple<MutableLiveData<Pair<Long, String>>,
+    private var diaryData: Triple<MutableLiveData<Pair<Long, String>>,
             MutableLiveData<Pair<Long, String>>,
             MutableLiveData<Pair<Long, String>>> =
         Triple(
@@ -84,46 +78,55 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
         return true
     }
 
+    fun getCalendarPrevDayData(): Pair<Long, Map<Long, List<Medicamento>>> =
+        calendarData.value!!.first
+
     /**
      * Devuelve la fecha que se está mostrando en el calendario
      */
-    fun getCalendarCurrDate(): Pair<Long, Map<Long, List<Medicamento>>> =
-        calendarCurrDate.second.value!!
+    fun getCalendarCurrDayData(): Pair<Long, Map<Long, List<Medicamento>>> =
+        calendarData.value!!.second
+
+    fun getCalendarNextDayData(): Pair<Long, Map<Long, List<Medicamento>>> =
+        calendarData.value!!.third
 
     /**
      * Establece la fecha que se está mostrando en el calendario
      * @param date fecha en milisegundos
      */
     fun setCalendarCurrDate(date: Long) {
-        calendarCurrDate.first.value =
-            DateTimeUtils.prevDay(date) to getActivosCalendario(DateTimeUtils.prevDay(date))
-        calendarCurrDate.second.value = date to getActivosCalendario(date)
-        calendarCurrDate.third.value =
+        calendarData.value = Triple(
+            DateTimeUtils.prevDay(date) to getActivosCalendario(DateTimeUtils.prevDay(date)),
+            date to getActivosCalendario(date),
             DateTimeUtils.nextDay(date) to getActivosCalendario(DateTimeUtils.nextDay(date))
+        )
     }
 
     /**
      * Avanza un día en el calendario
      */
-    fun calendarNextDay() {
-        calendarCurrDate.first.value = calendarCurrDate.second.value
-        calendarCurrDate.second.value = calendarCurrDate.third.value
-        calendarCurrDate.third.value =
-            DateTimeUtils.nextDay(calendarCurrDate.third.value!!.first) to getActivosCalendario(
-                DateTimeUtils.nextDay(calendarCurrDate.third.value!!.first)
+    fun calendarMoveForward() {
+        calendarData.value = Triple(
+            calendarData.value!!.second,
+            calendarData.value!!.third,
+            DateTimeUtils.nextDay(calendarData.value!!.third.first) to getActivosCalendario(
+                DateTimeUtils.nextDay(calendarData.value!!.third.first)
             )
+        )
+
     }
 
     /**
      * Retrocede un día en el calendario
      */
-    fun calendarPrevDay() {
-        calendarCurrDate.third.value = calendarCurrDate.second.value
-        calendarCurrDate.second.value = calendarCurrDate.first.value
-        calendarCurrDate.first.value =
-            DateTimeUtils.prevDay(calendarCurrDate.first.value!!.first) to getActivosCalendario(
-                DateTimeUtils.prevDay(calendarCurrDate.first.value!!.first)
-            )
+    fun calendarMoveBackward() {
+        calendarData.value = Triple(
+            DateTimeUtils.prevDay(calendarData.value!!.first.first) to getActivosCalendario(
+                DateTimeUtils.prevDay(calendarData.value!!.first.first)
+            ),
+            calendarData.value!!.first,
+            calendarData.value!!.second
+        )
     }
 
     /**
@@ -133,28 +136,27 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
     private fun getActivosCalendario(dia: Long) = dbHelper.getActivosCalendario(dia)
 
     private fun refreshCalendar() {
-        calendarCurrDate.first.value =
-            calendarCurrDate.first.value!!.first to getActivosCalendario(calendarCurrDate.first.value!!.first)
-        calendarCurrDate.second.value =
-            calendarCurrDate.second.value!!.first to getActivosCalendario(calendarCurrDate.second.value!!.first)
-        calendarCurrDate.third.value =
-            calendarCurrDate.third.value!!.first to getActivosCalendario(calendarCurrDate.third.value!!.first)
+        calendarData.value = Triple(
+            calendarData.value!!.first.first to getActivosCalendario(calendarData.value!!.first.first),
+            calendarData.value!!.second.first to getActivosCalendario(calendarData.value!!.second.first),
+            calendarData.value!!.third.first to getActivosCalendario(calendarData.value!!.third.first)
+        )
     }
 
     /**
      * Devuelve la fecha que se está mostrando en la agenda
      */
-    fun getDiaryCurrDate(): Pair<Long, String> = diaryCurrDate.second.value!!
+    fun getDiaryCurrDate(): Pair<Long, String> = diaryData.second.value!!
 
     /**
      * Establece la fecha que se está mostrando en la agenda
      * @param date fecha en milisegundos
      */
     fun setDiaryCurrDate(date: Long) {
-        diaryCurrDate.first.value =
+        diaryData.first.value =
             DateTimeUtils.prevDay(date) to (getDiaryText(DateTimeUtils.prevDay(date)))
-        diaryCurrDate.second.value = date to (getDiaryText(date))
-        diaryCurrDate.third.value =
+        diaryData.second.value = date to (getDiaryText(date))
+        diaryData.third.value =
             DateTimeUtils.nextDay(date) to (getDiaryText(DateTimeUtils.nextDay(date)))
     }
 
@@ -162,11 +164,11 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      * Avanza un día en la agenda
      */
     fun diaryNextDay() {
-        diaryCurrDate.first.value = diaryCurrDate.second.value
-        diaryCurrDate.second.value = diaryCurrDate.third.value
-        diaryCurrDate.third.value =
-            DateTimeUtils.nextDay(diaryCurrDate.third.value!!.first) to getDiaryText(
-                DateTimeUtils.nextDay(diaryCurrDate.third.value!!.first)
+        diaryData.first.value = diaryData.second.value
+        diaryData.second.value = diaryData.third.value
+        diaryData.third.value =
+            DateTimeUtils.nextDay(diaryData.third.value!!.first) to getDiaryText(
+                DateTimeUtils.nextDay(diaryData.third.value!!.first)
             )
     }
 
@@ -174,21 +176,21 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      * Retrocede un día en la agenda
      */
     fun diaryPrevDay() {
-        diaryCurrDate.third.value = diaryCurrDate.second.value
-        diaryCurrDate.second.value = diaryCurrDate.first.value
-        diaryCurrDate.first.value =
-            DateTimeUtils.prevDay(diaryCurrDate.first.value!!.first) to getDiaryText(
-                DateTimeUtils.prevDay(diaryCurrDate.first.value!!.first)
+        diaryData.third.value = diaryData.second.value
+        diaryData.second.value = diaryData.first.value
+        diaryData.first.value =
+            DateTimeUtils.prevDay(diaryData.first.value!!.first) to getDiaryText(
+                DateTimeUtils.prevDay(diaryData.first.value!!.first)
             )
     }
 
     private fun refreshDiary() {
-        diaryCurrDate.first.value =
-            diaryCurrDate.first.value!!.first to getDiaryText(diaryCurrDate.first.value!!.first)
-        diaryCurrDate.second.value =
-            diaryCurrDate.second.value!!.first to getDiaryText(diaryCurrDate.second.value!!.first)
-        diaryCurrDate.third.value =
-            diaryCurrDate.third.value!!.first to getDiaryText(diaryCurrDate.third.value!!.first)
+        diaryData.first.value =
+            diaryData.first.value!!.first to getDiaryText(diaryData.first.value!!.first)
+        diaryData.second.value =
+            diaryData.second.value!!.first to getDiaryText(diaryData.second.value!!.first)
+        diaryData.third.value =
+            diaryData.third.value!!.first to getDiaryText(diaryData.third.value!!.first)
     }
 
     /**
@@ -234,7 +236,8 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      * @return true si se ha insertado correctamente, false si no
      */
     fun insertIntoAgenda(descripcion: String): Boolean {
-        return dbHelper.insertIntoAgenda(getDiaryCurrDate().first, descripcion).also { if (it) refreshDiary() }
+        return dbHelper.insertIntoAgenda(getDiaryCurrDate().first, descripcion)
+            .also { if (it) refreshDiary() }
     }
 
     fun desmarcarToma(med: Medicamento, hora: Long, dia: Long) =
@@ -285,10 +288,10 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
 
     fun getEstacionColor(): Pair<Int, Int> {
         return when (getEstacion()!!) {
-            Estaciones.INVIERNO -> R.color.card_header_bg_invierno to R.color.card_bg_invierno
-            Estaciones.PRIMAVERA -> R.color.card_header_bg_primavera to R.color.card_bg_primavera
-            Estaciones.VERANO -> R.color.card_header_bg_verano to R.color.card_bg_verano
-            Estaciones.OTONHO -> R.color.card_header_bg_otoño to R.color.card_bg_otoño
+            Estaciones.INVIERNO -> R.color.primaryDarkWinter to R.color.primaryWinter
+            Estaciones.PRIMAVERA -> R.color.primaryDarkSpring to R.color.primarySpring
+            Estaciones.VERANO -> R.color.primaryDarkSummer to R.color.primarySummer
+            Estaciones.OTONHO -> R.color.primaryDarkAutumn to R.color.primaryAutumn
         }
     }
 
@@ -304,10 +307,10 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
 
     fun getEstacionColor(date: Long): Pair<Int, Int> {
         return when (getEstacion(date)!!) {
-            Estaciones.INVIERNO -> R.color.card_header_bg_invierno to R.color.card_bg_invierno
-            Estaciones.PRIMAVERA -> R.color.card_header_bg_primavera to R.color.card_bg_primavera
-            Estaciones.VERANO -> R.color.card_header_bg_verano to R.color.card_bg_verano
-            Estaciones.OTONHO -> R.color.card_header_bg_otoño to R.color.card_bg_otoño
+            Estaciones.INVIERNO -> R.color.primaryDarkWinter to R.color.primaryWinter
+            Estaciones.PRIMAVERA -> R.color.primaryDarkSpring to R.color.primarySpring
+            Estaciones.VERANO -> R.color.primaryDarkSummer to R.color.primarySummer
+            Estaciones.OTONHO -> R.color.primaryDarkAutumn to R.color.primaryAutumn
         }
     }
 
