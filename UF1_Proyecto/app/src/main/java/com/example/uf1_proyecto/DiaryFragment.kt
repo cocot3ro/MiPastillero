@@ -30,6 +30,7 @@ class DiaryFragment : Fragment() {
     private val pillboxViewModel get() = _pillboxViewModel!!
 
     private lateinit var navController: NavController
+    private lateinit var pagerAdapter: DiaryPagerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +39,7 @@ class DiaryFragment : Fragment() {
         _binding = FragmentDiaryBinding.inflate(inflater, container, false)
         _pillboxViewModel = PillboxViewModel.getInstance(requireContext())
         navController = ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
-        val view = binding.root
+        pagerAdapter = DiaryPagerAdapter(requireActivity())
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
@@ -59,108 +60,25 @@ class DiaryFragment : Fragment() {
             menuItemSelected(menuItem)
         }
 
-        // Muestra la entrada de la agenda del día anterior
-        binding.fabPrev.setOnClickListener {
-            pillboxViewModel.diaryPrevDay()
-            changeToRenderer()
-        }
+//        // Muestra la entrada de la agenda del día anterior
+//        binding.fabPrev.setOnClickListener {
+//            pillboxViewModel.diaryMoveBackward()
+//            changeToRenderer()
+//        }
+//
+//        // Muestra la entrada de la agenda del día siguiente
+//        binding.fabNext.setOnClickListener {
+//            pillboxViewModel.diaryMoveForward()
+//            changeToRenderer()
+//        }
+//
+//        // Por defecto, muestra el renderer de la entrada de la agenda del día actual
+//        initRenderer()
 
-        // Muestra la entrada de la agenda del día siguiente
-        binding.fabNext.setOnClickListener {
-            pillboxViewModel.diaryNextDay()
-            changeToRenderer()
-        }
+        binding.viewPager.adapter = pagerAdapter
+        binding.viewPager.setCurrentItem(pagerAdapter.lastPosition, false)
 
-        // Por defecto, muestra el renderer de la entrada de la agenda del día actual
-        initRenderer()
-
-        return view
-    }
-
-    /**
-     * Inicializa la vista de renderer de la agenda
-     */
-    private fun initRenderer() {
-        // Infla el layout del renderer
-        val rendererBinding =
-            DiaryRendererBinding.inflate(layoutInflater, binding.diaryLayout, true)
-
-        // Establece la fecha actual
-        @Suppress("SetTextI18n")
-        rendererBinding.diaryDate.text =
-            "${DateTimeUtils.getTodayAsDayOfWeek(requireContext())} - ${
-                DateTimeUtils.millisToDate(
-                    pillboxViewModel.getDiaryCurrDate().first
-                )
-            }"
-
-        // Establece el texto de la entrada de la agenda
-        rendererBinding.diaryText.text = pillboxViewModel.getDiaryCurrDate().second
-
-        // Botón para cambiar al editor
-        rendererBinding.diaryEditButton.setOnClickListener {
-            changeToEditor()
-        }
-    }
-
-    /**
-     * Inicializa la vista de editor de la agenda
-     */
-    private fun initEditor() {
-        // Infla el layout del editor
-        val editorBinding = DiaryEditorBinding.inflate(layoutInflater, binding.diaryLayout, true)
-
-        // Establece la fecha actual
-        @Suppress("SetTextI18n")
-        editorBinding.diaryDate.text =
-            "${DateTimeUtils.getTodayAsDayOfWeek(requireContext())} - ${
-                DateTimeUtils.millisToDate(
-                    pillboxViewModel.getDiaryCurrDate().first
-                )
-            }"
-
-        // Establece el texto de la entrada de la agenda
-        editorBinding.diaryText.setText(pillboxViewModel.getDiaryCurrDate().second)
-
-        // Botón para cambiar al renderer
-        editorBinding.diaryDeleteButton.setOnClickListener {
-            changeToRenderer()
-        }
-
-        // Botón para guardar la entrada de la agenda
-        editorBinding.diarySaveButton.setOnClickListener {
-            val text = editorBinding.diaryText.text.toString()
-            if (text != pillboxViewModel.getDiaryCurrDate().second) {
-                if (pillboxViewModel.insertIntoAgenda(text)) {
-                    changeToRenderer()
-                    Toast.makeText(
-                        requireContext(), getString(R.string.guardar_agenda_ok), Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.guardar_agenda_error),
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-        }
-    }
-
-    /**
-     * Cambia la vista de la agenda a la de renderer
-     */
-    private fun changeToEditor() {
-        binding.diaryLayout.removeAllViews()
-        initEditor()
-    }
-
-    /**
-     * Cambia la vista de la agenda a la de editor
-     */
-    private fun changeToRenderer() {
-        binding.diaryLayout.removeAllViews()
-        initRenderer()
+        return binding.root
     }
 
     private fun search() {
@@ -172,7 +90,7 @@ class DiaryFragment : Fragment() {
                         year, monthOfYear, dayOfMonth
                     )
                 )
-                changeToRenderer()
+//                changeToRenderer()
             },
             // Establece la fecha actual como predeterminada
             Calendar.getInstance().get(Calendar.YEAR),
@@ -185,7 +103,7 @@ class DiaryFragment : Fragment() {
 
     private fun today() {
         pillboxViewModel.setDiaryCurrDate(DateTimeUtils.getTodayAsMillis())
-        changeToRenderer()
+//        changeToRenderer()
     }
 
     private fun addMedDialog() {

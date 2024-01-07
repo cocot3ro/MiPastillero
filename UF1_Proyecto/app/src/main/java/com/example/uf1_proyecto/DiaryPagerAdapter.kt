@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import kotlin.math.abs
 
-class CalendarPagerAdapter(
+class DiaryPagerAdapter(
     fragmentActivity: FragmentActivity,
     private val loggingEnabled: Boolean = false
 ) :
@@ -18,7 +18,7 @@ class CalendarPagerAdapter(
 
     init {
         if (loggingEnabled) {
-            Log.v("CalendarPagerAdapter", "init")
+            Log.v("DiaryPagerAdapter", "init")
         }
         _pillboxViewModel = PillboxViewModel.getInstance(fragmentActivity)
 
@@ -31,49 +31,49 @@ class CalendarPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         if (loggingEnabled) {
-            Log.i("CalendarPagerAdapter", "")
-            Log.i("CalendarPagerAdapter", "createFragment: $lastPosition -> $position")
+            Log.i("DiaryPagerAdapter", "")
+            Log.i("DiaryPagerAdapter", "createFragment: $lastPosition -> $position")
         }
 
         if (abs(position - lastPosition) > 1) {
             if (loggingEnabled) {
                 Log.d(
-                    "CalendarPagerAdapter",
+                    "DiaryPagerAdapter",
                     "createFragment: abs(position - lastPosition) ${abs(position - lastPosition)}"
                 )
             }
             for (i in 1 until abs(position - lastPosition)) {
                 if (position < lastPosition) {
-                    pillboxViewModel.calendarMoveBackward()
+                    pillboxViewModel.diaryMoveBackward()
                     if (loggingEnabled) {
-                        Log.e("CalendarPagerAdapter", "createFragment: adjusting prev")
+                        Log.e("DiaryPagerAdapter", "createFragment: adjusting prev")
                     }
                 } else {
-                    pillboxViewModel.calendarMoveForward()
+                    pillboxViewModel.diaryMoveForward()
                     if (loggingEnabled) {
-                        Log.e("CalendarPagerAdapter", "createFragment: adjusting next")
+                        Log.e("DiaryPagerAdapter", "createFragment: adjusting next")
                     }
                 }
             }
         }
 
         val data = when {
-            position < lastPosition -> pillboxViewModel.getCalendarPrevDayData()
-            position > lastPosition -> pillboxViewModel.getCalendarNextDayData()
-            else -> pillboxViewModel.getCalendarCurrDayData()
+            position < lastPosition -> pillboxViewModel.getDiaryPrevDayData()
+            position > lastPosition -> pillboxViewModel.getDiaryNextDayData()
+            else -> pillboxViewModel.getDiaryCurrDayData()
         }
 
         when {
             position < lastPosition -> {
-                pillboxViewModel.calendarMoveBackward()
+                pillboxViewModel.diaryMoveBackward()
                 if (loggingEnabled) {
                     Log.i(
-                        "CalendarPagerAdapter",
-                        "position < lastPosition -> calendarMoveBackward()"
+                        "DiaryPagerAdapter",
+                        "position < lastPosition -> diaryMoveBackward()"
                     )
 
                     Log.i(
-                        "CalendarPagerAdapter",
+                        "DiaryPagerAdapter",
                         "createFragment: prev $lastPosition -> $position ${
                             DateTimeUtils.millisToDate(
                                 data.first
@@ -84,29 +84,29 @@ class CalendarPagerAdapter(
             }
 
             position > lastPosition -> {
-                pillboxViewModel.calendarMoveForward()
+                pillboxViewModel.diaryMoveForward()
                 if (loggingEnabled) {
                     Log.i(
-                        "CalendarPagerAdapter",
-                        "position > lastPosition -> calendarMoveForward()"
+                        "DiaryPagerAdapter",
+                        "position > lastPosition -> diaryMoveForward()"
                     )
 
 
-                Log.i(
-                    "CalendarPagerAdapter",
-                    "createFragment: next $lastPosition -> $position ${
-                        DateTimeUtils.millisToDate(
-                            data.first
-                        )
-                    }"
-                )
+                    Log.i(
+                        "DiaryPagerAdapter",
+                        "createFragment: next $lastPosition -> $position ${
+                            DateTimeUtils.millisToDate(
+                                data.first
+                            )
+                        }"
+                    )
                 }
             }
 
             else -> {
                 if (loggingEnabled) {
                     Log.i(
-                        "CalendarPagerAdapter",
+                        "DiaryPagerAdapter",
                         "createFragment: same $lastPosition -> $position ${
                             DateTimeUtils.millisToDate(
                                 data.first
@@ -120,10 +120,10 @@ class CalendarPagerAdapter(
         lastPosition = position
 
         if (loggingEnabled) {
-            Log.v("CalendarPagerAdapter", "return")
+            Log.v("DiaryPagerAdapter", "return")
         }
 
-        return CalendarPageFragment(data)
+        return DiaryPageFragment(data)
     }
 
 }

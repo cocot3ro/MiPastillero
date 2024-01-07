@@ -12,6 +12,9 @@ import kotlinx.coroutines.withContext
 import java.util.Calendar
 
 class PillboxViewModel private constructor(context: Context) : ViewModel() {
+
+    // TODO: Comentar
+
     private var dbHelper: DBHelper = DBHelper.getInstance(context)
 
     private var calendarData: MutableLiveData<Triple<Pair<Long, Map<Long, List<Medicamento>>>, Pair<Long, Map<Long, List<Medicamento>>>, Pair<Long, Map<Long, List<Medicamento>>>>> =
@@ -20,29 +23,27 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
                 DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis()) to getActivosCalendario(
                     DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis())
                 ),
+
                 DateTimeUtils.getTodayAsMillis() to getActivosCalendario(DateTimeUtils.getTodayAsMillis()),
+
                 DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis()) to getActivosCalendario(
                     DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis())
                 )
             )
         )
 
-    private var diaryData: Triple<MutableLiveData<Pair<Long, String>>,
-            MutableLiveData<Pair<Long, String>>,
-            MutableLiveData<Pair<Long, String>>> =
-        Triple(
-            MutableLiveData(
-                DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis()) to getDiaryText(
+    private var diaryData: MutableLiveData<Triple<Pair<Long, String>, Pair<Long, String>, Pair<Long, String>>> =
+        MutableLiveData(
+            Triple(
+                DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis()) to (getDiaryText(
                     DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis())
-                )
-            ),
+                )),
 
-            MutableLiveData(DateTimeUtils.getTodayAsMillis() to getDiaryText(DateTimeUtils.getTodayAsMillis())),
+                DateTimeUtils.getTodayAsMillis() to (getDiaryText(DateTimeUtils.getTodayAsMillis())),
 
-            MutableLiveData(
-                DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis()) to getDiaryText(
+                DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis()) to (getDiaryText(
                     DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis())
-                )
+                ))
             )
         )
 
@@ -143,54 +144,56 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
         )
     }
 
-    /**
-     * Devuelve la fecha que se está mostrando en la agenda
-     */
-    fun getDiaryCurrDate(): Pair<Long, String> = diaryData.second.value!!
+    fun getDiaryPrevDayData(): Pair<Long, String> = diaryData.value!!.first
+
+    fun getDiaryCurrDayData(): Pair<Long, String> = diaryData.value!!.second
+
+    fun getDiaryNextDayData(): Pair<Long, String> = diaryData.value!!.third
 
     /**
      * Establece la fecha que se está mostrando en la agenda
      * @param date fecha en milisegundos
      */
     fun setDiaryCurrDate(date: Long) {
-        diaryData.first.value =
-            DateTimeUtils.prevDay(date) to (getDiaryText(DateTimeUtils.prevDay(date)))
-        diaryData.second.value = date to (getDiaryText(date))
-        diaryData.third.value =
-            DateTimeUtils.nextDay(date) to (getDiaryText(DateTimeUtils.nextDay(date)))
+        diaryData.value = Triple(
+            DateTimeUtils.prevDay(date) to getDiaryText(DateTimeUtils.prevDay(date)),
+            date to getDiaryText(date),
+            DateTimeUtils.nextDay(date) to getDiaryText(DateTimeUtils.nextDay(date))
+        )
     }
 
     /**
      * Avanza un día en la agenda
      */
-    fun diaryNextDay() {
-        diaryData.first.value = diaryData.second.value
-        diaryData.second.value = diaryData.third.value
-        diaryData.third.value =
-            DateTimeUtils.nextDay(diaryData.third.value!!.first) to getDiaryText(
-                DateTimeUtils.nextDay(diaryData.third.value!!.first)
+    fun diaryMoveForward() {
+        diaryData.value = Triple(
+            diaryData.value!!.second,
+            diaryData.value!!.third,
+            DateTimeUtils.nextDay(diaryData.value!!.third.first) to getDiaryText(
+                DateTimeUtils.nextDay(diaryData.value!!.third.first)
             )
+        )
     }
 
     /**
      * Retrocede un día en la agenda
      */
-    fun diaryPrevDay() {
-        diaryData.third.value = diaryData.second.value
-        diaryData.second.value = diaryData.first.value
-        diaryData.first.value =
-            DateTimeUtils.prevDay(diaryData.first.value!!.first) to getDiaryText(
-                DateTimeUtils.prevDay(diaryData.first.value!!.first)
-            )
+    fun diaryMoveBackward() {
+        diaryData.value = Triple(
+            DateTimeUtils.prevDay(diaryData.value!!.first.first) to getDiaryText(
+                DateTimeUtils.prevDay(diaryData.value!!.first.first)
+            ),
+            diaryData.value!!.first,
+            diaryData.value!!.second
+        )
     }
 
     private fun refreshDiary() {
-        diaryData.first.value =
-            diaryData.first.value!!.first to getDiaryText(diaryData.first.value!!.first)
-        diaryData.second.value =
-            diaryData.second.value!!.first to getDiaryText(diaryData.second.value!!.first)
-        diaryData.third.value =
-            diaryData.third.value!!.first to getDiaryText(diaryData.third.value!!.first)
+        diaryData.value = Triple(
+            diaryData.value!!.first.first to getDiaryText(diaryData.value!!.first.first),
+            diaryData.value!!.second.first to getDiaryText(diaryData.value!!.second.first),
+            diaryData.value!!.third.first to getDiaryText(diaryData.value!!.third.first)
+        )
     }
 
     /**
@@ -235,8 +238,8 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      * @param descripcion descripción de la entrada
      * @return true si se ha insertado correctamente, false si no
      */
-    fun insertIntoAgenda(descripcion: String): Boolean {
-        return dbHelper.insertIntoAgenda(getDiaryCurrDate().first, descripcion)
+    fun insertIntoAgenda(date: Long, descripcion: String): Boolean {
+        return dbHelper.insertIntoAgenda(date, descripcion)
             .also { if (it) refreshDiary() }
     }
 

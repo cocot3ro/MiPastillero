@@ -13,7 +13,7 @@ import com.example.uf1_proyecto.databinding.CalendarMedLayoutBinding
 import com.example.uf1_proyecto.databinding.EmptyLayoutBinding
 import com.example.uf1_proyecto.databinding.FragmentCalendarPageBinding
 
-class CalendarPageFragment(private val pair: Pair<Long, Map<Long, List<Medicamento>>>, private val position: Int) :
+class CalendarPageFragment(private val pair: Pair<Long, Map<Long, List<Medicamento>>>) :
     Fragment() {
 
     private var _binding: FragmentCalendarPageBinding? = null
@@ -40,7 +40,7 @@ class CalendarPageFragment(private val pair: Pair<Long, Map<Long, List<Medicamen
                 pair.first,
                 requireContext()
             )
-        } - ${DateTimeUtils.millisToDate(pair.first)}\n$position"
+        } - ${DateTimeUtils.millisToDate(pair.first)}"
 
         binding.calendarLayout.removeAllViews()
 
@@ -54,8 +54,7 @@ class CalendarPageFragment(private val pair: Pair<Long, Map<Long, List<Medicamen
             for (entry in map) {
                 val groupBinding =
                     CalendarMedGroupLayoutBinding.inflate(
-                        layoutInflater,
-                        binding.calendarLayout,
+                        layoutInflater, binding.calendarLayout,
                         true
                     )
 
@@ -96,10 +95,10 @@ class CalendarPageFragment(private val pair: Pair<Long, Map<Long, List<Medicamen
                     }
 
                     if (medicamento.seHaTomado!!) {
-                        calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_on_background)
+                        calendarEntryBinding.btnToma.setImageResource(android.R.drawable.checkbox_on_background)
                     }
 
-                    calendarEntryBinding.btn.setOnClickListener {
+                    calendarEntryBinding.btnToma.setOnClickListener {
                         if (medicamento.seHaTomado!!) {
                             if (pillboxViewModel.desmarcarToma(
                                     medicamento,
@@ -113,7 +112,7 @@ class CalendarPageFragment(private val pair: Pair<Long, Map<Long, List<Medicamen
                                     Toast.LENGTH_LONG
                                 ).show()
                                 medicamento.seHaTomado = false
-                                calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_off_background)
+                                calendarEntryBinding.btnToma.setImageResource(android.R.drawable.checkbox_off_background)
                             } else {
                                 Toast.makeText(
                                     context,
@@ -132,7 +131,7 @@ class CalendarPageFragment(private val pair: Pair<Long, Map<Long, List<Medicamen
                                     getString(R.string.marcar_ok), Toast.LENGTH_LONG
                                 ).show()
                                 medicamento.seHaTomado = true
-                                calendarEntryBinding.btn.setImageResource(android.R.drawable.checkbox_on_background)
+                                calendarEntryBinding.btnToma.setImageResource(android.R.drawable.checkbox_on_background)
                             } else {
                                 Toast.makeText(
                                     context,

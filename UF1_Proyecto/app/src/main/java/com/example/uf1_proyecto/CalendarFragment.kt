@@ -2,7 +2,6 @@ package com.example.uf1_proyecto
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -65,45 +64,11 @@ class CalendarFragment : Fragment() {
             menuItemSelected(menuItem)
         }
 
-
         binding.viewPager.adapter = pagerAdapter
         binding.viewPager.setCurrentItem(pagerAdapter.lastPosition, false)
 
-        binding.viewPager.registerOnPageChangeCallback(object :
-            androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-
-                when {
-                    position < pagerAdapter.lastPosition -> {
-                        Log.i(
-                            "CalendarPagerAdapter",
-                            "onPageSelected: prev - ${pagerAdapter.lastPosition} -> $position"
-                        )
-                        pillboxViewModel.calendarMoveBackward().also {
-                            Log.i(
-                                "CalendarPagerAdapter",
-                                "onPageSelected: prev -> calendarMoveBackward()"
-                            )
-                        }
-                        pagerAdapter.lastPosition = position
-                    }
-
-                    position > pagerAdapter.lastPosition -> {
-                        Log.i(
-                            "CalendarPagerAdapter",
-                            "onPageSelected: next - ${pagerAdapter.lastPosition} -> $position"
-                        )
-                        pillboxViewModel.calendarMoveForward().also {
-                            Log.i(
-                                "CalendarPagerAdapter",
-                                "onPageSelected: next -> calendarMoveForward()"
-                            )
-                        }
-                        pagerAdapter.lastPosition = position
-                    }
-                }
-            }
-        })
+        return binding.root
+    }
 
 //        binding.prevDay.setOnClickListener {
 //            pillboxViewModel.calendarMoveBackward()
@@ -116,9 +81,6 @@ class CalendarFragment : Fragment() {
 //        }
 //
 //        updateView()
-
-        return binding.root
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_toolbar_calendar, menu)
