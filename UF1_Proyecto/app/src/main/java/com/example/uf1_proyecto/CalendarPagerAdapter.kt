@@ -11,10 +11,10 @@ class CalendarPagerAdapter(fragmentActivity: FragmentActivity) :
     private val pillboxViewModel get() = _pillboxViewModel!!
 
     var lastPosition: Int
-    var skip: Boolean
+    private var skip: Boolean
 
     init {
-        Log.e("CalendarPagerAdapter", "init")
+        Log.v("CalendarPagerAdapter", "init")
         _pillboxViewModel = PillboxViewModel.getInstance(fragmentActivity)
 
         lastPosition = itemCount / 2

@@ -67,7 +67,6 @@ class CalendarFragment : Fragment() {
 
 
         binding.viewPager.adapter = pagerAdapter
-
         binding.viewPager.setCurrentItem(pagerAdapter.lastPosition, false)
 
         binding.viewPager.registerOnPageChangeCallback(object :
@@ -80,7 +79,12 @@ class CalendarFragment : Fragment() {
                             "CalendarPagerAdapter",
                             "onPageSelected: prev - ${pagerAdapter.lastPosition} -> $position"
                         )
-                        pillboxViewModel.calendarMoveBackward().also { Log.i("CalendarPagerAdapter", "onPageSelected: prev -> calendarMoveBackward()") }
+                        pillboxViewModel.calendarMoveBackward().also {
+                            Log.i(
+                                "CalendarPagerAdapter",
+                                "onPageSelected: prev -> calendarMoveBackward()"
+                            )
+                        }
                         pagerAdapter.lastPosition = position
                     }
 
@@ -89,7 +93,12 @@ class CalendarFragment : Fragment() {
                             "CalendarPagerAdapter",
                             "onPageSelected: next - ${pagerAdapter.lastPosition} -> $position"
                         )
-                        pillboxViewModel.calendarMoveForward().also { Log.i("CalendarPagerAdapter", "onPageSelected: next -> calendarMoveForward()") }
+                        pillboxViewModel.calendarMoveForward().also {
+                            Log.i(
+                                "CalendarPagerAdapter",
+                                "onPageSelected: next -> calendarMoveForward()"
+                            )
+                        }
                         pagerAdapter.lastPosition = position
                     }
                 }
