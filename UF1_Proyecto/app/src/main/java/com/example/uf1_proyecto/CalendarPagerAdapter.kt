@@ -6,27 +6,68 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import kotlin.math.abs
 
+// TODO: Borrar logs
+
 class CalendarPagerAdapter(
     fragmentActivity: FragmentActivity,
     private val loggingEnabled: Boolean = false
-) :
-    FragmentStateAdapter(fragmentActivity) {
+) : FragmentStateAdapter(fragmentActivity) {
+
     private var _pillboxViewModel: PillboxViewModel? = null
     private val pillboxViewModel get() = _pillboxViewModel!!
 
-    var lastPosition: Int
+    private var _lastPosition: Int? = null
+    val lastPosition get() = _lastPosition!!
+    private lateinit var origin: CalendarPagerAdapter
+
+    companion object {
+        @Volatile
+        private var instance: CalendarPagerAdapter? = null
+        fun getInstance(fragmentActivity: FragmentActivity): CalendarPagerAdapter {
+            if (instance == null) {
+                synchronized(this) {
+                    if (instance == null) {
+                        instance = CalendarPagerAdapter(fragmentActivity)
+                    }
+                }
+            }
+
+            return instance!!.clone(fragmentActivity)
+        }
+    }
+
+    private fun clone(fragmentActivity: FragmentActivity): CalendarPagerAdapter {
+        val calendarPagerAdapter = CalendarPagerAdapter(fragmentActivity, loggingEnabled)
+        calendarPagerAdapter._lastPosition = this.lastPosition
+        calendarPagerAdapter.origin = this
+
+        if(loggingEnabled) {
+            Log.v("CalendarPagerAdapter", "origin: $this")
+            Log.v("CalendarPagerAdapter", "clone: $calendarPagerAdapter")
+        }
+
+        return calendarPagerAdapter
+    }
 
     init {
         if (loggingEnabled) {
             Log.v("CalendarPagerAdapter", "init")
         }
         _pillboxViewModel = PillboxViewModel.getInstance(fragmentActivity)
+        _lastPosition = itemCount / 2
+    }
 
-        lastPosition = itemCount / 2
+    override fun toString(): String {
+        return super.toString() + " lastPosition: $lastPosition"
     }
 
     override fun getItemCount(): Int {
         return Int.MAX_VALUE
+    }
+
+    private fun movePosition(position: Int) {
+        _lastPosition = position
+        origin._lastPosition = position
     }
 
     override fun createFragment(position: Int): Fragment {
@@ -39,7 +80,7 @@ class CalendarPagerAdapter(
             if (loggingEnabled) {
                 Log.d(
                     "CalendarPagerAdapter",
-                    "createFragment: abs(position - lastPosition) ${abs(position - lastPosition)}"
+                    "createFragment: abs(position - lastPosition) = ${abs(position - lastPosition)} (${position - lastPosition})"
                 )
             }
             for (i in 1 until abs(position - lastPosition)) {
@@ -59,14 +100,17 @@ class CalendarPagerAdapter(
 
         val data = when {
             position < lastPosition -> pillboxViewModel.getCalendarPrevDayData()
+                .also { pillboxViewModel.calendarMoveBackward() }
+
             position > lastPosition -> pillboxViewModel.getCalendarNextDayData()
+                .also { pillboxViewModel.calendarMoveForward() }
+
             else -> pillboxViewModel.getCalendarCurrDayData()
         }
 
-        when {
-            position < lastPosition -> {
-                pillboxViewModel.calendarMoveBackward()
-                if (loggingEnabled) {
+        if (loggingEnabled) {
+            when {
+                position < lastPosition -> {
                     Log.i(
                         "CalendarPagerAdapter",
                         "position < lastPosition -> calendarMoveBackward()"
@@ -80,31 +124,29 @@ class CalendarPagerAdapter(
                             )
                         }"
                     )
-                }
-            }
 
-            position > lastPosition -> {
-                pillboxViewModel.calendarMoveForward()
-                if (loggingEnabled) {
+                }
+
+                position > lastPosition -> {
                     Log.i(
                         "CalendarPagerAdapter",
                         "position > lastPosition -> calendarMoveForward()"
                     )
 
 
-                Log.i(
-                    "CalendarPagerAdapter",
-                    "createFragment: next $lastPosition -> $position ${
-                        DateTimeUtils.millisToDate(
-                            data.first
-                        )
-                    }"
-                )
-                }
-            }
+                    Log.i(
+                        "CalendarPagerAdapter",
+                        "createFragment: next $lastPosition -> $position ${
+                            DateTimeUtils.millisToDate(
+                                data.first
+                            )
+                        }"
+                    )
 
-            else -> {
-                if (loggingEnabled) {
+
+                }
+
+                else -> {
                     Log.i(
                         "CalendarPagerAdapter",
                         "createFragment: same $lastPosition -> $position ${
@@ -113,17 +155,18 @@ class CalendarPagerAdapter(
                             )
                         }"
                     )
+
                 }
             }
         }
 
-        lastPosition = position
+        movePosition(position)
 
         if (loggingEnabled) {
             Log.v("CalendarPagerAdapter", "return")
         }
 
-        return CalendarPageFragment(data)
+        return CalendarPageFragment(data, position)
     }
 
 }

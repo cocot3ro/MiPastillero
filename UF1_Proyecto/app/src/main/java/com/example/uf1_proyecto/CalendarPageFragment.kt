@@ -13,7 +13,7 @@ import com.example.uf1_proyecto.databinding.CalendarMedLayoutBinding
 import com.example.uf1_proyecto.databinding.EmptyLayoutBinding
 import com.example.uf1_proyecto.databinding.FragmentCalendarPageBinding
 
-class CalendarPageFragment(private val pair: Pair<Long, Map<Long, List<Medicamento>>>) :
+class CalendarPageFragment(private val pair: Pair<Long, Map<Long, List<Medicamento>>>, private val position: Int) :
     Fragment() {
 
     private var _binding: FragmentCalendarPageBinding? = null
@@ -40,7 +40,7 @@ class CalendarPageFragment(private val pair: Pair<Long, Map<Long, List<Medicamen
                 pair.first,
                 requireContext()
             )
-        } - ${DateTimeUtils.millisToDate(pair.first)}"
+        } - ${DateTimeUtils.millisToDate(pair.first)}\n$position"
 
         binding.calendarLayout.removeAllViews()
 

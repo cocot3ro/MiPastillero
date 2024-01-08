@@ -57,9 +57,10 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
         /**
          * Devuelve la instancia única de la clase [PillboxViewModel]
          */
-        fun getInstance(context: Context): PillboxViewModel = instance ?: synchronized(this) {
-            instance ?: PillboxViewModel(context.applicationContext).also { instance = it }
-        }
+        fun getInstance(context: Context): PillboxViewModel =
+            instance ?: synchronized(this) {
+                instance ?: PillboxViewModel(context.applicationContext).also { instance = it }
+            }
 
     }
 

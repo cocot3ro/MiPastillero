@@ -2,6 +2,7 @@ package com.example.uf1_proyecto
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -16,7 +17,9 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.example.uf1_proyecto.databinding.FragmentCalendarBinding
+import com.example.uf1_proyecto.databinding.ViewPagerLayoutBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Calendar
 
@@ -25,6 +28,7 @@ class CalendarFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var pillboxViewModel: PillboxViewModel
     private lateinit var navController: NavController
+    private lateinit var viewPager: ViewPager2
     private lateinit var pagerAdapter: CalendarPagerAdapter
 
     override fun onCreateView(
@@ -34,7 +38,7 @@ class CalendarFragment : Fragment() {
         pillboxViewModel = PillboxViewModel.getInstance(requireContext())
         navController =
             ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
-        pagerAdapter = CalendarPagerAdapter(requireActivity())
+        pagerAdapter = CalendarPagerAdapter.getInstance(requireActivity())
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
@@ -64,8 +68,10 @@ class CalendarFragment : Fragment() {
             menuItemSelected(menuItem)
         }
 
-        binding.viewPager.adapter = pagerAdapter
-        binding.viewPager.setCurrentItem(pagerAdapter.lastPosition, false)
+        viewPager = ViewPagerLayoutBinding.inflate(layoutInflater, binding.fragmentCalendar, true).apply {
+            viewPager.adapter = pagerAdapter
+            viewPager.setCurrentItem(pagerAdapter.lastPosition, false)
+        }.viewPager
 
         return binding.root
     }
