@@ -79,10 +79,14 @@ object DateTimeUtils {
      */
     fun getTodayAsString(): String = millisToDate(System.currentTimeMillis())
 
+    fun getYesterdayAsMillis(): Long = prevDay(getTodayAsMillis())
+
     /**
      * Devuelve la fecha actual en milisegundos
      */
     fun getTodayAsMillis(): Long = dateToMillis(getTodayAsString())
+
+    fun getTomorrowAsMillis(): Long = nextDay(getTodayAsMillis())
 
     /**
      * Convierte milisegundos a hora en el formato de la configuración regional
