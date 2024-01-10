@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -75,6 +76,22 @@ class HistoryFragment : Fragment() {
                         requireContext()
                     )
                 } - ${DateTimeUtils.millisToMonth(entry.key, requireContext())}"
+
+                val colores = pillboxViewModel.getEstacionColor(entry.key)
+
+                groupBinding.mes.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        colores.first
+                    )
+                )
+
+                groupBinding.cuerpo.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        colores.second
+                    )
+                )
 
                 for (med in entry.value) {
                     val historyEntryBinding = HistoryMedLayoutBinding.inflate(

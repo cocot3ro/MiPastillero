@@ -12,38 +12,10 @@ import java.util.Calendar
 
 class PillboxViewModel private constructor(context: Context) : ViewModel() {
 
-    // TODO: Comentar
-
+    /**
+     * Instancia de la clase [DBHelper] para acceder a la base de datos
+     */
     private var dbHelper: DBHelper = DBHelper.getInstance(context)
-
-// TODO: Borrar todo esto
-//    // TODO: Cambiar y guardar solamente el dia actual
-//    private val constCalendarData: MutableLiveData<Triple<Pair<Long, Map<Long, List<Medicamento>>>, Pair<Long, Map<Long, List<Medicamento>>>, Pair<Long, Map<Long, List<Medicamento>>>>> =
-//        MutableLiveData(
-//            Triple(
-//                DateTimeUtils.getYesterdayAsMillis() to getActivosCalendario(DateTimeUtils.getYesterdayAsMillis()),
-//                DateTimeUtils.getTodayAsMillis() to getActivosCalendario(DateTimeUtils.getTodayAsMillis()),
-//                DateTimeUtils.getTomorrowAsMillis() to getActivosCalendario(DateTimeUtils.getTomorrowAsMillis())
-//            )
-//        )
-//
-//    // TODO: Cambiar y guardar solamente el dia actual
-//    private var calendarData =
-//        MutableLiveData<Triple<Pair<Long, Map<Long, List<Medicamento>>>, Pair<Long, Map<Long, List<Medicamento>>>, Pair<Long, Map<Long, List<Medicamento>>>>>()
-//
-//    // TODO: Cambiar y guardar solamente el dia actual
-//    private var constDiaryData: MutableLiveData<Triple<Pair<Long, String>, Pair<Long, String>, Pair<Long, String>>> =
-//        MutableLiveData(
-//            Triple(
-//                DateTimeUtils.getYesterdayAsMillis() to getDiaryText(DateTimeUtils.getYesterdayAsMillis()),
-//                DateTimeUtils.getTodayAsMillis() to getDiaryText(DateTimeUtils.getTodayAsMillis()),
-//                DateTimeUtils.getTomorrowAsMillis() to getDiaryText(DateTimeUtils.getTomorrowAsMillis())
-//            )
-//        )
-//
-//    // TODO: Cambiar y guardar solamente el dia actual
-//    private var diaryData =
-//        MutableLiveData<Triple<Pair<Long, String>, Pair<Long, String>, Pair<Long, String>>>()
 
     companion object {
         /**
@@ -82,160 +54,11 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
         return true
     }
 
-    // TODO: Si no se usa borrar
-//    @Deprecated("Marcado para borrar")
-//    fun getCalendarPrevDayData(): Pair<Long, Map<Long, List<Medicamento>>> =
-//        calendarData.value!!.first
-//
-//    /**
-//     * Devuelve la fecha que se está mostrando en el calendario
-//     */
-//    fun getCalendarCurrDayData(): Pair<Long, Map<Long, List<Medicamento>>> =
-//        calendarData.value!!.second
-//
-//    // TODO: Si no se usa borrar
-//    @Deprecated("Marcado para borrar")
-//    fun getCalendarNextDayData(): Pair<Long, Map<Long, List<Medicamento>>> =
-//        calendarData.value!!.third
-//
-//    /**
-//     * Establece la fecha que se está mostrando en el calendario
-//     * @param date fecha en milisegundos
-//     */
-//    fun setCalendarCurrDate(date: Long) {
-//        calendarData.value = Triple(
-//            DateTimeUtils.prevDay(date) to getActivosCalendario(DateTimeUtils.prevDay(date)),
-//            date to getActivosCalendario(date),
-//            DateTimeUtils.nextDay(date) to getActivosCalendario(DateTimeUtils.nextDay(date))
-//        )
-//    }
-//
-//    /**
-//     * Avanza un día en el calendario
-//     */
-//    fun calendarMoveForward() {
-//        calendarData.value = Triple(
-//            calendarData.value!!.second,
-//            calendarData.value!!.third,
-//            DateTimeUtils.nextDay(calendarData.value!!.third.first) to getActivosCalendario(
-//                DateTimeUtils.nextDay(calendarData.value!!.third.first)
-//            )
-//        )
-//
-//    }
-//
-//    /**
-//     * Retrocede un día en el calendario
-//     */
-//    fun calendarMoveBackward() {
-//        calendarData.value = Triple(
-//            DateTimeUtils.prevDay(calendarData.value!!.first.first) to getActivosCalendario(
-//                DateTimeUtils.prevDay(calendarData.value!!.first.first)
-//            ),
-//            calendarData.value!!.first,
-//            calendarData.value!!.second
-//        )
-//    }
-//
-//    fun loadCalendarDefaults() {
-//        calendarData.value = Triple(
-//            constCalendarData.value!!.first,
-//            constCalendarData.value!!.second,
-//            constCalendarData.value!!.third
-//        )
-//    }
-
     /**
      * Devuelve los medicamentos activos de un día agrupados por hora
      * @param dia día en milisegundos
      */
     fun getActivosCalendario(dia: Long) = dbHelper.getActivosCalendario(dia)
-
-    // TODO: Si no se usa borrar
-//    private fun refreshCalendar() {
-//        Log.v("PillboxViewModel", "refreshCalendar()")
-//        constCalendarData.value = Triple(
-//            constCalendarData.value!!.first.first to getActivosCalendario(constCalendarData.value!!.first.first),
-//            constCalendarData.value!!.second.first to getActivosCalendario(constCalendarData.value!!.second.first),
-//            constCalendarData.value!!.third.first to getActivosCalendario(constCalendarData.value!!.third.first)
-//        )
-//
-//        calendarData.value = Triple(
-//            calendarData.value!!.first.first to getActivosCalendario(calendarData.value!!.first.first),
-//            calendarData.value!!.second.first to getActivosCalendario(calendarData.value!!.second.first),
-//            calendarData.value!!.third.first to getActivosCalendario(calendarData.value!!.third.first)
-//        )
-//    }
-//
-//    // TODO: Si no se usa borrar
-//    @Deprecated("Marcado para borrar")
-//    fun getDiaryPrevDayData(): Pair<Long, String> = diaryData.value!!.first
-//
-//    fun getDiaryCurrDayData(): Pair<Long, String> = diaryData.value!!.second
-//
-//    // TODO: Si no se usa borrar
-//    @Deprecated("Marcado para borrar")
-//    fun getDiaryNextDayData(): Pair<Long, String> = diaryData.value!!.third
-//
-//    /**
-//     * Establece la fecha que se está mostrando en la agenda
-//     * @param date fecha en milisegundos
-//     */
-//    fun setDiaryCurrDate(date: Long) {
-//        diaryData.value = Triple(
-//            DateTimeUtils.prevDay(date) to getDiaryText(DateTimeUtils.prevDay(date)),
-//            date to getDiaryText(date),
-//            DateTimeUtils.nextDay(date) to getDiaryText(DateTimeUtils.nextDay(date))
-//        )
-//    }
-//
-//    /**
-//     * Avanza un día en la agenda
-//     */
-//    fun diaryMoveForward() {
-//        diaryData.value = Triple(
-//            diaryData.value!!.second,
-//            diaryData.value!!.third,
-//            DateTimeUtils.nextDay(diaryData.value!!.third.first) to getDiaryText(
-//                DateTimeUtils.nextDay(diaryData.value!!.third.first)
-//            )
-//        )
-//    }
-//
-//    /**
-//     * Retrocede un día en la agenda
-//     */
-//    fun diaryMoveBackward() {
-//        diaryData.value = Triple(
-//            DateTimeUtils.prevDay(diaryData.value!!.first.first) to getDiaryText(
-//                DateTimeUtils.prevDay(diaryData.value!!.first.first)
-//            ),
-//            diaryData.value!!.first,
-//            diaryData.value!!.second
-//        )
-//    }
-//
-//    private fun refreshDiary() {
-//        constDiaryData.value = Triple(
-//            constDiaryData.value!!.first.first to getDiaryText(constDiaryData.value!!.first.first),
-//            constDiaryData.value!!.second.first to getDiaryText(constDiaryData.value!!.second.first),
-//            constDiaryData.value!!.third.first to getDiaryText(constDiaryData.value!!.third.first)
-//        )
-//
-//        diaryData.value = Triple(
-//            diaryData.value!!.first.first to getDiaryText(diaryData.value!!.first.first),
-//            diaryData.value!!.second.first to getDiaryText(diaryData.value!!.second.first),
-//            diaryData.value!!.third.first to getDiaryText(diaryData.value!!.third.first)
-//        )
-//    }
-//
-//    fun loadDiaryDefaults() {
-//        diaryData.value = Triple(
-//            constDiaryData.value!!.first,
-//            constDiaryData.value!!.second,
-//            constDiaryData.value!!.third
-//        )
-//    }
 
     /**
      * Devuelve el texto de la entrada de la agenda del dia correspondiente
@@ -252,21 +75,17 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      */
     fun getFavoritos() = dbHelper.getFavoritos()
 
-    // TODO: Si no se usa borrar
     /**
      * Añade un medicamento a la lista de medicamentos activos
      */
     fun addActiveMed(medicamento: Medicamento) =
         dbHelper.insertIntoActivos(medicamento)
-//            .also { if (it) refreshCalendar() }
 
-    // TODO: Si no se usa borrar
     /**
      * Elimina un medicamento de la lista de medicamentos activos
      */
     fun deleteActiveMed(medicamento: Medicamento) =
         dbHelper.deleteFromActivos(medicamento)
-//            .also { if (it) refreshCalendar() }
 
     /**
      * Añade un medicamento a la lista de medicamentos favoritos
@@ -278,7 +97,6 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      */
     fun deleteFavMed(medicamento: Medicamento) = dbHelper.deleteFromFavoritos(medicamento)
 
-    // TODO: Si no se usa borrar
     /**
      * Inserta una entrada en la agenda
      * @param descripcion descripción de la entrada
@@ -286,13 +104,82 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      */
     fun insertIntoAgenda(date: Long, descripcion: String): Boolean {
         return dbHelper.insertIntoAgenda(date, descripcion)
-//            .also { if (it) refreshDiary() }
     }
 
+    /**
+     * Desmarca la toma de un medicamento
+     * @param med medicamento
+     * @param hora hora de la toma
+     * @param dia día de la toma
+     * @return true si se ha desmarcado correctamente, false si no
+     */
     fun desmarcarToma(med: Medicamento, hora: Long, dia: Long) =
         dbHelper.desmarcarToma(med, hora, dia)
 
+    /**
+     * Marca un medicamento como tomado en una hora y día concretos
+     * @param med medicamento
+     * @param hora hora de la toma
+     * @param dia día de la toma
+     * @return true si se ha marcado correctamente, false si no
+     */
     fun marcarToma(med: Medicamento, hora: Long, dia: Long) = dbHelper.marcarToma(med, hora, dia)
+
+    /**
+     * Borra de la tabla [ContratoActivos.NOMBRE_TABLA] los medicamentos activos cuyo periodo de
+     * toma haya terminado y los inserta en la tabla [ContratoHistorial.NOMBRE_TABLA]
+     */
+    fun comprobarTerminados() = dbHelper.comprobarTerminados()
+
+    /**
+     * Devuelve el historial de medicamentos
+     */
+    fun getHistorial(): Map<Long, List<Medicamento>> = dbHelper.getHistorial()
+
+    /**
+     * Devuelve la paleta de colores para la estación actual
+     * @return Pair<Int, Int> con los colores de la estación
+     */
+    fun getEstacionColor(): Pair<Int, Int>  = getEstacionColor(DateTimeUtils.getTodayAsMillis())
+
+    /**
+     * Devuelve la paleta de colores para la estación correspondiente a una fecha
+     * @param date fecha
+     * @return Pair<Int, Int> con los colores de la estación
+     */
+    fun getEstacionColor(date: Long): Pair<Int, Int> {
+        return when (getEstacion(date)!!) {
+            Estaciones.INVIERNO -> R.color.primaryDarkWinter to R.color.primaryWinter
+            Estaciones.PRIMAVERA -> R.color.primaryDarkSpring to R.color.primarySpring
+            Estaciones.VERANO -> R.color.primaryDarkSummer to R.color.primarySummer
+            Estaciones.OTONHO -> R.color.primaryDarkAutumn to R.color.primaryAutumn
+        }
+    }
+
+    /**
+     * Devuelve la estación actual
+     * @return estación actual
+     * @see Estaciones
+     */
+    private fun getEstacion(date: Long): Estaciones? {
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = date
+        }
+
+        val month = calendar.get(Calendar.MONTH)
+        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+        return when (month) {
+            Calendar.JANUARY, Calendar.FEBRUARY -> Estaciones.INVIERNO
+            Calendar.APRIL, Calendar.MAY -> Estaciones.PRIMAVERA
+            Calendar.JULY, Calendar.AUGUST -> Estaciones.VERANO
+            Calendar.OCTOBER, Calendar.NOVEMBER -> Estaciones.OTONHO
+            Calendar.MARCH -> if (dayOfMonth < 21) Estaciones.INVIERNO else Estaciones.PRIMAVERA
+            Calendar.JUNE -> if (dayOfMonth < 21) Estaciones.PRIMAVERA else Estaciones.VERANO
+            Calendar.SEPTEMBER -> if (dayOfMonth < 21) Estaciones.VERANO else Estaciones.OTONHO
+            Calendar.DECEMBER -> if (dayOfMonth < 21) Estaciones.OTONHO else Estaciones.INVIERNO
+            else -> null
+        }
+    }
 
     /**
      * Consulta el API de la AEMPS para buscar un medicamento
@@ -320,47 +207,4 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
             }
         }
     }
-
-    fun comprobarTerminados() = dbHelper.comprobarTerminados()
-
-    fun getHistorial() = dbHelper.getHistorial()
-
-    private fun getEstacion(): Estaciones? {
-        return when (Calendar.getInstance().get(Calendar.MONTH)) {
-            Calendar.DECEMBER, Calendar.JANUARY, Calendar.FEBRUARY -> Estaciones.INVIERNO
-            Calendar.MARCH, Calendar.APRIL, Calendar.MAY -> Estaciones.PRIMAVERA
-            Calendar.JUNE, Calendar.JULY, Calendar.AUGUST -> Estaciones.VERANO
-            Calendar.SEPTEMBER, Calendar.OCTOBER, Calendar.NOVEMBER -> Estaciones.OTONHO
-            else -> null
-        }
-    }
-
-    fun getEstacionColor(): Pair<Int, Int> {
-        return when (getEstacion()!!) {
-            Estaciones.INVIERNO -> R.color.primaryDarkWinter to R.color.primaryWinter
-            Estaciones.PRIMAVERA -> R.color.primaryDarkSpring to R.color.primarySpring
-            Estaciones.VERANO -> R.color.primaryDarkSummer to R.color.primarySummer
-            Estaciones.OTONHO -> R.color.primaryDarkAutumn to R.color.primaryAutumn
-        }
-    }
-
-    private fun getEstacion(date: Long): Estaciones? {
-        return when (Calendar.getInstance().also { it.timeInMillis = date }.get(Calendar.MONTH)) {
-            Calendar.DECEMBER, Calendar.JANUARY, Calendar.FEBRUARY -> Estaciones.INVIERNO
-            Calendar.MARCH, Calendar.APRIL, Calendar.MAY -> Estaciones.PRIMAVERA
-            Calendar.JUNE, Calendar.JULY, Calendar.AUGUST -> Estaciones.VERANO
-            Calendar.SEPTEMBER, Calendar.OCTOBER, Calendar.NOVEMBER -> Estaciones.OTONHO
-            else -> null
-        }
-    }
-
-    fun getEstacionColor(date: Long): Pair<Int, Int> {
-        return when (getEstacion(date)!!) {
-            Estaciones.INVIERNO -> R.color.primaryDarkWinter to R.color.primaryWinter
-            Estaciones.PRIMAVERA -> R.color.primaryDarkSpring to R.color.primarySpring
-            Estaciones.VERANO -> R.color.primaryDarkSummer to R.color.primarySummer
-            Estaciones.OTONHO -> R.color.primaryDarkAutumn to R.color.primaryAutumn
-        }
-    }
-
 }

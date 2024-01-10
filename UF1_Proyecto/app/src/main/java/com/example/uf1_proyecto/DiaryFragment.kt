@@ -58,8 +58,6 @@ class DiaryFragment : Fragment() {
             menuItemSelected(menuItem)
         }
 
-        // TODO: Borrar si no se usa
-//        pillboxViewModel.loadDiaryDefaults()
         binding.viewPager.adapter = pagerAdapter
         binding.viewPager.setCurrentItem(DiaryPagerAdapter.START_POSITION, false)
 
@@ -75,13 +73,6 @@ class DiaryFragment : Fragment() {
         val datePickerDialog = DatePickerDialog(
             requireContext(),
             { _, year, monthOfYear, dayOfMonth ->
-                // TODO: Borrar si no se usa
-//                pillboxViewModel.setDiaryCurrDate(
-//                    DateTimeUtils.createDate(
-//                        year, monthOfYear, dayOfMonth
-//                    )
-//                )
-//                changeToRenderer()
 
                 val date = DateTimeUtils.createDate(
                     year, monthOfYear, dayOfMonth
@@ -100,9 +91,7 @@ class DiaryFragment : Fragment() {
     }
 
     private fun today() {
-        // TODO: Borrar si no se usa
-//        pillboxViewModel.setDiaryCurrDate(DateTimeUtils.getTodayAsMillis())
-//        changeToRenderer()
+        binding.viewPager.setCurrentItem(DiaryPagerAdapter.START_POSITION, true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

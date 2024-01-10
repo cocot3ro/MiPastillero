@@ -8,16 +8,15 @@
     app:cardCornerRadius="4dp">
 
     <LinearLayout
+        android:id="@+id/cuerpo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primaryAutumn"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/mes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primaryDarkAutumn"
             android:paddingHorizontal="4dp"
             android:textSize="22sp" />
 

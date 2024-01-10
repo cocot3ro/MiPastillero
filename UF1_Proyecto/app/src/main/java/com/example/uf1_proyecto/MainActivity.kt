@@ -7,6 +7,9 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.uf1_proyecto.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,8 +34,9 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setupWithNavController(navController)
         binding.bottomNavigation.visibility = View.VISIBLE
 
-
-        pillboxViewModel.comprobarTerminados()
+        GlobalScope.launch(Dispatchers.IO) {
+            pillboxViewModel.comprobarTerminados()
+        }
     }
 
 }

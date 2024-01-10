@@ -89,8 +89,6 @@ class CalendarFragment : Fragment() {
                 val date = DateTimeUtils.createDate(
                     year, monthOfYear, dayOfMonth
                 )
-                // TODO: Borrar si no se usa
-//                pillboxViewModel.setCalendarCurrDate(date)
 
                 binding.viewPager.setCurrentItem(pagerAdapter.search(date), true)
             },
