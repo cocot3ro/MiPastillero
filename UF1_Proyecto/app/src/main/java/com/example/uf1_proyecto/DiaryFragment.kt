@@ -8,7 +8,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -16,8 +15,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.example.uf1_proyecto.databinding.DiaryEditorBinding
-import com.example.uf1_proyecto.databinding.DiaryRendererBinding
 import com.example.uf1_proyecto.databinding.FragmentDiaryBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Calendar
@@ -38,12 +35,14 @@ class DiaryFragment : Fragment() {
     ): View {
         _binding = FragmentDiaryBinding.inflate(inflater, container, false)
         _pillboxViewModel = PillboxViewModel.getInstance(requireContext())
-        navController = ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+        navController =
+            ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
         pagerAdapter = DiaryPagerAdapter(requireActivity())
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility = View.GONE
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility =
+            View.GONE
 
         setHasOptionsMenu(true)
 
@@ -54,43 +53,42 @@ class DiaryFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener { menuItem -> menuItemSelected(menuItem) }
 
         binding.navView.setupWithNavController(navController)
-
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             menuItemSelected(menuItem)
         }
 
-//        // Muestra la entrada de la agenda del día anterior
-//        binding.fabPrev.setOnClickListener {
-//            pillboxViewModel.diaryMoveBackward()
-//            changeToRenderer()
-//        }
-//
-//        // Muestra la entrada de la agenda del día siguiente
-//        binding.fabNext.setOnClickListener {
-//            pillboxViewModel.diaryMoveForward()
-//            changeToRenderer()
-//        }
-//
-//        // Por defecto, muestra el renderer de la entrada de la agenda del día actual
-//        initRenderer()
-
+        // TODO: Borrar si no se usa
+//        pillboxViewModel.loadDiaryDefaults()
         binding.viewPager.adapter = pagerAdapter
-        binding.viewPager.setCurrentItem(pagerAdapter.lastPosition, false)
+        binding.viewPager.setCurrentItem(DiaryPagerAdapter.START_POSITION, false)
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        pagerAdapter.reload()
     }
 
     private fun search() {
         val datePickerDialog = DatePickerDialog(
             requireContext(),
             { _, year, monthOfYear, dayOfMonth ->
-                pillboxViewModel.setDiaryCurrDate(
-                    DateTimeUtils.createDate(
-                        year, monthOfYear, dayOfMonth
-                    )
-                )
+                // TODO: Borrar si no se usa
+//                pillboxViewModel.setDiaryCurrDate(
+//                    DateTimeUtils.createDate(
+//                        year, monthOfYear, dayOfMonth
+//                    )
+//                )
 //                changeToRenderer()
+
+                val date = DateTimeUtils.createDate(
+                    year, monthOfYear, dayOfMonth
+                )
+
+                binding.viewPager.setCurrentItem(pagerAdapter.search(date), true)
+
             },
             // Establece la fecha actual como predeterminada
             Calendar.getInstance().get(Calendar.YEAR),
@@ -102,56 +100,9 @@ class DiaryFragment : Fragment() {
     }
 
     private fun today() {
-        pillboxViewModel.setDiaryCurrDate(DateTimeUtils.getTodayAsMillis())
+        // TODO: Borrar si no se usa
+//        pillboxViewModel.setDiaryCurrDate(DateTimeUtils.getTodayAsMillis())
 //        changeToRenderer()
-    }
-
-    private fun addMedDialog() {
-        AddActiveMedDialog(
-            requireContext(),
-            object : AddActiveMedDialog.OnDataEnteredListener {
-                override fun onDataEntered(medicamento: Medicamento) {
-                    if (!medicamento.isFavorite!!) {
-                        if (pillboxViewModel.addActiveMed(medicamento)) {
-                            Toast.makeText(
-                                context,
-                                getString(R.string.añadir_activo_ok),
-                                Toast.LENGTH_LONG
-                            ).show()
-                        } else {
-                            Toast.makeText(
-                                context,
-                                getString(R.string.añadir_activo_error),
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    } else {
-                        // Si se elige guardar tambien como favorito, se añade a la lista de favoritos
-                        val addActive = pillboxViewModel.addActiveMed(medicamento)
-                        val addFav = pillboxViewModel.addFavMed(medicamento)
-
-                        if (addActive && addFav) {
-                            Toast.makeText(
-                                context,
-                                getString(R.string.añadir_activo_ok),
-                                Toast.LENGTH_LONG
-                            ).show()
-                        } else if (addActive) {
-                            Toast.makeText(
-                                context,
-                                getString(R.string.añadir_fav_error),
-                                Toast.LENGTH_LONG
-                            ).show()
-                        } else {
-                            Toast.makeText(
-                                context,
-                                getString(R.string.añadir_activo_error),
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                }
-            }).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -168,16 +119,6 @@ class DiaryFragment : Fragment() {
 
             R.id.today -> {
                 today()
-                true
-            }
-
-            R.id.addActiveMed -> {
-                addMedDialog()
-                true
-            }
-
-            R.id.calendarFragment, R.id.activeMedFragment, R.id.favoriteFragment,  R.id.diaryFragment, R.id.historyFragment -> {
-                navController.navigate(menuItem.itemId)
                 true
             }
 

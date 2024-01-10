@@ -10,12 +10,13 @@ import com.example.uf1_proyecto.databinding.DiaryEditorBinding
 import com.example.uf1_proyecto.databinding.DiaryRendererBinding
 import com.example.uf1_proyecto.databinding.FragmentDiaryPageBinding
 
-class DiaryPageFragment(private var data: Pair<Long, String>) : Fragment() {
+class DiaryPageFragment(private var fecha: Long) : Fragment(), PageFragment {
 
     private var _binding: FragmentDiaryPageBinding? = null
     private val binding get() = _binding!!
     private var _pillboxViewModel: PillboxViewModel? = null
     private val pillboxViewModel get() = _pillboxViewModel!!
+    private var onDestroyListener: (() -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +31,8 @@ class DiaryPageFragment(private var data: Pair<Long, String>) : Fragment() {
     }
 
     private fun initRenderer() {
+        val data = pillboxViewModel.getDiaryText(fecha)
+
         // Infla el layout del renderer
         DiaryRendererBinding.inflate(layoutInflater, binding.diaryLayout, true).apply {
 
@@ -38,12 +41,12 @@ class DiaryPageFragment(private var data: Pair<Long, String>) : Fragment() {
             diaryDate.text =
                 "${DateTimeUtils.getTodayAsDayOfWeek(requireContext())} - ${
                     DateTimeUtils.millisToDate(
-                        data.first
+                        fecha
                     )
                 }"
 
             // Establece el texto de la entrada de la agenda
-            diaryText.text = data.second
+            diaryText.text = data
 
             // Botón para cambiar al editor
             diaryEditButton.setOnClickListener {
@@ -53,6 +56,8 @@ class DiaryPageFragment(private var data: Pair<Long, String>) : Fragment() {
     }
 
     private fun initEditor() {
+        val data = pillboxViewModel.getDiaryText(fecha)
+
         // Infla el layout del editor
         DiaryEditorBinding.inflate(layoutInflater, binding.diaryLayout, true).apply {
             // Establece la fecha actual
@@ -60,12 +65,12 @@ class DiaryPageFragment(private var data: Pair<Long, String>) : Fragment() {
             diaryDate.text =
                 "${DateTimeUtils.getTodayAsDayOfWeek(requireContext())} - ${
                     DateTimeUtils.millisToDate(
-                        data.first
+                        fecha
                     )
                 }"
 
             // Establece el texto de la entrada de la agenda
-            diaryText.setText(data.second)
+            diaryText.setText(data)
 
             // Botón para cambiar al renderer
             diaryDeleteButton.setOnClickListener {
@@ -75,9 +80,8 @@ class DiaryPageFragment(private var data: Pair<Long, String>) : Fragment() {
             // Botón para guardar la entrada de la agenda
             diarySaveButton.setOnClickListener {
                 val text = diaryText.text.toString()
-                if (text != data.second) {
-                    if (pillboxViewModel.insertIntoAgenda(data.first, text)) {
-                        data = data.first to text
+                if (text != data) {
+                    if (pillboxViewModel.insertIntoAgenda(fecha, text)) {
                         changeToRenderer()
                         Toast.makeText(
                             requireContext(), getString(R.string.guardar_agenda_ok), Toast.LENGTH_LONG
@@ -107,9 +111,13 @@ class DiaryPageFragment(private var data: Pair<Long, String>) : Fragment() {
     /**
      * Cambia la vista de la agenda a la de editor
      */
-    private fun changeToRenderer() {
+    fun changeToRenderer() {
         binding.diaryLayout.removeAllViews()
         initRenderer()
+    }
+
+    override fun setOnDestroyListener(listener: () -> Unit) {
+        onDestroyListener = listener
     }
 
 }

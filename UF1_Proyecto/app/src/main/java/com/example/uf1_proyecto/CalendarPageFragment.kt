@@ -8,50 +8,63 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import com.example.uf1_proyecto.databinding.CalendarMedGroupLayoutBinding
 import com.example.uf1_proyecto.databinding.CalendarMedLayoutBinding
 import com.example.uf1_proyecto.databinding.EmptyLayoutBinding
 import com.example.uf1_proyecto.databinding.FragmentCalendarPageBinding
 
-class CalendarPageFragment(private val pair: Pair<Long, Map<Long, List<Medicamento>>>, private val position: Int) :
-    Fragment() {
+class CalendarPageFragment(val fecha: Long) :
+    Fragment(), PageFragment {
 
     private var _binding: FragmentCalendarPageBinding? = null
     private val binding get() = _binding!!
-    private var _pillboxViewModel: PillboxViewModel? = null
-    private val pillboxViewModel get() = _pillboxViewModel!!
+    private var _pillboxViewModel: MutableLiveData<PillboxViewModel?> = MutableLiveData(null)
+    private val pillboxViewModel get() = _pillboxViewModel.value!!
+
+    private var onDestroyListener: (() -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCalendarPageBinding.inflate(inflater, container, false)
-        _pillboxViewModel = PillboxViewModel.getInstance(requireContext())
-
-        updateView(pair)
-
+        _binding = FragmentCalendarPageBinding.inflate(layoutInflater)
+        _pillboxViewModel = MutableLiveData(PillboxViewModel.getInstance(requireContext()))
+        updateView()
         return binding.root
     }
 
-    private fun updateView(pair: Pair<Long, Map<Long, List<Medicamento>>>) {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        onDestroyListener?.invoke()
+    }
+
+    fun updateView() {
+        try {
+            pillboxViewModel
+            binding
+        } catch (ex: Exception) {
+            return
+        }
+
+        val data = pillboxViewModel.getActivosCalendario(fecha)
+
         @Suppress("SetTextI18n")
         binding.calendarDay.text = "${
             DateTimeUtils.millisToDayOfWeek(
-                pair.first,
+                fecha,
                 requireContext()
             )
-        } - ${DateTimeUtils.millisToDate(pair.first)}\n$position"
+        } - ${DateTimeUtils.millisToDate(fecha)}"
 
         binding.calendarLayout.removeAllViews()
 
-        val map = pair.second
-
-        if (map.isEmpty()) {
+        if (data.isEmpty()) {
             EmptyLayoutBinding.inflate(layoutInflater, binding.calendarLayout, true).apply {
                 texto.text = getString(R.string.sin_meds_en_dia)
             }
         } else {
-            for (entry in map) {
+            for (entry in data) {
                 val groupBinding =
                     CalendarMedGroupLayoutBinding.inflate(
                         layoutInflater, binding.calendarLayout,
@@ -59,7 +72,7 @@ class CalendarPageFragment(private val pair: Pair<Long, Map<Long, List<Medicamen
                     )
 
                 val colores =
-                    pillboxViewModel.getEstacionColor(pair.first)
+                    pillboxViewModel.getEstacionColor(fecha)
 
                 groupBinding.cuerpo.setBackgroundColor(
                     ContextCompat.getColor(
@@ -103,7 +116,7 @@ class CalendarPageFragment(private val pair: Pair<Long, Map<Long, List<Medicamen
                             if (pillboxViewModel.desmarcarToma(
                                     medicamento,
                                     entry.key,
-                                    pair.first
+                                    fecha
                                 )
                             ) {
                                 Toast.makeText(
@@ -123,7 +136,7 @@ class CalendarPageFragment(private val pair: Pair<Long, Map<Long, List<Medicamen
                             if (pillboxViewModel.marcarToma(
                                     medicamento,
                                     entry.key,
-                                    pair.first
+                                    fecha
                                 )
                             ) {
                                 Toast.makeText(
@@ -144,4 +157,9 @@ class CalendarPageFragment(private val pair: Pair<Long, Map<Long, List<Medicamen
             }
         }
     }
+
+    override fun setOnDestroyListener(listener: () -> Unit) {
+        onDestroyListener = listener
+    }
+
 }

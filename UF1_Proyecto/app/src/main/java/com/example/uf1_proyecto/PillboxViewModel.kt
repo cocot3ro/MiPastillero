@@ -3,7 +3,6 @@ package com.example.uf1_proyecto
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.GsonBuilder
 import khttp.responses.Response
@@ -17,35 +16,34 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
 
     private var dbHelper: DBHelper = DBHelper.getInstance(context)
 
-    private var calendarData: MutableLiveData<Triple<Pair<Long, Map<Long, List<Medicamento>>>, Pair<Long, Map<Long, List<Medicamento>>>, Pair<Long, Map<Long, List<Medicamento>>>>> =
-        MutableLiveData(
-            Triple(
-                DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis()) to getActivosCalendario(
-                    DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis())
-                ),
-
-                DateTimeUtils.getTodayAsMillis() to getActivosCalendario(DateTimeUtils.getTodayAsMillis()),
-
-                DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis()) to getActivosCalendario(
-                    DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis())
-                )
-            )
-        )
-
-    private var diaryData: MutableLiveData<Triple<Pair<Long, String>, Pair<Long, String>, Pair<Long, String>>> =
-        MutableLiveData(
-            Triple(
-                DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis()) to (getDiaryText(
-                    DateTimeUtils.prevDay(DateTimeUtils.getTodayAsMillis())
-                )),
-
-                DateTimeUtils.getTodayAsMillis() to (getDiaryText(DateTimeUtils.getTodayAsMillis())),
-
-                DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis()) to (getDiaryText(
-                    DateTimeUtils.nextDay(DateTimeUtils.getTodayAsMillis())
-                ))
-            )
-        )
+// TODO: Borrar todo esto
+//    // TODO: Cambiar y guardar solamente el dia actual
+//    private val constCalendarData: MutableLiveData<Triple<Pair<Long, Map<Long, List<Medicamento>>>, Pair<Long, Map<Long, List<Medicamento>>>, Pair<Long, Map<Long, List<Medicamento>>>>> =
+//        MutableLiveData(
+//            Triple(
+//                DateTimeUtils.getYesterdayAsMillis() to getActivosCalendario(DateTimeUtils.getYesterdayAsMillis()),
+//                DateTimeUtils.getTodayAsMillis() to getActivosCalendario(DateTimeUtils.getTodayAsMillis()),
+//                DateTimeUtils.getTomorrowAsMillis() to getActivosCalendario(DateTimeUtils.getTomorrowAsMillis())
+//            )
+//        )
+//
+//    // TODO: Cambiar y guardar solamente el dia actual
+//    private var calendarData =
+//        MutableLiveData<Triple<Pair<Long, Map<Long, List<Medicamento>>>, Pair<Long, Map<Long, List<Medicamento>>>, Pair<Long, Map<Long, List<Medicamento>>>>>()
+//
+//    // TODO: Cambiar y guardar solamente el dia actual
+//    private var constDiaryData: MutableLiveData<Triple<Pair<Long, String>, Pair<Long, String>, Pair<Long, String>>> =
+//        MutableLiveData(
+//            Triple(
+//                DateTimeUtils.getYesterdayAsMillis() to getDiaryText(DateTimeUtils.getYesterdayAsMillis()),
+//                DateTimeUtils.getTodayAsMillis() to getDiaryText(DateTimeUtils.getTodayAsMillis()),
+//                DateTimeUtils.getTomorrowAsMillis() to getDiaryText(DateTimeUtils.getTomorrowAsMillis())
+//            )
+//        )
+//
+//    // TODO: Cambiar y guardar solamente el dia actual
+//    private var diaryData =
+//        MutableLiveData<Triple<Pair<Long, String>, Pair<Long, String>, Pair<Long, String>>>()
 
     companion object {
         /**
@@ -61,7 +59,6 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
             instance ?: synchronized(this) {
                 instance ?: PillboxViewModel(context.applicationContext).also { instance = it }
             }
-
     }
 
     /**
@@ -74,133 +71,176 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
             return false
         }
 
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
-        context.startActivity(intent)
+        try {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            return false
+        }
+
         return true
     }
 
-    fun getCalendarPrevDayData(): Pair<Long, Map<Long, List<Medicamento>>> =
-        calendarData.value!!.first
-
-    /**
-     * Devuelve la fecha que se está mostrando en el calendario
-     */
-    fun getCalendarCurrDayData(): Pair<Long, Map<Long, List<Medicamento>>> =
-        calendarData.value!!.second
-
-    fun getCalendarNextDayData(): Pair<Long, Map<Long, List<Medicamento>>> =
-        calendarData.value!!.third
-
-    /**
-     * Establece la fecha que se está mostrando en el calendario
-     * @param date fecha en milisegundos
-     */
-    fun setCalendarCurrDate(date: Long) {
-        calendarData.value = Triple(
-            DateTimeUtils.prevDay(date) to getActivosCalendario(DateTimeUtils.prevDay(date)),
-            date to getActivosCalendario(date),
-            DateTimeUtils.nextDay(date) to getActivosCalendario(DateTimeUtils.nextDay(date))
-        )
-    }
-
-    /**
-     * Avanza un día en el calendario
-     */
-    fun calendarMoveForward() {
-        calendarData.value = Triple(
-            calendarData.value!!.second,
-            calendarData.value!!.third,
-            DateTimeUtils.nextDay(calendarData.value!!.third.first) to getActivosCalendario(
-                DateTimeUtils.nextDay(calendarData.value!!.third.first)
-            )
-        )
-
-    }
-
-    /**
-     * Retrocede un día en el calendario
-     */
-    fun calendarMoveBackward() {
-        calendarData.value = Triple(
-            DateTimeUtils.prevDay(calendarData.value!!.first.first) to getActivosCalendario(
-                DateTimeUtils.prevDay(calendarData.value!!.first.first)
-            ),
-            calendarData.value!!.first,
-            calendarData.value!!.second
-        )
-    }
+    // TODO: Si no se usa borrar
+//    @Deprecated("Marcado para borrar")
+//    fun getCalendarPrevDayData(): Pair<Long, Map<Long, List<Medicamento>>> =
+//        calendarData.value!!.first
+//
+//    /**
+//     * Devuelve la fecha que se está mostrando en el calendario
+//     */
+//    fun getCalendarCurrDayData(): Pair<Long, Map<Long, List<Medicamento>>> =
+//        calendarData.value!!.second
+//
+//    // TODO: Si no se usa borrar
+//    @Deprecated("Marcado para borrar")
+//    fun getCalendarNextDayData(): Pair<Long, Map<Long, List<Medicamento>>> =
+//        calendarData.value!!.third
+//
+//    /**
+//     * Establece la fecha que se está mostrando en el calendario
+//     * @param date fecha en milisegundos
+//     */
+//    fun setCalendarCurrDate(date: Long) {
+//        calendarData.value = Triple(
+//            DateTimeUtils.prevDay(date) to getActivosCalendario(DateTimeUtils.prevDay(date)),
+//            date to getActivosCalendario(date),
+//            DateTimeUtils.nextDay(date) to getActivosCalendario(DateTimeUtils.nextDay(date))
+//        )
+//    }
+//
+//    /**
+//     * Avanza un día en el calendario
+//     */
+//    fun calendarMoveForward() {
+//        calendarData.value = Triple(
+//            calendarData.value!!.second,
+//            calendarData.value!!.third,
+//            DateTimeUtils.nextDay(calendarData.value!!.third.first) to getActivosCalendario(
+//                DateTimeUtils.nextDay(calendarData.value!!.third.first)
+//            )
+//        )
+//
+//    }
+//
+//    /**
+//     * Retrocede un día en el calendario
+//     */
+//    fun calendarMoveBackward() {
+//        calendarData.value = Triple(
+//            DateTimeUtils.prevDay(calendarData.value!!.first.first) to getActivosCalendario(
+//                DateTimeUtils.prevDay(calendarData.value!!.first.first)
+//            ),
+//            calendarData.value!!.first,
+//            calendarData.value!!.second
+//        )
+//    }
+//
+//    fun loadCalendarDefaults() {
+//        calendarData.value = Triple(
+//            constCalendarData.value!!.first,
+//            constCalendarData.value!!.second,
+//            constCalendarData.value!!.third
+//        )
+//    }
 
     /**
      * Devuelve los medicamentos activos de un día agrupados por hora
      * @param dia día en milisegundos
      */
-    private fun getActivosCalendario(dia: Long) = dbHelper.getActivosCalendario(dia)
+    fun getActivosCalendario(dia: Long) = dbHelper.getActivosCalendario(dia)
 
-    private fun refreshCalendar() {
-        calendarData.value = Triple(
-            calendarData.value!!.first.first to getActivosCalendario(calendarData.value!!.first.first),
-            calendarData.value!!.second.first to getActivosCalendario(calendarData.value!!.second.first),
-            calendarData.value!!.third.first to getActivosCalendario(calendarData.value!!.third.first)
-        )
-    }
-
-    fun getDiaryPrevDayData(): Pair<Long, String> = diaryData.value!!.first
-
-    fun getDiaryCurrDayData(): Pair<Long, String> = diaryData.value!!.second
-
-    fun getDiaryNextDayData(): Pair<Long, String> = diaryData.value!!.third
-
-    /**
-     * Establece la fecha que se está mostrando en la agenda
-     * @param date fecha en milisegundos
-     */
-    fun setDiaryCurrDate(date: Long) {
-        diaryData.value = Triple(
-            DateTimeUtils.prevDay(date) to getDiaryText(DateTimeUtils.prevDay(date)),
-            date to getDiaryText(date),
-            DateTimeUtils.nextDay(date) to getDiaryText(DateTimeUtils.nextDay(date))
-        )
-    }
-
-    /**
-     * Avanza un día en la agenda
-     */
-    fun diaryMoveForward() {
-        diaryData.value = Triple(
-            diaryData.value!!.second,
-            diaryData.value!!.third,
-            DateTimeUtils.nextDay(diaryData.value!!.third.first) to getDiaryText(
-                DateTimeUtils.nextDay(diaryData.value!!.third.first)
-            )
-        )
-    }
-
-    /**
-     * Retrocede un día en la agenda
-     */
-    fun diaryMoveBackward() {
-        diaryData.value = Triple(
-            DateTimeUtils.prevDay(diaryData.value!!.first.first) to getDiaryText(
-                DateTimeUtils.prevDay(diaryData.value!!.first.first)
-            ),
-            diaryData.value!!.first,
-            diaryData.value!!.second
-        )
-    }
-
-    private fun refreshDiary() {
-        diaryData.value = Triple(
-            diaryData.value!!.first.first to getDiaryText(diaryData.value!!.first.first),
-            diaryData.value!!.second.first to getDiaryText(diaryData.value!!.second.first),
-            diaryData.value!!.third.first to getDiaryText(diaryData.value!!.third.first)
-        )
-    }
+    // TODO: Si no se usa borrar
+//    private fun refreshCalendar() {
+//        Log.v("PillboxViewModel", "refreshCalendar()")
+//        constCalendarData.value = Triple(
+//            constCalendarData.value!!.first.first to getActivosCalendario(constCalendarData.value!!.first.first),
+//            constCalendarData.value!!.second.first to getActivosCalendario(constCalendarData.value!!.second.first),
+//            constCalendarData.value!!.third.first to getActivosCalendario(constCalendarData.value!!.third.first)
+//        )
+//
+//        calendarData.value = Triple(
+//            calendarData.value!!.first.first to getActivosCalendario(calendarData.value!!.first.first),
+//            calendarData.value!!.second.first to getActivosCalendario(calendarData.value!!.second.first),
+//            calendarData.value!!.third.first to getActivosCalendario(calendarData.value!!.third.first)
+//        )
+//    }
+//
+//    // TODO: Si no se usa borrar
+//    @Deprecated("Marcado para borrar")
+//    fun getDiaryPrevDayData(): Pair<Long, String> = diaryData.value!!.first
+//
+//    fun getDiaryCurrDayData(): Pair<Long, String> = diaryData.value!!.second
+//
+//    // TODO: Si no se usa borrar
+//    @Deprecated("Marcado para borrar")
+//    fun getDiaryNextDayData(): Pair<Long, String> = diaryData.value!!.third
+//
+//    /**
+//     * Establece la fecha que se está mostrando en la agenda
+//     * @param date fecha en milisegundos
+//     */
+//    fun setDiaryCurrDate(date: Long) {
+//        diaryData.value = Triple(
+//            DateTimeUtils.prevDay(date) to getDiaryText(DateTimeUtils.prevDay(date)),
+//            date to getDiaryText(date),
+//            DateTimeUtils.nextDay(date) to getDiaryText(DateTimeUtils.nextDay(date))
+//        )
+//    }
+//
+//    /**
+//     * Avanza un día en la agenda
+//     */
+//    fun diaryMoveForward() {
+//        diaryData.value = Triple(
+//            diaryData.value!!.second,
+//            diaryData.value!!.third,
+//            DateTimeUtils.nextDay(diaryData.value!!.third.first) to getDiaryText(
+//                DateTimeUtils.nextDay(diaryData.value!!.third.first)
+//            )
+//        )
+//    }
+//
+//    /**
+//     * Retrocede un día en la agenda
+//     */
+//    fun diaryMoveBackward() {
+//        diaryData.value = Triple(
+//            DateTimeUtils.prevDay(diaryData.value!!.first.first) to getDiaryText(
+//                DateTimeUtils.prevDay(diaryData.value!!.first.first)
+//            ),
+//            diaryData.value!!.first,
+//            diaryData.value!!.second
+//        )
+//    }
+//
+//    private fun refreshDiary() {
+//        constDiaryData.value = Triple(
+//            constDiaryData.value!!.first.first to getDiaryText(constDiaryData.value!!.first.first),
+//            constDiaryData.value!!.second.first to getDiaryText(constDiaryData.value!!.second.first),
+//            constDiaryData.value!!.third.first to getDiaryText(constDiaryData.value!!.third.first)
+//        )
+//
+//        diaryData.value = Triple(
+//            diaryData.value!!.first.first to getDiaryText(diaryData.value!!.first.first),
+//            diaryData.value!!.second.first to getDiaryText(diaryData.value!!.second.first),
+//            diaryData.value!!.third.first to getDiaryText(diaryData.value!!.third.first)
+//        )
+//    }
+//
+//    fun loadDiaryDefaults() {
+//        diaryData.value = Triple(
+//            constDiaryData.value!!.first,
+//            constDiaryData.value!!.second,
+//            constDiaryData.value!!.third
+//        )
+//    }
 
     /**
      * Devuelve el texto de la entrada de la agenda del dia correspondiente
      */
-    private fun getDiaryText(dia: Long) = dbHelper.getDiaryEntry(dia) ?: ""
+    fun getDiaryText(dia: Long) = dbHelper.getDiaryEntry(dia) ?: ""
 
     /**
      * Devuelve todos los medicamentos activos
@@ -212,17 +252,21 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      */
     fun getFavoritos() = dbHelper.getFavoritos()
 
+    // TODO: Si no se usa borrar
     /**
      * Añade un medicamento a la lista de medicamentos activos
      */
     fun addActiveMed(medicamento: Medicamento) =
-        dbHelper.insertIntoActivos(medicamento).also { if (it) refreshCalendar() }
+        dbHelper.insertIntoActivos(medicamento)
+//            .also { if (it) refreshCalendar() }
 
+    // TODO: Si no se usa borrar
     /**
      * Elimina un medicamento de la lista de medicamentos activos
      */
     fun deleteActiveMed(medicamento: Medicamento) =
-        dbHelper.deleteFromActivos(medicamento).also { if (it) refreshCalendar() }
+        dbHelper.deleteFromActivos(medicamento)
+//            .also { if (it) refreshCalendar() }
 
     /**
      * Añade un medicamento a la lista de medicamentos favoritos
@@ -234,6 +278,7 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      */
     fun deleteFavMed(medicamento: Medicamento) = dbHelper.deleteFromFavoritos(medicamento)
 
+    // TODO: Si no se usa borrar
     /**
      * Inserta una entrada en la agenda
      * @param descripcion descripción de la entrada
@@ -241,7 +286,7 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      */
     fun insertIntoAgenda(date: Long, descripcion: String): Boolean {
         return dbHelper.insertIntoAgenda(date, descripcion)
-            .also { if (it) refreshDiary() }
+//            .also { if (it) refreshDiary() }
     }
 
     fun desmarcarToma(med: Medicamento, hora: Long, dia: Long) =

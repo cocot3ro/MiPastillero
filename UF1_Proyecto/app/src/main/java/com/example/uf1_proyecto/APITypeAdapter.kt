@@ -1,13 +1,11 @@
 package com.example.uf1_proyecto
 
-import android.util.Log
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.net.URL
-import java.util.Arrays
 
 class APITypeAdapter : TypeAdapter<Medicamento.Builder>() {
 

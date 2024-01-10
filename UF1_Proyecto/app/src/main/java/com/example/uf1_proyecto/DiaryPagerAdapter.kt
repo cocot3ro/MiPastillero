@@ -1,28 +1,41 @@
 package com.example.uf1_proyecto
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import kotlin.math.abs
 
 class DiaryPagerAdapter(
-    fragmentActivity: FragmentActivity,
-    private val loggingEnabled: Boolean = false
-) :
-    FragmentStateAdapter(fragmentActivity) {
-    private var _pillboxViewModel: PillboxViewModel? = null
-    private val pillboxViewModel get() = _pillboxViewModel!!
+    fragmentActivity: FragmentActivity
+) : FragmentStateAdapter(fragmentActivity), PagerAdapter {
 
-    var lastPosition: Int
+    private var fragmentList: MutableList<DiaryPageFragment> = mutableListOf()
 
-    init {
-        if (loggingEnabled) {
-            Log.v("DiaryPagerAdapter", "init")
+    companion object {
+        @Volatile
+        private var instance: DiaryPagerAdapter? = null
+
+        const val START_POSITION = Int.MAX_VALUE / 2
+
+        fun getInstance(fragmentActivity: FragmentActivity): DiaryPagerAdapter {
+            if (instance == null) {
+                synchronized(this) {
+                    if (instance == null) {
+                        instance = DiaryPagerAdapter(fragmentActivity)
+                    }
+                }
+            }
+
+            return clone(fragmentActivity, instance!!)
         }
-        _pillboxViewModel = PillboxViewModel.getInstance(fragmentActivity)
 
-        lastPosition = itemCount / 2
+        private fun clone(
+            fragmentActivity: FragmentActivity,
+            origin: DiaryPagerAdapter
+        ): DiaryPagerAdapter {
+            val clone = DiaryPagerAdapter(fragmentActivity)
+            clone.fragmentList = origin.fragmentList
+            return clone
+        }
     }
 
     override fun getItemCount(): Int {
@@ -30,100 +43,26 @@ class DiaryPagerAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        if (loggingEnabled) {
-            Log.i("DiaryPagerAdapter", "")
-            Log.i("DiaryPagerAdapter", "createFragment: $lastPosition -> $position")
-        }
+        val today = DateTimeUtils.getTodayAsMillis()
+        val offset = position - START_POSITION
 
-        if (abs(position - lastPosition) > 1) {
-            if (loggingEnabled) {
-                Log.d(
-                    "DiaryPagerAdapter",
-                    "createFragment: abs(position - lastPosition) ${abs(position - lastPosition)}"
-                )
-            }
-            for (i in 1 until abs(position - lastPosition)) {
-                if (position < lastPosition) {
-                    pillboxViewModel.diaryMoveBackward()
-                    if (loggingEnabled) {
-                        Log.e("DiaryPagerAdapter", "createFragment: adjusting prev")
-                    }
-                } else {
-                    pillboxViewModel.diaryMoveForward()
-                    if (loggingEnabled) {
-                        Log.e("DiaryPagerAdapter", "createFragment: adjusting next")
-                    }
-                }
+        val fragmentDate = DateTimeUtils.moveDay(today, offset)
+
+        return DiaryPageFragment(fragmentDate).apply {
+            fragmentList.add(this)
+            this.setOnDestroyListener {
+                fragmentList.remove(this)
             }
         }
+    }
 
-        val data = when {
-            position < lastPosition -> pillboxViewModel.getDiaryPrevDayData()
-            position > lastPosition -> pillboxViewModel.getDiaryNextDayData()
-            else -> pillboxViewModel.getDiaryCurrDayData()
-        }
+    override fun search(date: Long): Int {
+        val offset = DateTimeUtils.daysBetweenMillis(DateTimeUtils.getTodayAsMillis(), date)
+        return START_POSITION + offset
+    }
 
-        when {
-            position < lastPosition -> {
-                pillboxViewModel.diaryMoveBackward()
-                if (loggingEnabled) {
-                    Log.i(
-                        "DiaryPagerAdapter",
-                        "position < lastPosition -> diaryMoveBackward()"
-                    )
-
-                    Log.i(
-                        "DiaryPagerAdapter",
-                        "createFragment: prev $lastPosition -> $position ${
-                            DateTimeUtils.millisToDate(
-                                data.first
-                            )
-                        }"
-                    )
-                }
-            }
-
-            position > lastPosition -> {
-                pillboxViewModel.diaryMoveForward()
-                if (loggingEnabled) {
-                    Log.i(
-                        "DiaryPagerAdapter",
-                        "position > lastPosition -> diaryMoveForward()"
-                    )
-
-
-                    Log.i(
-                        "DiaryPagerAdapter",
-                        "createFragment: next $lastPosition -> $position ${
-                            DateTimeUtils.millisToDate(
-                                data.first
-                            )
-                        }"
-                    )
-                }
-            }
-
-            else -> {
-                if (loggingEnabled) {
-                    Log.i(
-                        "DiaryPagerAdapter",
-                        "createFragment: same $lastPosition -> $position ${
-                            DateTimeUtils.millisToDate(
-                                data.first
-                            )
-                        }"
-                    )
-                }
-            }
-        }
-
-        lastPosition = position
-
-        if (loggingEnabled) {
-            Log.v("DiaryPagerAdapter", "return")
-        }
-
-        return DiaryPageFragment(data)
+    override fun reload() {
+        fragmentList.forEach(DiaryPageFragment::changeToRenderer)
     }
 
 }

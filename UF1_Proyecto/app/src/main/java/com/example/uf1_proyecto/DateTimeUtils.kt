@@ -56,6 +56,10 @@ object DateTimeUtils {
         )
     }
 
+    fun daysBetweenMillis(diaInicio: Long, diaFin: Long): Int {
+        return ((diaFin - diaInicio) / (1000 * 60 * 60 * 24)).toInt()
+    }
+
     /**
      * Convierte milisegundos a día de la semana
      * @param millis milisegundos
@@ -87,6 +91,13 @@ object DateTimeUtils {
     fun getTodayAsMillis(): Long = dateToMillis(getTodayAsString())
 
     fun getTomorrowAsMillis(): Long = nextDay(getTodayAsMillis())
+
+    fun moveDay(start: Long, days: Int): Long {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = start
+        calendar.add(Calendar.DAY_OF_MONTH, days)
+        return calendar.timeInMillis
+    }
 
     /**
      * Convierte milisegundos a hora en el formato de la configuración regional
