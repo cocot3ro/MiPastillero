@@ -23,9 +23,6 @@ class DiaryFragment : Fragment() {
     private var _binding: FragmentDiaryBinding? = null
     private val binding get() = _binding!!
 
-    private var _pillboxViewModel: PillboxViewModel? = null
-    private val pillboxViewModel get() = _pillboxViewModel!!
-
     private lateinit var navController: NavController
     private lateinit var pagerAdapter: DiaryPagerAdapter
 
@@ -34,7 +31,6 @@ class DiaryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDiaryBinding.inflate(inflater, container, false)
-        _pillboxViewModel = PillboxViewModel.getInstance(requireContext())
         navController =
             ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
         pagerAdapter = DiaryPagerAdapter(requireActivity())
@@ -51,12 +47,6 @@ class DiaryFragment : Fragment() {
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
         binding.toolbar.setOnMenuItemClickListener { menuItem -> menuItemSelected(menuItem) }
-
-        binding.navView.setupWithNavController(navController)
-        binding.navView.setNavigationItemSelectedListener { menuItem ->
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-            menuItemSelected(menuItem)
-        }
 
         binding.viewPager.adapter = pagerAdapter
         binding.viewPager.setCurrentItem(DiaryPagerAdapter.START_POSITION, false)
