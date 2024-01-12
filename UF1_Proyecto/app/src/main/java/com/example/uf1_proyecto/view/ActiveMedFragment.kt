@@ -180,7 +180,7 @@ class ActiveMedFragment : Fragment() {
                 medicamento,
                 object : RefillMedDialog.OnDataEnteredListener {
                     override fun onDataEntered(medicamento: Medicamento) {
-                        if (pillboxViewModel.addActiveMed(medicamento)) {
+                        if (pillboxViewModel.addActiveMed(requireContext(), medicamento)) {
                             Toast.makeText(
                                 activity,
                                 getString(R.string.añadir_activo_ok),
@@ -199,7 +199,7 @@ class ActiveMedFragment : Fragment() {
 
         // Botón para eliminar el medicamento activo
         cardViewBinding.removeBtn.setOnClickListener {
-            if (pillboxViewModel.deleteActiveMed(medicamento)) {
+            if (pillboxViewModel.deleteActiveMed(requireContext(), medicamento)) {
                 val index = binding.activeMedLayout.indexOfChild(cardViewBinding.root)
                 binding.activeMedLayout.removeView(cardViewBinding.root)
                 val snackBar =
@@ -210,7 +210,7 @@ class ActiveMedFragment : Fragment() {
                     )
 
                 snackBar.setAction(getString(R.string.deshacer)) {
-                    if (pillboxViewModel.addActiveMed(medicamento)) {
+                    if (pillboxViewModel.addActiveMed(requireContext(), medicamento)) {
                         Toast.makeText(
                             activity,
                             getString(R.string.reinsertar_ok),
@@ -255,7 +255,7 @@ class ActiveMedFragment : Fragment() {
             object : AddActiveMedDialog.OnDataEnteredListener {
                 override fun onDataEntered(medicamento: Medicamento) {
                     if (!medicamento.isFavorite!!) {
-                        if (pillboxViewModel.addActiveMed(medicamento)) {
+                        if (pillboxViewModel.addActiveMed(requireContext(), medicamento)) {
                             Toast.makeText(
                                 context,
                                 getString(R.string.añadir_activo_ok),
@@ -271,7 +271,7 @@ class ActiveMedFragment : Fragment() {
                         }
                     } else {
                         // Si se elige guardar tambien como favorito, se añade a la lista de favoritos
-                        val addActive = pillboxViewModel.addActiveMed(medicamento)
+                        val addActive = pillboxViewModel.addActiveMed(requireContext(), medicamento)
                         val addFav = pillboxViewModel.addFavMed(medicamento)
 
                         if (addActive && addFav) {

@@ -22,7 +22,7 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      */
     private var dbHelper: DBHelper = DBHelper.getInstance(context)
 
-    private var notificationManager: NotificationManager = NotificationManager(context)
+    private var notificationManager: NotificationManager = NotificationManager()
 
     companion object {
         /**
@@ -85,14 +85,16 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
     /**
      * Añade un medicamento a la lista de medicamentos activos
      */
-    fun addActiveMed(medicamento: Medicamento) =
-        dbHelper.insertIntoActivos(medicamento).also { if (it) notificationManager.programarNotificacion(medicamento) }
+    fun addActiveMed(context: Context, medicamento: Medicamento) =
+        dbHelper.insertIntoActivos(medicamento)
+            .also { if (it) notificationManager.programarNotificacion(context, medicamento) }
 
     /**
      * Elimina un medicamento de la lista de medicamentos activos
      */
-    fun deleteActiveMed(medicamento: Medicamento) =
-        dbHelper.deleteFromActivos(medicamento).also { if (it) notificationManager.cancelarNotificacion(medicamento) }
+    fun deleteActiveMed(context: Context, medicamento: Medicamento) =
+        dbHelper.deleteFromActivos(medicamento)
+            .also { if (it) notificationManager.cancelarNotificacion(context, medicamento) }
 
     /**
      * Añade un medicamento a la lista de medicamentos favoritos

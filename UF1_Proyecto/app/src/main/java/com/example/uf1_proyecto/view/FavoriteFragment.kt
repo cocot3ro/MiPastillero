@@ -169,7 +169,7 @@ class FavoriteFragment : Fragment() {
             medicamento,
             object : RefillMedDialog.OnDataEnteredListener {
                 override fun onDataEntered(medicamento: Medicamento) {
-                    if (pillboxViewModel.addActiveMed(medicamento)) {
+                    if (pillboxViewModel.addActiveMed(requireContext(), medicamento)) {
                         Toast.makeText(
                             activity,
                             getString(R.string.añadir_activo_ok),
@@ -218,7 +218,7 @@ class FavoriteFragment : Fragment() {
             object : AddActiveMedDialog.OnDataEnteredListener {
                 override fun onDataEntered(medicamento: Medicamento) {
                     if (!medicamento.isFavorite!!) {
-                        if (pillboxViewModel.addActiveMed(medicamento)) {
+                        if (pillboxViewModel.addActiveMed(requireContext(), medicamento)) {
                             Toast.makeText(
                                 context,
                                 getString(R.string.añadir_activo_ok),
@@ -233,7 +233,7 @@ class FavoriteFragment : Fragment() {
                         }
                     } else {
                         // Si se elige guardar tambien como favorito, se añade a la lista de favoritos
-                        val addActive = pillboxViewModel.addActiveMed(medicamento)
+                        val addActive = pillboxViewModel.addActiveMed(requireContext(), medicamento)
                         val addFav = pillboxViewModel.addFavMed(medicamento)
 
                         if (addActive && addFav) {
