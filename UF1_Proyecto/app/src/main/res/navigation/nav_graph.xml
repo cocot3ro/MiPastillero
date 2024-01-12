@@ -7,32 +7,38 @@
 
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.example.uf1_proyecto.FavoriteFragment"
+        android:name="com.example.uf1_proyecto.view.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" />
 
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.example.uf1_proyecto.CalendarFragment"
+        android:name="com.example.uf1_proyecto.view.CalendarFragment"
         android:label="fragment_calendar"
         tools:layout="@layout/fragment_calendar" />
 
     <fragment
         android:id="@+id/activeMedFragment"
-        android:name="com.example.uf1_proyecto.ActiveMedFragment"
+        android:name="com.example.uf1_proyecto.view.ActiveMedFragment"
         android:label="fragment_active_med"
         tools:layout="@layout/fragment_active_med" />
 
     <fragment
         android:id="@+id/diaryFragment"
-        android:name="com.example.uf1_proyecto.DiaryFragment"
+        android:name="com.example.uf1_proyecto.view.DiaryFragment"
         android:label="fragment_agenda"
         tools:layout="@layout/fragment_diary" />
 
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.example.uf1_proyecto.HistoryFragment"
+        android:name="com.example.uf1_proyecto.view.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
+    
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.uf1_proyecto.view.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>

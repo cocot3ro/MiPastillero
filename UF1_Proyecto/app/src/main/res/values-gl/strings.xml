@@ -37,7 +37,7 @@
     <string name="aceptar">Aceptar</string>
     <string name="cancelar">Cancelar</string>
     <string name="codigo_nacional_opcional">Código nacional</string>
-    <string name="combre">Nome (requerido)</string>
+    <string name="nombre">Nome (requerido)</string>
     <string name="codigo_nacional_ayuda">O código nacional atópase xeralmente no reverso da caixa do medicamento co seguinte formato \'123456.7\'. É necesario para autocompletar algúns datos e acceder ao prospecto e folla técnica</string>
     <string name="guardar_como_favorito">Gardar como favorito</string>
     <string name="abrir_url_error">Non se puido abrir a URL ou non existe</string>
@@ -79,4 +79,8 @@
     <string name="principios_activos">Principios activos:</string>
     <string name="dosis">Dose:</string>
     <string name="ver_en_web">Ver na web</string>
+    <string name="ajustes">Configuración</string>
+    <string name="notificaciones">Recibir notificacións</string>
+    <string name="ajustes_guardados">Configuración gardada</string>
+    <string name="tienes_que_tomar">Tienes que tomar:</string>
 </resources>

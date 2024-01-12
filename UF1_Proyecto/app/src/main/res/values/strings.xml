@@ -37,7 +37,7 @@
     <string name="aceptar">Accept</string>
     <string name="cancelar">Cancel</string>
     <string name="codigo_nacional_opcional">National drug code</string>
-    <string name="combre">Name (required)</string>
+    <string name="nombre">Name (required)</string>
     <string name="codigo_nacional_ayuda">The national code is usually found on the back of the medication box in the following format \'123456.7\'. It is necessary to autofill some data and access the leaflet and summary</string>
     <string name="guardar_como_favorito">Save as favorite</string>
     <string name="abrir_url_error">The URL cannot be opened or it does not exist</string>
@@ -79,4 +79,8 @@
     <string name="principios_activos">Active principles:</string>
     <string name="dosis">Dose:</string>
     <string name="ver_en_web">See on the web</string>
+    <string name="ajustes">Settings</string>
+    <string name="notificaciones">Receive notifications</string>
+    <string name="ajustes_guardados">Saved Settings</string>
+    <string name="tienes_que_tomar">Tienes que tomar:</string>
 </resources>
