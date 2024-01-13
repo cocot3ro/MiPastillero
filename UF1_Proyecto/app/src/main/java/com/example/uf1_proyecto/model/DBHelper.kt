@@ -36,7 +36,7 @@ class DBHelper private constructor(context: Context) :
             CREATE TABLE IF NOT EXISTS ${ContratoMedicamentos.NOMBRE_TABLA} (
                 ${ContratoMedicamentos.Columnas._ID} TEXT PRIMARY KEY,
                 ${ContratoMedicamentos.Columnas.COLUMN_COD_NACIONAL} INTEGER DEFAULT -1,
-                ${ContratoMedicamentos.Columnas.COLUMN_NUM_REGISTRO} INTEGER DEFAULT -1,
+                ${ContratoMedicamentos.Columnas.COLUMN_NUM_REGISTRO} TEXT,
                 ${ContratoMedicamentos.Columnas.COLUMN_URL} TEXT,
                 ${ContratoMedicamentos.Columnas.COLUMN_FICHA_TECNICA} TEXT,
                 ${ContratoMedicamentos.Columnas.COLUMN_PROSPECTO} TEXT,
@@ -384,7 +384,7 @@ class DBHelper private constructor(context: Context) :
         return map
     }
 
-    private fun updateCalendario(med: Medicamento, hora: Long, dia: Long, update: Int): Boolean {
+    private fun updateCalendario(medName: String, hora: Long, dia: Long, update: Int): Boolean {
         val values = ContentValues().apply {
             put(ContratoCalendario.Columnas.COLUMN_SE_HA_TOMADO, update)
         }
@@ -394,19 +394,19 @@ class DBHelper private constructor(context: Context) :
                 ContratoCalendario.NOMBRE_TABLA,
                 values,
                 "${ContratoCalendario.Columnas._ID} = ? AND ${ContratoCalendario.Columnas.COLUMN_FECHA} = ? AND ${ContratoCalendario.Columnas.COLUMN_HORA} = ?",
-                arrayOf(med.nombre, dia.toString(), hora.toString())
+                arrayOf(medName, dia.toString(), hora.toString())
             )
 
             return i != 0
         }
     }
 
-    fun desmarcarToma(med: Medicamento, hora: Long, dia: Long): Boolean {
-        return updateCalendario(med, hora, dia, 0)
+    fun desmarcarToma(medName: String, hora: Long, dia: Long): Boolean {
+        return updateCalendario(medName, hora, dia, 0)
     }
 
-    fun marcarToma(med: Medicamento, hora: Long, dia: Long): Boolean {
-        return updateCalendario(med, hora, dia, 1)
+    fun marcarToma(medName: String, hora: Long, dia: Long): Boolean {
+        return updateCalendario(medName, hora, dia, 1)
     }
 
     /**

@@ -11,12 +11,12 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.children
-import com.example.uf1_proyecto.utils.DateTimeUtils
-import com.example.uf1_proyecto.model.Medicamento
-import com.example.uf1_proyecto.viewModel.PillboxViewModel
 import com.example.uf1_proyecto.R
 import com.example.uf1_proyecto.databinding.DialogAddActiveMedBinding
 import com.example.uf1_proyecto.databinding.TimePickerLayoutBinding
+import com.example.uf1_proyecto.model.Medicamento
+import com.example.uf1_proyecto.utils.DateTimeUtils
+import com.example.uf1_proyecto.viewModel.PillboxViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -82,7 +82,8 @@ class AddActiveMedDialog(
             GlobalScope.launch(Dispatchers.Main) {
                 val codNacional = inputCodNacional.text.toString().split(".")[0].trim()
 
-                val medicamento = pillboxViewModel.searchMedicamento(codNacional)?.setCodNacional(codNacional.toInt())?.build()
+                val medicamento = pillboxViewModel.searchMedicamento(codNacional)
+                    ?.setCodNacional(codNacional.toInt())?.build()
 
                 withContext(Dispatchers.Main) {
                     searchingToast.cancel()
@@ -110,7 +111,11 @@ class AddActiveMedDialog(
         }
 
         binding.btnHelp.setOnClickListener {
-            Toast.makeText(context, context.getString(R.string.codigo_nacional_ayuda), Toast.LENGTH_LONG)
+            Toast.makeText(
+                context,
+                context.getString(R.string.codigo_nacional_ayuda),
+                Toast.LENGTH_LONG
+            )
                 .show()
         }
 
@@ -201,7 +206,11 @@ class AddActiveMedDialog(
     }
 
     private fun addTimePicker(showAfterAdd: Boolean) {
-        val timerBinding = TimePickerLayoutBinding.inflate(LayoutInflater.from(context), binding.scheduleLayout, true)
+        val timerBinding = TimePickerLayoutBinding.inflate(
+            LayoutInflater.from(context),
+            binding.scheduleLayout,
+            true
+        )
 
         timerBinding.timerHour.text = DateTimeUtils.millisToTime(-3600000) // 0:00:00 - 12:00:00 AM
 
@@ -215,7 +224,7 @@ class AddActiveMedDialog(
                     )
                     timerBinding.timerHour.text = time
                 },
-                // Establece las 00:00 como hora predeterminada
+                // Establece las 0:00 - 12:00 AM como hora predeterminada
                 0,
                 0,
                 DateTimeUtils.is24TimeFormat(context)

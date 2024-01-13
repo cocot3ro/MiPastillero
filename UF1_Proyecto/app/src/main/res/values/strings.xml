@@ -83,4 +83,5 @@
     <string name="notificaciones">Receive notifications</string>
     <string name="ajustes_guardados">Saved Settings</string>
     <string name="tienes_que_tomar">You have to take:</string>
+    <string name="marcar_como_tomado">Mark as taken</string>
 </resources>

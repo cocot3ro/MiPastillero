@@ -16,9 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UF1_Proyecto"
         tools:targetApi="31">
+
+        <service android:name=".notification.NotificationAction" />
+
         <receiver
-            android:name=".receiver.NotificationManager"
+            android:name=".notification.NotificationsService"
             android:enabled="true" />
+
         <activity
             android:name=".view.MainActivity"
             android:exported="true">

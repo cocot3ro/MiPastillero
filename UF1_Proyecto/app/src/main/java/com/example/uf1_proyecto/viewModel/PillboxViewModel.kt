@@ -9,7 +9,7 @@ import com.example.uf1_proyecto.model.ContratoActivos
 import com.example.uf1_proyecto.model.ContratoHistorial
 import com.example.uf1_proyecto.model.DBHelper
 import com.example.uf1_proyecto.model.Medicamento
-import com.example.uf1_proyecto.receiver.NotificationManager
+import com.example.uf1_proyecto.notification.NotificationsService
 import com.google.gson.GsonBuilder
 import khttp.responses.Response
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,7 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      */
     private var dbHelper: DBHelper = DBHelper.getInstance(context)
 
-    private var notificationManager: NotificationManager = NotificationManager()
+    private var notificationsService: NotificationsService = NotificationsService()
 
     companion object {
         /**
@@ -87,14 +87,14 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
      */
     fun addActiveMed(context: Context, medicamento: Medicamento) =
         dbHelper.insertIntoActivos(medicamento)
-            .also { if (it) notificationManager.programarNotificacion(context, medicamento) }
+            .also { if (it) notificationsService.programarNotificacion(context, medicamento) }
 
     /**
      * Elimina un medicamento de la lista de medicamentos activos
      */
     fun deleteActiveMed(context: Context, medicamento: Medicamento) =
         dbHelper.deleteFromActivos(medicamento)
-            .also { if (it) notificationManager.cancelarNotificacion(context, medicamento) }
+            .also { if (it) notificationsService.cancelarNotificacion(context, medicamento) }
 
     /**
      * Añade un medicamento a la lista de medicamentos favoritos
@@ -117,22 +117,22 @@ class PillboxViewModel private constructor(context: Context) : ViewModel() {
 
     /**
      * Desmarca la toma de un medicamento
-     * @param med medicamento
+     * @param medName medicamento
      * @param hora hora de la toma
      * @param dia día de la toma
      * @return true si se ha desmarcado correctamente, false si no
      */
-    fun desmarcarToma(med: Medicamento, hora: Long, dia: Long) =
-        dbHelper.desmarcarToma(med, hora, dia)
+    fun desmarcarToma(medName: String, hora: Long, dia: Long) =
+        dbHelper.desmarcarToma(medName, hora, dia)
 
     /**
      * Marca un medicamento como tomado en una hora y día concretos
-     * @param med medicamento
+     * @param medName medicamento
      * @param hora hora de la toma
      * @param dia día de la toma
      * @return true si se ha marcado correctamente, false si no
      */
-    fun marcarToma(med: Medicamento, hora: Long, dia: Long) = dbHelper.marcarToma(med, hora, dia)
+    fun marcarToma(medName: String, hora: Long, dia: Long) = dbHelper.marcarToma(medName, hora, dia)
 
     /**
      * Borra de la tabla [ContratoActivos.NOMBRE_TABLA] los medicamentos activos cuyo periodo de

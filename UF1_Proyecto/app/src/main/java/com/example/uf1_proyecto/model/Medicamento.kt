@@ -107,7 +107,6 @@ data class Medicamento(
         fun setSeHaTomado(seHaTomado: Boolean) = apply { this.seHaTomado = seHaTomado }
     }
 
-
     override fun hashCode(): Int {
         var result = nombre?.hashCode() ?: 0
         result = 31 * result + (codNacional ?: 0)
@@ -153,6 +152,10 @@ data class Medicamento(
         if (horario != other.horario) return false
         if (isFavorite != other.isFavorite) return false
         return seHaTomado == other.seHaTomado
+    }
+
+    override fun toString(): String {
+        return "Medicamento(nombre:String?=\"$nombre\", codNacional:Int?=\"$codNacional\", numRegistro:String?=\"$numRegistro\", url:String?=\"$url\", fichaTecnica:String?=\"$fichaTecnica\", prospecto:String?=\"$prospecto\", imagen:ByteArray?=\"$imagen\", imagenHashCode=\"${imagen.contentHashCode()}\", laboratorio:String?=\"$laboratorio\", dosis:String?=\"$dosis\", principiosActivos:List<String>?=\"$principiosActivos\", receta:String?=\"$receta\", fechaInicio:Long?=\"$fechaInicio\", fechaFin:Long?=\"$fechaFin\", horario:Set<Long>?=\"$horario\", isFavorite:Boolean?=\"$isFavorite\", seHaTomado:Boolean?=\"$seHaTomado\")"
     }
 
 }

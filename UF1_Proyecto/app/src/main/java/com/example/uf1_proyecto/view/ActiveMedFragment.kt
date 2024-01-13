@@ -20,13 +20,13 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.example.uf1_proyecto.utils.DateTimeUtils
-import com.example.uf1_proyecto.model.Medicamento
-import com.example.uf1_proyecto.viewModel.PillboxViewModel
 import com.example.uf1_proyecto.R
 import com.example.uf1_proyecto.databinding.ActiveMedCardLayoutBinding
 import com.example.uf1_proyecto.databinding.EmptyLayoutBinding
 import com.example.uf1_proyecto.databinding.FragmentActiveMedBinding
+import com.example.uf1_proyecto.model.Medicamento
+import com.example.uf1_proyecto.utils.DateTimeUtils
+import com.example.uf1_proyecto.viewModel.PillboxViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 
@@ -44,13 +44,13 @@ class ActiveMedFragment : Fragment() {
     ): View {
         _binding = FragmentActiveMedBinding.inflate(inflater, container, false)
         _pillboxViewModel = PillboxViewModel.getInstance(requireContext())
-        navController = ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
-
-        val view = binding.root
+        navController =
+            ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
 
         setHasOptionsMenu(true)
 
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility = View.VISIBLE
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility =
+            View.VISIBLE
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
@@ -77,7 +77,7 @@ class ActiveMedFragment : Fragment() {
 
         updateView()
 
-        return view
+        return binding.root
     }
 
     /**
@@ -153,8 +153,7 @@ class ActiveMedFragment : Fragment() {
                         activity,
                         getString(R.string.borrar_fav_error),
                         Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    ).show()
                 }
             } else {
                 if (pillboxViewModel.addFavMed(medicamento)) {

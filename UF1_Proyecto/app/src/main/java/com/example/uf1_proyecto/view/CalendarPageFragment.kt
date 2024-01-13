@@ -117,7 +117,7 @@ class CalendarPageFragment(val fecha: Long) :
                     calendarEntryBinding.btnToma.setOnClickListener {
                         if (medicamento.seHaTomado!!) {
                             if (pillboxViewModel.desmarcarToma(
-                                    medicamento,
+                                    medicamento.nombre!!,
                                     entry.key,
                                     fecha
                                 )
@@ -137,7 +137,7 @@ class CalendarPageFragment(val fecha: Long) :
                             }
                         } else {
                             if (pillboxViewModel.marcarToma(
-                                    medicamento,
+                                    medicamento.nombre!!,
                                     entry.key,
                                     fecha
                                 )

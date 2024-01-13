@@ -32,11 +32,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var preferences: SharedPreferences
 
-    init {
-        Log.d("MainActivity", "init")
-    }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

@@ -11,13 +11,13 @@ object DateTimeUtils {
 
     const val MILLIS_IN_DAY = 86400000L
 
-    fun getHour(millis: Long): Int {
+    fun hourFromMillis(millis: Long): Int {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = millis
         return calendar.get(Calendar.HOUR_OF_DAY)
     }
 
-    fun getMinute(millis: Long): Int {
+    fun minuteFromMillis(millis: Long): Int {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = millis
         return calendar.get(Calendar.MINUTE)
