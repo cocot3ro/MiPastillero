@@ -4,7 +4,6 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import android.util.Log
 import com.example.uf1_proyecto.viewModel.PillboxViewModel
 
 class NotificationAction : Service() {
@@ -16,7 +15,7 @@ class NotificationAction : Service() {
         val hora = intent.getLongExtra(ContratoNotificaciones.HORA, 0)
         val dia = intent.getLongExtra(ContratoNotificaciones.DIA, 0)
 
-        pillboxViewModel.marcarToma(medName, hora, dia).also { Log.d("NotificationAction", "marcarToma: $it") }
+        pillboxViewModel.marcarToma(medName, hora, dia)
 
         stop(intent)
 
