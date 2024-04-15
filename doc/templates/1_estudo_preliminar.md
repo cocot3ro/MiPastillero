@@ -1,6 +1,5 @@
 # Estudo preliminar
 
-
 ## 1. Descrición do proxecto
 A aplicación ten como obxectivo proporcionar aos usuarios unha ferramenta práctica para xestionar e controlar de preto o seu réxime de medicación. A aplicación centrarase na xestión dos medicamentos ao longo do tempo, permitindo aos usuarios facer un seguimento dos medicamentos que necesitan tomar diariamente.
 
@@ -14,7 +13,15 @@ A aplicación ten como obxectivo proporcionar aos usuarios unha ferramenta prác
 **Gravación e análise de datos de medicamentos:** a aplicación permite aos usuarios manter un historial completo dos seus medicamentos. Isto é útil para os profesionais sanitarios, xa que poden analizar estes datos para tomar decisións informadas sobre o tratamento.
 
 ### 1.2. Funcionalidades do proxecto
+**Notificacións de recordatorio:** a aplicación enviará notificacións personalizadas aos usuarios para lembrarlles cando deben tomar os seus medicamentos, contribuíndo así a garantir o correcto cumprimento do tratamento.
 
+**Xestión de medicamentos:** os usuarios poderán engadir, eliminar e editar medicamentos na súa lista personalizada. Poderán introducir detalles como o nome do medicamento, a dosificación, a frecuencia e o momento da administración.
+
+**Rexistro histórico:** a aplicación manterá un rexistro histórico dos medicamentos tomados polo usuario, o que permitirá un seguimento preciso do cumprimento do tratamento e facilitará a comunicación cos profesionais sanitarios.
+
+**Lista de favoritos:** proporcionarase unha función de lista de favoritos para que os usuarios poidan marcar os medicamentos que toman con máis frecuencia, facilitando o acceso rápido e sinxelo.
+
+**Información detallada sobre os medicamentos:** a aplicación ofrecerá información detallada sobre cada medicamento, incluíndo doses recomendadas, posibles efectos secundarios, interaccións con outros medicamentos e calquera outra información relevante.
 
 ### 1.3. Estudo de necesidades
 **Adherencia á medicación:** axuda aos pacientes a seguir os seus réximes de medicación de forma máis consistente e adecuada, o que pode mellorar os resultados do tratamento e reducir as complicacións de saúde.
@@ -37,5 +44,11 @@ A aplicación ten como obxectivo proporcionar aos usuarios unha ferramenta prác
 **Coidadores:** Os coidadores, como familiares, amigos ou profesionais da saúde, tamén son destinatarios importantes. A aplicación permitiralles brindar apoio e seguimento aos pacientes, o que é esencial nas situacións nas que se require a administración e medicamentos.
 
 ### 1.5. Modelo de negocio
+Dado que o obxectivo principal é ofrecer unha solución accesible e útil para a xestión dos medicamentos, a aplicación ofrecerase de xeito totalmente gratuíto a todos os usuarios. Esta decisión baséase en varios factores:
+
+**Accesibilidade e equidade:** creo firmemente que o acceso ás ferramentas de xestión de medicamentos non debe estar limitado por barreiras financeiras. Ao ofrecer a aplicación de xeito gratuíto, garante que todos os que necesiten axuda para xestionar o seu medicamento poidan acceder a ela sen preocuparse polos custos asociados.
+
+**Impacto Social:** O obxectivo principal é mellorar a saúde e o benestar das persoas garantindo un mellor cumprimento dos réximes de medicación. Ao eliminar calquera barreira financeira para acceder á aplicación, espérase que chegue a un público máis amplo e teña un maior impacto na saúde pública.
 
 ## 2. Requirimentos
+Para o desenvolvemento deste proxecto empregaranse tecnoloxías de desenvolvemento de aplicacións móbiles para Android en concreto Android Studio e a linguaxe de programación Kotlin. Ademais, será necesario o uso de bases de datos locais para almacenar información de usuarios e medicamentos utilizando Room. Tamén serán necesarios os servizos da API REST pública do CIMA (Centro de Información de Medicamentos) da AEMPS (Axencia Española de Medicamentos e Produtos Sanitarios) para a busqueda dos datos dos medicamentos, tales como dosis, excipientes e acceder ao prospecto.
