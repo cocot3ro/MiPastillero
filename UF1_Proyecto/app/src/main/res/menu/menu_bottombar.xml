@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/calendarFragment"
+        android:icon="@android:drawable/ic_menu_today"
+        android:title="@string/calendario"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/activeMedFragment"
+        android:icon="@mipmap/pildora"
+        android:title="@string/medicacion_activa"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/favoriteFragment"
+        android:icon="@android:drawable/btn_star"
+        android:title="@string/favoritos"
+        app:showAsAction="always" />
+
+<!--    <item-->
+<!--        android:id="@+id/diaryFragment"-->
+<!--        android:icon="@android:drawable/ic_menu_agenda"-->
+<!--        android:title="@string/agenda"-->
+<!--        app:showAsAction="always" />-->
+</menu>
