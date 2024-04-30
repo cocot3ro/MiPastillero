@@ -7,37 +7,37 @@
 
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.a23pablooc.proxectofct.view.FavoriteFragment"
+        android:name="com.a23pablooc.proxectofct.ui.view.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" />
 
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.a23pablooc.proxectofct.view.CalendarFragment"
+        android:name="com.a23pablooc.proxectofct.ui.view.CalendarFragment"
         android:label="fragment_calendar"
         tools:layout="@layout/fragment_calendar" />
 
     <fragment
         android:id="@+id/activeMedFragment"
-        android:name="com.a23pablooc.proxectofct.view.ActiveMedFragment"
+        android:name="com.a23pablooc.proxectofct.ui.view.ActiveMedFragment"
         android:label="fragment_active_med"
         tools:layout="@layout/fragment_active_med" />
 
     <fragment
         android:id="@+id/diaryFragment"
-        android:name="com.a23pablooc.proxectofct.view.DiaryFragment"
+        android:name="com.a23pablooc.proxectofct.ui.view.DiaryFragment"
         android:label="fragment_agenda"
         tools:layout="@layout/fragment_diary" />
 
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.a23pablooc.proxectofct.view.HistoryFragment"
+        android:name="com.a23pablooc.proxectofct.ui.view.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
     
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.a23pablooc.proxectofct.view.SettingsFragment"
+        android:name="com.a23pablooc.proxectofct.ui.view.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
 

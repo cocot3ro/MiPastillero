@@ -1,13 +1,16 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.ui.view
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -17,18 +20,18 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.a23pablooc.proxectofct.model.Medicamento
-import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
 import com.a23pablooc.proxectofct.R
+import com.a23pablooc.proxectofct.databinding.ActiveMedCardLayoutBinding
 import com.a23pablooc.proxectofct.databinding.EmptyLayoutBinding
-import com.a23pablooc.proxectofct.databinding.FavoriteCardLayoutBinding
-import com.a23pablooc.proxectofct.databinding.FragmentFavoriteBinding
+import com.a23pablooc.proxectofct.databinding.FragmentActiveMedBinding
+import com.a23pablooc.proxectofct.model.Medicamento
 import com.a23pablooc.proxectofct.utils.DateTimeUtils
+import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 
-class FavoriteFragment : Fragment() {
-    private var _binding: FragmentFavoriteBinding? = null
+class ActiveMedFragment : Fragment() {
+    private var _binding: FragmentActiveMedBinding? = null
     private val binding get() = _binding!!
 
     private var _pillboxViewModel: PillboxViewModel? = null
@@ -39,7 +42,7 @@ class FavoriteFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+        _binding = FragmentActiveMedBinding.inflate(inflater, container, false)
         _pillboxViewModel = PillboxViewModel.getInstance(requireContext())
         navController =
             ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
@@ -57,14 +60,15 @@ class FavoriteFragment : Fragment() {
                 R.id.activeMedFragment,
                 R.id.favoriteFragment,
                 R.id.diaryFragment
-            ), binding.drawerLayout
+            ),
+            binding.drawerLayout
         )
 
-        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        binding.navView.setupWithNavController(navController)
 
         binding.toolbar.setOnMenuItemClickListener { menuItem -> menuItemSelected(menuItem) }
 
-        binding.navView.setupWithNavController(navController)
+        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -77,139 +81,171 @@ class FavoriteFragment : Fragment() {
     }
 
     /**
-     * Carga los medicamentos favoritos en la vista
-     * Si no hay medicamentos favoritos, muestra un texto indicándolo
+     * Recupera de la base de datos los medicamento activos.
+     * Si no hay medicamentos activos, muestra un texto indicándolo.
      */
     private fun updateView() {
-        binding.favoriteLayout.removeAllViews()
-        val favoritos = pillboxViewModel.getFavoritos()
+        binding.activeMedLayout.removeAllViews()
+        val activos = pillboxViewModel.getActivos()
 
-        if (favoritos.isNotEmpty()) {
-            favoritos.forEach { addCardView(it) }
+        if (activos.isNotEmpty()) {
+            activos.forEach { addCardView(it) }
         } else {
-            EmptyLayoutBinding.inflate(layoutInflater, binding.favoriteLayout, true).apply {
-                texto.text = getString(R.string.sin_meds_favoritos)
+            EmptyLayoutBinding.inflate(layoutInflater, binding.activeMedLayout, true).apply {
+                texto.text = getString(R.string.sin_meds_activos)
             }
         }
     }
 
     /**
-     * Añade un medicamento a la vista
-     * @param medicamento medicamento a añadir
+     * Añade un medicamento activo a la vista.
+     * @param medicamento medicamento activo a añadir
      */
     private fun addCardView(medicamento: Medicamento) {
-        // Infla el layout de la tarjeta
+        // Infla el layout del cardview
         val cardViewBinding =
-            FavoriteCardLayoutBinding.inflate(layoutInflater, binding.favoriteLayout, true)
+            ActiveMedCardLayoutBinding.inflate(layoutInflater, binding.activeMedLayout, true)
 
-        // Nombre del medicamento
+        // Le pone el nombre
         cardViewBinding.name.text = medicamento.nombre
 
         cardViewBinding.cuerpo.setBackgroundColor(
             ContextCompat.getColor(
                 requireContext(),
-                DateTimeUtils.getEstacionColor().second
+                DateTimeUtils.getEstacionColor(medicamento.fechaInicio!!).second
             )
         )
-
-        if (medicamento.imagen != null && medicamento.imagen.isNotEmpty()) {
-            val bitmap =
-                BitmapFactory.decodeByteArray(medicamento.imagen, 0, medicamento.imagen.size)
-            cardViewBinding.img.setImageBitmap(bitmap)
-        } else {
-            cardViewBinding.img.setImageResource(R.mipmap.no_image_available)
-        }
 
         cardViewBinding.infoBtn.setOnClickListener {
             InfoDialog(requireContext(), medicamento).show()
         }
 
-        // Botón para añadir el medicamento a la lista de medicamentos activos
-        cardViewBinding.fillBtn.setOnClickListener {
-            refillMedDialog(medicamento)
+        // Fecha de inicio
+        cardViewBinding.dateStart.text =
+            DateTimeUtils.millisToDate(medicamento.fechaInicio)
+
+        // Fecha de fin
+        cardViewBinding.dateEnd.text =
+            DateTimeUtils.millisToDate(medicamento.fechaFin!!)
+
+        if (medicamento.imagen != null && medicamento.imagen.isNotEmpty()) {
+            val bitmap =
+                BitmapFactory.decodeByteArray(medicamento.imagen, 0, medicamento.imagen.size)
+            cardViewBinding.img.setImageBitmap(bitmap)
         }
 
-        // Botón para eliminar el medicamento de la lista de medicamentos favoritos
+        // Cambia el icono de favorito si el medicamento es favorito
+        val favBtn = cardViewBinding.favBtn
+        if (medicamento.isFavorite!!) {
+            favBtn.setImageResource(android.R.drawable.star_big_on)
+        }
+
+        // Añade o elimina el medicamento de favoritos y cambia el icono en consecuencia
+        favBtn.setOnClickListener {
+            if (medicamento.isFavorite!!) {
+                if (pillboxViewModel.deleteFavMed(medicamento)) {
+                    favBtn.setImageResource(android.R.drawable.star_big_off)
+                    Toast.makeText(activity, getString(R.string.borrar_fav_ok), Toast.LENGTH_SHORT)
+                        .show()
+                    updateView()
+                } else {
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.borrar_fav_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                if (pillboxViewModel.addFavMed(medicamento)) {
+                    favBtn.setImageResource(android.R.drawable.star_big_on)
+                    Toast.makeText(activity, getString(R.string.añadir_fav_ok), Toast.LENGTH_SHORT)
+                        .show()
+                    updateView()
+                } else {
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.añadir_fav_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            medicamento.isFavorite = !medicamento.isFavorite!!
+        }
+
+        cardViewBinding.refillBtn.setOnClickListener {
+            RefillMedDialog(
+                requireContext(),
+                medicamento,
+                object : RefillMedDialog.OnDataEnteredListener {
+                    override fun onDataEntered(medicamento: Medicamento) {
+                        if (pillboxViewModel.addActiveMed(requireContext(), medicamento)) {
+                            Toast.makeText(
+                                activity,
+                                getString(R.string.añadir_activo_ok),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                activity,
+                                getString(R.string.añadir_activo_error),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }).show()
+        }
+
+        // Botón para eliminar el medicamento activo
         cardViewBinding.removeBtn.setOnClickListener {
-            if (pillboxViewModel.deleteFavMed(medicamento)) {
-                val index = binding.favoriteLayout.indexOfChild(cardViewBinding.root)
-                binding.favoriteLayout.removeView(cardViewBinding.root)
-                val snackBar = Snackbar.make(
-                    requireView(), getString(R.string.borrar_fav_ok), Snackbar.LENGTH_LONG
-                )
+            if (pillboxViewModel.deleteActiveMed(requireContext(), medicamento)) {
+                val index = binding.activeMedLayout.indexOfChild(cardViewBinding.root)
+                binding.activeMedLayout.removeView(cardViewBinding.root)
+                val snackBar =
+                    Snackbar.make(
+                        requireView(),
+                        getString(R.string.borrar_ok),
+                        Snackbar.LENGTH_LONG
+                    )
 
                 snackBar.setAction(getString(R.string.deshacer)) {
-                    if (pillboxViewModel.addFavMed(medicamento)) {
+                    if (pillboxViewModel.addActiveMed(requireContext(), medicamento)) {
                         Toast.makeText(
                             activity,
                             getString(R.string.reinsertar_ok),
                             Toast.LENGTH_LONG
                         )
                             .show()
-                        binding.favoriteLayout.addView(cardViewBinding.root, index)
+                        binding.activeMedLayout.addView(cardViewBinding.root, index)
                     } else {
                         Toast.makeText(
-                            activity, getString(R.string.reinsertar_error), Toast.LENGTH_LONG
+                            activity,
+                            getString(R.string.reinsertar_error),
+                            Toast.LENGTH_LONG
                         ).show()
                     }
                 }
-
                 snackBar.show()
                 updateView()
             } else {
-                Toast.makeText(activity, getString(R.string.borrar_fav_error), Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(activity, getString(R.string.borrar_error), Toast.LENGTH_LONG).show()
             }
         }
-    }
 
-    private fun refillMedDialog(medicamento: Medicamento) {
-        RefillMedDialog(
-            requireContext(),
-            medicamento,
-            object : RefillMedDialog.OnDataEnteredListener {
-                override fun onDataEntered(medicamento: Medicamento) {
-                    if (pillboxViewModel.addActiveMed(requireContext(), medicamento)) {
-                        Toast.makeText(
-                            activity,
-                            getString(R.string.añadir_activo_ok),
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else {
-                        Toast.makeText(
-                            activity,
-                            getString(R.string.añadir_activo_error),
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-            }).show()
-    }
+        // Añade los horarios del medicamento
+        medicamento.horario!!.forEach {
+            val textView = TextView(requireContext())
+            val layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            textView.layoutParams = layoutParams
+            textView.gravity = Gravity.END
 
-    private fun addFavMedDialog() {
-        AddFavMedDialog(requireContext(), object : AddFavMedDialog.OnDataEnteredListener {
-            override fun onDataEntered(medicamento: Medicamento) {
-                if (pillboxViewModel.addFavMed(medicamento)) {
-                    Toast.makeText(
-                        activity,
-                        getString(R.string.añadir_fav_ok),
-                        Toast.LENGTH_LONG
-                    ).show()
-                    updateView()
-                } else {
-                    Toast.makeText(
-                        activity,
-                        getString(R.string.añadir_fav_error),
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-        }).show()
-    }
+            textView.text = DateTimeUtils.millisToTime(it)
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_toolbar_fav_med, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+            cardViewBinding.scheduleLayout.addView(textView)
+        }
     }
 
     private fun addMedDialog() {
@@ -224,6 +260,7 @@ class FavoriteFragment : Fragment() {
                                 getString(R.string.añadir_activo_ok),
                                 Toast.LENGTH_LONG
                             ).show()
+                            updateView()
                         } else {
                             Toast.makeText(
                                 context,
@@ -262,13 +299,13 @@ class FavoriteFragment : Fragment() {
             }).show()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_toolbar_active_med, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
     private fun menuItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
-            R.id.addFavMed -> {
-                addFavMedDialog()
-                true
-            }
-
             R.id.addActiveMed -> {
                 addMedDialog()
                 true
@@ -282,4 +319,5 @@ class FavoriteFragment : Fragment() {
             else -> false
         }
     }
+
 }

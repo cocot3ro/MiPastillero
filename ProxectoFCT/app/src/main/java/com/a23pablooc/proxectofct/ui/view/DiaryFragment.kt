@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.ui.view
 
 import android.app.DatePickerDialog
 import android.os.Bundle

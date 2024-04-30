@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.ui.view
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -15,9 +15,11 @@ import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.ActivityMainBinding
 import com.a23pablooc.proxectofct.utils.PreferencesUtils
 import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
