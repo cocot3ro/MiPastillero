@@ -15,7 +15,7 @@ import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.model.Medicamento
 import com.a23pablooc.proxectofct.utils.DateTimeUtils
 import com.a23pablooc.proxectofct.utils.PreferencesUtils
-import com.a23pablooc.proxectofct.ui.view.MainActivity
+import com.a23pablooc.proxectofct.view.MainActivity
 import java.util.Calendar
 import java.util.Objects
 

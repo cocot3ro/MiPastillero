@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.ui.view
+package com.a23pablooc.proxectofct.view
 
 import android.os.Bundle
 import android.view.LayoutInflater

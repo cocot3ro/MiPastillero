@@ -12,8 +12,7 @@ data class MedicamentoModel(
     val laboratorio: String,
     val dosis: String,
     val prescripcion: String,
-    val conduccion: Boolean,
-    val favorito: Boolean
+    val conduccion: Boolean
 ) {
     class Builder {
         private var numRegistro: String = ""
@@ -25,7 +24,6 @@ data class MedicamentoModel(
         private var dosis: String = ""
         private var prescripcion: String = ""
         private var conduccion: Boolean = false
-        private var favorito: Boolean = false
 
         fun numRegistro(numRegistro: String) = apply { this.numRegistro = numRegistro }
         fun nombre(nombre: String) = apply { this.nombre = nombre }
@@ -36,7 +34,6 @@ data class MedicamentoModel(
         fun dosis(dosis: String) = apply { this.dosis = dosis }
         fun prescripcion(prescripcion: String) = apply { this.prescripcion = prescripcion }
         fun conduccion(conduccion: Boolean) = apply { this.conduccion = conduccion }
-        fun favorito(favorito: Boolean) = apply { this.favorito = favorito }
 
         fun build() = MedicamentoModel(
             numRegistro,
@@ -47,8 +44,7 @@ data class MedicamentoModel(
             laboratorio,
             dosis,
             prescripcion,
-            conduccion,
-            favorito
+            conduccion
         )
     }
 
@@ -67,7 +63,6 @@ data class MedicamentoModel(
         if (dosis != other.dosis) return false
         if (prescripcion != other.prescripcion) return false
         if (conduccion != other.conduccion) return false
-        if (favorito != other.favorito) return false
 
         return true
     }
@@ -82,7 +77,6 @@ data class MedicamentoModel(
         result = 31 * result + dosis.hashCode()
         result = 31 * result + prescripcion.hashCode()
         result = 31 * result + conduccion.hashCode()
-        result = 31 * result + favorito.hashCode()
         return result
     }
 
@@ -97,8 +91,7 @@ fun MedicamentoEntity.toModel() = MedicamentoModel(
     laboratorio = laboratorio,
     dosis = dosis,
     prescripcion = prescripcion,
-    conduccion = conduccion,
-    favorito = favorito
+    conduccion = conduccion
 )
 
 fun MedicamentoItem.toModel() = MedicamentoModel(
@@ -110,6 +103,5 @@ fun MedicamentoItem.toModel() = MedicamentoModel(
     laboratorio = laboratorio,
     dosis = dosis,
     prescripcion = prescripcion,
-    conduccion = conduccion,
-    favorito = favorito
+    conduccion = conduccion
 )

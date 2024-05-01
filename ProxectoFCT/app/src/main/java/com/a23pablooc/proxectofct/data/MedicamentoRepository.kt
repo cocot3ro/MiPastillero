@@ -9,7 +9,8 @@ class MedicamentoRepository @Inject constructor(
     suspend fun getAll() = medicamentoDAO.getAll()
 
     /*
-    Insert all,
-    get from api...
+    TODO:
+        Insert all,
+        get from api...
      */
 }

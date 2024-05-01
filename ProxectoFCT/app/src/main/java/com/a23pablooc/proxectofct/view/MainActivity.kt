@@ -1,7 +1,8 @@
-package com.a23pablooc.proxectofct.ui.view
+package com.a23pablooc.proxectofct.view
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.ActivityMainBinding
+import com.a23pablooc.proxectofct.utils.DateTimeUtils
 import com.a23pablooc.proxectofct.utils.PreferencesUtils
 import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
             insets
         }
 

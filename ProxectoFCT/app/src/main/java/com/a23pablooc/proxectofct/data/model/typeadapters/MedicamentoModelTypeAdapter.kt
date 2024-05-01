@@ -1,5 +1,6 @@
-package com.a23pablooc.proxectofct.data.model
+package com.a23pablooc.proxectofct.data.model.typeadapters
 
+import com.a23pablooc.proxectofct.data.model.MedicamentoModel
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter

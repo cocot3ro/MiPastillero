@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.ui.view
+package com.a23pablooc.proxectofct.view
 
 interface PageFragment {
     fun setOnDestroyListener(listener: () -> Unit)

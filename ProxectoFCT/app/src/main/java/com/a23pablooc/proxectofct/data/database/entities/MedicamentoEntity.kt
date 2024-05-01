@@ -9,7 +9,7 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 @Entity(tableName = "medicamentos")
 data class MedicamentoEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "PK_medicamento")
+    @ColumnInfo(name = "PK_med")
     val id: Int = 0,
 
     @ColumnInfo(name = "num_registro")
@@ -37,10 +37,7 @@ data class MedicamentoEntity(
     val prescripcion: String,
 
     @ColumnInfo(name = "conduccion")
-    val conduccion: Boolean,
-
-    @ColumnInfo(name = "favorito")
-    val favorito: Boolean
+    val conduccion: Boolean
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -58,7 +55,6 @@ data class MedicamentoEntity(
         if (dosis != other.dosis) return false
         if (prescripcion != other.prescripcion) return false
         if (conduccion != other.conduccion) return false
-        if (favorito != other.favorito) return false
 
         return true
     }
@@ -74,7 +70,6 @@ data class MedicamentoEntity(
         result = 31 * result + dosis.hashCode()
         result = 31 * result + prescripcion.hashCode()
         result = 31 * result + conduccion.hashCode()
-        result = 31 * result + favorito.hashCode()
         return result
     }
 }
@@ -89,8 +84,8 @@ fun MedicamentoModel.toDatabase(): MedicamentoEntity {
         laboratorio = laboratorio,
         dosis = dosis,
         prescripcion = prescripcion,
-        conduccion = conduccion,
-        favorito = favorito)
+        conduccion = conduccion
+    )
 }
 
 fun MedicamentoItem.toDatabase(): MedicamentoEntity {
@@ -103,6 +98,6 @@ fun MedicamentoItem.toDatabase(): MedicamentoEntity {
         laboratorio = laboratorio,
         dosis = dosis,
         prescripcion = prescripcion,
-        conduccion = conduccion,
-        favorito = favorito)
+        conduccion = conduccion
+    )
 }

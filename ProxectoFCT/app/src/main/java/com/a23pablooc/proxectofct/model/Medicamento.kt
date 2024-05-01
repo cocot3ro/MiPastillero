@@ -14,7 +14,7 @@ import java.io.Serializable
  * @property isFavorite indica si el medicamento es favorito
  */
 
-@Deprecated("Usar MedicamentoEntity, MedicamentoModel o MedicamentoItem en su lugar")
+//@Deprecated("Usar MedicamentoEntity, MedicamentoModel o MedicamentoItem en su lugar")
 data class Medicamento(
     val nombre: String?,
     val codNacional: Int?,
