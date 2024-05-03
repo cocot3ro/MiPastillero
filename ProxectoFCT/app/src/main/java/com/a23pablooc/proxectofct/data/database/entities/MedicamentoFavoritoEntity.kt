@@ -4,9 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.a23pablooc.proxectofct.data.database.tabledefinitions.MedicamentoFavoritoTable
-import com.a23pablooc.proxectofct.data.database.tabledefinitions.MedicamentoTable
-import com.a23pablooc.proxectofct.data.database.tabledefinitions.UsuarioTable
+import com.a23pablooc.proxectofct.data.database.table_definitions.MedicamentoFavoritoTable
+import com.a23pablooc.proxectofct.data.database.table_definitions.MedicamentoTable
+import com.a23pablooc.proxectofct.data.database.table_definitions.UsuarioTable
 
 @Entity(
     tableName = MedicamentoFavoritoTable.TABLE_NAME,
@@ -14,13 +14,13 @@ import com.a23pablooc.proxectofct.data.database.tabledefinitions.UsuarioTable
         ForeignKey(
             entity = MedicamentoEntity::class,
             parentColumns = [MedicamentoTable.Columns.ID],
-            childColumns = [MedicamentoFavoritoTable.Columns.ID_MEDICAMENTO],
+            childColumns = [MedicamentoFavoritoTable.Columns.FK_MEDICAMENTO],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = UsuarioEntity::class,
             parentColumns = [UsuarioTable.Columns.ID],
-            childColumns = [MedicamentoFavoritoTable.Columns.ID_USUARIO],
+            childColumns = [MedicamentoFavoritoTable.Columns.FK_USUARIO],
             onDelete = ForeignKey.CASCADE
         )
     ]
@@ -30,10 +30,10 @@ data class MedicamentoFavoritoEntity(
     @ColumnInfo(name = MedicamentoFavoritoTable.Columns.ID)
     val id: Int = 0,
 
-    @ColumnInfo(name = MedicamentoFavoritoTable.Columns.ID_MEDICAMENTO)
+    @ColumnInfo(name = MedicamentoFavoritoTable.Columns.FK_MEDICAMENTO)
     val idMedicamento: Int,
 
-    @ColumnInfo(name = MedicamentoFavoritoTable.Columns.ID_USUARIO)
+    @ColumnInfo(name = MedicamentoFavoritoTable.Columns.FK_USUARIO)
     val idUsuario: Int
 )
 

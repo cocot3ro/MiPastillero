@@ -4,9 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.a23pablooc.proxectofct.data.database.tabledefinitions.MedicamentoActivoTable
-import com.a23pablooc.proxectofct.data.database.tabledefinitions.MedicamentoTable
-import com.a23pablooc.proxectofct.data.database.tabledefinitions.UsuarioTable
+import com.a23pablooc.proxectofct.data.database.table_definitions.MedicamentoActivoTable
+import com.a23pablooc.proxectofct.data.database.table_definitions.MedicamentoTable
+import com.a23pablooc.proxectofct.data.database.table_definitions.UsuarioTable
 import java.util.Date
 
 @Entity(
@@ -15,13 +15,13 @@ import java.util.Date
         ForeignKey(
             entity = MedicamentoEntity::class,
             parentColumns = [MedicamentoTable.Columns.ID],
-            childColumns = [MedicamentoActivoTable.Columns.ID_MEDICAMENTO],
+            childColumns = [MedicamentoActivoTable.Columns.FK_MEDICAMENTO],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = UsuarioEntity::class,
             parentColumns = [UsuarioTable.Columns.ID],
-            childColumns = [MedicamentoActivoTable.Columns.ID_USUARIO],
+            childColumns = [MedicamentoActivoTable.Columns.FK_USUARIO],
             onDelete = ForeignKey.CASCADE
         )
     ]
@@ -31,10 +31,10 @@ data class MedicamentoActivoEntity(
     @ColumnInfo(name = MedicamentoActivoTable.Columns.ID)
     val id: Int = 0,
 
-    @ColumnInfo(name = MedicamentoActivoTable.Columns.ID_MEDICAMENTO)
+    @ColumnInfo(name = MedicamentoActivoTable.Columns.FK_MEDICAMENTO)
     val idMedicamento: Int,
 
-    @ColumnInfo(name = MedicamentoActivoTable.Columns.ID_USUARIO)
+    @ColumnInfo(name = MedicamentoActivoTable.Columns.FK_USUARIO)
     val idUsuario: Int,
 
     @ColumnInfo(name = MedicamentoActivoTable.Columns.FECHA_INICIO)

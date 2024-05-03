@@ -3,7 +3,7 @@ package com.a23pablooc.proxectofct.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.a23pablooc.proxectofct.data.database.tabledefinitions.UsuarioTable
+import com.a23pablooc.proxectofct.data.database.table_definitions.UsuarioTable
 
 @Entity(tableName = UsuarioTable.TABLE_NAME)
 data class UsuarioEntity(

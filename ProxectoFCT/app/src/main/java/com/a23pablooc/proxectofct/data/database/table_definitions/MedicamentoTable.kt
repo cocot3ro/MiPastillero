@@ -1,10 +1,11 @@
-package com.a23pablooc.proxectofct.data.database.tabledefinitions
+package com.a23pablooc.proxectofct.data.database.table_definitions
 
 object MedicamentoTable {
     const val TABLE_NAME = "medicamentos"
 
     object Columns {
         const val ID = "PK_medicamento"
+        const val FK_USUARIO = "FK_usuario"
         const val NUM_REGISTRO = "num_registro"
         const val NOMBRE = "nombre"
         const val URL = "url"

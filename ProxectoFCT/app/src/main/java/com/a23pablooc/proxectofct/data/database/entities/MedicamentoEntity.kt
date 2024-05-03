@@ -2,16 +2,31 @@ package com.a23pablooc.proxectofct.data.database.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.a23pablooc.proxectofct.data.database.tabledefinitions.MedicamentoTable
+import com.a23pablooc.proxectofct.data.database.table_definitions.MedicamentoTable
+import com.a23pablooc.proxectofct.data.database.table_definitions.UsuarioTable
 import com.a23pablooc.proxectofct.data.model.MedicamentoModel
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 
-@Entity(tableName = MedicamentoTable.TABLE_NAME)
+@Entity(
+    tableName = MedicamentoTable.TABLE_NAME,
+    foreignKeys = [
+        ForeignKey(
+            entity = UsuarioEntity::class,
+            parentColumns = [UsuarioTable.Columns.ID],
+            childColumns = [MedicamentoTable.Columns.FK_USUARIO],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class MedicamentoEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = MedicamentoTable.Columns.ID)
     val id: Int = 0,
+
+    @ColumnInfo(name = MedicamentoTable.Columns.FK_USUARIO)
+    val idUsuario: Int = 0,
 
     @ColumnInfo(name = MedicamentoTable.Columns.NUM_REGISTRO)
     val numRegistro: String,

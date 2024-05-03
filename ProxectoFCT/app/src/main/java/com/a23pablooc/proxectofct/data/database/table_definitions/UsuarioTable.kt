@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.data.database.tabledefinitions
+package com.a23pablooc.proxectofct.data.database.table_definitions
 
 object UsuarioTable {
     const val TABLE_NAME = "usuarios"
