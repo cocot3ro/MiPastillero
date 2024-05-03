@@ -16,8 +16,7 @@ import com.a23pablooc.proxectofct.databinding.FragmentCalendarPageBinding
 import com.a23pablooc.proxectofct.utils.DateTimeUtils
 import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
 
-class CalendarPageFragment(val fecha: Long) :
-    Fragment(), PageFragment {
+class CalendarPageFragment(val fecha: Long) : Fragment(), PageFragment {
 
     private var _binding: FragmentCalendarPageBinding? = null
     private val binding get() = _binding!!

@@ -2,24 +2,52 @@ package com.a23pablooc.proxectofct.data.database.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.a23pablooc.proxectofct.data.database.tabledefinitions.MedicamentoActivoTable
+import com.a23pablooc.proxectofct.data.database.tabledefinitions.MedicamentoTable
+import com.a23pablooc.proxectofct.data.database.tabledefinitions.UsuarioTable
 import java.util.Date
 
-@Entity(tableName = "medicamentos_activos")
+@Entity(
+    tableName = MedicamentoActivoTable.TABLE_NAME,
+    foreignKeys = [
+        ForeignKey(
+            entity = MedicamentoEntity::class,
+            parentColumns = [MedicamentoTable.Columns.ID],
+            childColumns = [MedicamentoActivoTable.Columns.ID_MEDICAMENTO],
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = UsuarioEntity::class,
+            parentColumns = [UsuarioTable.Columns.ID],
+            childColumns = [MedicamentoActivoTable.Columns.ID_USUARIO],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class MedicamentoActivoEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "PK_medicamento_activo")
+    @ColumnInfo(name = MedicamentoActivoTable.Columns.ID)
     val id: Int = 0,
 
-    @ColumnInfo(name = "fecha_inicio")
+    @ColumnInfo(name = MedicamentoActivoTable.Columns.ID_MEDICAMENTO)
+    val idMedicamento: Int,
+
+    @ColumnInfo(name = MedicamentoActivoTable.Columns.ID_USUARIO)
+    val idUsuario: Int,
+
+    @ColumnInfo(name = MedicamentoActivoTable.Columns.FECHA_INICIO)
     val fechaInicio: Date,
 
-    @ColumnInfo(name = "fecha_fin")
+    @ColumnInfo(name = MedicamentoActivoTable.Columns.FECHA_FIN)
     val fechaFin: Date,
 
-    @ColumnInfo(name = "horario")
+    @ColumnInfo(name = MedicamentoActivoTable.Columns.HORARIO)
     val horario: Set<Date>,
 
-    @ColumnInfo(name = "dosis")
+    @ColumnInfo(name = MedicamentoActivoTable.Columns.DOSIS)
     val dosis: String
 )
+
+//TODO: funciones de extensión

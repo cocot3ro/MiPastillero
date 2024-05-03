@@ -3,38 +3,39 @@ package com.a23pablooc.proxectofct.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.a23pablooc.proxectofct.data.database.tabledefinitions.MedicamentoTable
 import com.a23pablooc.proxectofct.data.model.MedicamentoModel
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 
-@Entity(tableName = "medicamentos")
+@Entity(tableName = MedicamentoTable.TABLE_NAME)
 data class MedicamentoEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "PK_medicamento")
+    @ColumnInfo(name = MedicamentoTable.Columns.ID)
     val id: Int = 0,
 
-    @ColumnInfo(name = "num_registro")
+    @ColumnInfo(name = MedicamentoTable.Columns.NUM_REGISTRO)
     val numRegistro: String,
 
-    @ColumnInfo(name = "nombre")
+    @ColumnInfo(name = MedicamentoTable.Columns.NOMBRE)
     val nombre: String,
 
-    @ColumnInfo(name = "url")
+    @ColumnInfo(name = MedicamentoTable.Columns.URL)
     val url: String,
 
-    @ColumnInfo(name = "prospecto")
+    @ColumnInfo(name = MedicamentoTable.Columns.PROSPECTO)
     val prospecto: String,
 
-    @ColumnInfo(name = "imagen")
+    @ColumnInfo(name = MedicamentoTable.Columns.IMAGEN)
     val imagen: ByteArray,
 
-    @ColumnInfo(name = "laboratorio")
+    @ColumnInfo(name = MedicamentoTable.Columns.LABORATORIO)
     val laboratorio: String,
 
-    @ColumnInfo(name = "prescripcion")
+    @ColumnInfo(name = MedicamentoTable.Columns.PRESCRIPCION)
     val prescripcion: String,
 
-    @ColumnInfo(name = "conduccion")
-    val conduccion: Boolean
+    @ColumnInfo(name = MedicamentoTable.Columns.AFECTA_CONDUCCION)
+    val afectaConduccion: Boolean
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -50,7 +51,7 @@ data class MedicamentoEntity(
         if (!imagen.contentEquals(other.imagen)) return false
         if (laboratorio != other.laboratorio) return false
         if (prescripcion != other.prescripcion) return false
-        if (conduccion != other.conduccion) return false
+        if (afectaConduccion != other.afectaConduccion) return false
 
         return true
     }
@@ -64,7 +65,7 @@ data class MedicamentoEntity(
         result = 31 * result + imagen.contentHashCode()
         result = 31 * result + laboratorio.hashCode()
         result = 31 * result + prescripcion.hashCode()
-        result = 31 * result + conduccion.hashCode()
+        result = 31 * result + afectaConduccion.hashCode()
         return result
     }
 }
@@ -78,7 +79,7 @@ fun MedicamentoModel.toDatabase(): MedicamentoEntity {
         imagen = imagen,
         laboratorio = laboratorio,
         prescripcion = prescripcion,
-        conduccion = conduccion
+        afectaConduccion = conduccion
     )
 }
 
@@ -91,6 +92,6 @@ fun MedicamentoItem.toDatabase(): MedicamentoEntity {
         imagen = imagen,
         laboratorio = laboratorio,
         prescripcion = prescripcion,
-        conduccion = conduccion
+        afectaConduccion = conduccion
     )
 }

@@ -11,10 +11,10 @@ import com.a23pablooc.proxectofct.data.database.entities.MedicamentoEntity
 
 @Dao
 interface MedicamentoDAO {
-    @Query("SELECT * FROM med")
+    @Query("SELECT * FROM medicamentos")
     fun getAll(): LiveData<List<MedicamentoEntity>>
 
-    @Query("SELECT * FROM med WHERE PK_medicamento = :id")
+    @Query("SELECT * FROM medicamentos WHERE PK_medicamento = :id")
     fun getById(id: Int): LiveData<MedicamentoEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
