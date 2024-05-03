@@ -5,18 +5,21 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
-@Entity(tableName = "active_meds")
+@Entity(tableName = "medicamentos_activos")
 data class MedicamentoActivoEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "PK_medicamento_activo")
     val id: Int = 0,
 
     @ColumnInfo(name = "fecha_inicio")
-    val dateStart: Date,
+    val fechaInicio: Date,
 
     @ColumnInfo(name = "fecha_fin")
-    val dateEnd: Date,
+    val fechaFin: Date,
 
     @ColumnInfo(name = "horario")
-    val schedule: Set<Date>,
+    val horario: Set<Date>,
+
+    @ColumnInfo(name = "dosis")
+    val dosis: String
 )

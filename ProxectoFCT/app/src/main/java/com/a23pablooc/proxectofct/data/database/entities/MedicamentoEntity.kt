@@ -9,7 +9,7 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 @Entity(tableName = "medicamentos")
 data class MedicamentoEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "PK_med")
+    @ColumnInfo(name = "PK_medicamento")
     val id: Int = 0,
 
     @ColumnInfo(name = "num_registro")
@@ -30,9 +30,6 @@ data class MedicamentoEntity(
     @ColumnInfo(name = "laboratorio")
     val laboratorio: String,
 
-    @ColumnInfo(name = "dosis")
-    val dosis: String,
-
     @ColumnInfo(name = "prescripcion")
     val prescripcion: String,
 
@@ -52,7 +49,6 @@ data class MedicamentoEntity(
         if (prospecto != other.prospecto) return false
         if (!imagen.contentEquals(other.imagen)) return false
         if (laboratorio != other.laboratorio) return false
-        if (dosis != other.dosis) return false
         if (prescripcion != other.prescripcion) return false
         if (conduccion != other.conduccion) return false
 
@@ -67,7 +63,6 @@ data class MedicamentoEntity(
         result = 31 * result + prospecto.hashCode()
         result = 31 * result + imagen.contentHashCode()
         result = 31 * result + laboratorio.hashCode()
-        result = 31 * result + dosis.hashCode()
         result = 31 * result + prescripcion.hashCode()
         result = 31 * result + conduccion.hashCode()
         return result
@@ -82,7 +77,6 @@ fun MedicamentoModel.toDatabase(): MedicamentoEntity {
         prospecto = prospecto,
         imagen = imagen,
         laboratorio = laboratorio,
-        dosis = dosis,
         prescripcion = prescripcion,
         conduccion = conduccion
     )
@@ -96,7 +90,6 @@ fun MedicamentoItem.toDatabase(): MedicamentoEntity {
         prospecto = prospecto,
         imagen = imagen,
         laboratorio = laboratorio,
-        dosis = dosis,
         prescripcion = prescripcion,
         conduccion = conduccion
     )

@@ -4,4 +4,5 @@ data class MedicamentoActivoItem(
     val fechaInicio: Long,
     val fechaFin: Long,
     val horario: Set<Long>,
+    val dosis: String
 )

@@ -1,8 +1,5 @@
 package com.a23pablooc.proxectofct.data.model
 
-import com.a23pablooc.proxectofct.data.database.entities.MedicamentoEntity
-import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
-
 data class MedicamentoModel(
     val numRegistro: String,
     val nombre: String,
@@ -10,7 +7,6 @@ data class MedicamentoModel(
     val prospecto: String,
     val imagen: ByteArray,
     val laboratorio: String,
-    val dosis: String,
     val prescripcion: String,
     val conduccion: Boolean
 ) {
@@ -21,7 +17,6 @@ data class MedicamentoModel(
         private var prospecto: String = ""
         private var imagen: ByteArray = byteArrayOf()
         private var laboratorio: String = ""
-        private var dosis: String = ""
         private var prescripcion: String = ""
         private var conduccion: Boolean = false
 
@@ -31,7 +26,6 @@ data class MedicamentoModel(
         fun prospecto(prospecto: String) = apply { this.prospecto = prospecto }
         fun imagen(imagen: ByteArray) = apply { this.imagen = imagen }
         fun laboratorio(laboratorio: String) = apply { this.laboratorio = laboratorio }
-        fun dosis(dosis: String) = apply { this.dosis = dosis }
         fun prescripcion(prescripcion: String) = apply { this.prescripcion = prescripcion }
         fun conduccion(conduccion: Boolean) = apply { this.conduccion = conduccion }
 
@@ -42,7 +36,6 @@ data class MedicamentoModel(
             prospecto,
             imagen,
             laboratorio,
-            dosis,
             prescripcion,
             conduccion
         )
@@ -60,7 +53,6 @@ data class MedicamentoModel(
         if (prospecto != other.prospecto) return false
         if (!imagen.contentEquals(other.imagen)) return false
         if (laboratorio != other.laboratorio) return false
-        if (dosis != other.dosis) return false
         if (prescripcion != other.prescripcion) return false
         if (conduccion != other.conduccion) return false
 
@@ -74,34 +66,9 @@ data class MedicamentoModel(
         result = 31 * result + prospecto.hashCode()
         result = 31 * result + imagen.contentHashCode()
         result = 31 * result + laboratorio.hashCode()
-        result = 31 * result + dosis.hashCode()
         result = 31 * result + prescripcion.hashCode()
         result = 31 * result + conduccion.hashCode()
         return result
     }
 
 }
-
-fun MedicamentoEntity.toModel() = MedicamentoModel(
-    numRegistro = numRegistro,
-    nombre = nombre,
-    url = url,
-    prospecto = prospecto,
-    imagen = imagen,
-    laboratorio = laboratorio,
-    dosis = dosis,
-    prescripcion = prescripcion,
-    conduccion = conduccion
-)
-
-fun MedicamentoItem.toModel() = MedicamentoModel(
-    numRegistro = numRegistro,
-    nombre = nombre,
-    url = url,
-    prospecto = prospecto,
-    imagen = imagen,
-    laboratorio = laboratorio,
-    dosis = dosis,
-    prescripcion = prescripcion,
-    conduccion = conduccion
-)
