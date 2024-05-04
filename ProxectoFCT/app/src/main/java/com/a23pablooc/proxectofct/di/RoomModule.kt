@@ -2,12 +2,14 @@ package com.a23pablooc.proxectofct.di
 
 import android.content.Context
 import androidx.room.Room
+import com.a23pablooc.proxectofct.core.UserDatabasePassphrase
 import com.a23pablooc.proxectofct.data.database.PillboxDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import net.sqlcipher.database.SupportFactory
 import javax.inject.Singleton
 
 @Module
@@ -15,10 +17,24 @@ import javax.inject.Singleton
 object RoomModule {
     private const val DATABASE_NAME = "pillbox_database"
 
+    @Provides
+    @Singleton
+    fun provideUserDatabasePassphrase(@ApplicationContext context: Context) =
+        UserDatabasePassphrase(context)
+
+    @Provides
+    @Singleton
+    fun provideSupportFactory(userDatabasePassphrase: UserDatabasePassphrase) =
+        SupportFactory(userDatabasePassphrase.getPassphrase())
+
     @Singleton
     @Provides
-    fun provideRoom(@ApplicationContext context: Context): PillboxDatabase {
+    fun provideRoom(
+        @ApplicationContext context: Context,
+        supportFactory: SupportFactory
+    ): PillboxDatabase {
         return Room.databaseBuilder(context, PillboxDatabase::class.java, DATABASE_NAME)
+            .openHelperFactory(supportFactory)
             .build()
     }
 

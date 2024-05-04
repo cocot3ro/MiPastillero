@@ -61,7 +61,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
-    //Coroutines
+    //Corrutinas
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.activity.ktx)
 
@@ -79,7 +79,13 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
 
-//    TODO: Borrar esta dependencia al implementar Retrofit
+    // Security
+    implementation(libs.androidx.security.crypto)
+
+    // Sqlcipher
+    implementation(libs.android.database.sqlcipher)
+
+    // TODO: Borrar esta dependencia al implementar Retrofit
     implementation(libs.khttp)
 
     testImplementation(libs.junit)
