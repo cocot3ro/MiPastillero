@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.a23pablooc.proxectofct.data.database.table_definitions.MedicamentoTable
-import com.a23pablooc.proxectofct.data.database.table_definitions.UsuarioTable
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTable
+import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
 import com.a23pablooc.proxectofct.data.model.MedicamentoModel
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 
@@ -17,6 +17,13 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
             parentColumns = [UsuarioTable.Columns.ID],
             childColumns = [MedicamentoTable.Columns.FK_USUARIO],
             onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [
+        androidx.room.Index(
+            name = "idx_medicamento_fk_usuario",
+            unique = false,
+            value = [MedicamentoTable.Columns.FK_USUARIO]
         )
     ]
 )

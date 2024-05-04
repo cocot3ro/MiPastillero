@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.data.model.type_adapters
+package com.a23pablooc.proxectofct.data.model.typeadapters
 
 import com.a23pablooc.proxectofct.data.model.MedicamentoModel
 import com.google.gson.TypeAdapter

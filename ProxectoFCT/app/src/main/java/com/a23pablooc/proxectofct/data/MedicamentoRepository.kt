@@ -6,7 +6,7 @@ import javax.inject.Inject
 class MedicamentoRepository @Inject constructor(
     private val medicamentoDAO: MedicamentoDAO
 ) {
-    suspend fun getAll() = medicamentoDAO.getAll()
+//    suspend fun getAll() = medicamentoDAO.getAll()
 
     /*
     TODO:

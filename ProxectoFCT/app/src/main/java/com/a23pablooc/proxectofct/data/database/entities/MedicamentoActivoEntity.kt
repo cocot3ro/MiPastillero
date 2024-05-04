@@ -3,10 +3,11 @@ package com.a23pablooc.proxectofct.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.a23pablooc.proxectofct.data.database.table_definitions.MedicamentoActivoTable
-import com.a23pablooc.proxectofct.data.database.table_definitions.MedicamentoTable
-import com.a23pablooc.proxectofct.data.database.table_definitions.UsuarioTable
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoActivoTable
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTable
+import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
 import java.util.Date
 
 @Entity(
@@ -23,6 +24,18 @@ import java.util.Date
             parentColumns = [UsuarioTable.Columns.ID],
             childColumns = [MedicamentoActivoTable.Columns.FK_USUARIO],
             onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [
+        Index(
+            name = "idx_medicamento_activo_fk_medicamento",
+            unique = false,
+            value = [MedicamentoActivoTable.Columns.FK_MEDICAMENTO]
+        ),
+        Index(
+            name = "idx_medicamento_activo_fk_usuario",
+            unique = false,
+            value = [MedicamentoActivoTable.Columns.FK_USUARIO]
         )
     ]
 )
@@ -50,4 +63,4 @@ data class MedicamentoActivoEntity(
     val dosis: String
 )
 
-//TODO: funciones de extensión
+//TODO: Funciones de extensión

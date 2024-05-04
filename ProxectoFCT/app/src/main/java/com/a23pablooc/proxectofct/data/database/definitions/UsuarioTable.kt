@@ -1,7 +1,7 @@
-package com.a23pablooc.proxectofct.data.database.table_definitions
+package com.a23pablooc.proxectofct.data.database.definitions
 
 object UsuarioTable {
-    const val TABLE_NAME = "usuarios"
+    const val TABLE_NAME = "tbl_usuarios"
 
     object Columns {
         const val ID = "PK_usuario"

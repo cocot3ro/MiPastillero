@@ -3,9 +3,10 @@ package com.a23pablooc.proxectofct.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import com.a23pablooc.proxectofct.data.database.table_definitions.MedicamentoCalendarioTable
-import com.a23pablooc.proxectofct.data.database.table_definitions.MedicamentoTable
-import com.a23pablooc.proxectofct.data.database.table_definitions.UsuarioTable
+import androidx.room.Index
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoCalendarioTable
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTable
+import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
 import java.util.Date
 
 @Entity(
@@ -28,6 +29,18 @@ import java.util.Date
             childColumns = [MedicamentoCalendarioTable.Columns.FK_USUARIO],
             onDelete = ForeignKey.CASCADE
         )
+    ],
+    indices = [
+        Index(
+            name = "idx_medicamento_calendario_fk_medicamento",
+            unique = false,
+            value = [MedicamentoCalendarioTable.Columns.FK_MEDICAMENTO]
+        ),
+        Index(
+            name = "idx_medicamento_calendario_fk_usuario",
+            unique = false,
+            value = [MedicamentoCalendarioTable.Columns.FK_USUARIO]
+        ),
     ]
 )
 data class MedicamentoCalendarioEntity(
@@ -50,4 +63,4 @@ data class MedicamentoCalendarioEntity(
     val seHaTomado: Boolean
 )
 
-//TODO: funciones de extensión
+//TODO: Funciones de extensión

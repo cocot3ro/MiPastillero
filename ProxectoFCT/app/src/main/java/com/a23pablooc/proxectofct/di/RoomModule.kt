@@ -18,16 +18,40 @@ object RoomModule {
     @Singleton
     @Provides
     fun provideRoom(@ApplicationContext context: Context): PillboxDatabase {
-        return Room.databaseBuilder(
-            context,
-            PillboxDatabase::class.java,
-            DATABASE_NAME
-        ).build()
+        return Room.databaseBuilder(context, PillboxDatabase::class.java, DATABASE_NAME)
+            .build()
     }
 
     @Singleton
     @Provides
     fun provideMedicamentoDao(database: PillboxDatabase) = database.getMedicamentoDao()
 
-    //TODO: Añadir aquí los DAOs que se vayan creando
+    @Singleton
+    @Provides
+    fun provideMedicamentoActivoDao(database: PillboxDatabase) = database.getMedicamentoActivoDao()
+
+    @Singleton
+    @Provides
+    fun provideMedicamentoFavoritoDao(database: PillboxDatabase) =
+        database.getMedicamentoFavoritoDao()
+
+    @Singleton
+    @Provides
+    fun provideCalendarioDao(database: PillboxDatabase) = database.getCalendarioDao()
+
+    @Singleton
+    @Provides
+    fun provideHistorialDao(database: PillboxDatabase) = database.getHistorialDao()
+
+    @Singleton
+    @Provides
+    fun provideUsuarioDao(database: PillboxDatabase) = database.getUsuarioDao()
+
+    @Singleton
+    @Provides
+    fun provideAgendaDao(database: PillboxDatabase) = database.getAgendaDao()
+
+    @Singleton
+    @Provides
+    fun provideNotificacionDao(database: PillboxDatabase) = database.getNotificacionDao()
 }

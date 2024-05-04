@@ -1,16 +1,21 @@
 package com.a23pablooc.proxectofct.data.database.converters
 
 import androidx.room.TypeConverter
+import java.util.Calendar
 import java.util.Date
 
 object DateConverter {
     @TypeConverter
     fun dateToLong(date: Date): Long {
-        return date.time
+        return Calendar.getInstance().apply {
+            time = date
+        }.timeInMillis
     }
 
     @TypeConverter
     fun longToDate(long: Long): Date {
-        return Date(long)
+        return Calendar.getInstance().apply {
+            timeInMillis = long
+        }.time
     }
 }

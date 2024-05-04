@@ -1,7 +1,7 @@
-package com.a23pablooc.proxectofct.data.database.table_definitions
+package com.a23pablooc.proxectofct.data.database.definitions
 
 object MedicamentoActivoTable {
-    const val TABLE_NAME = "medicamentos_activos"
+    const val TABLE_NAME = "tbl_medicamentos_activos"
 
     object Columns {
         const val ID = "PK_medicamento_activo"
