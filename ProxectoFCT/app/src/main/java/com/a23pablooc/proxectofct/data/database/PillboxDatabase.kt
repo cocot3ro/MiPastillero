@@ -6,9 +6,9 @@ import androidx.room.TypeConverters
 import com.a23pablooc.proxectofct.data.database.converters.DateConverter
 import com.a23pablooc.proxectofct.data.database.converters.SetConverter
 import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
-import com.a23pablooc.proxectofct.data.database.dao.CalendarioDAO
 import com.a23pablooc.proxectofct.data.database.dao.HistorialDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoActivoDAO
+import com.a23pablooc.proxectofct.data.database.dao.MedicamentoCalendarioDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoFavoritoDAO
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
@@ -49,7 +49,7 @@ abstract class PillboxDatabase : RoomDatabase() {
 
     abstract fun getMedicamentoFavoritoDao(): MedicamentoFavoritoDAO
 
-    abstract fun getCalendarioDao(): CalendarioDAO
+    abstract fun getCalendarioDao(): MedicamentoCalendarioDAO
 
     abstract fun getHistorialDao(): HistorialDAO
 

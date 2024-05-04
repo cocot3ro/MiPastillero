@@ -11,7 +11,7 @@ import com.a23pablooc.proxectofct.data.database.entities.MedicamentoCalendarioEn
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoCalendarioTable
 
 @Dao
-interface CalendarioDAO {
+interface MedicamentoCalendarioDAO {
 
     @Query("SELECT * FROM ${MedicamentoCalendarioTable.TABLE_NAME} WHERE ${MedicamentoCalendarioTable.Columns.FK_USUARIO} = :idUsuario")
     fun getAll(idUsuario: Int): LiveData<List<MedicamentoCalendarioEntity>>
