@@ -49,7 +49,7 @@ abstract class PillboxDatabase : RoomDatabase() {
 
     abstract fun getMedicamentoFavoritoDao(): MedicamentoFavoritoDAO
 
-    abstract fun getCalendarioDao(): MedicamentoCalendarioDAO
+    abstract fun getMedicamentoCalendarioDao(): MedicamentoCalendarioDAO
 
     abstract fun getHistorialDao(): HistorialDAO
 

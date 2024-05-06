@@ -2,8 +2,16 @@ package com.a23pablooc.proxectofct.di
 
 import android.content.Context
 import androidx.room.Room
-import com.a23pablooc.proxectofct.core.UserDatabasePassphrase
 import com.a23pablooc.proxectofct.data.database.PillboxDatabase
+import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
+import com.a23pablooc.proxectofct.data.database.dao.HistorialDAO
+import com.a23pablooc.proxectofct.data.database.dao.MedicamentoActivoDAO
+import com.a23pablooc.proxectofct.data.database.dao.MedicamentoCalendarioDAO
+import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
+import com.a23pablooc.proxectofct.data.database.dao.MedicamentoFavoritoDAO
+import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
+import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
+import com.a23pablooc.proxectofct.data.database.security.UserDatabasePassphrase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,12 +27,12 @@ object RoomModule {
 
     @Provides
     @Singleton
-    fun provideUserDatabasePassphrase(@ApplicationContext context: Context) =
+    fun provideUserDatabasePassphrase(@ApplicationContext context: Context): UserDatabasePassphrase =
         UserDatabasePassphrase(context)
 
     @Provides
     @Singleton
-    fun provideSupportFactory(userDatabasePassphrase: UserDatabasePassphrase) =
+    fun provideSupportFactory(userDatabasePassphrase: UserDatabasePassphrase): SupportFactory =
         SupportFactory(userDatabasePassphrase.getPassphrase())
 
     @Singleton
@@ -40,34 +48,38 @@ object RoomModule {
 
     @Singleton
     @Provides
-    fun provideMedicamentoDao(database: PillboxDatabase) = database.getMedicamentoDao()
+    fun provideMedicamentoDao(database: PillboxDatabase): MedicamentoDAO =
+        database.getMedicamentoDao()
 
     @Singleton
     @Provides
-    fun provideMedicamentoActivoDao(database: PillboxDatabase) = database.getMedicamentoActivoDao()
+    fun provideMedicamentoActivoDao(database: PillboxDatabase): MedicamentoActivoDAO =
+        database.getMedicamentoActivoDao()
 
     @Singleton
     @Provides
-    fun provideMedicamentoFavoritoDao(database: PillboxDatabase) =
+    fun provideMedicamentoFavoritoDao(database: PillboxDatabase): MedicamentoFavoritoDAO =
         database.getMedicamentoFavoritoDao()
 
     @Singleton
     @Provides
-    fun provideCalendarioDao(database: PillboxDatabase) = database.getCalendarioDao()
+    fun provideCalendarioDao(database: PillboxDatabase): MedicamentoCalendarioDAO =
+        database.getMedicamentoCalendarioDao()
 
     @Singleton
     @Provides
-    fun provideHistorialDao(database: PillboxDatabase) = database.getHistorialDao()
+    fun provideHistorialDao(database: PillboxDatabase): HistorialDAO = database.getHistorialDao()
 
     @Singleton
     @Provides
-    fun provideUsuarioDao(database: PillboxDatabase) = database.getUsuarioDao()
+    fun provideUsuarioDao(database: PillboxDatabase): UsuarioDAO = database.getUsuarioDao()
 
     @Singleton
     @Provides
-    fun provideAgendaDao(database: PillboxDatabase) = database.getAgendaDao()
+    fun provideAgendaDao(database: PillboxDatabase): AgendaDAO = database.getAgendaDao()
 
     @Singleton
     @Provides
-    fun provideNotificacionDao(database: PillboxDatabase) = database.getNotificacionDao()
+    fun provideNotificacionDao(database: PillboxDatabase): NotificacionDAO =
+        database.getNotificacionDao()
 }

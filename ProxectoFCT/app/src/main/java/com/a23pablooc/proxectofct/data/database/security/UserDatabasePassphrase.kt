@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.core
+package com.a23pablooc.proxectofct.data.database.security
 
 import android.content.Context
 import androidx.security.crypto.EncryptedFile

@@ -6,8 +6,6 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTable
 import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
-import com.a23pablooc.proxectofct.data.model.MedicamentoModel
-import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 
 @Entity(
     tableName = MedicamentoTable.TABLE_NAME,
@@ -66,6 +64,7 @@ data class MedicamentoEntity(
         other as MedicamentoEntity
 
         if (id != other.id) return false
+        if (idUsuario != other.idUsuario) return false
         if (numRegistro != other.numRegistro) return false
         if (nombre != other.nombre) return false
         if (url != other.url) return false
@@ -80,6 +79,7 @@ data class MedicamentoEntity(
 
     override fun hashCode(): Int {
         var result = id
+        result = 31 * result + idUsuario
         result = 31 * result + numRegistro.hashCode()
         result = 31 * result + nombre.hashCode()
         result = 31 * result + url.hashCode()
@@ -90,30 +90,4 @@ data class MedicamentoEntity(
         result = 31 * result + afectaConduccion.hashCode()
         return result
     }
-}
-
-fun MedicamentoModel.toDatabase(): MedicamentoEntity {
-    return MedicamentoEntity(
-        numRegistro = numRegistro,
-        nombre = nombre,
-        url = url,
-        prospecto = prospecto,
-        imagen = imagen,
-        laboratorio = laboratorio,
-        prescripcion = prescripcion,
-        afectaConduccion = conduccion
-    )
-}
-
-fun MedicamentoItem.toDatabase(): MedicamentoEntity {
-    return MedicamentoEntity(
-        numRegistro = numRegistro,
-        nombre = nombre,
-        url = url,
-        prospecto = prospecto,
-        imagen = imagen,
-        laboratorio = laboratorio,
-        prescripcion = prescripcion,
-        afectaConduccion = conduccion
-    )
 }

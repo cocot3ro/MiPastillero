@@ -20,7 +20,7 @@ object RetrofitModule {
     @Provides
     fun provideRetrofit(): Retrofit {
         val gson = GsonBuilder()
-            .registerTypeAdapter(MedicamentoModel.Builder::class.java, MedicamentoModelTypeAdapter())
+            .registerTypeAdapter(MedicamentoModel::class.java, MedicamentoModelTypeAdapter())
             .create()
 
         return Retrofit.Builder()

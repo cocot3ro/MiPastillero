@@ -11,7 +11,7 @@ import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
 import com.a23pablooc.proxectofct.data.network.CimaService
 import javax.inject.Inject
 
-class MedicamentoRepository @Inject constructor(
+class Repository @Inject constructor(
     private val usuarioDAO: UsuarioDAO,
     private val medicamentoDAO: MedicamentoDAO,
     private val medicamentoActivoDAO: MedicamentoActivoDAO,

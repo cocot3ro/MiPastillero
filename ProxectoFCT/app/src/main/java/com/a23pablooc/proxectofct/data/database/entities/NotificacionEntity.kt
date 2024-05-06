@@ -42,7 +42,7 @@ import java.util.Date
 data class NotificacionEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = NotificacionTable.Columns.ID)
-    val id: Int,
+    val id: Int = 0,
 
     @ColumnInfo(name = NotificacionTable.Columns.FK_MEDICAMENTO)
     val idMedicamento: Int,
@@ -54,7 +54,31 @@ data class NotificacionEntity(
     val fecha: Date,
 
     @ColumnInfo(name = NotificacionTable.Columns.HORA)
-    val hora: Date,
-)
+    val hora: Date
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as NotificacionEntity
+
+        if (id != other.id) return false
+        if (idMedicamento != other.idMedicamento) return false
+        if (idUsuario != other.idUsuario) return false
+        if (fecha != other.fecha) return false
+        if (hora != other.hora) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id
+        result = 31 * result + idMedicamento
+        result = 31 * result + idUsuario
+        result = 31 * result + fecha.hashCode()
+        result = 31 * result + hora.hashCode()
+        return result
+    }
+}
 
 //TODO: Funciones de extensión

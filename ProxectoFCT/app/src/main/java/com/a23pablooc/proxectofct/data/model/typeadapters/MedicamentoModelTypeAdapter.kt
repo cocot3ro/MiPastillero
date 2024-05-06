@@ -6,10 +6,10 @@ import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import java.net.URL
 
-class MedicamentoModelTypeAdapter : TypeAdapter<MedicamentoModel.Builder>() {
-    override fun write(out: JsonWriter?, value: MedicamentoModel.Builder) {}
+class MedicamentoModelTypeAdapter : TypeAdapter<MedicamentoModel>() {
+    override fun write(out: JsonWriter?, value: MedicamentoModel) {}
 
-    override fun read(`in`: JsonReader?): MedicamentoModel.Builder {
+    override fun read(`in`: JsonReader?): MedicamentoModel {
         val builder = MedicamentoModel.Builder()
 
         `in`?.run {
@@ -93,7 +93,7 @@ class MedicamentoModelTypeAdapter : TypeAdapter<MedicamentoModel.Builder>() {
             endObject()
         }
 
-        return builder
+        return builder.build()
     }
 
     private fun downloadImage(url: String): ByteArray {

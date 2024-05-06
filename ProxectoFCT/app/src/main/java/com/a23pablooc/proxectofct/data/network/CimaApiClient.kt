@@ -7,9 +7,9 @@ import retrofit2.http.Query
 
 interface CimaApiClient {
     @GET("/medicamento")
-    suspend fun getMedicamentoByCodNacional(@Query("cn") cn: String): Response<MedicamentoModel.Builder>
+    suspend fun getMedicamentoByCodNacional(@Query("cn") cn: String): Response<MedicamentoModel>
 
     @GET("/medicamento")
-    suspend fun getMedicamentoByNumRegistro(@Query("nregistro") nregistro: String): Response<MedicamentoModel.Builder>
+    suspend fun getMedicamentoByNumRegistro(@Query("nregistro") nregistro: String): Response<MedicamentoModel>
 
 }
