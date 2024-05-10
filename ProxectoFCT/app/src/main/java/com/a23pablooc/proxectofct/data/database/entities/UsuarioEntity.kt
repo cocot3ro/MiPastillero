@@ -12,7 +12,7 @@ data class UsuarioEntity(
     val pkUsuario: Int = 0,
 
     @ColumnInfo(name = UsuarioTable.Columns.NOMBRE)
-    val nombre: String,
+    val nombre: String
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

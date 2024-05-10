@@ -31,7 +31,7 @@ data class MedicamentoEntity(
     val id: Int = 0,
 
     @ColumnInfo(name = MedicamentoTable.Columns.FK_USUARIO)
-    val idUsuario: Int = 0,
+    val idUsuario: Int,
 
     @ColumnInfo(name = MedicamentoTable.Columns.NUM_REGISTRO)
     val numRegistro: String,

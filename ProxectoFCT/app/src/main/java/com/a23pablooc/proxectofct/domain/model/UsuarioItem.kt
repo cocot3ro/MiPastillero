@@ -2,7 +2,7 @@ package com.a23pablooc.proxectofct.domain.model
 
 data class UsuarioItem(
     val pkUsuario: Int,
-    val nombre: String,
+    val nombre: String
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

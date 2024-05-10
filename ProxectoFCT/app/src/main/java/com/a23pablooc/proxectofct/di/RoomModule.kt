@@ -11,7 +11,7 @@ import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoFavoritoDAO
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
 import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
-import com.a23pablooc.proxectofct.data.database.security.UserDatabasePassphrase
+import com.a23pablooc.proxectofct.data.database.security.DatabasePassphrase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,13 +27,13 @@ object RoomModule {
 
     @Provides
     @Singleton
-    fun provideUserDatabasePassphrase(@ApplicationContext context: Context): UserDatabasePassphrase =
-        UserDatabasePassphrase(context)
+    fun provideUserDatabasePassphrase(@ApplicationContext context: Context): DatabasePassphrase =
+        DatabasePassphrase(context)
 
     @Provides
     @Singleton
-    fun provideSupportFactory(userDatabasePassphrase: UserDatabasePassphrase): SupportFactory =
-        SupportFactory(userDatabasePassphrase.getPassphrase())
+    fun provideSupportFactory(databasePassphrase: DatabasePassphrase): SupportFactory =
+        SupportFactory(databasePassphrase.getPassphrase())
 
     @Singleton
     @Provides

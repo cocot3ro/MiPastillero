@@ -2,13 +2,23 @@ package com.a23pablooc.proxectofct.data.database.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.a23pablooc.proxectofct.data.database.definitions.AgendaTable
+import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
 import java.util.Date
 
 @Entity(
     tableName = AgendaTable.TABLE_NAME,
+    foreignKeys = [
+        ForeignKey(
+            entity = UsuarioEntity::class,
+            parentColumns = [UsuarioTable.Columns.ID],
+            childColumns = [AgendaTable.Columns.FK_USUARIO],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
     indices = [
         Index(
             name = "idx_agenda_fk_usuario",

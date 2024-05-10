@@ -6,10 +6,10 @@ import androidx.security.crypto.MasterKeys
 import java.io.File
 import java.security.SecureRandom
 
-class UserDatabasePassphrase(private val context: Context) {
+class DatabasePassphrase(private val context: Context) {
 
     fun getPassphrase(): ByteArray {
-        val file = File(context.filesDir, "user_passphrase.bin")
+        val file = File(context.filesDir, "passphrase.bin")
         val encryptedFile = EncryptedFile.Builder(
             file,
             context,
