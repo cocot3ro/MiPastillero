@@ -6,15 +6,21 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.a23pablooc.proxectofct.data.database.entities.HistorialEntity
 import com.a23pablooc.proxectofct.data.database.definitions.HistorialTable
+import com.a23pablooc.proxectofct.data.database.entities.HistorialAndMedicamento
 
 @Dao
 interface HistorialDAO {
 
     @Query("SELECT * FROM ${HistorialTable.TABLE_NAME} WHERE ${HistorialTable.Columns.FK_USUARIO} = :idUsuario")
     fun getAll(idUsuario: Int): LiveData<List<HistorialEntity>>
+
+    @Transaction
+    @Query("SELECT * FROM ${HistorialTable.TABLE_NAME} WHERE ${HistorialTable.Columns.FK_USUARIO} = :idUsuario")
+    fun getAllWithMedicamentos(idUsuario: Int): LiveData<List<HistorialAndMedicamento>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(historial: HistorialEntity)

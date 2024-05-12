@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 import com.a23pablooc.proxectofct.data.database.definitions.HistorialTable
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTable
 import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
+import java.util.Date
 
 @Entity(
     tableName = HistorialTable.TABLE_NAME,
@@ -50,10 +51,10 @@ data class HistorialEntity(
     val fkMedicamento: Int,
 
     @ColumnInfo(name = HistorialTable.Columns.FECHA_INICIO)
-    val fechaInicio: String,
+    val fechaInicio: Date,
 
     @ColumnInfo(name = HistorialTable.Columns.FECHA_FIN)
-    val fechaFin: String
+    val fechaFin: Date
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
