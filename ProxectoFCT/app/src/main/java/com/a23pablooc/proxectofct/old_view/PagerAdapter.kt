@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.old_view
 
 interface PagerAdapter {
     fun reload()

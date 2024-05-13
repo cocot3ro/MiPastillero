@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.old_view
 
 import android.app.AlertDialog
 import android.content.Context
@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.Toast
 import com.a23pablooc.proxectofct.model.Medicamento
-import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
+import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 import com.a23pablooc.proxectofct.R
-import com.a23pablooc.proxectofct.databinding.DialogAddFavMedBinding
+import com.a23pablooc.proxectofct.databinding.OldDialogAddFavMedBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -23,8 +23,8 @@ class AddFavMedDialog(
         fun onDataEntered(medicamento: Medicamento)
     }
 
-    private var _binding: DialogAddFavMedBinding? =
-        DialogAddFavMedBinding.inflate(LayoutInflater.from(context))
+    private var _binding: OldDialogAddFavMedBinding? =
+        OldDialogAddFavMedBinding.inflate(LayoutInflater.from(context))
     private val binding get() = _binding!!
 
     private var _pillboxViewModel: PillboxViewModel? = null

@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.old_view
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -9,16 +9,16 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.a23pablooc.proxectofct.R
-import com.a23pablooc.proxectofct.databinding.CalendarMedGroupLayoutBinding
-import com.a23pablooc.proxectofct.databinding.CalendarMedLayoutBinding
-import com.a23pablooc.proxectofct.databinding.EmptyLayoutBinding
-import com.a23pablooc.proxectofct.databinding.FragmentCalendarPageBinding
+import com.a23pablooc.proxectofct.databinding.OldCalendarMedGroupLayoutBinding
+import com.a23pablooc.proxectofct.databinding.OldCalendarMedLayoutBinding
+import com.a23pablooc.proxectofct.databinding.OldEmptyLayoutBinding
+import com.a23pablooc.proxectofct.databinding.OldFragmentCalendarPageBinding
 import com.a23pablooc.proxectofct.utils.DateTimeUtils
-import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
+import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 
 class CalendarPageFragment(val fecha: Long) : Fragment(), PageFragment {
 
-    private var _binding: FragmentCalendarPageBinding? = null
+    private var _binding: OldFragmentCalendarPageBinding? = null
     private val binding get() = _binding!!
     private var _pillboxViewModel: PillboxViewModel? = null
     private val pillboxViewModel get() = _pillboxViewModel!!
@@ -29,7 +29,7 @@ class CalendarPageFragment(val fecha: Long) : Fragment(), PageFragment {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCalendarPageBinding.inflate(layoutInflater)
+        _binding = OldFragmentCalendarPageBinding.inflate(layoutInflater)
         _pillboxViewModel = PillboxViewModel.getInstance(requireContext())
 
         updateView()
@@ -62,13 +62,13 @@ class CalendarPageFragment(val fecha: Long) : Fragment(), PageFragment {
         binding.calendarLayout.removeAllViews()
 
         if (data.isEmpty()) {
-            EmptyLayoutBinding.inflate(layoutInflater, binding.calendarLayout, true).apply {
+            OldEmptyLayoutBinding.inflate(layoutInflater, binding.calendarLayout, true).apply {
                 texto.text = getString(R.string.sin_meds_en_dia)
             }
         } else {
             for (entry in data) {
                 val groupBinding =
-                    CalendarMedGroupLayoutBinding.inflate(
+                    OldCalendarMedGroupLayoutBinding.inflate(
                         layoutInflater, binding.calendarLayout,
                         true
                     )
@@ -92,7 +92,7 @@ class CalendarPageFragment(val fecha: Long) : Fragment(), PageFragment {
                 )
 
                 for (medicamento in entry.value) {
-                    val calendarEntryBinding = CalendarMedLayoutBinding.inflate(
+                    val calendarEntryBinding = OldCalendarMedLayoutBinding.inflate(
                         layoutInflater, groupBinding.calendarMedsLayout, true
                     )
 

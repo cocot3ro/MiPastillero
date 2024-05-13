@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.viewModel
+package com.a23pablooc.proxectofct.old_viewModel
 
 import android.content.Context
 import android.content.Intent
@@ -11,12 +11,10 @@ import com.a23pablooc.proxectofct.model.DBHelper
 import com.a23pablooc.proxectofct.model.Medicamento
 import com.a23pablooc.proxectofct.notification.NotificationsService
 import com.google.gson.GsonBuilder
-import dagger.hilt.android.lifecycle.HiltViewModel
 import khttp.responses.Response
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-//@HiltViewModel
 class PillboxViewModel private constructor(context: Context) : ViewModel() {
 
     /**

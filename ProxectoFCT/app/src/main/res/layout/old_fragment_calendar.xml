@@ -5,10 +5,10 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.FavoriteFragment">
+    tools:context=".old_view.CalendarFragment">
 
     <LinearLayout
-        android:id="@+id/fragment_favorite"
+        android:id="@+id/fragment_calendar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -18,31 +18,21 @@
             style="@style/Widget.MaterialComponents.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/menu_toolbar_fav_med">
+            app:menu="@menu/menu_toolbar_calendar">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="@string/favoritos"
+                android:text="@string/calendario"
                 android:textSize="25sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
-        <ScrollView
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:id="@+id/favorite_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="4dp"
-                android:orientation="vertical" />
-
-        </ScrollView>
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

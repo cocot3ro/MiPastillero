@@ -4,7 +4,7 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
+import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 
 class NotificationAction : Service() {
 

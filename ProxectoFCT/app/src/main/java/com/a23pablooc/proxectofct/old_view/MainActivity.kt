@@ -1,10 +1,8 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.old_view
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -13,10 +11,9 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.R
-import com.a23pablooc.proxectofct.databinding.ActivityMainBinding
-import com.a23pablooc.proxectofct.utils.DateTimeUtils
+import com.a23pablooc.proxectofct.databinding.OldActivityMainBinding
 import com.a23pablooc.proxectofct.utils.PreferencesUtils
-import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
+import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,7 +21,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private var _binding: ActivityMainBinding? = null
+    private var _binding: OldActivityMainBinding? = null
     private val binding get() = _binding!!
 
     private var _pillboxViewModel: PillboxViewModel? = null
@@ -36,9 +33,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
-        _binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = OldActivityMainBinding.inflate(layoutInflater)
         _pillboxViewModel = PillboxViewModel.getInstance(this)
         navController =
             (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
@@ -48,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 

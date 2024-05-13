@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.old_view
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -18,14 +18,14 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.utils.DateTimeUtils
 import com.a23pablooc.proxectofct.model.Medicamento
-import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
+import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 import com.a23pablooc.proxectofct.R
-import com.a23pablooc.proxectofct.databinding.FragmentCalendarBinding
+import com.a23pablooc.proxectofct.databinding.OldFragmentCalendarBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Calendar
 
 class CalendarFragment : Fragment() {
-    private var _binding: FragmentCalendarBinding? = null
+    private var _binding: OldFragmentCalendarBinding? = null
     private val binding get() = _binding!!
     private lateinit var pillboxViewModel: PillboxViewModel
     private lateinit var navController: NavController
@@ -34,7 +34,7 @@ class CalendarFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCalendarBinding.inflate(layoutInflater)
+        _binding = OldFragmentCalendarBinding.inflate(layoutInflater)
         pillboxViewModel = PillboxViewModel.getInstance(requireContext())
         navController =
             ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController

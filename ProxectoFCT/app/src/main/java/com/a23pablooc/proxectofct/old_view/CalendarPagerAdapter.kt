@@ -1,27 +1,27 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.old_view
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.a23pablooc.proxectofct.utils.DateTimeUtils
 
-class DiaryPagerAdapter(
+class CalendarPagerAdapter(
     fragmentActivity: FragmentActivity
 ) : FragmentStateAdapter(fragmentActivity), PagerAdapter {
 
-    private var fragmentList: MutableList<DiaryPageFragment> = mutableListOf()
+    private var fragmentList: MutableList<CalendarPageFragment> = mutableListOf()
 
     companion object {
         @Volatile
-        private var instance: DiaryPagerAdapter? = null
+        private var instance: CalendarPagerAdapter? = null
 
         const val START_POSITION = Int.MAX_VALUE / 2
 
-        fun getInstance(fragmentActivity: FragmentActivity): DiaryPagerAdapter {
+        fun getInstance(fragmentActivity: FragmentActivity): CalendarPagerAdapter {
             if (instance == null) {
                 synchronized(this) {
                     if (instance == null) {
-                        instance = DiaryPagerAdapter(fragmentActivity)
+                        instance = CalendarPagerAdapter(fragmentActivity)
                     }
                 }
             }
@@ -31,9 +31,9 @@ class DiaryPagerAdapter(
 
         private fun clone(
             fragmentActivity: FragmentActivity,
-            origin: DiaryPagerAdapter
-        ): DiaryPagerAdapter {
-            val clone = DiaryPagerAdapter(fragmentActivity)
+            origin: CalendarPagerAdapter
+        ): CalendarPagerAdapter {
+            val clone = CalendarPagerAdapter(fragmentActivity)
             clone.fragmentList = origin.fragmentList
             return clone
         }
@@ -44,12 +44,12 @@ class DiaryPagerAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        val today = DateTimeUtils.getTodayAsMillis()
         val offset = position - START_POSITION
+        val today = DateTimeUtils.getTodayAsMillis()
 
         val fragmentDate = DateTimeUtils.moveDay(today, offset)
 
-        return DiaryPageFragment(fragmentDate).apply {
+        return CalendarPageFragment(fragmentDate).apply {
             fragmentList.add(this)
             this.setOnDestroyListener {
                 fragmentList.remove(this)
@@ -63,7 +63,7 @@ class DiaryPagerAdapter(
     }
 
     override fun reload() {
-        fragmentList.forEach(DiaryPageFragment::changeToRenderer)
+        fragmentList.forEach(CalendarPageFragment::updateView)
     }
 
 }

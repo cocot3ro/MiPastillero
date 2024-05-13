@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.old_view
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -10,8 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.children
 import com.a23pablooc.proxectofct.R
-import com.a23pablooc.proxectofct.databinding.DialogRefillMedBinding
-import com.a23pablooc.proxectofct.databinding.TimePickerLayoutBinding
+import com.a23pablooc.proxectofct.databinding.OldDialogRefillMedBinding
+import com.a23pablooc.proxectofct.databinding.OldTimePickerLayoutBinding
 import com.a23pablooc.proxectofct.model.Medicamento
 import com.a23pablooc.proxectofct.utils.DateTimeUtils
 import java.util.Calendar
@@ -25,8 +25,8 @@ class RefillMedDialog(
         fun onDataEntered(medicamento: Medicamento)
     }
 
-    private var _binding: DialogRefillMedBinding? =
-        DialogRefillMedBinding.inflate(LayoutInflater.from(context))
+    private var _binding: OldDialogRefillMedBinding? =
+        OldDialogRefillMedBinding.inflate(LayoutInflater.from(context))
 
     private val binding get() = _binding!!
 
@@ -86,7 +86,7 @@ class RefillMedDialog(
     }
 
     private fun addTimePicker(showAfterAdd: Boolean) {
-        val timerBinding = TimePickerLayoutBinding.inflate(
+        val timerBinding = OldTimePickerLayoutBinding.inflate(
             LayoutInflater.from(context),
             binding.scheduleLayout,
             true
@@ -175,7 +175,7 @@ class RefillMedDialog(
         val horario = sortedSetOf<Long>()
 
         for (child in (binding.scheduleLayout.children)) {
-            TimePickerLayoutBinding.bind(child).apply {
+            OldTimePickerLayoutBinding.bind(child).apply {
                 val time = timerHour.text.toString()
                 horario.add(DateTimeUtils.timeToMillis(time))
             }

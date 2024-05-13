@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.old_view
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -21,17 +21,17 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.R
-import com.a23pablooc.proxectofct.databinding.ActiveMedCardLayoutBinding
-import com.a23pablooc.proxectofct.databinding.EmptyLayoutBinding
-import com.a23pablooc.proxectofct.databinding.FragmentActiveMedBinding
+import com.a23pablooc.proxectofct.databinding.OldActiveMedCardLayoutBinding
+import com.a23pablooc.proxectofct.databinding.OldEmptyLayoutBinding
+import com.a23pablooc.proxectofct.databinding.OldFragmentActiveMedBinding
 import com.a23pablooc.proxectofct.model.Medicamento
 import com.a23pablooc.proxectofct.utils.DateTimeUtils
-import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
+import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 
 class ActiveMedFragment : Fragment() {
-    private var _binding: FragmentActiveMedBinding? = null
+    private var _binding: OldFragmentActiveMedBinding? = null
     private val binding get() = _binding!!
 
     private var _pillboxViewModel: PillboxViewModel? = null
@@ -42,7 +42,7 @@ class ActiveMedFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentActiveMedBinding.inflate(inflater, container, false)
+        _binding = OldFragmentActiveMedBinding.inflate(inflater, container, false)
         _pillboxViewModel = PillboxViewModel.getInstance(requireContext())
         navController =
             ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
@@ -91,7 +91,7 @@ class ActiveMedFragment : Fragment() {
         if (activos.isNotEmpty()) {
             activos.forEach { addCardView(it) }
         } else {
-            EmptyLayoutBinding.inflate(layoutInflater, binding.activeMedLayout, true).apply {
+            OldEmptyLayoutBinding.inflate(layoutInflater, binding.activeMedLayout, true).apply {
                 texto.text = getString(R.string.sin_meds_activos)
             }
         }
@@ -104,7 +104,7 @@ class ActiveMedFragment : Fragment() {
     private fun addCardView(medicamento: Medicamento) {
         // Infla el layout del cardview
         val cardViewBinding =
-            ActiveMedCardLayoutBinding.inflate(layoutInflater, binding.activeMedLayout, true)
+            OldActiveMedCardLayoutBinding.inflate(layoutInflater, binding.activeMedLayout, true)
 
         // Le pone el nombre
         cardViewBinding.name.text = medicamento.nombre

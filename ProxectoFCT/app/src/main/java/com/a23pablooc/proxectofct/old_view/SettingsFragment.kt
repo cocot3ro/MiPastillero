@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.old_view
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -13,13 +13,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.R
-import com.a23pablooc.proxectofct.databinding.FragmentSettingsBinding
+import com.a23pablooc.proxectofct.databinding.OldFragmentSettingsBinding
 import com.a23pablooc.proxectofct.utils.PreferencesUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SettingsFragment : Fragment() {
 
-    private var _binding: FragmentSettingsBinding? = null
+    private var _binding: OldFragmentSettingsBinding? = null
     private val binding get() = _binding!!
     private lateinit var navController: NavController
     private lateinit var preferences: SharedPreferences
@@ -28,7 +28,7 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        _binding = OldFragmentSettingsBinding.inflate(inflater, container, false)
         navController =
             ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
         preferences = requireContext().getSharedPreferences(PreferencesUtils.PREFS_NAME, AppCompatActivity.MODE_PRIVATE)

@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.old_view
 
 import android.app.AlertDialog
 import android.content.Context
@@ -7,18 +7,18 @@ import android.view.LayoutInflater
 import android.view.View.OnClickListener
 import android.widget.TextView
 import com.a23pablooc.proxectofct.model.Medicamento
-import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
+import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 import com.a23pablooc.proxectofct.R
-import com.a23pablooc.proxectofct.databinding.DialogInfoBinding
-import com.a23pablooc.proxectofct.databinding.HyperlinkLayoutBinding
+import com.a23pablooc.proxectofct.databinding.OldDialogInfoBinding
+import com.a23pablooc.proxectofct.databinding.OldHyperlinkLayoutBinding
 
 class InfoDialog(
     private val context: Context,
     private val medicamento: Medicamento,
 ) {
 
-    private var _binding: DialogInfoBinding? =
-        DialogInfoBinding.inflate(LayoutInflater.from(context))
+    private var _binding: OldDialogInfoBinding? =
+        OldDialogInfoBinding.inflate(LayoutInflater.from(context))
     private val binding get() = _binding!!
 
     private var _pillboxViewModel: PillboxViewModel? = null
@@ -47,7 +47,7 @@ class InfoDialog(
         }
 
         if (!medicamento.url.isNullOrBlank()) {
-            HyperlinkLayoutBinding.inflate(
+            OldHyperlinkLayoutBinding.inflate(
                 LayoutInflater.from(context),
                 binding.infoLayout,
                 true
@@ -62,7 +62,7 @@ class InfoDialog(
         }
 
         if (!medicamento.fichaTecnica.isNullOrBlank()) {
-            HyperlinkLayoutBinding.inflate(
+            OldHyperlinkLayoutBinding.inflate(
                 LayoutInflater.from(context),
                 binding.infoLayout,
                 true
@@ -77,7 +77,7 @@ class InfoDialog(
         }
 
         if (!medicamento.prospecto.isNullOrBlank()) {
-            HyperlinkLayoutBinding.inflate(
+            OldHyperlinkLayoutBinding.inflate(
                 LayoutInflater.from(context),
                 binding.infoLayout,
                 true

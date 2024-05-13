@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.old_view
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -18,17 +18,17 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.model.Medicamento
-import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
+import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 import com.a23pablooc.proxectofct.R
-import com.a23pablooc.proxectofct.databinding.EmptyLayoutBinding
-import com.a23pablooc.proxectofct.databinding.FavoriteCardLayoutBinding
-import com.a23pablooc.proxectofct.databinding.FragmentFavoriteBinding
+import com.a23pablooc.proxectofct.databinding.OldEmptyLayoutBinding
+import com.a23pablooc.proxectofct.databinding.OldFavoriteCardLayoutBinding
+import com.a23pablooc.proxectofct.databinding.OldFragmentFavoriteBinding
 import com.a23pablooc.proxectofct.utils.DateTimeUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 
 class FavoriteFragment : Fragment() {
-    private var _binding: FragmentFavoriteBinding? = null
+    private var _binding: OldFragmentFavoriteBinding? = null
     private val binding get() = _binding!!
 
     private var _pillboxViewModel: PillboxViewModel? = null
@@ -39,7 +39,7 @@ class FavoriteFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+        _binding = OldFragmentFavoriteBinding.inflate(inflater, container, false)
         _pillboxViewModel = PillboxViewModel.getInstance(requireContext())
         navController =
             ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
@@ -87,7 +87,7 @@ class FavoriteFragment : Fragment() {
         if (favoritos.isNotEmpty()) {
             favoritos.forEach { addCardView(it) }
         } else {
-            EmptyLayoutBinding.inflate(layoutInflater, binding.favoriteLayout, true).apply {
+            OldEmptyLayoutBinding.inflate(layoutInflater, binding.favoriteLayout, true).apply {
                 texto.text = getString(R.string.sin_meds_favoritos)
             }
         }
@@ -100,7 +100,7 @@ class FavoriteFragment : Fragment() {
     private fun addCardView(medicamento: Medicamento) {
         // Infla el layout de la tarjeta
         val cardViewBinding =
-            FavoriteCardLayoutBinding.inflate(layoutInflater, binding.favoriteLayout, true)
+            OldFavoriteCardLayoutBinding.inflate(layoutInflater, binding.favoriteLayout, true)
 
         // Nombre del medicamento
         cardViewBinding.name.text = medicamento.nombre

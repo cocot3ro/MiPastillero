@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.old_view
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -12,11 +12,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.children
 import com.a23pablooc.proxectofct.R
-import com.a23pablooc.proxectofct.databinding.DialogAddActiveMedBinding
-import com.a23pablooc.proxectofct.databinding.TimePickerLayoutBinding
+import com.a23pablooc.proxectofct.databinding.OldDialogAddActiveMedBinding
+import com.a23pablooc.proxectofct.databinding.OldTimePickerLayoutBinding
 import com.a23pablooc.proxectofct.model.Medicamento
 import com.a23pablooc.proxectofct.utils.DateTimeUtils
-import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
+import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -32,8 +32,8 @@ class AddActiveMedDialog(
         fun onDataEntered(medicamento: Medicamento)
     }
 
-    private var _binding: DialogAddActiveMedBinding? =
-        DialogAddActiveMedBinding.inflate(LayoutInflater.from(context))
+    private var _binding: OldDialogAddActiveMedBinding? =
+        OldDialogAddActiveMedBinding.inflate(LayoutInflater.from(context))
     private val binding get() = _binding!!
 
     private var _pillboxViewModel: PillboxViewModel? = null
@@ -196,7 +196,7 @@ class AddActiveMedDialog(
         val horario = sortedSetOf<Long>()
 
         for (child in (binding.scheduleLayout.children)) {
-            TimePickerLayoutBinding.bind(child).apply {
+            OldTimePickerLayoutBinding.bind(child).apply {
                 val time = timerHour.text.toString()
                 horario.add(DateTimeUtils.timeToMillis(time))
             }
@@ -206,7 +206,7 @@ class AddActiveMedDialog(
     }
 
     private fun addTimePicker(showAfterAdd: Boolean) {
-        val timerBinding = TimePickerLayoutBinding.inflate(
+        val timerBinding = OldTimePickerLayoutBinding.inflate(
             LayoutInflater.from(context),
             binding.scheduleLayout,
             true

@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.old_view
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -15,13 +15,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.R
-import com.a23pablooc.proxectofct.databinding.FragmentDiaryBinding
+import com.a23pablooc.proxectofct.databinding.OldFragmentDiaryBinding
 import com.a23pablooc.proxectofct.utils.DateTimeUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Calendar
 
 class DiaryFragment : Fragment() {
-    private var _binding: FragmentDiaryBinding? = null
+    private var _binding: OldFragmentDiaryBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var navController: NavController
@@ -31,7 +31,7 @@ class DiaryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDiaryBinding.inflate(inflater, container, false)
+        _binding = OldFragmentDiaryBinding.inflate(inflater, container, false)
         navController =
             ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
         pagerAdapter = DiaryPagerAdapter(requireActivity())

@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.old_view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,17 +13,17 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
+import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 import com.a23pablooc.proxectofct.R
-import com.a23pablooc.proxectofct.databinding.EmptyLayoutBinding
-import com.a23pablooc.proxectofct.databinding.FragmentHistoryBinding
-import com.a23pablooc.proxectofct.databinding.HistoryMedGroupLayoutBinding
-import com.a23pablooc.proxectofct.databinding.HistoryMedLayoutBinding
+import com.a23pablooc.proxectofct.databinding.OldEmptyLayoutBinding
+import com.a23pablooc.proxectofct.databinding.OldFragmentHistoryBinding
+import com.a23pablooc.proxectofct.databinding.OldHistoryMedGroupLayoutBinding
+import com.a23pablooc.proxectofct.databinding.OldHistoryMedLayoutBinding
 import com.a23pablooc.proxectofct.utils.DateTimeUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HistoryFragment : Fragment() {
-    private var _binding: FragmentHistoryBinding? = null
+    private var _binding: OldFragmentHistoryBinding? = null
 
     private val binding get() = _binding!!
 
@@ -37,7 +37,7 @@ class HistoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHistoryBinding.inflate(inflater, container, false)
+        _binding = OldFragmentHistoryBinding.inflate(inflater, container, false)
         _pillboxViewModel = PillboxViewModel.getInstance(requireContext())
         navController =
             ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
@@ -61,12 +61,12 @@ class HistoryFragment : Fragment() {
         val historial = pillboxViewModel.getHistorial()
 
         if (historial.isEmpty()) {
-            EmptyLayoutBinding.inflate(layoutInflater, binding.historyLayout, true).apply {
+            OldEmptyLayoutBinding.inflate(layoutInflater, binding.historyLayout, true).apply {
                 texto.text = getString(R.string.historial_vacio)
             }
         } else {
             for (entry in historial) {
-                val groupBinding = HistoryMedGroupLayoutBinding.inflate(
+                val groupBinding = OldHistoryMedGroupLayoutBinding.inflate(
                     layoutInflater,
                     binding.historyLayout,
                     true
@@ -97,7 +97,7 @@ class HistoryFragment : Fragment() {
                 )
 
                 for (med in entry.value) {
-                    val historyEntryBinding = HistoryMedLayoutBinding.inflate(
+                    val historyEntryBinding = OldHistoryMedLayoutBinding.inflate(
                         layoutInflater,
                         groupBinding.historyMedsLayout,
                         true

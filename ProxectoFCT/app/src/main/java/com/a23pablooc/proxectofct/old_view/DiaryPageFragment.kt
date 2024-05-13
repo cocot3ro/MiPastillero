@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.view
+package com.a23pablooc.proxectofct.old_view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,15 +7,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.a23pablooc.proxectofct.R
-import com.a23pablooc.proxectofct.databinding.DiaryEditorBinding
-import com.a23pablooc.proxectofct.databinding.DiaryRendererBinding
-import com.a23pablooc.proxectofct.databinding.FragmentDiaryPageBinding
+import com.a23pablooc.proxectofct.databinding.OldDiaryEditorBinding
+import com.a23pablooc.proxectofct.databinding.OldDiaryRendererBinding
+import com.a23pablooc.proxectofct.databinding.OldFragmentDiaryPageBinding
 import com.a23pablooc.proxectofct.utils.DateTimeUtils
-import com.a23pablooc.proxectofct.viewModel.PillboxViewModel
+import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 
 class DiaryPageFragment(private var fecha: Long) : Fragment(), PageFragment {
 
-    private var _binding: FragmentDiaryPageBinding? = null
+    private var _binding: OldFragmentDiaryPageBinding? = null
     private val binding get() = _binding!!
     private var _pillboxViewModel: PillboxViewModel? = null
     private val pillboxViewModel get() = _pillboxViewModel!!
@@ -25,7 +25,7 @@ class DiaryPageFragment(private var fecha: Long) : Fragment(), PageFragment {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDiaryPageBinding.inflate(inflater, container, false)
+        _binding = OldFragmentDiaryPageBinding.inflate(inflater, container, false)
         _pillboxViewModel = PillboxViewModel.getInstance(requireContext())
 
         initRenderer()
@@ -37,7 +37,7 @@ class DiaryPageFragment(private var fecha: Long) : Fragment(), PageFragment {
         val data = pillboxViewModel.getDiaryText(fecha)
 
         // Infla el layout del renderer
-        DiaryRendererBinding.inflate(layoutInflater, binding.diaryLayout, true).apply {
+        OldDiaryRendererBinding.inflate(layoutInflater, binding.diaryLayout, true).apply {
 
             // Establece la fecha actual
             @Suppress("SetTextI18n")
@@ -63,7 +63,7 @@ class DiaryPageFragment(private var fecha: Long) : Fragment(), PageFragment {
         val data = pillboxViewModel.getDiaryText(fecha)
 
         // Infla el layout del editor
-        DiaryEditorBinding.inflate(layoutInflater, binding.diaryLayout, true).apply {
+        OldDiaryEditorBinding.inflate(layoutInflater, binding.diaryLayout, true).apply {
             // Establece la fecha actual
             @Suppress("SetTextI18n")
             diaryDate.text =
