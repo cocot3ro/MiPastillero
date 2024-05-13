@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.hilt)
     alias(libs.plugins.safeArgs)
-    id("kotlin-kapt")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -41,11 +41,6 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
-//noinspection KaptUsageInsteadOfKsp
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -71,13 +66,11 @@ dependencies {
 
     //Dagger Hilt
     implementation(libs.hilt.android)
-    implementation(libs.androidx.legacy.support.v4)
-    implementation(libs.androidx.preference)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     //Room
     implementation(libs.androidx.room.ktx)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
     // Security
     implementation(libs.androidx.security.crypto)

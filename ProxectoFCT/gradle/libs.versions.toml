@@ -23,6 +23,7 @@ viewpager2 = "1.0.0"
 safeArgs = "2.7.7"
 legacySupportV4 = "1.0.0"
 preference = "1.2.1"
+ksp = "1.9.23-1.0.20"
 
 [libraries]
 android-database-sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "androidDatabaseSqlcipher" }
@@ -59,3 +60,4 @@ jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "k
 safeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "safeArgs" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
