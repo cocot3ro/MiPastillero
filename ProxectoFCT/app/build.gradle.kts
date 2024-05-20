@@ -66,6 +66,7 @@ dependencies {
 
     //Dagger Hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.legacy.support.v4)
     ksp(libs.hilt.compiler)
 
     //Room
@@ -77,6 +78,10 @@ dependencies {
 
     // Sqlcipher
     implementation(libs.android.database.sqlcipher)
+
+    // Lombok
+    compileOnly(libs.projectlombok.lombok)
+    annotationProcessor(libs.projectlombok.lombok)
 
     // TODO: Borrar esta dependencia al implementar Retrofit
     implementation(libs.khttp)

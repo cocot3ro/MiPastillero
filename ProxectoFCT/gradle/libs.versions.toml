@@ -1,17 +1,17 @@
 [versions]
 agp = "8.4.0"
-androidDatabaseSqlcipher = "4.5.0"
-fragmentKtx = "1.7.0"
+androidDatabaseSqlcipher = "4.5.4"
+fragmentKtx = "1.7.1"
 hiltAndroid = "2.51.1"
-khttp = "1.6.1"
 kotlin = "1.9.23"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.6.1"
-kotlinxCoroutinesAndroid = "1.8.0"
-lifecycleKtx = "2.7.0"
+kotlinxCoroutinesAndroid = "1.8.1"
+lifecycleKtx = "2.8.0"
+lombokVersion = "1.18.32"
 material = "1.12.0"
 activity = "1.9.0"
 constraintlayout = "2.1.4"
@@ -19,10 +19,9 @@ navigationFragmentKtx = "2.7.7"
 retrofit = "2.11.0"
 roomKtx = "2.6.1"
 securityCrypto = "1.0.0"
-viewpager2 = "1.0.0"
+viewpager2 = "1.1.0"
 safeArgs = "2.7.7"
 legacySupportV4 = "1.0.0"
-preference = "1.2.1"
 ksp = "1.9.23-1.0.20"
 
 [libraries]
@@ -45,14 +44,14 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-khttp = { module = "org.danilopianini:khttp", version.ref = "khttp" }
+khttp = { module = "org.danilopianini:khttp", version = "1.6.2" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+projectlombok-lombok = { module = "org.projectlombok:lombok", version.ref = "lombokVersion" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
-androidx-preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
