@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View.OnClickListener
 import android.widget.TextView
-import com.a23pablooc.proxectofct.model.Medicamento
+import com.a23pablooc.proxectofct.old_model.Medicamento
 import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.OldDialogInfoBinding

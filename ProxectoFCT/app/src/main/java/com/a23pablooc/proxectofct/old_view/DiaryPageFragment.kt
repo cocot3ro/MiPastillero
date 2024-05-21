@@ -10,7 +10,7 @@ import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.OldDiaryEditorBinding
 import com.a23pablooc.proxectofct.databinding.OldDiaryRendererBinding
 import com.a23pablooc.proxectofct.databinding.OldFragmentDiaryPageBinding
-import com.a23pablooc.proxectofct.utils.DateTimeUtils
+import com.a23pablooc.proxectofct.old_utils.DateTimeUtils
 import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 
 class DiaryPageFragment(private var fecha: Long) : Fragment(), PageFragment {

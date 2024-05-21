@@ -12,7 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.OldActivityMainBinding
-import com.a23pablooc.proxectofct.utils.PreferencesUtils
+import com.a23pablooc.proxectofct.old_utils.PreferencesUtils
 import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers

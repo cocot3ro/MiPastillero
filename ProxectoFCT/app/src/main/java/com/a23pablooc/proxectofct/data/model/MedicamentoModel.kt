@@ -1,11 +1,14 @@
 package com.a23pablooc.proxectofct.data.model
 
+import lombok.EqualsAndHashCode
+
+@EqualsAndHashCode
 data class MedicamentoModel(
     val numRegistro: String,
     val nombre: String,
     val url: String,
     val prospecto: String,
-    val imagen: ByteArray,
+    val imagen: String,
     val laboratorio: String,
     val prescripcion: String,
     val conduccion: Boolean
@@ -15,7 +18,7 @@ data class MedicamentoModel(
         private var nombre: String = ""
         private var url: String = ""
         private var prospecto: String = ""
-        private var imagen: ByteArray = byteArrayOf()
+        private var imagen: String = ""
         private var laboratorio: String = ""
         private var prescripcion: String = ""
         private var conduccion: Boolean = false
@@ -24,7 +27,7 @@ data class MedicamentoModel(
         fun nombre(nombre: String) = apply { this.nombre = nombre }
         fun url(url: String) = apply { this.url = url }
         fun prospecto(prospecto: String) = apply { this.prospecto = prospecto }
-        fun imagen(imagen: ByteArray) = apply { this.imagen = imagen }
+        fun imagen(imagen: String) = apply { this.imagen = imagen }
         fun laboratorio(laboratorio: String) = apply { this.laboratorio = laboratorio }
         fun prescripcion(prescripcion: String) = apply { this.prescripcion = prescripcion }
         fun conduccion(conduccion: Boolean) = apply { this.conduccion = conduccion }
@@ -40,35 +43,4 @@ data class MedicamentoModel(
             conduccion
         )
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as MedicamentoModel
-
-        if (numRegistro != other.numRegistro) return false
-        if (nombre != other.nombre) return false
-        if (url != other.url) return false
-        if (prospecto != other.prospecto) return false
-        if (!imagen.contentEquals(other.imagen)) return false
-        if (laboratorio != other.laboratorio) return false
-        if (prescripcion != other.prescripcion) return false
-        if (conduccion != other.conduccion) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = numRegistro.hashCode()
-        result = 31 * result + nombre.hashCode()
-        result = 31 * result + url.hashCode()
-        result = 31 * result + prospecto.hashCode()
-        result = 31 * result + imagen.contentHashCode()
-        result = 31 * result + laboratorio.hashCode()
-        result = 31 * result + prescripcion.hashCode()
-        result = 31 * result + conduccion.hashCode()
-        return result
-    }
-
 }

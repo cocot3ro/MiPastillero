@@ -16,8 +16,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.a23pablooc.proxectofct.utils.DateTimeUtils
-import com.a23pablooc.proxectofct.model.Medicamento
+import com.a23pablooc.proxectofct.old_utils.DateTimeUtils
+import com.a23pablooc.proxectofct.old_model.Medicamento
 import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.OldFragmentCalendarBinding

@@ -1,38 +1,14 @@
 package com.a23pablooc.proxectofct.domain.model
 
+import lombok.EqualsAndHashCode
 import java.util.Date
 
+@EqualsAndHashCode
 data class MedicamentoCalendarioItem(
     val id: Int,
-    val idMedicamento: Int,
+    val medicamento: MedicamentoItem,
     val idUsuario: Int,
     val fecha: Date,
     val hora: Date,
     val seHaTomado: Boolean
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as MedicamentoCalendarioItem
-
-        if (id != other.id) return false
-        if (idMedicamento != other.idMedicamento) return false
-        if (idUsuario != other.idUsuario) return false
-        if (fecha != other.fecha) return false
-        if (hora != other.hora) return false
-        if (seHaTomado != other.seHaTomado) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id
-        result = 31 * result + idMedicamento
-        result = 31 * result + idUsuario
-        result = 31 * result + fecha.hashCode()
-        result = 31 * result + hora.hashCode()
-        result = 31 * result + seHaTomado.hashCode()
-        return result
-    }
-}
+)

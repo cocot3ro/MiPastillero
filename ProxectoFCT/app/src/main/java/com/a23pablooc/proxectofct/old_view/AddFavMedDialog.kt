@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.Toast
-import com.a23pablooc.proxectofct.model.Medicamento
+import com.a23pablooc.proxectofct.old_model.Medicamento
 import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.OldDialogAddFavMedBinding

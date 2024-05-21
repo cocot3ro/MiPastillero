@@ -4,7 +4,6 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.a23pablooc.proxectofct.data.database.converters.DateConverter
-import com.a23pablooc.proxectofct.data.database.converters.SetConverter
 import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
 import com.a23pablooc.proxectofct.data.database.dao.HistorialDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoActivoDAO
@@ -38,7 +37,6 @@ import com.a23pablooc.proxectofct.data.database.entities.UsuarioEntity
 )
 @TypeConverters(
     value = [
-        SetConverter::class,
         DateConverter::class
     ]
 )

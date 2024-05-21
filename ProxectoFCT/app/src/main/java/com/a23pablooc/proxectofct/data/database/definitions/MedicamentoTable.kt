@@ -5,7 +5,6 @@ object MedicamentoTable {
 
     object Columns {
         const val ID = "PK_medicamento"
-        const val FK_USUARIO = "FK_usuario"
         const val NUM_REGISTRO = "num_registro"
         const val NOMBRE = "nombre"
         const val URL = "url"

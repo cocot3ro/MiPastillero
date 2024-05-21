@@ -24,7 +24,7 @@ object RetrofitModule {
             .create()
 
         return Retrofit.Builder()
-            .baseUrl("https://cima.aemps.es/cima/rest/")
+            .baseUrl("https://cima.aemps.es/cima/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }

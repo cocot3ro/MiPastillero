@@ -19,7 +19,7 @@ import com.a23pablooc.proxectofct.databinding.OldEmptyLayoutBinding
 import com.a23pablooc.proxectofct.databinding.OldFragmentHistoryBinding
 import com.a23pablooc.proxectofct.databinding.OldHistoryMedGroupLayoutBinding
 import com.a23pablooc.proxectofct.databinding.OldHistoryMedLayoutBinding
-import com.a23pablooc.proxectofct.utils.DateTimeUtils
+import com.a23pablooc.proxectofct.old_utils.DateTimeUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HistoryFragment : Fragment() {

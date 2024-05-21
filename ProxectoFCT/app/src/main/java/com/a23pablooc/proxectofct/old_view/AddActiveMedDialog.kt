@@ -14,8 +14,8 @@ import androidx.core.view.children
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.OldDialogAddActiveMedBinding
 import com.a23pablooc.proxectofct.databinding.OldTimePickerLayoutBinding
-import com.a23pablooc.proxectofct.model.Medicamento
-import com.a23pablooc.proxectofct.utils.DateTimeUtils
+import com.a23pablooc.proxectofct.old_model.Medicamento
+import com.a23pablooc.proxectofct.old_utils.DateTimeUtils
 import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

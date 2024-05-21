@@ -16,7 +16,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.OldFragmentDiaryBinding
-import com.a23pablooc.proxectofct.utils.DateTimeUtils
+import com.a23pablooc.proxectofct.old_utils.DateTimeUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Calendar
 

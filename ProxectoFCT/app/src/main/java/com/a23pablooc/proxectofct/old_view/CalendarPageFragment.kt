@@ -13,7 +13,7 @@ import com.a23pablooc.proxectofct.databinding.OldCalendarMedGroupLayoutBinding
 import com.a23pablooc.proxectofct.databinding.OldCalendarMedLayoutBinding
 import com.a23pablooc.proxectofct.databinding.OldEmptyLayoutBinding
 import com.a23pablooc.proxectofct.databinding.OldFragmentCalendarPageBinding
-import com.a23pablooc.proxectofct.utils.DateTimeUtils
+import com.a23pablooc.proxectofct.old_utils.DateTimeUtils
 import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 
 class CalendarPageFragment(val fecha: Long) : Fragment(), PageFragment {

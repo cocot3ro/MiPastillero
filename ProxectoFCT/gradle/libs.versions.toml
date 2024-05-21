@@ -1,7 +1,8 @@
 [versions]
-agp = "8.4.0"
+agp = "8.4.1"
 androidDatabaseSqlcipher = "4.5.4"
 fragmentKtx = "1.7.1"
+glideVersion = "4.11.0"
 hiltAndroid = "2.51.1"
 kotlin = "1.9.23"
 coreKtx = "1.13.1"
@@ -36,8 +37,10 @@ androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx",
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
+compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glideVersion" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
+github-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

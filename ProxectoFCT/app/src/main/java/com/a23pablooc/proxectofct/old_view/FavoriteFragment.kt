@@ -17,13 +17,13 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.a23pablooc.proxectofct.model.Medicamento
+import com.a23pablooc.proxectofct.old_model.Medicamento
 import com.a23pablooc.proxectofct.old_viewModel.PillboxViewModel
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.OldEmptyLayoutBinding
 import com.a23pablooc.proxectofct.databinding.OldFavoriteCardLayoutBinding
 import com.a23pablooc.proxectofct.databinding.OldFragmentFavoriteBinding
-import com.a23pablooc.proxectofct.utils.DateTimeUtils
+import com.a23pablooc.proxectofct.old_utils.DateTimeUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 

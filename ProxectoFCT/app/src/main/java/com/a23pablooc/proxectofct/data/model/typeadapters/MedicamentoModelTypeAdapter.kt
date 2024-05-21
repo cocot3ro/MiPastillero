@@ -1,10 +1,11 @@
 package com.a23pablooc.proxectofct.data.model.typeadapters
 
+import android.net.Uri
 import com.a23pablooc.proxectofct.data.model.MedicamentoModel
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
-import java.net.URL
+import java.net.URI
 
 class MedicamentoModelTypeAdapter : TypeAdapter<MedicamentoModel>() {
     override fun write(out: JsonWriter?, value: MedicamentoModel) {}
@@ -72,7 +73,8 @@ class MedicamentoModelTypeAdapter : TypeAdapter<MedicamentoModel>() {
                                         when (nextString()) {
                                             "materialas" -> {
                                                 nextName()
-                                                builder.imagen(downloadImage(nextString()))
+                                                val url = nextString()
+                                                builder.imagen(url.substringAfterLast("/"))
                                             }
                                         }
                                     }
@@ -94,9 +96,5 @@ class MedicamentoModelTypeAdapter : TypeAdapter<MedicamentoModel>() {
         }
 
         return builder.build()
-    }
-
-    private fun downloadImage(url: String): ByteArray {
-        return URL(url).readBytes()
     }
 }

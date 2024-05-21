@@ -1,5 +1,7 @@
 [//]: # (TODO: Añadir en este paquete los casos de uso)
 
+Los casos de uso se inyectan en los ViewModel
+
 ```kotlin
 package com.a23pablooc.proxectofct.domain
 
