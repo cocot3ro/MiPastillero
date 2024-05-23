@@ -42,16 +42,16 @@ class CalendarPageFragment : Fragment() {
     ): View {
         binding = FragmentCalendarPageBinding.inflate(layoutInflater)
 
+        val date = Calendar.getInstance().apply {
+            timeInMillis = requireArguments().getLong(ARGS_DATE_KEY)
+        }.time
+
         calendarRecyclerViewAdapter = CalendarRecyclerViewAdapter(emptyList())
 
         binding.recyclerViewCalendarPage.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = calendarRecyclerViewAdapter
         }
-
-        val date = Calendar.getInstance().apply {
-            timeInMillis = requireArguments().getLong(ARGS_DATE_KEY)
-        }.time
 
         binding.calendarDay.text = "${
             DateTimeUtils.getDayName(

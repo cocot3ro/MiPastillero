@@ -21,6 +21,6 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/menu_bottombar" />
+        app:menu="@menu/old_menu_bottombar" />
 
 </LinearLayout>

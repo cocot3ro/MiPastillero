@@ -9,15 +9,20 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/activeMedsFragment"
+        android:id="@+id/activeMedFragment"
         android:icon="@mipmap/pildora"
         android:title="@string/medicacion_activa"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/favoriteMedsFragment"
+        android:id="@+id/favoriteFragment"
         android:icon="@android:drawable/btn_star"
         android:title="@string/favoritos"
         app:showAsAction="always" />
 
+<!--    <item-->
+<!--        android:id="@+id/diaryFragment"-->
+<!--        android:icon="@android:drawable/ic_menu_agenda"-->
+<!--        android:title="@string/agenda"-->
+<!--        app:showAsAction="always" />-->
 </menu>
