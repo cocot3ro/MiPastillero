@@ -16,6 +16,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- TODO: vista para lista vacia -->
+
     <TextView
         android:id="@+id/calendar_day"
         android:layout_width="match_parent"

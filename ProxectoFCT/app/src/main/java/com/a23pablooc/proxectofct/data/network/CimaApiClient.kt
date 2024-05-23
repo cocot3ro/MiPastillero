@@ -3,7 +3,6 @@ package com.a23pablooc.proxectofct.data.network
 import com.a23pablooc.proxectofct.core.CimaImageType
 import com.a23pablooc.proxectofct.data.model.MedicamentoModel
 import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

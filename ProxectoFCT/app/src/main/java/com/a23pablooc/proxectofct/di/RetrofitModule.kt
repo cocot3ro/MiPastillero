@@ -31,7 +31,7 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideMedicamentoService(retrofit: Retrofit): CimaApiClient {
+    fun provideCimaApiClient(retrofit: Retrofit): CimaApiClient {
         return retrofit.create(CimaApiClient::class.java)
     }
 }

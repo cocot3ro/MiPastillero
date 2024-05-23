@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.a23pablooc.proxectofct.databinding.FragmentFavoriteMedsBinding
 import com.a23pablooc.proxectofct.ui.viewmodel.FavoriteMedsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoriteMedsFragment : Fragment() {
     private lateinit var binding: FragmentFavoriteMedsBinding
 

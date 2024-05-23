@@ -18,10 +18,10 @@
         android:theme="@style/Theme.ProxectoFCT"
         tools:targetApi="31">
 
-        <service android:name=".old_notification.NotificationAction" />
+        <service android:name=".old.old_notification.NotificationAction" />
 
         <receiver
-            android:name=".old_notification.NotificationsService"
+            android:name=".old.old_notification.NotificationsService"
             android:enabled="true" />
 
         <activity
