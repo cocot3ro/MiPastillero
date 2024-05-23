@@ -28,9 +28,7 @@ class MainScreenFragment : Fragment() {
     ): View {
         binding = FragmentMainScreenBinding.inflate(inflater, container, false)
 
-        navController =
-            ((requireActivity().supportFragmentManager).findFragmentById(R.id.global_nav_host_fragment) as NavHostFragment)
-                .navController
+        navController = (childFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment).navController
 
         binding.bottomNavigation.setupWithNavController(navController)
 
