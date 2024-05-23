@@ -2,17 +2,15 @@ package com.a23pablooc.proxectofct.ui.view.adapters
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
+import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.a23pablooc.proxectofct.ui.view.fragments.CalendarPageFragment
 import java.util.Calendar
 import java.util.Date
 
 class CalendarViewPagerAdapter(
-    fragmentActivity: FragmentManager,
-    lifecycle: Lifecycle
-) : FragmentStateAdapter(fragmentActivity, lifecycle) {
+    fragmentActivity: FragmentActivity
+) : FragmentStateAdapter(fragmentActivity) {
     companion object {
         const val START_POSITION = Int.MAX_VALUE / 2
     }

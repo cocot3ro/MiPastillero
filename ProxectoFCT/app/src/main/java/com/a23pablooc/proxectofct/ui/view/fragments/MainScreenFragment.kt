@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.ui.view
+package com.a23pablooc.proxectofct.ui.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentMainScreenBinding
+import com.a23pablooc.proxectofct.ui.viewmodel.MainScreenViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainScreenFragment : Fragment() {
 
     private lateinit var binding: FragmentMainScreenBinding
@@ -26,8 +29,8 @@ class MainScreenFragment : Fragment() {
         binding = FragmentMainScreenBinding.inflate(inflater, container, false)
 
         navController =
-            (requireActivity().supportFragmentManager
-                .findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+            ((requireActivity().supportFragmentManager).findFragmentById(R.id.global_nav_host_fragment) as NavHostFragment)
+                .navController
 
         binding.bottomNavigation.setupWithNavController(navController)
 

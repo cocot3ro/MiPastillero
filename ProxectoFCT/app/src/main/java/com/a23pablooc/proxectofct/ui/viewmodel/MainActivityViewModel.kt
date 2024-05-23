@@ -12,7 +12,7 @@ class MainActivityViewModel @Inject constructor(/*private val checkFinishedUseCa
 
     fun checkFinished() {
         viewModelScope.launch {
-//            checkFinishedUseCase()
+            // TODO: checkFinishedUseCase()
         }
     }
 }

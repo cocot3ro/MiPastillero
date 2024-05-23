@@ -14,7 +14,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.navigation.NavController
+import androidx.navigation.NavHost
 import androidx.navigation.fragment.NavHostFragment
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentCalendarBinding
@@ -28,23 +28,17 @@ class CalendarFragment : Fragment() {
 
     private lateinit var binding: FragmentCalendarBinding
     private val viewModel: CalendarViewModel by viewModels()
-    private lateinit var navController: NavController
     private lateinit var calendarViewPagerAdapter: CalendarViewPagerAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCalendarBinding.inflate(layoutInflater)
 
-        navController =
-            (requireActivity().supportFragmentManager
-                .findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
-
-        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
-
         calendarViewPagerAdapter =
-            CalendarViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
+            CalendarViewPagerAdapter(requireActivity())
 
         binding.viewPager.apply {
             adapter = calendarViewPagerAdapter
@@ -56,6 +50,8 @@ class CalendarFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        var navController = ((requireActivity().supportFragmentManager).findFragmentById(R.id.global_nav_host_fragment) as NavHostFragment).navController
 
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
