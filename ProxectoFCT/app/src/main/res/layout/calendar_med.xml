@@ -35,11 +35,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- TODO: Hardcode string -->
+        <!-- TODO: Cambiar icono -->
         <ImageButton
             android:id="@+id/btnTake"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_no_bg"
+            android:background="@android:color/transparent"
             android:contentDescription="Boton para marcar la toma del medicamento"
             android:src="@drawable/check_box_off"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -9,8 +9,10 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
 import com.a23pablooc.proxectofct.ui.view.diffutils.CalendarDiffUtil
 import com.a23pablooc.proxectofct.ui.view.viewholders.CalendarViewHolder
 
-class CalendarRecyclerViewAdapter(private var list: List<MedicamentoCalendarioItem>) :
-    RecyclerView.Adapter<CalendarViewHolder>() {
+class CalendarRecyclerViewAdapter(
+    private var list: List<MedicamentoCalendarioItem>,
+    private val onClick: (MedicamentoCalendarioItem) -> Unit
+) : RecyclerView.Adapter<CalendarViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         return CalendarViewHolder(
@@ -23,7 +25,7 @@ class CalendarRecyclerViewAdapter(private var list: List<MedicamentoCalendarioIt
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         val hora = list.distinctBy { it.fecha }[position].hora
 
-        holder.render(list.filter { it.hora == hora })
+        holder.render(list.filter { it.hora == hora }, onClick)
     }
 
     fun updateData(newData: List<MedicamentoCalendarioItem>) {

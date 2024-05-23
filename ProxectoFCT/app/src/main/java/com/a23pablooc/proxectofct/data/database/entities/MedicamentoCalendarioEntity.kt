@@ -88,5 +88,3 @@ data class MedicamentoCalendarioEntity(
         return result
     }
 }
-
-//TODO: Funciones de extensión

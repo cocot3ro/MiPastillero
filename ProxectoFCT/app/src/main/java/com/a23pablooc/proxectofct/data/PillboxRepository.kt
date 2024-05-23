@@ -10,8 +10,12 @@ import com.a23pablooc.proxectofct.data.database.dao.MedicamentoFavoritoDAO
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
 import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
 import com.a23pablooc.proxectofct.data.database.entities.MedicamentoCalendarioAndMedicamento
+import com.a23pablooc.proxectofct.data.database.extensions.toDomain
 import com.a23pablooc.proxectofct.data.network.CimaService
+import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
+import com.a23pablooc.proxectofct.domain.model.extensions.toDatabase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.util.Date
 import javax.inject.Inject
 
@@ -26,8 +30,6 @@ class PillboxRepository @Inject constructor(
     private val notificacionDAO: NotificacionDAO,
     private val cimaService: CimaService
 ) {
-//    suspend fun getAll() = medicamentoDAO.getAll()
-
     suspend fun downloadImage(imageType: CimaImageType, nregistro: String, imgResource: String): ByteArray? {
         return cimaService.getMedImage(imageType, nregistro, imgResource)
     }
@@ -35,8 +37,12 @@ class PillboxRepository @Inject constructor(
     fun getAllWithMedicamentosByDiaOrderByHora(
         userId: Int,
         dia: Date
-    ): Flow<List<MedicamentoCalendarioAndMedicamento>> =
-        medicamentoCalendarioDAO.getAllWithMedicamentosByDiaOrderByHora(userId, dia)
+    ): Flow<List<MedicamentoCalendarioItem>> =
+        medicamentoCalendarioDAO.getAllWithMedicamentosByDiaOrderByHora(userId, dia).map { it -> it.map { it.toDomain() } }
+
+    suspend fun updateMedicamentoCalendario(med: MedicamentoCalendarioItem) {
+        medicamentoCalendarioDAO.update(med.toDatabase().medicamentoCalendarioEntity)
+    }
 
     /*
     TODO:

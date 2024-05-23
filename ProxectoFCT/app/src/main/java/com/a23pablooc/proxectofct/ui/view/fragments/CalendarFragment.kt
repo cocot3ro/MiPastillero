@@ -33,6 +33,8 @@ class CalendarFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var calendarViewPagerAdapter: CalendarViewPagerAdapter
 
+    //TODO: Drawer menu
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

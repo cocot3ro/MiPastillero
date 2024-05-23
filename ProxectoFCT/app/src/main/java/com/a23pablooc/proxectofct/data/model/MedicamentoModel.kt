@@ -1,8 +1,5 @@
 package com.a23pablooc.proxectofct.data.model
 
-import lombok.EqualsAndHashCode
-
-@EqualsAndHashCode
 data class MedicamentoModel(
     val numRegistro: String,
     val nombre: String,
@@ -43,4 +40,35 @@ data class MedicamentoModel(
             conduccion
         )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as MedicamentoModel
+
+        if (numRegistro != other.numRegistro) return false
+        if (nombre != other.nombre) return false
+        if (url != other.url) return false
+        if (prospecto != other.prospecto) return false
+        if (imagen != other.imagen) return false
+        if (laboratorio != other.laboratorio) return false
+        if (prescripcion != other.prescripcion) return false
+        if (conduccion != other.conduccion) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = numRegistro.hashCode()
+        result = 31 * result + nombre.hashCode()
+        result = 31 * result + url.hashCode()
+        result = 31 * result + prospecto.hashCode()
+        result = 31 * result + imagen.hashCode()
+        result = 31 * result + laboratorio.hashCode()
+        result = 31 * result + prescripcion.hashCode()
+        result = 31 * result + conduccion.hashCode()
+        return result
+    }
+
 }

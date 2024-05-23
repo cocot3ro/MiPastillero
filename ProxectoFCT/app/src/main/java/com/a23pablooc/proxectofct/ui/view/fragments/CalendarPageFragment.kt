@@ -46,7 +46,9 @@ class CalendarPageFragment : Fragment() {
             timeInMillis = requireArguments().getLong(ARGS_DATE_KEY)
         }.time
 
-        calendarRecyclerViewAdapter = CalendarRecyclerViewAdapter(emptyList())
+        calendarRecyclerViewAdapter = CalendarRecyclerViewAdapter(emptyList()) {
+            viewModel.marcarToma(it)
+        }
 
         binding.recyclerViewCalendarPage.apply {
             layoutManager = LinearLayoutManager(context)

@@ -3,6 +3,8 @@ package com.a23pablooc.proxectofct.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.a23pablooc.proxectofct.domain.GetMedicamentosCalendarioUseCase
+import com.a23pablooc.proxectofct.domain.MarcarTomaUseCase
+import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
 import com.a23pablooc.proxectofct.ui.view.states.CalendarPageUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CalendarPageViewModel @Inject constructor(
-    private val getMedicamentosCalendarioUseCase: GetMedicamentosCalendarioUseCase
+    private val getMedicamentosCalendarioUseCase: GetMedicamentosCalendarioUseCase,
+    private val marcarTomaUseCase: MarcarTomaUseCase
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<CalendarPageUiState> =
@@ -33,6 +36,12 @@ class CalendarPageViewModel @Inject constructor(
                 .collect {
                     _uiState.value = CalendarPageUiState.Success(it)
                 }
+        }
+    }
+
+    fun marcarToma(med: MedicamentoCalendarioItem) {
+        viewModelScope.launch {
+            marcarTomaUseCase(med)
         }
     }
 }

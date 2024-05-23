@@ -7,7 +7,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.a23pablooc.proxectofct.ui.view.fragments.CalendarPageFragment
 import java.util.Calendar
-import java.util.Date
 
 class CalendarViewPagerAdapter(
     fragmentManager: FragmentManager,
@@ -31,12 +30,6 @@ class CalendarViewPagerAdapter(
                 putLong(CalendarPageFragment.ARGS_DATE_KEY, date)
             }
         }
-    }
-
-    fun search(date: Date): Int {
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        return calendar.get(Calendar.DAY_OF_YEAR) - 1
     }
 
 }
