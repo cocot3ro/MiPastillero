@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -38,6 +39,7 @@ class CalendarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCalendarBinding.inflate(layoutInflater)
+
         navController = ((requireActivity().supportFragmentManager)
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
 
@@ -50,11 +52,12 @@ class CalendarFragment : Fragment() {
             binding.drawerLayout
         )
 
-        binding.bottomNavigation.setupWithNavController(navController)
+        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        binding.bottomNavigation.setupWithNavController(navController)
 
         calendarViewPagerAdapter =
-            CalendarViewPagerAdapter(requireActivity())
+            CalendarViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
 
         binding.viewPager.apply {
             adapter = calendarViewPagerAdapter
