@@ -3,7 +3,8 @@
 ## Codificación
 
 ## Prototipos
-Prototipo 1
+Enlace a release do [Prototipo 1](https://gitlab.iessanclemente.net/damo/a23pablooc/-/releases/v1.0.0)
+
 | Funcionalidade                             | Realizada      |
 |--------------------------------------------|----------------|
 | Engadir medicamento                        | En realizacion |
