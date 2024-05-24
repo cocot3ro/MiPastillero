@@ -8,4 +8,9 @@ const val TABLE_NAME = "tbl_medicamentos_favoritos"
         const val FK_MEDICAMENTO = "FK_medicamento"
         const val FK_USUARIO = "FK_usuario"
     }
+
+    object Indexes {
+        const val IDX_MEDICAMENTO_FAVORITO_FK_MEDICAMENTO = "idx_medicamento_favorito_fk_medicamento"
+        const val IDX_MEDICAMENTO_FAVORITO_FK_USUARIO = "idx_medicamento_favorito_fk_usuario"
+    }
 }

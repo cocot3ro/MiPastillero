@@ -9,4 +9,8 @@ object AgendaTable {
         const val FECHA = "fecha"
         const val HORA = "hora"
     }
+
+    object Indexes {
+        const val IDX_AGENDA_FK_USUARIO = "idx_agenda_fk_usuario"
+    }
 }

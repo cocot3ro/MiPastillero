@@ -27,12 +27,12 @@ import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
     ],
     indices = [
         Index(
-            name = "idx_medicamento_favorito_fk_medicamento",
+            name = MedicamentoFavoritoTable.Indexes.IDX_MEDICAMENTO_FAVORITO_FK_MEDICAMENTO,
             unique = false,
             value = [MedicamentoFavoritoTable.Columns.FK_MEDICAMENTO]
         ),
         Index(
-            name = "idx_medicamento_favorito_fk_usuario",
+            name = MedicamentoFavoritoTable.Indexes.IDX_MEDICAMENTO_FAVORITO_FK_USUARIO,
             unique = false,
             value = [MedicamentoFavoritoTable.Columns.FK_USUARIO]
         )

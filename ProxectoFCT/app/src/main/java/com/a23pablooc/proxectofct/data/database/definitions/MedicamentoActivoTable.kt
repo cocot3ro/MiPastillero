@@ -12,4 +12,9 @@ object MedicamentoActivoTable {
         const val HORARIO = "horario"
         const val DOSIS = "dosis"
     }
+
+    object Indexes {
+        const val IDX_MEDICAMENTO_ACTIVO_FK_MEDICAMENTO = "idx_medicamento_activo_fk_medicamento"
+        const val IDX_MEDICAMENTO_ACTIVO_FK_USUARIO = "idx_medicamento_activo_fk_usuario"
+    }
 }

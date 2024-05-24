@@ -21,7 +21,7 @@ import java.util.Date
     ],
     indices = [
         Index(
-            name = "idx_agenda_fk_usuario",
+            name = AgendaTable.Indexes.IDX_AGENDA_FK_USUARIO,
             value = [AgendaTable.Columns.FK_USUARIO],
             unique = false
         ),

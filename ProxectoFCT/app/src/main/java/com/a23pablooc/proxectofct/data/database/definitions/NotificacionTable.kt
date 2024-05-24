@@ -10,4 +10,9 @@ object NotificacionTable {
         const val FECHA = "fecha"
         const val HORA = "hora"
     }
+
+    object Indexes {
+        const val IDX_NOTIFICACION_FK_MEDICAMENTO = "idx_notificacion_fk_medicamento"
+        const val IDX_NOTIFICACION_FK_USUARIO = "idx_notificacion_fk_usuario"
+    }
 }

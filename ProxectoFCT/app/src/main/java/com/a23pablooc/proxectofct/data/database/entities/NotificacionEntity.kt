@@ -28,12 +28,12 @@ import java.util.Date
     ],
     indices = [
         Index(
-            name = "idx_notificacion_fk_medicamento",
+            name = NotificacionTable.Indexes.IDX_NOTIFICACION_FK_MEDICAMENTO,
             unique = false,
             value = [NotificacionTable.Columns.FK_MEDICAMENTO]
         ),
         Index(
-            name = "idx_notificacion_fk_usuario",
+            name = NotificacionTable.Indexes.IDX_NOTIFICACION_FK_USUARIO,
             unique = false,
             value = [NotificacionTable.Columns.FK_USUARIO]
         )

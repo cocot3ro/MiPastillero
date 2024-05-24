@@ -11,4 +11,9 @@ object MedicamentoCalendarioTable {
         const val HORA = "hora"
         const val TOMADO = "tomado"
     }
+
+    object Indexes {
+        const val IDX_MEDICAMENTO_CALENDARIO_FK_MEDICAMENTO = "idx_medicamento_calendario_fk_medicamento"
+        const val IDX_MEDICAMENTO_CALENDARIO_FK_USUARIO = "idx_medicamento_calendario_fk_usuario"
+    }
 }

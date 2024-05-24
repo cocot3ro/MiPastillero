@@ -28,12 +28,12 @@ import java.util.Date
     ],
     indices = [
         Index(
-            name = "idx_medicamento_activo_fk_medicamento",
+            name = MedicamentoActivoTable.Indexes.IDX_MEDICAMENTO_ACTIVO_FK_MEDICAMENTO,
             unique = false,
             value = [MedicamentoActivoTable.Columns.FK_MEDICAMENTO]
         ),
         Index(
-            name = "idx_medicamento_activo_fk_usuario",
+            name = MedicamentoActivoTable.Indexes.IDX_MEDICAMENTO_ACTIVO_FK_USUARIO,
             unique = false,
             value = [MedicamentoActivoTable.Columns.FK_USUARIO]
         )

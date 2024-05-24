@@ -28,12 +28,12 @@ import java.util.Date
     ],
     indices = [
         Index(
-            name = "idx_historial_fk_usuario",
+            name = HistorialTable.Indexes.IDX_HISTORIAL_FK_USUARIO,
             unique = false,
             value = [HistorialTable.Columns.FK_USUARIO]
         ),
         Index(
-            name = "idx_historial_fk_medicamento",
+            name = HistorialTable.Indexes.IDX_HISTORIAL_FK_MEDICAMENTO,
             unique = false,
             value = [HistorialTable.Columns.FK_MEDICAMENTO]
         )

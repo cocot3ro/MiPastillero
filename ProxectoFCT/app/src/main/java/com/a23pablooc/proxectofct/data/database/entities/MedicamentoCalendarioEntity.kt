@@ -32,12 +32,12 @@ import java.util.Date
     ],
     indices = [
         Index(
-            name = "idx_medicamento_calendario_fk_medicamento",
+            name = MedicamentoCalendarioTable.Indexes.IDX_MEDICAMENTO_CALENDARIO_FK_MEDICAMENTO,
             unique = false,
             value = [MedicamentoCalendarioTable.Columns.FK_MEDICAMENTO]
         ),
         Index(
-            name = "idx_medicamento_calendario_fk_usuario",
+            name = MedicamentoCalendarioTable.Indexes.IDX_MEDICAMENTO_CALENDARIO_FK_USUARIO,
             unique = false,
             value = [MedicamentoCalendarioTable.Columns.FK_USUARIO]
         ),
