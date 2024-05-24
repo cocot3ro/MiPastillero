@@ -1,7 +1,7 @@
 # Planificación
 
 ## Metodoloxía prevista
-Para o desenvolvemento deste proxecto utilizarase a metodoloxía Kanban.
+Para o desenvolvemento deste proxecto utilizarase a metodoloxía áxil donde se irán subindo diferentes prototipos da aplicación sobre os que se revisará o analise, deseño e planificación.
 
 ## Fases planificadas
 
