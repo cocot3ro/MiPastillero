@@ -94,9 +94,9 @@ class FavoriteMedsFragment : Fragment() {
                         is FavoriteFragmentUiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
-                            Log.e("CalendarPageFragment", "Error: ${uiState.errorMessage}")
-                            Log.e("CalendarPageFragment", "Error: ${uiState.error}")
-                            //TODO: save error message in a log file
+                            viewModel.saveError(requireContext(), uiState.errorMessage, uiState.timeStamp, uiState.exception)
+                            Log.e("FavoriteMedsFragment", "Error: ${uiState.errorMessage}")
+                            Log.e("FavoriteMedsFragment", "Error: ${uiState.exception}")
                         }
                     }
                 }

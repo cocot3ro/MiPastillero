@@ -16,6 +16,7 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoFavoritoItem
 import com.a23pablooc.proxectofct.domain.model.extensions.toDatabase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.io.File
 import java.util.Date
 import javax.inject.Inject
 
@@ -60,5 +61,4 @@ class PillboxRepository @Inject constructor(
         return medicamentoFavoritoDAO.getAllWithMedicamentos(userId)
             .map { it -> it.map { it.toDomain() } }
     }
-
 }
