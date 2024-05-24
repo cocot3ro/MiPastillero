@@ -35,7 +35,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- TODO: Hardcode string -->
-        <!-- TODO: Cambiar icono -->
         <ImageButton
             android:id="@+id/btnTake"
             android:layout_width="wrap_content"

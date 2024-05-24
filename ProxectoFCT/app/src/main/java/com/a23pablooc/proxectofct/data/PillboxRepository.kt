@@ -9,10 +9,10 @@ import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoFavoritoDAO
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
 import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
-import com.a23pablooc.proxectofct.data.database.entities.MedicamentoCalendarioAndMedicamento
-import com.a23pablooc.proxectofct.data.database.extensions.toDomain
+import com.a23pablooc.proxectofct.data.database.entities.extensions.toDomain
 import com.a23pablooc.proxectofct.data.network.CimaService
 import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
+import com.a23pablooc.proxectofct.domain.model.MedicamentoFavoritoItem
 import com.a23pablooc.proxectofct.domain.model.extensions.toDatabase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -30,7 +30,18 @@ class PillboxRepository @Inject constructor(
     private val notificacionDAO: NotificacionDAO,
     private val cimaService: CimaService
 ) {
-    suspend fun downloadImage(imageType: CimaImageType, nregistro: String, imgResource: String): ByteArray? {
+    /*
+    TODO:
+        Insert all,
+        get from api...
+        Insert MedicamentoActivoConMedicamento -> insetar medicamento y luego insertar medicamento activo
+     */
+
+    suspend fun downloadImage(
+        imageType: CimaImageType,
+        nregistro: String,
+        imgResource: String
+    ): ByteArray? {
         return cimaService.getMedImage(imageType, nregistro, imgResource)
     }
 
@@ -38,16 +49,16 @@ class PillboxRepository @Inject constructor(
         userId: Int,
         dia: Date
     ): Flow<List<MedicamentoCalendarioItem>> =
-        medicamentoCalendarioDAO.getAllWithMedicamentosByDiaOrderByHora(userId, dia).map { it -> it.map { it.toDomain() } }
+        medicamentoCalendarioDAO.getAllWithMedicamentosByDiaOrderByHora(userId, dia)
+            .map { it -> it.map { it.toDomain() } }
 
     suspend fun updateMedicamentoCalendario(med: MedicamentoCalendarioItem) {
         medicamentoCalendarioDAO.update(med.toDatabase().medicamentoCalendarioEntity)
     }
 
-    /*
-    TODO:
-        Insert all,
-        get from api...
-        Insert MedicamentoActivoConMedicamento -> insetar medicamento y luego insertar medicamento activo
-     */
+    fun getAllFavoriteMeds(userId: Int): Flow<List<MedicamentoFavoritoItem>> {
+        return medicamentoFavoritoDAO.getAllWithMedicamentos(userId)
+            .map { it -> it.map { it.toDomain() } }
+    }
+
 }

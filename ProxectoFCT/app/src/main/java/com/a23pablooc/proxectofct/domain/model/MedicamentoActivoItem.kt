@@ -4,8 +4,7 @@ import java.util.Date
 
 data class MedicamentoActivoItem(
     val id: Int,
-    val idMedicamento: Int,
-    val idUsuario: Int,
+    val medicamento: MedicamentoItem,
     val fechaInicio: Date,
     val fechaFin: Date,
     val horario: Set<Date>,
@@ -18,8 +17,7 @@ data class MedicamentoActivoItem(
         other as MedicamentoActivoItem
 
         if (id != other.id) return false
-        if (idMedicamento != other.idMedicamento) return false
-        if (idUsuario != other.idUsuario) return false
+        if (medicamento != other.medicamento) return false
         if (fechaInicio != other.fechaInicio) return false
         if (fechaFin != other.fechaFin) return false
         if (horario != other.horario) return false
@@ -30,8 +28,7 @@ data class MedicamentoActivoItem(
 
     override fun hashCode(): Int {
         var result = id
-        result = 31 * result + idMedicamento
-        result = 31 * result + idUsuario
+        result = 31 * result + medicamento.hashCode()
         result = 31 * result + fechaInicio.hashCode()
         result = 31 * result + fechaFin.hashCode()
         result = 31 * result + horario.hashCode()

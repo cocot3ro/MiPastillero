@@ -18,7 +18,6 @@ interface MedicamentoFavoritoDAO {
     @Query("SELECT * FROM ${MedicamentoFavoritoTable.TABLE_NAME} WHERE ${MedicamentoFavoritoTable.Columns.FK_USUARIO} = :idUsuario")
     fun getAll(idUsuario: Int): Flow<List<MedicamentoFavoritoEntity>>
 
-    @Transaction
     @Query("SELECT * FROM ${MedicamentoFavoritoTable.TABLE_NAME} WHERE ${MedicamentoFavoritoTable.Columns.FK_USUARIO} = :idUsuario")
     fun getAllWithMedicamentos(idUsuario: Int): Flow<List<MedicamentoFavoritoAndMedicamento>>
 

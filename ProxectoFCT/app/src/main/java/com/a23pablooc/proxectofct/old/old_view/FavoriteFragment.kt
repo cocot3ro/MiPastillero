@@ -209,7 +209,7 @@ class FavoriteFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_toolbar_fav_med, menu)
+        inflater.inflate(R.menu.old_menu_toolbar_fav_med, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

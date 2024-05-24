@@ -5,7 +5,6 @@ import java.util.Date
 data class MedicamentoCalendarioItem(
     var id: Int,
     var medicamento: MedicamentoItem,
-    var idUsuario: Int,
     var fecha: Date,
     var hora: Date,
     var seHaTomado: Boolean
@@ -18,7 +17,6 @@ data class MedicamentoCalendarioItem(
 
         if (id != other.id) return false
         if (medicamento != other.medicamento) return false
-        if (idUsuario != other.idUsuario) return false
         if (fecha != other.fecha) return false
         if (hora != other.hora) return false
         if (seHaTomado != other.seHaTomado) return false
@@ -29,7 +27,6 @@ data class MedicamentoCalendarioItem(
     override fun hashCode(): Int {
         var result = id
         result = 31 * result + medicamento.hashCode()
-        result = 31 * result + idUsuario
         result = 31 * result + fecha.hashCode()
         result = 31 * result + hora.hashCode()
         result = 31 * result + seHaTomado.hashCode()

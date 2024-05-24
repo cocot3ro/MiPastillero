@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.data.database.extensions
+package com.a23pablooc.proxectofct.data.database.entities.extensions
 
 import com.a23pablooc.proxectofct.data.database.entities.MedicamentoEntity
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem

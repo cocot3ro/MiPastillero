@@ -5,7 +5,6 @@ import java.util.Date
 data class NotificacionItem(
     val id: Int,
     val medicamento: MedicamentoItem,
-    val usuario: UsuarioItem,
     val fecha: Date,
     val hora: Date
 ) {
@@ -17,7 +16,6 @@ data class NotificacionItem(
 
         if (id != other.id) return false
         if (medicamento != other.medicamento) return false
-        if (usuario != other.usuario) return false
         if (fecha != other.fecha) return false
         if (hora != other.hora) return false
 
@@ -27,7 +25,6 @@ data class NotificacionItem(
     override fun hashCode(): Int {
         var result = id
         result = 31 * result + medicamento.hashCode()
-        result = 31 * result + usuario.hashCode()
         result = 31 * result + fecha.hashCode()
         result = 31 * result + hora.hashCode()
         return result

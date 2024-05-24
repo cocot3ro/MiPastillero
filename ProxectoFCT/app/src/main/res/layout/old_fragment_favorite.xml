@@ -18,7 +18,7 @@
             style="@style/Widget.MaterialComponents.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/menu_toolbar_fav_med">
+            app:menu="@menu/old_menu_toolbar_fav_med">
 
             <TextView
                 android:layout_width="match_parent"
