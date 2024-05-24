@@ -79,10 +79,6 @@ dependencies {
     // Sqlcipher
     implementation(libs.android.database.sqlcipher)
 
-    // Lombok
-    compileOnly(libs.projectlombok.lombok)
-    annotationProcessor(libs.projectlombok.lombok)
-
     // TODO: Borrar esta dependencia al implementar Retrofit
     implementation(libs.khttp)
 
