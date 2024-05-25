@@ -1,6 +1,5 @@
 package com.a23pablooc.proxectofct.ui.view.viewholders
 
-import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -8,6 +7,7 @@ import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.CalendarMedBinding
 import com.a23pablooc.proxectofct.databinding.CalendarMedGroupBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
+import com.bumptech.glide.Glide
 
 class CalendarPageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -26,13 +26,9 @@ class CalendarPageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         for (med in meds) {
             CalendarMedBinding.inflate(LayoutInflater.from(itemView.context), binding.body, true)
                 .apply {
-                    medImg.setImageBitmap(
-                        BitmapFactory.decodeByteArray(
-                            med.medicamento.imagen,
-                            0,
-                            med.medicamento.imagen.size
-                        )
-                    )
+                    Glide.with(root.context)
+                        .load(med.medicamento.imagen)
+                        .into(medImg)
 
                     medName.text = med.medicamento.nombre
 
