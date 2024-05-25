@@ -79,6 +79,9 @@ dependencies {
     // Sqlcipher
     implementation(libs.android.database.sqlcipher)
 
+    // Glide
+    implementation(libs.glide)
+
     // TODO: Borrar esta dependencia al implementar Retrofit
     implementation(libs.khttp)
 
