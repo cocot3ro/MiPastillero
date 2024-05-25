@@ -23,7 +23,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentFavoriteMedsBinding
-import com.a23pablooc.proxectofct.domain.model.MedicamentoFavoritoItem
+import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.FavoriteRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
 import com.a23pablooc.proxectofct.ui.viewmodel.FavoriteMedsViewModel
@@ -79,7 +79,7 @@ class FavoriteMedsFragment : Fragment() {
 
                         is MainScreenUiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
-                            favoriteRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoFavoritoItem })
+                            favoriteRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoItem })
 
                             // TODO: vista para lista vacia
                             //  ? binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)

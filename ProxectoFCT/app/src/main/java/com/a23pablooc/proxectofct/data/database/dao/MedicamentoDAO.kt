@@ -15,6 +15,9 @@ interface MedicamentoDAO {
     @Query("SELECT * FROM ${MedicamentoTable.TABLE_NAME}")
     fun getAll(): Flow<List<MedicamentoEntity>>
 
+    @Query("SELECT * FROM ${MedicamentoTable.TABLE_NAME} WHERE ${MedicamentoTable.Columns.FK_USUARIO} = :idUsuario AND ${MedicamentoTable.Columns.ES_FAVORITO} = 1")
+    fun getAllFavoritos(idUsuario: Int): Flow<List<MedicamentoEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(medicamento: MedicamentoEntity)
 

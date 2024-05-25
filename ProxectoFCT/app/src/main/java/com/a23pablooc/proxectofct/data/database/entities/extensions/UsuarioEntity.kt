@@ -5,7 +5,7 @@ import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 
 fun UsuarioEntity.toDomain(): UsuarioItem {
     return UsuarioItem(
-        pkUsuario = pkUsuario,
+        id = id,
         nombre = nombre
     )
 }

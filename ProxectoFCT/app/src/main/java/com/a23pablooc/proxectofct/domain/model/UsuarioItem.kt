@@ -1,7 +1,7 @@
 package com.a23pablooc.proxectofct.domain.model
 
 data class UsuarioItem(
-    val pkUsuario: Int,
+    val id: Int,
     val nombre: String
 ) {
     override fun equals(other: Any?): Boolean {
@@ -10,14 +10,14 @@ data class UsuarioItem(
 
         other as UsuarioItem
 
-        if (pkUsuario != other.pkUsuario) return false
+        if (id != other.id) return false
         if (nombre != other.nombre) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = pkUsuario
+        var result = id
         result = 31 * result + nombre.hashCode()
         return result
     }

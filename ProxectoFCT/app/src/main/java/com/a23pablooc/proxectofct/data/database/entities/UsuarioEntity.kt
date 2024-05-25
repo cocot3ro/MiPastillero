@@ -9,7 +9,7 @@ import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
 data class UsuarioEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = UsuarioTable.Columns.ID)
-    val pkUsuario: Int = 0,
+    val id: Int = 0,
 
     @ColumnInfo(name = UsuarioTable.Columns.NOMBRE)
     val nombre: String
@@ -20,14 +20,14 @@ data class UsuarioEntity(
 
         other as UsuarioEntity
 
-        if (pkUsuario != other.pkUsuario) return false
+        if (id != other.id) return false
         if (nombre != other.nombre) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = pkUsuario
+        var result = id
         result = 31 * result + nombre.hashCode()
         return result
     }

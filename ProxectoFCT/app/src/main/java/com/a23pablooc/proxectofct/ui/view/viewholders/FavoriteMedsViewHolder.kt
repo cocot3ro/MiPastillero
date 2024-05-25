@@ -4,23 +4,23 @@ import android.graphics.BitmapFactory
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.a23pablooc.proxectofct.databinding.FavoriteMedBinding
-import com.a23pablooc.proxectofct.domain.model.MedicamentoFavoritoItem
+import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 
 class FavoriteMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = FavoriteMedBinding.bind(view)
 
     fun render(
-        med: MedicamentoFavoritoItem,
-        onAdd: (MedicamentoFavoritoItem) -> Unit,
-        onInfo: (MedicamentoFavoritoItem) -> Unit
+        med: MedicamentoItem,
+        onAdd: (MedicamentoItem) -> Unit,
+        onInfo: (MedicamentoItem) -> Unit
     ) {
-        binding.name.text = med.medicamento.nombre
+        binding.name.text = med.nombre
 
         val bitMap = BitmapFactory.decodeByteArray(
-            med.medicamento.imagen,
+            med.imagen,
             0,
-            med.medicamento.imagen.size
+            med.imagen.size
         )
 
         binding.img.setImageBitmap(bitMap)
