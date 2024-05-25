@@ -7,7 +7,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor(/*private val checkFinishedUseCase: CheckFinishedUseCase*/) : ViewModel() {
+class MainActivityViewModel @Inject constructor(
+    /*private val checkFinishedUseCase: CheckFinishedUseCase*/
+) : ViewModel() {
     // TODO: Implement the ViewModel and inject the use cases
 
     fun checkFinished() {

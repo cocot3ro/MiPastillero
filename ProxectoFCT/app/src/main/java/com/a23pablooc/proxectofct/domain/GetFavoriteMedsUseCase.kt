@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetFavoriteMedsUseCase @Inject constructor(private val repository: PillboxRepository) {
 
     operator fun invoke(): Flow<List<MedicamentoItem>> {
-        return repository.getAllFavoriteMeds(UserInfoProvider.id)
+        return repository.getAllFavoriteMeds(UserInfoProvider.userId)
     }
 
 }

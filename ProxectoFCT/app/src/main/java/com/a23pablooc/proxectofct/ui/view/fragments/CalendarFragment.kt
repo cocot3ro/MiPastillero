@@ -15,9 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentCalendarBinding
@@ -32,6 +32,7 @@ class CalendarFragment : Fragment() {
     private lateinit var binding: FragmentCalendarBinding
     private val viewModel: CalendarViewModel by viewModels()
     private lateinit var calendarViewPagerAdapter: CalendarViewPagerAdapter
+    private lateinit var navController: NavController
 
     //TODO: Drawer menu
 
@@ -41,6 +42,8 @@ class CalendarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCalendarBinding.inflate(layoutInflater)
+        navController = requireActivity().supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment)?.findNavController()!!
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -53,6 +56,8 @@ class CalendarFragment : Fragment() {
 
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
         binding.toolbar.setupWithNavController(findNavController(), appBarConfiguration)
+
+        NavigationUI.setupWithNavController(binding.navView, navController)
 
         calendarViewPagerAdapter =
             CalendarViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)

@@ -30,13 +30,13 @@ class CalendarPageViewModel @Inject constructor(
 
     val uiState: StateFlow<MainScreenUiState> = _uiState
 
-    //    TODO: Hardcode string on error message
+    // TODO: Hardcode string on error message
     fun fetchData(date: Date) {
         viewModelScope.launch {
             getMedicamentosCalendarioUseCase(date)
                 .catch {
                     _uiState.value = MainScreenUiState.Error(
-                        "Error fetching favorite meds from DB",
+                        "Error fetching calendar meds from DB",
                         Date(),
                         it
                     )

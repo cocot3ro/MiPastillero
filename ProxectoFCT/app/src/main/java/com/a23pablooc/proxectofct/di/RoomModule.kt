@@ -34,6 +34,7 @@ object RoomModule {
     fun provideSupportFactory(databasePassphrase: DatabasePassphrase): SupportFactory =
         SupportFactory(databasePassphrase.getPassphrase())
 
+    //TODO: restore openHelperFactory. Disabled for allowing access from the app inspector
     @Singleton
     @Provides
     fun provideRoom(
@@ -41,7 +42,7 @@ object RoomModule {
         supportFactory: SupportFactory
     ): PillboxDatabase {
         return Room.databaseBuilder(context, PillboxDatabase::class.java, DATABASE_NAME)
-            .openHelperFactory(supportFactory)
+//            .openHelperFactory(supportFactory)
             .build()
     }
 

@@ -11,6 +11,7 @@ import androidx.room.Update
 import com.a23pablooc.proxectofct.data.database.entities.MedicamentoActivoEntity
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoActivoTable
 import com.a23pablooc.proxectofct.data.database.entities.MedicamentoActivoAndMedicamento
+import java.util.Date
 
 @Dao
 interface MedicamentoActivoDAO {
@@ -19,8 +20,13 @@ interface MedicamentoActivoDAO {
     fun getAll(idUsuario: Int): Flow<List<MedicamentoActivoEntity>>
 
     @Transaction
-    @Query("SELECT * FROM ${MedicamentoActivoTable.TABLE_NAME} WHERE ${MedicamentoActivoTable.Columns.FK_USUARIO} = :idUsuario")
-    fun getAllWithMedicamento(idUsuario: Int): Flow<List<MedicamentoActivoAndMedicamento>>
+    @Query("""
+            SELECT *
+            FROM ${MedicamentoActivoTable.TABLE_NAME}
+            WHERE ${MedicamentoActivoTable.Columns.FK_USUARIO} = :idUsuario AND
+            ${MedicamentoActivoTable.Columns.FECHA_INICIO} >= :fromDate
+        """)
+    fun getAllWithMedicamento(idUsuario: Int, fromDate: Date): Flow<List<MedicamentoActivoAndMedicamento>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(medicamentoActivo: MedicamentoActivoEntity)

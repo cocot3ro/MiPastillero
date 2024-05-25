@@ -7,7 +7,7 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 fun MedicamentoItem.toDatabase(): MedicamentoEntity {
     return MedicamentoEntity(
         id = id,
-        userId = UserInfoProvider.id,
+        userId = UserInfoProvider.userId,
         numRegistro = numRegistro,
         nombre = nombre,
         url = url,

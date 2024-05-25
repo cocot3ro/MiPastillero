@@ -8,8 +8,10 @@ import com.a23pablooc.proxectofct.data.database.dao.MedicamentoCalendarioDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
 import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
+import com.a23pablooc.proxectofct.data.database.entities.MedicamentoEntity
 import com.a23pablooc.proxectofct.data.database.entities.extensions.toDomain
 import com.a23pablooc.proxectofct.data.network.CimaService
+import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.domain.model.extensions.toDatabase
@@ -56,6 +58,11 @@ class PillboxRepository @Inject constructor(
 
     fun getAllFavoriteMeds(userId: Int): Flow<List<MedicamentoItem>> {
         return medicamentoDAO.getAllFavoritos(userId)
+            .map { it -> it.map { it.toDomain() } }
+    }
+
+    fun getMedicamentosActivos(userId: Int, fromDate: Date): Flow<List<MedicamentoActivoItem>> {
+        return medicamentoActivoDAO.getAllWithMedicamento(userId, fromDate)
             .map { it -> it.map { it.toDomain() } }
     }
 }

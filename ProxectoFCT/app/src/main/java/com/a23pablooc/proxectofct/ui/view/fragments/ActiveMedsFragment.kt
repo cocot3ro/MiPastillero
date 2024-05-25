@@ -20,6 +20,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentActiveMedsBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
@@ -53,7 +54,21 @@ class ActiveMedsFragment : Fragment() {
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
         binding.toolbar.setupWithNavController(findNavController(), appBarConfiguration)
 
-        //TODO: adapter recycler view, diffutil, fetch data, addActiveMed
+        activeRecyclerViewAdapter = ActiveMedsRecyclerViewAdapter(
+            emptyList(),
+            {
+                // TODO: onFavClick
+            }, {
+                // TODO: onInfoClick
+            }, {
+                // TODO: onAddClick
+            }
+        )
+
+        binding.recyclerViewActiveMeds.apply {
+            adapter = activeRecyclerViewAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -80,9 +95,12 @@ class ActiveMedsFragment : Fragment() {
                                 uiState.timeStamp,
                                 uiState.exception
                             )
-                            Log.e("CalendarPageFragment", "Error: ${uiState.errorMessage}")
                             Log.e(
-                                "CalendarPageFragment",
+                                "ActiveMedsFragment::OnCreateView",
+                                "Error: ${uiState.errorMessage}"
+                            )
+                            Log.e(
+                                "ActiveMedsFragment::OnCreateView",
                                 "Error: ${uiState.exception.stackTraceToString()}"
                             )
                         }
