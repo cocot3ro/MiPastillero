@@ -2,14 +2,15 @@ package com.a23pablooc.proxectofct.domain.model
 
 data class MedicamentoItem(
     val id: Int,
-    val numRegistro: String,
-    val nombre: String,
-    val url: String,
-    val prospecto: String,
-    val imagen: ByteArray,
-    val laboratorio: String,
-    val prescripcion: String,
-    val afectaConduccion: Boolean
+    var numRegistro: String,
+    var nombre: String,
+    var url: String,
+    var prospecto: String,
+    var imagen: ByteArray,
+    var laboratorio: String,
+    var prescripcion: String,
+    var afectaConduccion: Boolean,
+    var esFavorito: Boolean
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -26,6 +27,7 @@ data class MedicamentoItem(
         if (laboratorio != other.laboratorio) return false
         if (prescripcion != other.prescripcion) return false
         if (afectaConduccion != other.afectaConduccion) return false
+        if (esFavorito != other.esFavorito) return false
 
         return true
     }
@@ -40,6 +42,7 @@ data class MedicamentoItem(
         result = 31 * result + laboratorio.hashCode()
         result = 31 * result + prescripcion.hashCode()
         result = 31 * result + afectaConduccion.hashCode()
+        result = 31 * result + esFavorito.hashCode()
         return result
     }
 }

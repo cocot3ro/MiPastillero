@@ -16,7 +16,6 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoFavoritoItem
 import com.a23pablooc.proxectofct.domain.model.extensions.toDatabase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.io.File
 import java.util.Date
 import javax.inject.Inject
 
@@ -51,7 +50,7 @@ class PillboxRepository @Inject constructor(
         dia: Date
     ): Flow<List<MedicamentoCalendarioItem>> =
         medicamentoCalendarioDAO.getAllWithMedicamentosByDiaOrderByHora(userId, dia)
-            .map { it -> it.map { it.toDomain() } }
+            .map { it -> it.map { it.toDomain().apply { this.medicamento.esFavorito  = medicamentoFavoritoDAO.findById(userId, medicamento.id) != null } } }
 
     suspend fun updateMedicamentoCalendario(med: MedicamentoCalendarioItem) {
         medicamentoCalendarioDAO.update(med.toDatabase().medicamentoCalendarioEntity)
@@ -59,6 +58,6 @@ class PillboxRepository @Inject constructor(
 
     fun getAllFavoriteMeds(userId: Int): Flow<List<MedicamentoFavoritoItem>> {
         return medicamentoFavoritoDAO.getAllWithMedicamentos(userId)
-            .map { it -> it.map { it.toDomain() } }
+            .map { it -> it.map { it.toDomain().apply { this.medicamento.esFavorito = true } } }
     }
 }

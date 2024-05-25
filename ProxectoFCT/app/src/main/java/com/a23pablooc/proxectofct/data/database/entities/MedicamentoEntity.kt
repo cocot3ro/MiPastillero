@@ -33,7 +33,10 @@ data class MedicamentoEntity(
     val prescripcion: String,
 
     @ColumnInfo(name = MedicamentoTable.Columns.AFECTA_CONDUCCION)
-    val afectaConduccion: Boolean
+    val afectaConduccion: Boolean,
+
+    @ColumnInfo(name = MedicamentoTable.Columns.ES_FAVORITO)
+    val esFavorito: Boolean
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -50,6 +53,7 @@ data class MedicamentoEntity(
         if (laboratorio != other.laboratorio) return false
         if (prescripcion != other.prescripcion) return false
         if (afectaConduccion != other.afectaConduccion) return false
+        if (esFavorito != other.esFavorito) return false
 
         return true
     }
@@ -64,6 +68,7 @@ data class MedicamentoEntity(
         result = 31 * result + laboratorio.hashCode()
         result = 31 * result + prescripcion.hashCode()
         result = 31 * result + afectaConduccion.hashCode()
+        result = 31 * result + esFavorito.hashCode()
         return result
     }
 }

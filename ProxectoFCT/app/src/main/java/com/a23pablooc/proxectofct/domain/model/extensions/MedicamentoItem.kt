@@ -13,6 +13,7 @@ fun MedicamentoItem.toDatabase(): MedicamentoEntity {
         prescripcion = prescripcion,
         afectaConduccion = afectaConduccion,
         imagen = imagen,
-        laboratorio = laboratorio
+        laboratorio = laboratorio,
+        esFavorito = esFavorito
     )
 }

@@ -28,6 +28,10 @@ object DateTimeUtils {
         return SimpleDateFormat.getDateInstance().format(date)
     }
 
+    fun formatTime(date: Date): String {
+        return SimpleDateFormat.getTimeInstance().format(date)
+    }
+
     fun daysBetweenDates(startDate: Date, endDate: Date): Int {
         return ((endDate.time - startDate.time) / (1000 * 60 * 60 * 24)).toInt()
     }

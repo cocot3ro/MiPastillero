@@ -31,7 +31,7 @@ class SettingsFragment : Fragment() {
     ): View {
         _binding = OldFragmentSettingsBinding.inflate(inflater, container, false)
         navController =
-            ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+            ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.old_nav_host_fragment) as NavHostFragment).navController
         preferences = requireContext().getSharedPreferences(PreferencesUtils.PREFS_NAME, AppCompatActivity.MODE_PRIVATE)
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)

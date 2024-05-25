@@ -11,12 +11,11 @@
         android:layout_marginHorizontal="8dp"
         android:paddingVertical="8dp">
 
-        <!-- TODO: Hardcode string -->
         <ImageView
             android:id="@+id/medImg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="Imagen del medicamento"
+            android:contentDescription="TODO"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/medName"
@@ -34,13 +33,12 @@
             app:layout_constraintStart_toEndOf="@id/medImg"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- TODO: Hardcode string -->
         <ImageButton
             android:id="@+id/btnTake"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:contentDescription="Boton para marcar la toma del medicamento"
+            android:contentDescription="TODO"
             android:src="@drawable/check_box_off"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

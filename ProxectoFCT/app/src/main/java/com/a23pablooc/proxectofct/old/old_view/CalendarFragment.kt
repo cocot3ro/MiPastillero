@@ -38,7 +38,7 @@ class CalendarFragment : Fragment() {
         _binding = OldFragmentCalendarBinding.inflate(layoutInflater)
         pillboxViewModel = PillboxViewModel.getInstance(requireContext())
         navController =
-            ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+            ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.old_nav_host_fragment) as NavHostFragment).navController
         pagerAdapter = CalendarPagerAdapter.getInstance(requireActivity())
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 

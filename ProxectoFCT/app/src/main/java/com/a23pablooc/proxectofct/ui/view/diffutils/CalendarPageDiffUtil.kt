@@ -1,18 +1,19 @@
 package com.a23pablooc.proxectofct.ui.view.diffutils
 
 import androidx.recyclerview.widget.DiffUtil
-import com.a23pablooc.proxectofct.domain.model.MedicamentoFavoritoItem
+import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
 
-class FavoriteDiffUtil(
-    private val oldList: List<MedicamentoFavoritoItem>,
-    private val newList: List<MedicamentoFavoritoItem>
+class CalendarPageDiffUtil(
+    private val oldList: List<MedicamentoCalendarioItem>,
+    private val newList: List<MedicamentoCalendarioItem>
 ) : DiffUtil.Callback() {
+
     override fun getOldListSize(): Int = oldList.size
 
     override fun getNewListSize(): Int = newList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].medicamento.nombre == newList[newItemPosition].medicamento.nombre
+        return oldList[oldItemPosition] == newList[newItemPosition]
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

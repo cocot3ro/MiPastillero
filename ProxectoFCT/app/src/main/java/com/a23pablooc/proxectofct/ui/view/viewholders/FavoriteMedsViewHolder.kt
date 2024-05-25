@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.a23pablooc.proxectofct.databinding.FavoriteMedBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoFavoritoItem
 
-class FavoriteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class FavoriteMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = FavoriteMedBinding.bind(view)
 

@@ -41,7 +41,7 @@ class HistoryFragment : Fragment() {
         _binding = OldFragmentHistoryBinding.inflate(inflater, container, false)
         _pillboxViewModel = PillboxViewModel.getInstance(requireContext())
         navController =
-            ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+            ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.old_nav_host_fragment) as NavHostFragment).navController
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 

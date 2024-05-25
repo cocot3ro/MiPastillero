@@ -9,7 +9,7 @@ import com.a23pablooc.proxectofct.databinding.CalendarMedBinding
 import com.a23pablooc.proxectofct.databinding.CalendarMedGroupBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
 
-class CalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class CalendarPageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = CalendarMedGroupBinding.bind(view)
 

@@ -27,21 +27,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <!-- TODO: Hardcode string -->
                 <ImageView
                     android:id="@+id/img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="Imagen del medicamento"
+                    android:contentDescription="TODO"
                     android:scaleType="centerCrop" />
 
-                <!-- TODO: Hardcode string -->
                 <ImageButton
                     android:id="@+id/add_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:contentDescription="Add Button"
+                    android:contentDescription="TODO"
                     android:src="@drawable/add"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:background="@android:color/transparent"
-                android:contentDescription="More Info Button"
+                android:contentDescription="TODO"
                 android:src="@drawable/info"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

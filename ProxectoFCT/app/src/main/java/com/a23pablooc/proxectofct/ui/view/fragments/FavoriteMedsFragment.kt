@@ -17,15 +17,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentFavoriteMedsBinding
+import com.a23pablooc.proxectofct.domain.model.MedicamentoFavoritoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.FavoriteRecyclerViewAdapter
-import com.a23pablooc.proxectofct.ui.view.states.FavoriteFragmentUiState
+import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
 import com.a23pablooc.proxectofct.ui.viewmodel.FavoriteMedsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -33,20 +33,15 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class FavoriteMedsFragment : Fragment() {
     private lateinit var binding: FragmentFavoriteMedsBinding
-
     private val viewModel: FavoriteMedsViewModel by viewModels()
-    private lateinit var navController: NavController
-
     private lateinit var favoriteRecyclerViewAdapter: FavoriteRecyclerViewAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFavoriteMedsBinding.inflate(layoutInflater)
-
-        navController = ((requireActivity().supportFragmentManager)
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -58,8 +53,7 @@ class FavoriteMedsFragment : Fragment() {
         )
 
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
-        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
-        binding.bottomNavigation.setupWithNavController(navController)
+        binding.toolbar.setupWithNavController(findNavController(), appBarConfiguration)
 
         favoriteRecyclerViewAdapter = FavoriteRecyclerViewAdapter(
             emptyList(),
@@ -79,22 +73,27 @@ class FavoriteMedsFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {
-                        is FavoriteFragmentUiState.Loading -> {
+                        is MainScreenUiState.Loading -> {
                             binding.progressBar.visibility = View.VISIBLE
                         }
 
-                        is FavoriteFragmentUiState.Success -> {
+                        is MainScreenUiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
-                            favoriteRecyclerViewAdapter.updateData(uiState.data)
+                            favoriteRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoFavoritoItem })
 
                             // TODO: vista para lista vacia
                             //  ? binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
                         }
 
-                        is FavoriteFragmentUiState.Error -> {
+                        is MainScreenUiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
-                            viewModel.saveError(requireContext(), uiState.errorMessage, uiState.timeStamp, uiState.exception)
+                            viewModel.saveError(
+                                requireContext(),
+                                uiState.errorMessage,
+                                uiState.timeStamp,
+                                uiState.exception
+                            )
                             Log.e("FavoriteMedsFragment", "Error: ${uiState.errorMessage}")
                             Log.e("FavoriteMedsFragment", "Error: ${uiState.exception}")
                         }

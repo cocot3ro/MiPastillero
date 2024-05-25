@@ -34,7 +34,7 @@ class DiaryFragment : Fragment() {
     ): View {
         _binding = OldFragmentDiaryBinding.inflate(inflater, container, false)
         navController =
-            ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+            ((activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.old_nav_host_fragment) as NavHostFragment).navController
         pagerAdapter = DiaryPagerAdapter(requireActivity())
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)

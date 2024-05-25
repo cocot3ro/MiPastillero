@@ -36,7 +36,7 @@
             android:id="@+id/btn_toma"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_no_bg"
+            android:background="@drawable/old_rounded_no_bg"
             android:src="@android:drawable/checkbox_off_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

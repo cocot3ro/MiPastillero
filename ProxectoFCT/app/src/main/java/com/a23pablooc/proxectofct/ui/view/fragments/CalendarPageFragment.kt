@@ -1,7 +1,6 @@
 package com.a23pablooc.proxectofct.ui.view.fragments
 
 import android.annotation.SuppressLint
-import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,22 +15,29 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.core.DateTimeUtils
 import com.a23pablooc.proxectofct.databinding.FragmentCalendarPageBinding
+import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
 import com.a23pablooc.proxectofct.ui.view.adapters.CalendarRecyclerViewAdapter
-import com.a23pablooc.proxectofct.ui.view.states.CalendarPageUiState
+import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
 import com.a23pablooc.proxectofct.ui.viewmodel.CalendarPageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.Date
+
+private const val ARGS_DATE_KEY = "ARG_DATE_KEY"
 
 @AndroidEntryPoint
 class CalendarPageFragment : Fragment() {
     private lateinit var binding: FragmentCalendarPageBinding
-
     private val viewModel: CalendarPageViewModel by viewModels<CalendarPageViewModel>()
-
     private lateinit var calendarRecyclerViewAdapter: CalendarRecyclerViewAdapter
 
-    companion object {
-        const val ARGS_DATE_KEY = "DATE_KEY"
+    private lateinit var date: Date
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            date = Date(it.getLong(ARGS_DATE_KEY))
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -41,10 +47,6 @@ class CalendarPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCalendarPageBinding.inflate(layoutInflater)
-
-        val date = Calendar.getInstance().apply {
-            timeInMillis = requireArguments().getLong(ARGS_DATE_KEY)
-        }.time
 
         calendarRecyclerViewAdapter = CalendarRecyclerViewAdapter(emptyList()) {
             viewModel.marcarToma(it)
@@ -66,24 +68,32 @@ class CalendarPageFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {
-                        is CalendarPageUiState.Loading -> {
+                        is MainScreenUiState.Loading -> {
                             binding.progressBar.visibility = View.VISIBLE
                         }
 
-                        is CalendarPageUiState.Success -> {
+                        is MainScreenUiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
-                            calendarRecyclerViewAdapter.updateData(uiState.data)
+                            calendarRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoCalendarioItem })
 
                             // TODO: vista para lista vacia
                             // binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
                         }
 
-                        is CalendarPageUiState.Error -> {
+                        is MainScreenUiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
-                            viewModel.saveError(requireContext(), uiState.errorMessage, uiState.timeStamp, uiState.exception)
+                            viewModel.saveError(
+                                requireContext(),
+                                uiState.errorMessage,
+                                uiState.timeStamp,
+                                uiState.exception
+                            )
                             Log.e("CalendarPageFragment", "Error: ${uiState.errorMessage}")
-                            Log.e("CalendarPageFragment", "Error: ${uiState.exception.stackTraceToString()}")
+                            Log.e(
+                                "CalendarPageFragment",
+                                "Error: ${uiState.exception.stackTraceToString()}"
+                            )
                         }
                     }
                 }
@@ -93,5 +103,15 @@ class CalendarPageFragment : Fragment() {
         viewModel.fetchData(date)
 
         return binding.root
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(date: Date) =
+            CalendarPageFragment().apply {
+                arguments = Bundle().apply {
+                    putLong(ARGS_DATE_KEY, date.time)
+                }
+            }
     }
 }

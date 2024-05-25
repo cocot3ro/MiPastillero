@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         _binding = OldActivityMainBinding.inflate(layoutInflater)
         _pillboxViewModel = PillboxViewModel.getInstance(this)
         navController =
-            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+            (supportFragmentManager.findFragmentById(R.id.old_nav_host_fragment) as NavHostFragment).navController
         preferences = getSharedPreferences(PreferencesUtils.PREFS_NAME, MODE_PRIVATE)
 
         setContentView(binding.root)

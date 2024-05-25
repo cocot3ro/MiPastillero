@@ -1,6 +1,5 @@
 package com.a23pablooc.proxectofct.ui.view.adapters
 
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -23,13 +22,9 @@ class CalendarViewPagerAdapter(
 
         val date = Calendar.getInstance().apply {
             add(Calendar.DAY_OF_YEAR, offset)
-        }.timeInMillis
+        }.time
 
-        return CalendarPageFragment().apply {
-            arguments = Bundle().apply {
-                putLong(CalendarPageFragment.ARGS_DATE_KEY, date)
-            }
-        }
+        return CalendarPageFragment.newInstance(date)
     }
 
 }

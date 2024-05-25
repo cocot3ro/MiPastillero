@@ -13,5 +13,6 @@ object MedicamentoTable {
         const val LABORATORIO = "laboratorio"
         const val PRESCRIPCION = "prescripcion"
         const val AFECTA_CONDUCCION = "afecta_conduccion"
+        const val ES_FAVORITO = "es_favorito"
     }
 }
