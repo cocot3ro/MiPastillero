@@ -23,9 +23,11 @@ class FavoriteMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             setSpan(LeadingMarginSpan.Standard(30, 0), 0, 1, 0)
         }
 
-        Glide.with(binding.root.context)
-            .load(med.imagen)
-            .into(binding.img)
+        if (med.imagen.isNotEmpty()) {
+            Glide.with(binding.root.context)
+                .load(med.imagen)
+                .into(binding.img)
+        }
 
         binding.addBtn.setOnClickListener {
             onAdd(med)

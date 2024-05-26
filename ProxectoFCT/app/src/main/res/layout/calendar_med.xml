@@ -34,14 +34,10 @@
             app:layout_constraintStart_toEndOf="@id/medImg"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
+        <CheckBox
             android:id="@+id/btnTake"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:contentDescription="TODO"
-            android:padding="6dp"
-            android:src="@drawable/check_box_off"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/medName"

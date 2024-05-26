@@ -3,7 +3,6 @@ package com.a23pablooc.proxectofct.ui.view.viewholders
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.CalendarMedBinding
 import com.a23pablooc.proxectofct.databinding.CalendarMedGroupBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
@@ -26,20 +25,19 @@ class CalendarPageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         for (med in meds) {
             CalendarMedBinding.inflate(LayoutInflater.from(itemView.context), binding.body, true)
                 .apply {
-                    Glide.with(root.context)
-                        .load(med.medicamento.imagen)
-                        .into(medImg)
+                    if (med.medicamento.imagen.isNotEmpty()) {
+                        Glide.with(root.context)
+                            .load(med.medicamento.imagen)
+                            .into(medImg)
+                    }
 
                     medName.text = med.medicamento.nombre
 
-                    if (med.seHaTomado) {
-                        btnTake.setImageResource(R.drawable.check_box_on)
-                    } else {
-                        btnTake.setImageResource(R.drawable.check_box_off)
-                    }
-
-                    btnTake.setOnClickListener {
-                        onClick(med)
+                    btnTake.apply {
+                        isChecked = med.seHaTomado
+                        setOnClickListener {
+                            onClick(med)
+                        }
                     }
                 }
         }

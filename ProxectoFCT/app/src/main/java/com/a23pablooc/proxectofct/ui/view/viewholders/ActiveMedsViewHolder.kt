@@ -9,6 +9,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.a23pablooc.proxectofct.core.DateTimeUtils
+import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
+import com.a23pablooc.proxectofct.core.DateTimeUtils.formatTime
 import com.a23pablooc.proxectofct.databinding.ActiveMedBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.bumptech.glide.Glide
@@ -23,9 +25,11 @@ class ActiveMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         onInfo: (MedicamentoActivoItem) -> Unit,
         onAdd: (MedicamentoActivoItem) -> Unit
     ) {
-        Glide.with(binding.root)
-            .load(med.medicamento.imagen)
-            .into(binding.medImg)
+        if (med.medicamento.imagen.isNotEmpty()) {
+            Glide.with(binding.root)
+                .load(med.medicamento.imagen)
+                .into(binding.medImg)
+        }
 
         //TODO: Ajustar indentado
         binding.medName.text = SpannableString(med.medicamento.nombre).apply {
@@ -38,13 +42,13 @@ class ActiveMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         binding.btnAdd.setOnClickListener { onAdd(med) }
         binding.btnInfo.setOnClickListener { onInfo(med) }
 
-        binding.dateStart.text = DateTimeUtils.formatDate(med.fechaInicio)
-        binding.dateEnd.text = DateTimeUtils.formatDate(med.fechaFin)
+        binding.dateStart.text = med.fechaInicio.formatDate()
+        binding.dateEnd.text = med.fechaFin.formatDate()
 
         for (hora in med.horario) {
             binding.scheduleLayout.addView(
                 TextView(binding.root.context).apply {
-                    text = DateTimeUtils.formatTime(hora)
+                    text = hora.formatTime()
                     gravity = Gravity.END
                     layoutParams = LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,

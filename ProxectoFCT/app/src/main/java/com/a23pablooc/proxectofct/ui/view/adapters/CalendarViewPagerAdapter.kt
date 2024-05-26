@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.ui.view.fragments.CalendarPageFragment
 import java.util.Calendar
 
@@ -21,12 +22,10 @@ class CalendarViewPagerAdapter(
         val offset = position - START_POSITION
 
         val date = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
             add(Calendar.DAY_OF_YEAR, offset)
-        }.time
+        }.time.apply {
+            zeroTime()
+        }
 
         return CalendarPageFragment.newInstance(date)
     }

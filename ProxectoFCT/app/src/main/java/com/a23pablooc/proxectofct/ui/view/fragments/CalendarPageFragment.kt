@@ -13,7 +13,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.a23pablooc.proxectofct.core.DateTimeUtils
+import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
+import com.a23pablooc.proxectofct.core.DateTimeUtils.getDayName
 import com.a23pablooc.proxectofct.databinding.FragmentCalendarPageBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
 import com.a23pablooc.proxectofct.ui.view.adapters.CalendarRecyclerViewAdapter
@@ -57,12 +58,7 @@ class CalendarPageFragment : Fragment() {
             adapter = calendarRecyclerViewAdapter
         }
 
-        binding.calendarDay.text = "${
-            DateTimeUtils.getDayName(
-                requireContext(),
-                date
-            )
-        } - ${DateTimeUtils.formatDate(date)}"
+        binding.calendarDay.text = "${date.getDayName(requireContext())} - ${date.formatDate()}"
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

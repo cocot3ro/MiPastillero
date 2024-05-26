@@ -22,7 +22,6 @@ class FavoriteRecyclerViewAdapter(
 
     override fun getItemCount(): Int = list.size
 
-
     override fun onBindViewHolder(holder: FavoriteMedsViewHolder, position: Int) {
         holder.render(list[position], onAdd, onInfo)
     }

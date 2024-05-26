@@ -9,6 +9,6 @@ import javax.inject.Inject
 
 class GetMedicamentosCalendarioUseCase @Inject constructor(private val repository: PillboxRepository) {
     operator fun invoke(date: Date): Flow<List<MedicamentoCalendarioItem>> {
-        return repository.getAllWithMedicamentosByDiaOrderByHora(UserInfoProvider.userId, date)
+        return repository.getAllWithMedicamentosByDiaOrderByHora(UserInfoProvider.currentUser.id, date)
     }
 }

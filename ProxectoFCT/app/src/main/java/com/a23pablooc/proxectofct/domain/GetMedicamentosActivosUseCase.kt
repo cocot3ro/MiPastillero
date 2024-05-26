@@ -17,7 +17,7 @@ class GetMedicamentosActivosUseCase @Inject constructor(private val repository: 
             set(Calendar.MILLISECOND, 0)
         }.time
 
-        return repository.getMedicamentosActivos(UserInfoProvider.userId, fromDate)
+        return repository.getMedicamentosActivos(UserInfoProvider.currentUser.id, fromDate)
     }
 
 }

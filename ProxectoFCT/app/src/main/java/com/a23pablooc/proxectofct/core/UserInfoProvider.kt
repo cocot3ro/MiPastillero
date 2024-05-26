@@ -1,6 +1,7 @@
 package com.a23pablooc.proxectofct.core
 
+import com.a23pablooc.proxectofct.domain.model.UsuarioItem
+
 object UserInfoProvider {
-    var userId: Int = 0
-    var nombre: String = ""
+    lateinit var currentUser: UsuarioItem
 }

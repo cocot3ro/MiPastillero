@@ -11,7 +11,7 @@ fun MedicamentoCalendarioItem.toDatabase(): MedicamentoCalendarioAndMedicamento 
         medicamentoCalendarioEntity = MedicamentoCalendarioEntity(
             id = id,
             hora = hora,
-            idUsuario = UserInfoProvider.userId,
+            idUsuario = UserInfoProvider.currentUser.id,
             idMedicamento = medicamento.id,
             seHaTomado = seHaTomado,
             fecha = fecha

@@ -23,6 +23,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentFavoriteMedsBinding
+import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.FavoriteRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
@@ -31,7 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class FavoriteMedsFragment : Fragment() {
+class FavoriteMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredListener {
     private lateinit var binding: FragmentFavoriteMedsBinding
     private val viewModel: FavoriteMedsViewModel by viewModels()
     private lateinit var favoriteRecyclerViewAdapter: FavoriteRecyclerViewAdapter
@@ -57,10 +58,11 @@ class FavoriteMedsFragment : Fragment() {
 
         favoriteRecyclerViewAdapter = FavoriteRecyclerViewAdapter(
             emptyList(),
-            {
-                // TODO
-            }, {
-                // TODO
+            onAdd = {
+                onAdd(it)
+            },
+            onInfo = {
+                onInfo(it)
             }
         )
 
@@ -69,40 +71,24 @@ class FavoriteMedsFragment : Fragment() {
             adapter = favoriteRecyclerViewAdapter
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-                        is MainScreenUiState.Loading -> {
-                            binding.progressBar.visibility = View.VISIBLE
-                        }
+        binding.btnDialogo.setOnClickListener {
+            val dialog = AddActiveMedDialogFragment(
+                MedicamentoItem(
+                    id = 1,
+                    imagen = ByteArray(0),
+                    url = "",
+                    esFavorito = false,
+                    prescripcion = "",
+                    laboratorio = "",
+                    prospecto = "",
+                    nombre = "Paracetamol",
+                    numRegistro = "111",
+                    afectaConduccion = false
+                )
+            )
 
-                        is MainScreenUiState.Success<*> -> {
-                            binding.progressBar.visibility = View.GONE
-                            favoriteRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoItem })
-
-                            // TODO: vista para lista vacia
-                            //  ? binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
-                        }
-
-                        is MainScreenUiState.Error -> {
-                            binding.progressBar.visibility = View.GONE
-                            Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
-                            viewModel.saveError(
-                                requireContext(),
-                                uiState.errorMessage,
-                                uiState.timeStamp,
-                                uiState.exception
-                            )
-                            Log.e("FavoriteMedsFragment", "Error: ${uiState.errorMessage}")
-                            Log.e("FavoriteMedsFragment", "Error: ${uiState.exception}")
-                        }
-                    }
-                }
-            }
+            dialog.show(parentFragmentManager, "AddActiveMedDialogFragment")
         }
-
-        viewModel.fetchData()
 
         return binding.root
     }
@@ -126,9 +112,59 @@ class FavoriteMedsFragment : Fragment() {
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+                        is MainScreenUiState.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+
+                        is MainScreenUiState.Success<*> -> {
+                            binding.progressBar.visibility = View.GONE
+
+                            favoriteRecyclerViewAdapter
+                                .updateData(uiState.data.map { it as MedicamentoItem })
+
+                            // TODO: vista para lista vacia
+                            //  ? binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
+                        }
+
+                        is MainScreenUiState.Error -> {
+                            binding.progressBar.visibility = View.GONE
+                            Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
+                            viewModel.saveError(
+                                requireContext(),
+                                uiState.errorMessage,
+                                uiState.timeStamp,
+                                uiState.exception
+                            )
+                            Log.e("FavoriteMedsFragment", "Error: ${uiState.errorMessage}")
+                            Log.e("FavoriteMedsFragment", "Error: ${uiState.exception}")
+                        }
+                    }
+                }
+            }
+        }
+
+        viewModel.fetchData()
     }
 
     private fun newFavMed() {
-        // TODO
+        // TODO: navegar a fragmento de nuevo medicamento favorito
+    }
+
+    private fun onAdd(med: MedicamentoItem) {
+        Toast.makeText(context, "Añadir medicamento: ${med.nombre}", Toast.LENGTH_LONG).show()
+    }
+
+    private fun onInfo(med: MedicamentoItem) {
+        Toast.makeText(context, "Info medicamento: ${med.nombre}", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onDataEntered(med: MedicamentoActivoItem) {
+        Toast.makeText(context, "Medicamento añadido: ${med.medicamento.nombre}", Toast.LENGTH_LONG)
+            .show()
     }
 }
