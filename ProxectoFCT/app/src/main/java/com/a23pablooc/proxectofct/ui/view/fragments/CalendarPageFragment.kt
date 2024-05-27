@@ -79,17 +79,7 @@ class CalendarPageFragment : Fragment() {
                         is MainScreenUiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
-                            viewModel.saveError(
-                                requireContext(),
-                                uiState.errorMessage,
-                                uiState.timeStamp,
-                                uiState.exception
-                            )
                             Log.e("CalendarPageFragment", "Error: ${uiState.errorMessage}")
-                            Log.e(
-                                "CalendarPageFragment",
-                                "Error: ${uiState.exception.stackTraceToString()}"
-                            )
                         }
                     }
                 }

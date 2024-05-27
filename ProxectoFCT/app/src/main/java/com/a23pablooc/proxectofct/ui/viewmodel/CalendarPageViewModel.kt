@@ -1,11 +1,9 @@
 package com.a23pablooc.proxectofct.ui.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.a23pablooc.proxectofct.domain.GetMedicamentosCalendarioUseCase
 import com.a23pablooc.proxectofct.domain.MarcarTomaUseCase
-import com.a23pablooc.proxectofct.domain.SaveErrorUseCase
 import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
 import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,8 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CalendarPageViewModel @Inject constructor(
     private val getMedicamentosCalendarioUseCase: GetMedicamentosCalendarioUseCase,
-    private val marcarTomaUseCase: MarcarTomaUseCase,
-    private val saveErrorUseCase: SaveErrorUseCase
+    private val marcarTomaUseCase: MarcarTomaUseCase
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<MainScreenUiState> =
@@ -35,11 +32,8 @@ class CalendarPageViewModel @Inject constructor(
         viewModelScope.launch {
             getMedicamentosCalendarioUseCase(date)
                 .catch {
-                    _uiState.value = MainScreenUiState.Error(
-                        "Error fetching calendar meds from DB",
-                        Date(),
-                        it
-                    )
+                    _uiState.value = MainScreenUiState
+                        .Error("Error fetching calendar meds from DB")
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {
@@ -51,12 +45,6 @@ class CalendarPageViewModel @Inject constructor(
     fun marcarToma(med: MedicamentoCalendarioItem) {
         viewModelScope.launch {
             marcarTomaUseCase(med)
-        }
-    }
-
-    fun saveError(context: Context, errorMessage: String, timeStamp: Date, exception: Throwable) {
-        viewModelScope.launch(Dispatchers.IO) {
-            saveErrorUseCase(context, errorMessage, timeStamp, exception)
         }
     }
 }

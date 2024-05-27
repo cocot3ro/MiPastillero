@@ -71,25 +71,6 @@ class FavoriteMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEntere
             adapter = favoriteRecyclerViewAdapter
         }
 
-        binding.btnDialogo.setOnClickListener {
-            val dialog = AddActiveMedDialogFragment(
-                MedicamentoItem(
-                    id = 1,
-                    imagen = ByteArray(0),
-                    url = "",
-                    esFavorito = false,
-                    prescripcion = "",
-                    laboratorio = "",
-                    prospecto = "",
-                    nombre = "Paracetamol",
-                    numRegistro = "111",
-                    afectaConduccion = false
-                )
-            )
-
-            dialog.show(parentFragmentManager, "AddActiveMedDialogFragment")
-        }
-
         return binding.root
     }
 
@@ -134,14 +115,7 @@ class FavoriteMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEntere
                         is MainScreenUiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
-                            viewModel.saveError(
-                                requireContext(),
-                                uiState.errorMessage,
-                                uiState.timeStamp,
-                                uiState.exception
-                            )
                             Log.e("FavoriteMedsFragment", "Error: ${uiState.errorMessage}")
-                            Log.e("FavoriteMedsFragment", "Error: ${uiState.exception}")
                         }
                     }
                 }

@@ -9,6 +9,7 @@ import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
 import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
 import com.a23pablooc.proxectofct.data.database.entities.extensions.toDomain
+import com.a23pablooc.proxectofct.data.model.extensions.toDomain
 import com.a23pablooc.proxectofct.data.network.CimaService
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
@@ -31,12 +32,18 @@ class PillboxRepository @Inject constructor(
 ) {
     // Insert MedicamentoActivoConMedicamento -> insetar medicamento y luego insertar medicamento activo
 
-    suspend fun downloadImage(
-        imageType: CimaImageType,
+    private suspend fun downloadImage(
         nregistro: String,
         imgResource: String
-    ): ByteArray? {
-        return cimaService.getMedImage(imageType, nregistro, imgResource)
+    ): ByteArray {
+
+//        TODO: preferencia usarImagenAltaCalidad
+//        if (usarImagenAltaCalidad) {
+//            return repository.downloadImage(CimaImageType.FULL, nregistro, imgResource)
+//                ?: repository.downloadImage(CimaImageType.THUMBNAIL, nregistro, imgResource)
+//        }
+
+        return cimaService.getMedImage(CimaImageType.FULL, nregistro, imgResource)
     }
 
     fun getAllWithMedicamentosByDiaOrderByHora(
@@ -59,5 +66,21 @@ class PillboxRepository @Inject constructor(
     fun getMedicamentosActivos(userId: Int, fromDate: Date): Flow<List<MedicamentoActivoItem>> {
         return medicamentoActivoDAO.getAllWithMedicamento(userId, fromDate)
             .map { it -> it.map { it.toDomain() } }
+    }
+
+    suspend fun searchMedicamento(codNacional: String): MedicamentoItem {
+        var imgResource: String
+
+        //TODO: esFavorito?
+
+        return cimaService.getMedicamentoByCodNacional(codNacional).also {
+            imgResource = it.imagen
+        }.toDomain().apply {
+            runCatching {
+                imagen = downloadImage(numRegistro, imgResource)
+            }.onFailure {
+                imagen = byteArrayOf()
+            }
+        }
     }
 }
