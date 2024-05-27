@@ -1,6 +1,5 @@
 package com.a23pablooc.proxectofct.domain
 
-import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.data.PillboxRepository
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +16,7 @@ class GetMedicamentosActivosUseCase @Inject constructor(private val repository: 
             set(Calendar.MILLISECOND, 0)
         }.time
 
-        return repository.getMedicamentosActivos(UserInfoProvider.currentUser.id, fromDate)
+        return repository.getMedicamentosActivos(fromDate)
     }
 
 }

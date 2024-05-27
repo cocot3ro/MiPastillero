@@ -14,7 +14,7 @@ class AddActiveMedDialogViewModel @Inject constructor(
     private val searchMedicamentoUseCase: SearchMedicamentoUseCase
 ) : ViewModel() {
 
-    private val codNacionalPattern = Regex("""^[(6-9)]\d{5}(\.\d)?$""")
+    private val codNacionalPattern = Regex("""[6-9]\d{5}(\.\d)?""")
 
     fun search(codNacional: String): MedicamentoItem? {
         if (!codNacionalPattern.matches(codNacional)) throw IllegalArgumentException("Invalid codNacional")
@@ -22,9 +22,8 @@ class AddActiveMedDialogViewModel @Inject constructor(
         var medicamentoItem: MedicamentoItem? = null
 
         viewModelScope.launch(Dispatchers.IO) {
-            medicamentoItem = searchMedicamentoUseCase.invoke(codNacional)
+            medicamentoItem = searchMedicamentoUseCase(codNacional)
         }
-
         return medicamentoItem
     }
 

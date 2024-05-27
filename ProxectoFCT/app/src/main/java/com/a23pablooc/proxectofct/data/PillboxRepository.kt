@@ -1,6 +1,7 @@
 package com.a23pablooc.proxectofct.data
 
 import com.a23pablooc.proxectofct.core.CimaImageType
+import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
 import com.a23pablooc.proxectofct.data.database.dao.HistorialDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoActivoDAO
@@ -8,6 +9,7 @@ import com.a23pablooc.proxectofct.data.database.dao.MedicamentoCalendarioDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
 import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
+import com.a23pablooc.proxectofct.data.database.entities.MedicamentoEntity
 import com.a23pablooc.proxectofct.data.database.entities.extensions.toDomain
 import com.a23pablooc.proxectofct.data.model.extensions.toDomain
 import com.a23pablooc.proxectofct.data.network.CimaService
@@ -46,32 +48,28 @@ class PillboxRepository @Inject constructor(
         return cimaService.getMedImage(CimaImageType.FULL, nregistro, imgResource)
     }
 
-    fun getAllWithMedicamentosByDiaOrderByHora(
-        userId: Int,
-        dia: Date
-    ): Flow<List<MedicamentoCalendarioItem>> {
-        return medicamentoCalendarioDAO.getAllWithMedicamentosByDiaOrderByHora(userId, dia)
-            .map { it -> it.map { it.toDomain() } }
+    fun getAllWithMedicamentosByDiaOrderByHora(dia: Date): Flow<List<MedicamentoCalendarioItem>> {
+        return medicamentoCalendarioDAO.getAllWithMedicamentosByDiaOrderByHora(
+            UserInfoProvider.currentUser.id, dia
+        ).map { it -> it.map { it.toDomain() } }
     }
 
     suspend fun updateMedicamentoCalendario(med: MedicamentoCalendarioItem) {
         medicamentoCalendarioDAO.update(med.toDatabase().medicamentoCalendarioEntity)
     }
 
-    fun getAllFavoriteMeds(userId: Int): Flow<List<MedicamentoItem>> {
-        return medicamentoDAO.getAllFavoritos(userId)
+    fun getAllFavoriteMeds(): Flow<List<MedicamentoItem>> {
+        return medicamentoDAO.getAllFavoritos(UserInfoProvider.currentUser.id)
             .map { it -> it.map { it.toDomain() } }
     }
 
-    fun getMedicamentosActivos(userId: Int, fromDate: Date): Flow<List<MedicamentoActivoItem>> {
-        return medicamentoActivoDAO.getAllWithMedicamento(userId, fromDate)
+    fun getMedicamentosActivos(fromDate: Date): Flow<List<MedicamentoActivoItem>> {
+        return medicamentoActivoDAO.getAllWithMedicamento(UserInfoProvider.currentUser.id, fromDate)
             .map { it -> it.map { it.toDomain() } }
     }
 
     suspend fun searchMedicamento(codNacional: String): MedicamentoItem {
         var imgResource: String
-
-        //TODO: esFavorito?
 
         return cimaService.getMedicamentoByCodNacional(codNacional).also {
             imgResource = it.imagen
@@ -81,6 +79,11 @@ class PillboxRepository @Inject constructor(
             }.onFailure {
                 imagen = byteArrayOf()
             }
+
+            esFavorito = findFavoritoByCodNacional(numRegistro) != null
         }
     }
+
+    private fun findFavoritoByCodNacional(numRegistro: String): MedicamentoEntity? =
+        medicamentoDAO.findFavoritoByNumRegistro(UserInfoProvider.currentUser.id, numRegistro)
 }

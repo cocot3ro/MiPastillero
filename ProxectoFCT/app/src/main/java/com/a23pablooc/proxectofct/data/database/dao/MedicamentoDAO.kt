@@ -26,4 +26,15 @@ interface MedicamentoDAO {
 
     @Delete
     suspend fun delete(medicamento: MedicamentoEntity)
+
+    @Query(
+        """
+                SELECT *
+                FROM ${MedicamentoTable.TABLE_NAME}
+                WHERE ${MedicamentoTable.Columns.FK_USUARIO} = :userId AND
+                ${MedicamentoTable.Columns.NUM_REGISTRO} = :numRegistro AND
+                ${MedicamentoTable.Columns.ES_FAVORITO} = 1
+        """
+    )
+    fun findFavoritoByNumRegistro(userId: Int, numRegistro: String): MedicamentoEntity?
 }

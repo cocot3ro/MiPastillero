@@ -23,7 +23,6 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentFavoriteMedsBinding
-import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.FavoriteRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
@@ -32,7 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class FavoriteMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredListener {
+class FavoriteMedsFragment : Fragment() {
     private lateinit var binding: FragmentFavoriteMedsBinding
     private val viewModel: FavoriteMedsViewModel by viewModels()
     private lateinit var favoriteRecyclerViewAdapter: FavoriteRecyclerViewAdapter
@@ -126,7 +125,7 @@ class FavoriteMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEntere
     }
 
     private fun newFavMed() {
-        // TODO: navegar a fragmento de nuevo medicamento favorito
+        // TODO
     }
 
     private fun onAdd(med: MedicamentoItem) {
@@ -135,10 +134,5 @@ class FavoriteMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEntere
 
     private fun onInfo(med: MedicamentoItem) {
         Toast.makeText(context, "Info medicamento: ${med.nombre}", Toast.LENGTH_LONG).show()
-    }
-
-    override fun onDataEntered(med: MedicamentoActivoItem) {
-        Toast.makeText(context, "Medicamento añadido: ${med.medicamento.nombre}", Toast.LENGTH_LONG)
-            .show()
     }
 }

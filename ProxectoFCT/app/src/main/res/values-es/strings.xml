@@ -84,4 +84,6 @@
     <string name="ajustes_guardados">Ajustes guardados</string>
     <string name="tienes_que_tomar">Tienes que tomar:</string>
     <string name="marcar_como_tomado">Marcar como tomado</string>
+    <string name="codigo_nacional_no_valido">El formato del código nacional no es válido</string>
+    <string name="hora_ya_seleccionada">Hora ya seleccionada</string>
 </resources>

@@ -84,4 +84,6 @@
     <string name="ajustes_guardados">Ajustaments desats</string>
     <string name="tienes_que_tomar">Has de prendre:</string>
     <string name="marcar_como_tomado">Marcar com a pres</string>
+    <string name="codigo_nacional_no_valido">El format del codi nacional no és vàlid</string>
+    <string name="hora_ya_seleccionada">Hora ja seleccionada</string>
 </resources>
