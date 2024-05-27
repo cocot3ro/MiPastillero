@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.text.format.DateFormat
@@ -19,6 +21,7 @@ import androidx.core.view.get
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.a23pablooc.proxectofct.R
+import com.a23pablooc.proxectofct.core.DateTimeUtils
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatTime
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zero
 import com.a23pablooc.proxectofct.databinding.FragmentAddActiveMedDialogBinding
@@ -28,6 +31,7 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.viewholders.AddActiveMedDialogViewModel
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.ByteArrayOutputStream
 import java.util.Date
 
 @AndroidEntryPoint
@@ -38,9 +42,20 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
     private lateinit var listener: OnDataEnteredListener
 
+    private var fetchedMed: MedicamentoItem? = null
+    private lateinit var image: ByteArray
+
     private val pickMedia = registerForActivityResult(PickVisualMedia()) {
         it?.let {
             Glide.with(requireContext()).load(it).into(binding.img)
+
+            image = ByteArrayOutputStream().also { baos ->
+                (binding.img.drawable as BitmapDrawable).bitmap.compress(
+                    Bitmap.CompressFormat.JPEG,
+                    100,
+                    baos
+                )
+            }.toByteArray()
         }
     }
 
@@ -56,21 +71,21 @@ class AddActiveMedDialogFragment : DialogFragment() {
         binding = FragmentAddActiveMedDialogBinding.inflate(layoutInflater)
 
         binding.imgLayout.setOnClickListener {
-            pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
+            pickMedia.launch(
+                PickVisualMediaRequest(
+                    PickVisualMedia.ImageOnly
+                )
+            )
         }
 
-//      TODO: Input dosis
+        binding.btnHelp.setOnClickListener { showHelp() }
 
-        binding.btnHelp.setOnClickListener {
-            showHelp()
-        }
+        binding.btnSearch.setOnClickListener { search() }
 
-        binding.btnSearch.setOnClickListener {
-            search()
-        }
+        binding.btnAddTimer.setOnClickListener { addTimer(true) }
 
-        binding.btnAddTimer.setOnClickListener {
-            addTimer(true)
+        binding.favFrame.setOnClickListener {
+            binding.btnFavBg.visibility = binding.btnFavBg.visibility.xor(View.VISIBLE)
         }
 
         addTimer(false)
@@ -93,12 +108,67 @@ class AddActiveMedDialogFragment : DialogFragment() {
             AlertDialog.Builder(it).apply {
                 setView(requireView())
                 setTitle(R.string.añadir_medicamento)
-                setPositiveButton(R.string.aceptar) { dialogInterface, i ->
-
-                }
+                setPositiveButton(R.string.aceptar, null)
                 setNegativeButton(R.string.cancelar, null)
-            }.create()
+            }.create().apply {
+                setOnShowListener {
+                    setUpPositiveButton(this)
+                }
+            }
         } ?: throw IllegalStateException("Activity cannot be null")
+    }
+
+    private fun setUpPositiveButton(dialog: AlertDialog) {
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            if (!validateForm())
+                return@setOnClickListener
+
+            val nombre = binding.nombre.text.toString()
+            val dateStart = DateTimeUtils.parseDate(binding.dateStart.text.toString())
+            val dateEnd = DateTimeUtils.parseDate(binding.dateEnd.text.toString())
+            val dosis = binding.dosis.text.toString()
+            val schedule = binding.scheduleLayout.children
+                .map { DateTimeUtils.parseTime(TimePickerBinding.bind(it).hour.text.toString()) }
+                .toSet()
+
+            dialog.dismiss()
+
+            val med = MedicamentoActivoItem(
+                id = 0,
+                dosis = dosis,
+                fechaInicio = dateStart,
+                fechaFin = dateEnd,
+                horario = schedule,
+                medicamento = fetchedMed ?: MedicamentoItem(
+                    id = 0,
+                    numRegistro = "",
+                    nombre = nombre,
+                    imagen = image,
+                    url = "",
+                    prescripcion = "",
+                    esFavorito = binding.btnFavBg.visibility == View.VISIBLE,
+                    laboratorio = "",
+                    prospecto = "",
+                    afectaConduccion = false
+                )
+            )
+
+            listener.onDataEntered(med)
+        }
+    }
+
+    private fun validateForm(): Boolean {
+        if (binding.nombre.text.isNullOrBlank()) {
+            Toast.makeText(requireContext(), R.string.sin_nombre, Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        if (binding.dateStart.text.toString() <= binding.dateEnd.text.toString()) {
+            Toast.makeText(requireContext(), R.string.fecha_invalida, Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        return true
     }
 
     private fun search() {
@@ -109,35 +179,42 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
             val codNacional = binding.codNacional.text.toString()
 
-            val fetchedMed: MedicamentoItem? = viewModel.search(codNacional)
+            val fetchedMed = viewModel.search(codNacional)
 
             if (fetchedMed == null) {
                 Toast.makeText(
                     requireContext(),
                     R.string.codigo_nacional_no_encontrado,
                     Toast.LENGTH_SHORT
-                )
-                    .show()
+                ).show()
                 return
             }
 
+            this.fetchedMed = fetchedMed
+
             binding.codNacional.apply {
                 isEnabled = false
-                setText(codNacional)
                 binding.codNacionalLock.visibility = View.VISIBLE
+                setText(codNacional)
             }
 
             binding.nombre.apply {
                 isEnabled = false
-                setText(fetchedMed.nombre)
                 binding.nombreLock.visibility = View.VISIBLE
+                setText(fetchedMed.nombre)
             }
 
-            Glide.with(requireContext()).load(fetchedMed.imagen).into(binding.img)
+            binding.btnFavBg.apply {
+                visibility = if (fetchedMed.esFavorito) View.VISIBLE else View.GONE
+            }
 
+            binding.favFrame.setOnClickListener {}
+
+            Glide.with(requireContext()).load(fetchedMed.imagen).into(binding.img)
         } catch (e: IllegalArgumentException) {
             Toast.makeText(requireContext(), R.string.codigo_nacional_no_valido, Toast.LENGTH_SHORT)
                 .show()
+
             Log.e(
                 "AddActiveMedDialogFragment.search",
                 "IllegalArgumentException: ${e.stackTraceToString()}"
@@ -189,8 +266,8 @@ class AddActiveMedDialogFragment : DialogFragment() {
                 }.time
 
                 if (binding.scheduleLayout.children
-                        .map { TimePickerBinding.bind(it) }
-                        .any { it.hour.text == timePickerBinding.hour.text }
+                        .map { DateTimeUtils.parseTime(TimePickerBinding.bind(it).hour.text.toString()) }
+                        .any { it == DateTimeUtils.parseTime(timePickerBinding.hour.text.toString()) }
                 ) {
                     Toast.makeText(
                         requireContext(),
@@ -201,14 +278,15 @@ class AddActiveMedDialogFragment : DialogFragment() {
                     timePickerBinding.hour.text = pickedTime.formatTime()
 
                     // TODO: Comprobar si esto filtra ben
-                    for (i in 0 until binding.scheduleLayout.childCount) {
-                        if (TimePickerBinding.bind(binding.scheduleLayout[i]).hour.text.toString() > pickedTime.formatTime()) {
+                    for (i in 0..binding.scheduleLayout.childCount) {
+                        if (i == binding.scheduleLayout.childCount) {
+                            binding.scheduleLayout.addView(timePickerBinding.root)
+                        } else if (DateTimeUtils.parseTime(TimePickerBinding.bind(binding.scheduleLayout[i]).hour.text.toString()) > pickedTime) {
                             binding.scheduleLayout.addView(timePickerBinding.root, i)
-                            return@TimePickerDialog
+                            break
                         }
                     }
 
-                    binding.scheduleLayout.addView(timePickerBinding.root)
                 }
             },
             0,

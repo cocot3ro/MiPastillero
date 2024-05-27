@@ -53,6 +53,7 @@
                         android:background="@android:color/transparent"
                         android:contentDescription="TODO"
                         android:src="@drawable/image_search" />
+
                 </FrameLayout>
 
                 <ImageView
@@ -62,27 +63,53 @@
                     android:contentDescription="TODO"
                     android:src="@drawable/lock"
                     android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/fav_frame"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
                     android:id="@+id/nombre"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:autofillHints="name"
+                    android:minHeight="48dp"
                     android:hint="@string/nombre"
+                    android:importantForAutofill="no"
                     android:inputType="textMultiLine"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/fav_frame"
                     app:layout_constraintStart_toEndOf="@id/imgLayout"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <FrameLayout
+                    android:id="@+id/fav_frame"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/btn_fav_bg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/star_on"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/btn_fav_fg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/star_off" />
+
+                </FrameLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/codNacionalLayout"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/headerLayout">
 
@@ -123,7 +150,7 @@
                 <ImageButton
                     android:id="@+id/btn_help"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:contentDescription="TODO"
                     android:padding="6dp"
@@ -144,11 +171,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/codNacionalLayout" />
 
-            <CheckBox
-                android:id="@+id/save_as_favorite"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/dosis"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/guardar_como_favorito"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                app:layout_constraintEnd_toEndOf="@id/codNacionalLayout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_help" />
 
@@ -158,7 +187,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/save_as_favorite">
+                app:layout_constraintTop_toBottomOf="@id/dosis">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/date_start_layout"

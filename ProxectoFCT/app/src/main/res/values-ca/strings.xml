@@ -86,4 +86,13 @@
     <string name="marcar_como_tomado">Marcar com a pres</string>
     <string name="codigo_nacional_no_valido">El format del codi nacional no és vàlid</string>
     <string name="hora_ya_seleccionada">Hora ja seleccionada</string>
+    <string-array name="dias_semana">
+        <item>Dilluns</item>
+        <item>Dimarts</item>
+        <item>Dimecres</item>
+        <item>Dijous</item>
+        <item>Divendres</item>
+        <item>Dissabte</item>
+        <item>Diumenge</item>
+    </string-array>
 </resources>

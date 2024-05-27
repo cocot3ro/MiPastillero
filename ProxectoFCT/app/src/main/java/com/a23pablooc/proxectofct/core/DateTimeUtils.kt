@@ -13,16 +13,10 @@ object DateTimeUtils {
             time = this@getDayName
         }.get(Calendar.DAY_OF_WEEK)
 
-        return when (dayOfWeek) {
-            Calendar.MONDAY -> context.getString(R.string.lunes)
-            Calendar.TUESDAY -> context.getString(R.string.martes)
-            Calendar.WEDNESDAY -> context.getString(R.string.miercoles)
-            Calendar.THURSDAY -> context.getString(R.string.jueves)
-            Calendar.FRIDAY -> context.getString(R.string.viernes)
-            Calendar.SATURDAY -> context.getString(R.string.sabado)
-            Calendar.SUNDAY -> context.getString(R.string.domingo)
-            else -> throw RuntimeException("Invalid day: $dayOfWeek")
-        }
+        return if (dayOfWeek in Calendar.SUNDAY..Calendar.SATURDAY)
+            context.resources.getStringArray(R.array.dias_semana)[dayOfWeek - 1]
+        else
+            throw RuntimeException("Invalid day: $dayOfWeek")
     }
 
     fun Date.formatDate(): String {
@@ -33,16 +27,13 @@ object DateTimeUtils {
         return SimpleDateFormat.getTimeInstance().format(this)
     }
 
-    /**
-     * Returns the number of days between two dates
-     * A negative value indicates that the second date is before the first
-     * @param startDate the first date
-     * @param endDate the second date
-     * @return the number of days between the two dates as an integer
-     * @see Date
-     */
     fun daysBetweenDates(startDate: Date, endDate: Date): Int {
         return ((endDate.time - startDate.time) / (1000 * 60 * 60 * 24)).toInt()
+    }
+
+    fun Date.zero() {
+        zeroTime()
+        zeroDate()
     }
 
     fun Date.zeroTime() {
@@ -66,8 +57,11 @@ object DateTimeUtils {
         this.time = calendar.timeInMillis
     }
 
-    fun Date.zero() {
-        zeroTime()
-        zeroDate()
+    fun parseDate(date: String): Date {
+        return SimpleDateFormat.getDateInstance().parse(date)!!
+    }
+
+    fun parseTime(time: String): Date {
+        return SimpleDateFormat.getTimeInstance().parse(time)!!
     }
 }
