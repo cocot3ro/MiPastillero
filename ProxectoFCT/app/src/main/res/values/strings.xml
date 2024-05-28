@@ -86,6 +86,7 @@
     <string name="marcar_como_tomado">Mark as taken</string>
     <string name="codigo_nacional_no_valido">The national code format is not valid</string>
     <string name="hora_ya_seleccionada">Time already selected</string>
+    <string name="seleccionar_una_imagen">Seleccionar una imagen</string>
     <string-array name="dias_semana">
         <item>Monday</item>
         <item>Tuesday</item>

@@ -78,6 +78,14 @@ class AddActiveMedDialogFragment : DialogFragment() {
             )
         }
 
+        binding.favFrame.setOnLongClickListener {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.seleccionar_una_imagen), Toast.LENGTH_SHORT
+            ).show()
+            true
+        }
+
         binding.btnHelp.setOnClickListener { showHelp() }
 
         binding.btnSearch.setOnClickListener { search() }
@@ -136,9 +144,9 @@ class AddActiveMedDialogFragment : DialogFragment() {
             val med = MedicamentoActivoItem(
                 id = 0,
                 dosis = dosis,
-                fechaInicio = dateStart,
-                fechaFin = dateEnd,
                 horario = schedule,
+                fechaFin = dateEnd,
+                fechaInicio = dateStart,
                 medicamento = fetchedMed ?: MedicamentoItem(
                     id = 0,
                     numRegistro = "",
@@ -277,7 +285,6 @@ class AddActiveMedDialogFragment : DialogFragment() {
                 } else {
                     timePickerBinding.hour.text = pickedTime.formatTime()
 
-                    // TODO: Comprobar si esto filtra ben
                     for (i in 0..binding.scheduleLayout.childCount) {
                         if (i == binding.scheduleLayout.childCount) {
                             binding.scheduleLayout.addView(timePickerBinding.root)
