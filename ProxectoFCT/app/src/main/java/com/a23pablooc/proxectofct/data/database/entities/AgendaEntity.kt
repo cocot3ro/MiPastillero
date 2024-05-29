@@ -40,24 +40,4 @@ data class AgendaEntity(
 
     @ColumnInfo(name = AgendaTable.Columns.FECHA)
     val fecha: Date
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as AgendaEntity
-
-        return ((pkAgenda != other.pkAgenda)
-                || (fkUsuario != other.fkUsuario)
-                || (fecha != other.fecha)
-                || (descripcion != other.descripcion))
-    }
-
-    override fun hashCode(): Int {
-        var result = pkAgenda
-        result = 31 * result + fkUsuario
-        result = 31 * result + fecha.hashCode()
-        result = 31 * result + descripcion.hashCode()
-        return result
-    }
-}
+)

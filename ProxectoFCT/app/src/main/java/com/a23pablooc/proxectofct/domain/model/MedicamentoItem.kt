@@ -4,6 +4,7 @@ data class MedicamentoItem(
     var pkMedicamento: Int,
     var url: String,
     var nombre: String,
+    var alias: String,
     var prospecto: String,
     var numRegistro: String,
     var laboratorio: String,

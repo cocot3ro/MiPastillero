@@ -27,7 +27,7 @@ class MedicamentoModelTypeAdapter : TypeAdapter<MedicamentoModel>() {
 
                     "cpresc" -> builder.prescripcion(nextString())
 
-                    "conduc" -> builder.conduccion(nextBoolean())
+                    "conduc" -> builder.afectaConduccion(nextBoolean())
 
                     "docs" -> {
                         beginArray()

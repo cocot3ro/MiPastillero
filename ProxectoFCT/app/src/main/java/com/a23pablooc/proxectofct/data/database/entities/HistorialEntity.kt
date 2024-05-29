@@ -55,26 +55,4 @@ data class HistorialEntity(
 
     @ColumnInfo(name = HistorialTable.Columns.FECHA_FIN)
     val fechaFin: Date
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as HistorialEntity
-
-        return ((pkHistorial != other.pkHistorial)
-                || (fkUsuario != other.fkUsuario)
-                || (fkMedicamento != other.fkMedicamento)
-                || (fechaInicio != other.fechaInicio)
-                || (fechaFin != other.fechaFin))
-    }
-
-    override fun hashCode(): Int {
-        var result = pkHistorial
-        result = 31 * result + fkUsuario
-        result = 31 * result + fkMedicamento
-        result = 31 * result + fechaInicio.hashCode()
-        result = 31 * result + fechaFin.hashCode()
-        return result
-    }
-}
+)

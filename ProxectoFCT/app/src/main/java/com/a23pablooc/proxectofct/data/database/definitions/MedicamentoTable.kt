@@ -8,6 +8,7 @@ object MedicamentoTable {
         const val FK_USUARIO = "fk_usuario"
         const val NUM_REGISTRO = "num_registro"
         const val NOMBRE = "nombre"
+        const val ALIAS = "alias"
         const val URL = "url"
         const val PROSPECTO = "prospecto"
         const val API_IMAGEN = "api_imagen"

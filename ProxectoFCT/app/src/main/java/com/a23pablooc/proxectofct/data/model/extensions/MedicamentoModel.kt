@@ -13,8 +13,9 @@ fun MedicamentoModel.toDomain(): MedicamentoItem {
         laboratorio = laboratorio,
         apiImagen = byteArrayOf(),
         customImage = byteArrayOf(),
-        afectaConduccion = conduccion,
+        afectaConduccion = afectaConduccion,
         esFavorito = false,
-        nombre = nombre
+        nombre = nombre,
+        alias = nombre
     )
 }

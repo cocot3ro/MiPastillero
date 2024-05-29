@@ -1,6 +1,6 @@
 package com.a23pablooc.proxectofct.domain
 
-import com.a23pablooc.proxectofct.data.PillboxRepository
+import com.a23pablooc.proxectofct.data.repositories.PillboxRepository
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

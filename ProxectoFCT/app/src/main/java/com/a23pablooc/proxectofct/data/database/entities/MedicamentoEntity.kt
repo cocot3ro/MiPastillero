@@ -40,6 +40,9 @@ data class MedicamentoEntity(
     @ColumnInfo(name = MedicamentoTable.Columns.NOMBRE)
     val nombre: String,
 
+    @ColumnInfo(name = MedicamentoTable.Columns.ALIAS)
+    val alias: String,
+
     @ColumnInfo(name = MedicamentoTable.Columns.PROSPECTO)
     val prospecto: String,
 
@@ -74,14 +77,15 @@ data class MedicamentoEntity(
                 || (fkUsuario != other.fkUsuario)
                 || (url != other.url)
                 || (nombre != other.nombre)
+                || (alias != other.alias)
                 || (prospecto != other.prospecto)
-                || (numRegistro != other.numRegistro)
+                || (esFavorito != other.esFavorito)
                 || (laboratorio != other.laboratorio)
-                || (esFavorito != other.esFavorito))
+                || (numRegistro != other.numRegistro)
                 || (!apiImagen.contentEquals(other.apiImagen))
                 || (prescripcion != other.prescripcion)
                 || (!customImage.contentEquals(other.customImage))
-                || (afectaConduccion != other.afectaConduccion)
+                || (afectaConduccion != other.afectaConduccion))
     }
 
     override fun hashCode(): Int {
@@ -89,10 +93,11 @@ data class MedicamentoEntity(
         result = 31 * result + fkUsuario
         result = 31 * result + url.hashCode()
         result = 31 * result + nombre.hashCode()
+        result = 31 * result + alias.hashCode()
         result = 31 * result + prospecto.hashCode()
-        result = 31 * result + numRegistro.hashCode()
-        result = 31 * result + laboratorio.hashCode()
         result = 31 * result + esFavorito.hashCode()
+        result = 31 * result + laboratorio.hashCode()
+        result = 31 * result + numRegistro.hashCode()
         result = 31 * result + apiImagen.contentHashCode()
         result = 31 * result + prescripcion.hashCode()
         result = 31 * result + customImage.contentHashCode()

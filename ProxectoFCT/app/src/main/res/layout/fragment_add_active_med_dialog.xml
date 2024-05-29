@@ -56,33 +56,68 @@
 
                 </FrameLayout>
 
-                <ImageView
-                    android:id="@+id/nombre_lock"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="TODO"
-                    android:src="@drawable/lock"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toStartOf="@id/fav_frame"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <EditText
-                    android:id="@+id/nombre"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/codNacionalLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:hint="@string/nombre"
-                    android:importantForAutofill="no"
-                    android:inputType="textMultiLine"
-                    app:layout_constraintEnd_toStartOf="@id/fav_frame"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/imgLayout"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageButton
+                        android:id="@+id/btn_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="TODO"
+                        android:padding="6dp"
+                        android:src="@drawable/search"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/codNacional"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="name"
+                        android:hint="@string/codigo_nacional_opcional"
+                        android:inputType="numberDecimal"
+                        android:maxLength="8"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/btn_help"
+                        app:layout_constraintStart_toEndOf="@id/btn_search"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/btn_help"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="TODO"
+                        android:padding="6dp"
+                        android:src="@drawable/help"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/nombreLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/headerLayout">
 
                 <FrameLayout
                     android:id="@+id/fav_frame"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
@@ -101,62 +136,18 @@
                         android:background="@android:color/transparent"
                         android:contentDescription="TODO"
                         android:src="@drawable/star_off" />
-
                 </FrameLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/codNacionalLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/headerLayout">
-
-                <ImageButton
-                    android:id="@+id/btn_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="TODO"
-                    android:padding="6dp"
-                    android:src="@drawable/search"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <EditText
-                    android:id="@+id/codNacional"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/nombre"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:autofillHints="name"
-                    android:hint="@string/codigo_nacional_opcional"
-                    android:inputType="numberDecimal"
-                    android:maxLength="8"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/btn_search"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/codNacional_lock"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="TODO"
-                    android:src="@drawable/lock"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="@id/codNacional"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/btn_help"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="TODO"
-                    android:padding="6dp"
-                    android:src="@drawable/help"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/codNacional"
+                    android:hint="@string/nombre"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine"
+                    android:minHeight="48dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/fav_frame"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -169,15 +160,16 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/codNacionalLayout" />
+                app:layout_constraintTop_toBottomOf="@id/nombreLayout" />
 
             <EditText
                 android:id="@+id/dosis"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:hint="@string/dosis"
                 android:importantForAutofill="no"
                 android:inputType="text"
-                app:layout_constraintEnd_toEndOf="@id/codNacionalLayout"
+                app:layout_constraintEnd_toEndOf="@id/nombreLayout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_help" />
 

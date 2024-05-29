@@ -152,6 +152,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
                     pkMedicamento = 0,
                     numRegistro = "",
                     nombre = nombre,
+                    alias = nombre,
                     apiImagen = image,
                     customImage = byteArrayOf(),
                     url = "",
@@ -202,17 +203,9 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
             this.fetchedMed = fetchedMed
 
-            binding.codNacional.apply {
-                isEnabled = false
-                binding.codNacionalLock.visibility = View.VISIBLE
-                setText(codNacional)
-            }
+            binding.codNacional.setText(codNacional)
 
-            binding.nombre.apply {
-                isEnabled = false
-                binding.nombreLock.visibility = View.VISIBLE
-                setText(fetchedMed.nombre)
-            }
+            binding.nombre.setText(fetchedMed.nombre)
 
             binding.btnFavBg.apply {
                 visibility = if (fetchedMed.esFavorito) View.VISIBLE else View.GONE

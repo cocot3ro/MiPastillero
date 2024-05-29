@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.data
+package com.a23pablooc.proxectofct.data.repositories
 
 import com.a23pablooc.proxectofct.core.CimaImageType
 import com.a23pablooc.proxectofct.core.UserInfoProvider
@@ -29,24 +29,10 @@ class PillboxRepository @Inject constructor(
     private val medicamentoCalendarioDAO: MedicamentoCalendarioDAO,
     private val agendaDAO: AgendaDAO,
     private val historialDAO: HistorialDAO,
-    private val notificacionDAO: NotificacionDAO,
-    private val cimaService: CimaService
+    private val notificacionDAO: NotificacionDAO
 ) {
     // Insert MedicamentoActivoConMedicamento -> insetar medicamento y luego insertar medicamento activo
 
-    private suspend fun downloadImage(
-        nregistro: String,
-        imgResource: String
-    ): ByteArray {
-
-//        TODO: preferencia usarImagenAltaCalidad
-//        if (usarImagenAltaCalidad) {
-//            return repository.downloadImage(CimaImageType.FULL, nregistro, imgResource)
-//                ?: repository.downloadImage(CimaImageType.THUMBNAIL, nregistro, imgResource)
-//        }
-
-        return cimaService.getMedImage(CimaImageType.FULL, nregistro, imgResource)
-    }
 
     fun getAllWithMedicamentosByDiaOrderByHora(dia: Date): Flow<List<MedicamentoCalendarioItem>> {
         return medicamentoCalendarioDAO.getAllWithMedicamentosByDiaOrderByHora(
@@ -64,26 +50,16 @@ class PillboxRepository @Inject constructor(
     }
 
     fun getMedicamentosActivos(fromDate: Date): Flow<List<MedicamentoActivoItem>> {
-        return medicamentoActivoDAO.getAllWithMedicamento(UserInfoProvider.currentUser.pkUsuario, fromDate)
+        return medicamentoActivoDAO.getAllWithMedicamento(
+            UserInfoProvider.currentUser.pkUsuario,
+            fromDate
+        )
             .map { it -> it.map { it.toDomain() } }
     }
 
-    suspend fun searchMedicamento(codNacional: String): MedicamentoItem {
-        var imgResource: String
-
-        return cimaService.getMedicamentoByCodNacional(codNacional).also {
-            imgResource = it.apiImagen
-        }.toDomain().apply {
-            runCatching {
-                apiImagen = downloadImage(numRegistro, imgResource)
-            }.onFailure {
-                apiImagen = byteArrayOf()
-            }
-
-            esFavorito = findFavoritoByCodNacional(numRegistro) != null
-        }
-    }
-
-    private fun findFavoritoByCodNacional(numRegistro: String): MedicamentoEntity? =
-        medicamentoDAO.findFavoritoByNumRegistro(UserInfoProvider.currentUser.pkUsuario, numRegistro)
+    fun findFavoritoByCodNacional(numRegistro: String): MedicamentoEntity? =
+        medicamentoDAO.findFavoritoByNumRegistro(
+            UserInfoProvider.currentUser.pkUsuario,
+            numRegistro
+        )
 }

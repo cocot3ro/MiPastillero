@@ -8,17 +8,17 @@ data class MedicamentoModel(
     val apiImagen: String,
     val laboratorio: String,
     val prescripcion: String,
-    val conduccion: Boolean
+    val afectaConduccion: Boolean
 ) {
     class Builder {
-        private var numRegistro: String = ""
-        private var nombre: String = ""
-        private var url: String = ""
-        private var prospecto: String = ""
-        private var apiImagen: String = ""
-        private var laboratorio: String = ""
-        private var prescripcion: String = ""
-        private var conduccion: Boolean = false
+        private var url: String? = null
+        private var nombre: String? = null
+        private var apiImagen: String? = null
+        private var prospecto: String? = null
+        private var numRegistro: String? = null
+        private var laboratorio: String? = null
+        private var prescripcion: String? = null
+        private var afectaConduccion: Boolean? = null
 
         fun numRegistro(numRegistro: String) = apply { this.numRegistro = numRegistro }
         fun nombre(nombre: String) = apply { this.nombre = nombre }
@@ -27,46 +27,29 @@ data class MedicamentoModel(
         fun apiImagen(apiImagen: String) = apply { this.apiImagen = apiImagen }
         fun laboratorio(laboratorio: String) = apply { this.laboratorio = laboratorio }
         fun prescripcion(prescripcion: String) = apply { this.prescripcion = prescripcion }
-        fun conduccion(conduccion: Boolean) = apply { this.conduccion = conduccion }
+        fun afectaConduccion(afectaConduccion: Boolean) = apply { this.afectaConduccion = afectaConduccion }
 
-        fun build() = MedicamentoModel(
-            numRegistro,
-            nombre,
-            url,
-            prospecto,
-            apiImagen,
-            laboratorio,
-            prescripcion,
-            conduccion
-        )
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as MedicamentoModel
-
-        return ((numRegistro != other.numRegistro)
-                || (nombre != other.nombre)
-                || (url != other.url)
-                || (prospecto != other.prospecto)
-                || (apiImagen != other.apiImagen)
-                || (laboratorio != other.laboratorio)
-                || (prescripcion != other.prescripcion)
-                || (conduccion != other.conduccion))
-    }
-
-    override fun hashCode(): Int {
-        var result = numRegistro.hashCode()
-        result = 31 * result + nombre.hashCode()
-        result = 31 * result + url.hashCode()
-        result = 31 * result + prospecto.hashCode()
-        result = 31 * result + apiImagen.hashCode()
-        result = 31 * result + laboratorio.hashCode()
-        result = 31 * result + prescripcion.hashCode()
-        result = 31 * result + conduccion.hashCode()
-        return result
+        /**
+         * Builds the [MedicamentoModel] instance
+         * @return a [MedicamentoModel] instance
+         * @throws IllegalStateException if the [numRegistro], [nombre], [url], [prospecto], [apiImagen], [laboratorio], [prescripcion] or [afectaConduccion] is null
+         */
+        fun build(): MedicamentoModel {
+            try {
+                return MedicamentoModel(
+                    numRegistro!!,
+                    nombre!!,
+                    url!!,
+                    prospecto!!,
+                    apiImagen!!,
+                    laboratorio!!,
+                    prescripcion!!,
+                    afectaConduccion!!
+                )
+            } catch (e: NullPointerException) {
+                throw IllegalStateException("The numRegistro, nombre, url, prospecto, apiImagen, laboratorio, prescripcion and afectaConduccion must not be null")
+            }
+        }
     }
 
 }

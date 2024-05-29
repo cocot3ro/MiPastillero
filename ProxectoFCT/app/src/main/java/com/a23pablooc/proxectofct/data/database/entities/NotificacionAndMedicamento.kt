@@ -14,20 +14,4 @@ data class NotificacionAndMedicamento(
         entityColumn = MedicamentoTable.Columns.PK_COD_NACIONAL
     )
     val medicamento: MedicamentoEntity
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as NotificacionAndMedicamento
-
-        return ((notificacionEntity != other.notificacionEntity)
-                || (medicamento != other.medicamento))
-    }
-
-    override fun hashCode(): Int {
-        var result = notificacionEntity.hashCode()
-        result = 31 * result + medicamento.hashCode()
-        return result
-    }
-}
+)

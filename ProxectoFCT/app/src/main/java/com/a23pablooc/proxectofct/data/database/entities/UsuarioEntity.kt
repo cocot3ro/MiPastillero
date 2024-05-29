@@ -13,20 +13,4 @@ data class UsuarioEntity(
 
     @ColumnInfo(name = UsuarioTable.Columns.NOMBRE)
     val nombre: String
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as UsuarioEntity
-
-        return ((pkUsuario != other.pkUsuario)
-                || (nombre != other.nombre))
-    }
-
-    override fun hashCode(): Int {
-        var result = pkUsuario
-        result = 31 * result + nombre.hashCode()
-        return result
-    }
-}
+)
