@@ -82,6 +82,9 @@ dependencies {
     // Glide
     implementation(libs.glide)
 
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+
     // TODO: Borrar esta dependencia al implementar Retrofit
     implementation(libs.khttp)
 
