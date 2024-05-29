@@ -4,12 +4,13 @@ object MedicamentoTable {
     const val TABLE_NAME = "tbl_medicamentos"
 
     object Columns {
-        const val ID = "PK_medicamento"
-        const val FK_USUARIO = "FK_usuario"
+        const val PK_COD_NACIONAL = "pk_medicamento"
+        const val FK_USUARIO = "fk_usuario"
         const val NUM_REGISTRO = "num_registro"
         const val NOMBRE = "nombre"
         const val URL = "url"
         const val PROSPECTO = "prospecto"
+        const val API_IMAGEN = "api_imagen"
         const val IMAGEN = "imagen"
         const val LABORATORIO = "laboratorio"
         const val PRESCRIPCION = "prescripcion"

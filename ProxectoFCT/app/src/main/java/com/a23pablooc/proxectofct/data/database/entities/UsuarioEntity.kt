@@ -8,8 +8,8 @@ import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
 @Entity(tableName = UsuarioTable.TABLE_NAME)
 data class UsuarioEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = UsuarioTable.Columns.ID)
-    val id: Int = 0,
+    @ColumnInfo(name = UsuarioTable.Columns.PK_USUARIO)
+    val pkUsuario: Int = 0,
 
     @ColumnInfo(name = UsuarioTable.Columns.NOMBRE)
     val nombre: String
@@ -20,17 +20,13 @@ data class UsuarioEntity(
 
         other as UsuarioEntity
 
-        if (id != other.id) return false
-        if (nombre != other.nombre) return false
-
-        return true
+        return ((pkUsuario != other.pkUsuario)
+                || (nombre != other.nombre))
     }
 
     override fun hashCode(): Int {
-        var result = id
+        var result = pkUsuario
         result = 31 * result + nombre.hashCode()
         return result
     }
 }
-
-//TODO: Funciones de extensión

@@ -23,9 +23,13 @@ class FavoriteMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             setSpan(LeadingMarginSpan.Standard(30, 0), 0, 1, 0)
         }
 
-        if (med.imagen.isNotEmpty()) {
+        if (med.customImage.isNotEmpty()) {
             Glide.with(binding.root.context)
-                .load(med.imagen)
+                .load(med.customImage)
+                .into(binding.img)
+        } else if (med.apiImagen.isNotEmpty()) {
+            Glide.with(binding.root.context)
+                .load(med.apiImagen)
                 .into(binding.img)
         }
 

@@ -5,12 +5,13 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 
 fun MedicamentoEntity.toDomain(): MedicamentoItem {
     return MedicamentoItem(
-        id = id,
+        pkMedicamento = pkMedicamento,
         numRegistro = numRegistro,
         nombre = nombre,
         url = url,
         prospecto = prospecto,
-        imagen = imagen,
+        customImage = customImage,
+        apiImagen = apiImagen,
         laboratorio = laboratorio,
         prescripcion = prescripcion,
         afectaConduccion = afectaConduccion,

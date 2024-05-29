@@ -5,8 +5,8 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
 
 fun MedicamentoCalendarioAndMedicamento.toDomain(): MedicamentoCalendarioItem {
     return MedicamentoCalendarioItem(
-        id = medicamentoCalendarioEntity.id,
-        medicamento = medicamento.toDomain(),
+        pkMedicamentoCalendario = medicamentoCalendarioEntity.pkMedicamentoCalendario,
+        fkMedicamento = medicamento.toDomain(),
         fecha = medicamentoCalendarioEntity.fecha,
         hora = medicamentoCalendarioEntity.hora,
         seHaTomado = medicamentoCalendarioEntity.seHaTomado

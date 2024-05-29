@@ -6,16 +6,17 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 
 fun MedicamentoItem.toDatabase(): MedicamentoEntity {
     return MedicamentoEntity(
-        id = id,
-        userId = UserInfoProvider.currentUser.id,
+        pkMedicamento = pkMedicamento,
+        fkUsuario = UserInfoProvider.currentUser.pkUsuario,
         numRegistro = numRegistro,
         nombre = nombre,
         url = url,
         prospecto = prospecto,
         prescripcion = prescripcion,
         afectaConduccion = afectaConduccion,
-        imagen = imagen,
+        apiImagen = apiImagen,
         laboratorio = laboratorio,
-        esFavorito = esFavorito
+        esFavorito = esFavorito,
+        customImage = customImage
     )
 }

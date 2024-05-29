@@ -15,13 +15,13 @@ import java.util.Date
     foreignKeys = [
         ForeignKey(
             entity = MedicamentoEntity::class,
-            parentColumns = [MedicamentoTable.Columns.ID],
+            parentColumns = [MedicamentoTable.Columns.PK_COD_NACIONAL],
             childColumns = [MedicamentoActivoTable.Columns.FK_MEDICAMENTO],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = UsuarioEntity::class,
-            parentColumns = [UsuarioTable.Columns.ID],
+            parentColumns = [UsuarioTable.Columns.PK_USUARIO],
             childColumns = [MedicamentoActivoTable.Columns.FK_USUARIO],
             onDelete = ForeignKey.CASCADE
         )
@@ -41,14 +41,14 @@ import java.util.Date
 )
 data class MedicamentoActivoEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = MedicamentoActivoTable.Columns.ID)
-    val id: Int = 0,
+    @ColumnInfo(name = MedicamentoActivoTable.Columns.PK_MEDICAMENTO_ACTIVO)
+    val pkMedicamentoActivo: Int = 0,
 
     @ColumnInfo(name = MedicamentoActivoTable.Columns.FK_MEDICAMENTO)
-    val idMedicamento: Int,
+    val fkMedicamento: Int,
 
     @ColumnInfo(name = MedicamentoActivoTable.Columns.FK_USUARIO)
-    val idUsuario: Int,
+    val fkUsuario: Int,
 
     @ColumnInfo(name = MedicamentoActivoTable.Columns.FECHA_INICIO)
     val fechaInicio: Date,
@@ -68,21 +68,19 @@ data class MedicamentoActivoEntity(
 
         other as MedicamentoActivoEntity
 
-        if (id != other.id) return false
-        if (idMedicamento != other.idMedicamento) return false
-        if (idUsuario != other.idUsuario) return false
-        if (fechaInicio != other.fechaInicio) return false
-        if (fechaFin != other.fechaFin) return false
-        if (horario != other.horario) return false
-        if (dosis != other.dosis) return false
-
-        return true
+        return ((pkMedicamentoActivo != other.pkMedicamentoActivo)
+                || (fkMedicamento != other.fkMedicamento)
+                || (fkUsuario != other.fkUsuario)
+                || (fechaInicio != other.fechaInicio)
+                || (fechaFin != other.fechaFin)
+                || (horario != other.horario)
+                || (dosis != other.dosis))
     }
 
     override fun hashCode(): Int {
-        var result = id
-        result = 31 * result + idMedicamento
-        result = 31 * result + idUsuario
+        var result = pkMedicamentoActivo
+        result = 31 * result + fkMedicamento
+        result = 31 * result + fkUsuario
         result = 31 * result + fechaInicio.hashCode()
         result = 31 * result + fechaFin.hashCode()
         result = 31 * result + horario.hashCode()
@@ -90,5 +88,3 @@ data class MedicamentoActivoEntity(
         return result
     }
 }
-
-//TODO: Funciones de extensión

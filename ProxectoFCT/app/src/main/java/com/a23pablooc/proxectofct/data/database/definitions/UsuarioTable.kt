@@ -4,7 +4,7 @@ object UsuarioTable {
     const val TABLE_NAME = "tbl_usuarios"
 
     object Columns {
-        const val ID = "PK_usuario"
+        const val PK_USUARIO = "pk_usuario"
         const val NOMBRE = "nombre"
     }
 }

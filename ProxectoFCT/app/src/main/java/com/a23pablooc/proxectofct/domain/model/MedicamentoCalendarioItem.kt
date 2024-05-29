@@ -3,8 +3,8 @@ package com.a23pablooc.proxectofct.domain.model
 import java.util.Date
 
 data class MedicamentoCalendarioItem(
-    var id: Int,
-    var medicamento: MedicamentoItem,
+    var pkMedicamentoCalendario: Int,
+    var fkMedicamento: MedicamentoItem,
     var fecha: Date,
     var hora: Date,
     var seHaTomado: Boolean
@@ -15,18 +15,16 @@ data class MedicamentoCalendarioItem(
 
         other as MedicamentoCalendarioItem
 
-        if (id != other.id) return false
-        if (medicamento != other.medicamento) return false
-        if (fecha != other.fecha) return false
-        if (hora != other.hora) return false
-        if (seHaTomado != other.seHaTomado) return false
-
-        return true
+        return ((pkMedicamentoCalendario != other.pkMedicamentoCalendario)
+                || (fkMedicamento != other.fkMedicamento)
+                || (fecha != other.fecha)
+                || (hora != other.hora)
+                || (seHaTomado != other.seHaTomado))
     }
 
     override fun hashCode(): Int {
-        var result = id
-        result = 31 * result + medicamento.hashCode()
+        var result = pkMedicamentoCalendario
+        result = 31 * result + fkMedicamento.hashCode()
         result = 31 * result + fecha.hashCode()
         result = 31 * result + hora.hashCode()
         result = 31 * result + seHaTomado.hashCode()

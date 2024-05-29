@@ -19,13 +19,13 @@ import java.util.Date
     foreignKeys = [
         ForeignKey(
             entity = MedicamentoEntity::class,
-            parentColumns = [MedicamentoTable.Columns.ID],
+            parentColumns = [MedicamentoTable.Columns.PK_COD_NACIONAL],
             childColumns = [MedicamentoCalendarioTable.Columns.FK_MEDICAMENTO],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = UsuarioEntity::class,
-            parentColumns = [UsuarioTable.Columns.ID],
+            parentColumns = [UsuarioTable.Columns.PK_USUARIO],
             childColumns = [MedicamentoCalendarioTable.Columns.FK_USUARIO],
             onDelete = ForeignKey.CASCADE
         )
@@ -44,14 +44,14 @@ import java.util.Date
     ]
 )
 data class MedicamentoCalendarioEntity(
-    @ColumnInfo(name = MedicamentoCalendarioTable.Columns.ID)
-    val id: Int = 0,
+    @ColumnInfo(name = MedicamentoCalendarioTable.Columns.PK_MEDICAMENTO_CALENDARIO)
+    val pkMedicamentoCalendario: Int = 0,
 
     @ColumnInfo(name = MedicamentoCalendarioTable.Columns.FK_MEDICAMENTO)
-    val idMedicamento: Int,
+    val fkMedicamento: Int,
 
     @ColumnInfo(name = MedicamentoCalendarioTable.Columns.FK_USUARIO)
-    val idUsuario: Int,
+    val fkUsuario: Int,
 
     @ColumnInfo(name = MedicamentoCalendarioTable.Columns.FECHA)
     val fecha: Date,
@@ -68,20 +68,18 @@ data class MedicamentoCalendarioEntity(
 
         other as MedicamentoCalendarioEntity
 
-        if (id != other.id) return false
-        if (idMedicamento != other.idMedicamento) return false
-        if (idUsuario != other.idUsuario) return false
-        if (fecha != other.fecha) return false
-        if (hora != other.hora) return false
-        if (seHaTomado != other.seHaTomado) return false
-
-        return true
+        return ((pkMedicamentoCalendario != other.pkMedicamentoCalendario)
+                || (fkMedicamento != other.fkMedicamento)
+                || (fkUsuario != other.fkUsuario)
+                || (fecha != other.fecha)
+                || (hora != other.hora)
+                || (seHaTomado != other.seHaTomado))
     }
 
     override fun hashCode(): Int {
-        var result = id
-        result = 31 * result + idMedicamento
-        result = 31 * result + idUsuario
+        var result = pkMedicamentoCalendario
+        result = 31 * result + fkMedicamento
+        result = 31 * result + fkUsuario
         result = 31 * result + fecha.hashCode()
         result = 31 * result + hora.hashCode()
         result = 31 * result + seHaTomado.hashCode()

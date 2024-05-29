@@ -50,7 +50,7 @@ class PillboxRepository @Inject constructor(
 
     fun getAllWithMedicamentosByDiaOrderByHora(dia: Date): Flow<List<MedicamentoCalendarioItem>> {
         return medicamentoCalendarioDAO.getAllWithMedicamentosByDiaOrderByHora(
-            UserInfoProvider.currentUser.id, dia
+            UserInfoProvider.currentUser.pkUsuario, dia
         ).map { it -> it.map { it.toDomain() } }
     }
 
@@ -59,12 +59,12 @@ class PillboxRepository @Inject constructor(
     }
 
     fun getAllFavoriteMeds(): Flow<List<MedicamentoItem>> {
-        return medicamentoDAO.getAllFavoritos(UserInfoProvider.currentUser.id)
+        return medicamentoDAO.getAllFavoritos(UserInfoProvider.currentUser.pkUsuario)
             .map { it -> it.map { it.toDomain() } }
     }
 
     fun getMedicamentosActivos(fromDate: Date): Flow<List<MedicamentoActivoItem>> {
-        return medicamentoActivoDAO.getAllWithMedicamento(UserInfoProvider.currentUser.id, fromDate)
+        return medicamentoActivoDAO.getAllWithMedicamento(UserInfoProvider.currentUser.pkUsuario, fromDate)
             .map { it -> it.map { it.toDomain() } }
     }
 
@@ -72,12 +72,12 @@ class PillboxRepository @Inject constructor(
         var imgResource: String
 
         return cimaService.getMedicamentoByCodNacional(codNacional).also {
-            imgResource = it.imagen
+            imgResource = it.apiImagen
         }.toDomain().apply {
             runCatching {
-                imagen = downloadImage(numRegistro, imgResource)
+                apiImagen = downloadImage(numRegistro, imgResource)
             }.onFailure {
-                imagen = byteArrayOf()
+                apiImagen = byteArrayOf()
             }
 
             esFavorito = findFavoritoByCodNacional(numRegistro) != null
@@ -85,5 +85,5 @@ class PillboxRepository @Inject constructor(
     }
 
     private fun findFavoritoByCodNacional(numRegistro: String): MedicamentoEntity? =
-        medicamentoDAO.findFavoritoByNumRegistro(UserInfoProvider.currentUser.id, numRegistro)
+        medicamentoDAO.findFavoritoByNumRegistro(UserInfoProvider.currentUser.pkUsuario, numRegistro)
 }

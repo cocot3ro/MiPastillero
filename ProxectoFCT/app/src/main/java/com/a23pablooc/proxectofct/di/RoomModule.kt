@@ -2,6 +2,8 @@ package com.a23pablooc.proxectofct.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.a23pablooc.proxectofct.data.database.PillboxDatabase
 import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
 import com.a23pablooc.proxectofct.data.database.dao.HistorialDAO
@@ -10,6 +12,7 @@ import com.a23pablooc.proxectofct.data.database.dao.MedicamentoCalendarioDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
 import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTable
 import com.a23pablooc.proxectofct.data.database.security.DatabasePassphrase
 import dagger.Module
 import dagger.Provides
@@ -42,6 +45,12 @@ object RoomModule {
         supportFactory: SupportFactory
     ): PillboxDatabase {
         return Room.databaseBuilder(context, PillboxDatabase::class.java, DATABASE_NAME)
+            .addCallback(object : RoomDatabase.Callback() {
+                override fun onCreate(db: SupportSQLiteDatabase) {
+                    super.onCreate(db)
+                    db.execSQL("UPDATE sqlite_sequence SET seq = 999999 WHERE name = ${MedicamentoTable.Columns.PK_COD_NACIONAL}")
+                }
+            })
 //            .openHelperFactory(supportFactory)
             .build()
     }

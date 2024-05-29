@@ -3,9 +3,9 @@ package com.a23pablooc.proxectofct.domain.model
 import java.util.Date
 
 data class AgendaItem(
-    val id: Int,
-    val fecha: Date,
-    val descripcion: String
+    var pkAgenda: Int,
+    var descripcion: String,
+    var fecha: Date
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -13,17 +13,15 @@ data class AgendaItem(
 
         other as AgendaItem
 
-        if (id != other.id) return false
-        if (fecha != other.fecha) return false
-        if (descripcion != other.descripcion) return false
-
-        return true
+        return ((pkAgenda != other.pkAgenda)
+                || (descripcion != other.descripcion)
+                || (fecha != other.fecha))
     }
 
     override fun hashCode(): Int {
-        var result = id
-        result = 31 * result + fecha.hashCode()
+        var result = pkAgenda
         result = 31 * result + descripcion.hashCode()
+        result = 31 * result + fecha.hashCode()
         return result
     }
 }

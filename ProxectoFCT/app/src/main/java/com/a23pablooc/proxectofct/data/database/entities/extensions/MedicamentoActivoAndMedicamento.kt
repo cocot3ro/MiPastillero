@@ -5,11 +5,11 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 
 fun MedicamentoActivoAndMedicamento.toDomain(): MedicamentoActivoItem {
     return MedicamentoActivoItem(
-        id = medicamentoActivoEntity.id,
+        pkMedicamentoActivo = medicamentoActivoEntity.pkMedicamentoActivo,
         dosis = medicamentoActivoEntity.dosis,
         fechaFin = medicamentoActivoEntity.fechaFin,
         fechaInicio = medicamentoActivoEntity.fechaInicio,
         horario = medicamentoActivoEntity.horario,
-        medicamento = medicamento.toDomain()
+        fkMedicamento = medicamento.toDomain()
     )
 }

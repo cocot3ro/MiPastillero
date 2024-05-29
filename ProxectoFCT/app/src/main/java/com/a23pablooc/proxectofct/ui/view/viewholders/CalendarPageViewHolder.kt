@@ -25,13 +25,17 @@ class CalendarPageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         for (med in meds) {
             CalendarMedBinding.inflate(LayoutInflater.from(itemView.context), binding.body, true)
                 .apply {
-                    if (med.medicamento.imagen.isNotEmpty()) {
+                    if (med.fkMedicamento.customImage.isNotEmpty()) {
                         Glide.with(root.context)
-                            .load(med.medicamento.imagen)
+                            .load(med.fkMedicamento.customImage)
+                            .into(medImg)
+                    } else if (med.fkMedicamento.apiImagen.isNotEmpty()) {
+                        Glide.with(root.context)
+                            .load(med.fkMedicamento.apiImagen)
                             .into(medImg)
                     }
 
-                    medName.text = med.medicamento.nombre
+                    medName.text = med.fkMedicamento.nombre
 
                     btnTake.apply {
                         isChecked = med.seHaTomado

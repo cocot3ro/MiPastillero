@@ -4,9 +4,9 @@ object MedicamentoActivoTable {
     const val TABLE_NAME = "tbl_medicamentos_activos"
 
     object Columns {
-        const val ID = "PK_medicamento_activo"
-        const val FK_MEDICAMENTO = "FK_medicamento"
-        const val FK_USUARIO = "FK_usuario"
+        const val PK_MEDICAMENTO_ACTIVO = "pk_medicamento_activo"
+        const val FK_MEDICAMENTO = "fk_medicamento"
+        const val FK_USUARIO = "fk_usuario"
         const val FECHA_INICIO = "fecha_inicio"
         const val FECHA_FIN = "fecha_fin"
         const val HORARIO = "horario"

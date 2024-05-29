@@ -4,7 +4,7 @@ object AgendaTable {
     const val TABLE_NAME = "tbl_agenda"
 
     object Columns {
-        const val ID = "id"
+        const val PK_AGENDA = "id_agenda"
         const val FK_USUARIO = "fk_usuario"
         const val FECHA = "fecha"
         const val HORA = "hora"

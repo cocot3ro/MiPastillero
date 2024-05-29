@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.a23pablooc.proxectofct.core.DateTimeUtils
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatTime
 import com.a23pablooc.proxectofct.databinding.ActiveMedBinding
@@ -25,18 +24,22 @@ class ActiveMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         onInfo: (MedicamentoActivoItem) -> Unit,
         onAdd: (MedicamentoActivoItem) -> Unit
     ) {
-        if (med.medicamento.imagen.isNotEmpty()) {
+        if (med.fkMedicamento.customImage.isNotEmpty()) {
             Glide.with(binding.root)
-                .load(med.medicamento.imagen)
+                .load(med.fkMedicamento.customImage)
+                .into(binding.medImg)
+        } else if (med.fkMedicamento.apiImagen.isNotEmpty()) {
+            Glide.with(binding.root)
+                .load(med.fkMedicamento.apiImagen)
                 .into(binding.medImg)
         }
 
         //TODO: Ajustar indentado
-        binding.medName.text = SpannableString(med.medicamento.nombre).apply {
+        binding.medName.text = SpannableString(med.fkMedicamento.nombre).apply {
             setSpan(LeadingMarginSpan.Standard(30, 0), 0, 1, 0)
         }
 
-        binding.btnFavBg.visibility = if (med.medicamento.esFavorito) View.VISIBLE else View.GONE
+        binding.btnFavBg.visibility = if (med.fkMedicamento.esFavorito) View.VISIBLE else View.GONE
 
         binding.btnFav.setOnClickListener { onFav(med) }
         binding.btnAdd.setOnClickListener { onAdd(med) }

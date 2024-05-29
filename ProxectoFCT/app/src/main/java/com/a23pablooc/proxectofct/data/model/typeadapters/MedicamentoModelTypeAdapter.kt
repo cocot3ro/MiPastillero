@@ -72,7 +72,7 @@ class MedicamentoModelTypeAdapter : TypeAdapter<MedicamentoModel>() {
                                             "materialas" -> {
                                                 nextName()
                                                 val url = nextString()
-                                                builder.imagen(url.substringAfterLast("/"))
+                                                builder.apiImagen(url.substringAfterLast("/"))
                                             }
                                         }
                                     }

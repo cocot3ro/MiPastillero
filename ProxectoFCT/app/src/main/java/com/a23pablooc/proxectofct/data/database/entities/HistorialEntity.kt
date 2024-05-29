@@ -15,13 +15,13 @@ import java.util.Date
     foreignKeys = [
         ForeignKey(
             entity = UsuarioEntity::class,
-            parentColumns = [UsuarioTable.Columns.ID],
+            parentColumns = [UsuarioTable.Columns.PK_USUARIO],
             childColumns = [HistorialTable.Columns.FK_USUARIO],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = MedicamentoEntity::class,
-            parentColumns = [MedicamentoTable.Columns.ID],
+            parentColumns = [MedicamentoTable.Columns.PK_COD_NACIONAL],
             childColumns = [HistorialTable.Columns.FK_MEDICAMENTO],
             onDelete = ForeignKey.CASCADE
         )
@@ -41,8 +41,8 @@ import java.util.Date
 )
 data class HistorialEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = HistorialTable.Columns.ID)
-    val id: Int = 0,
+    @ColumnInfo(name = HistorialTable.Columns.PK_HISTORIAL)
+    val pkHistorial: Int = 0,
 
     @ColumnInfo(name = HistorialTable.Columns.FK_USUARIO)
     val fkUsuario: Int,
@@ -62,17 +62,15 @@ data class HistorialEntity(
 
         other as HistorialEntity
 
-        if (id != other.id) return false
-        if (fkUsuario != other.fkUsuario) return false
-        if (fkMedicamento != other.fkMedicamento) return false
-        if (fechaInicio != other.fechaInicio) return false
-        if (fechaFin != other.fechaFin) return false
-
-        return true
+        return ((pkHistorial != other.pkHistorial)
+                || (fkUsuario != other.fkUsuario)
+                || (fkMedicamento != other.fkMedicamento)
+                || (fechaInicio != other.fechaInicio)
+                || (fechaFin != other.fechaFin))
     }
 
     override fun hashCode(): Int {
-        var result = id
+        var result = pkHistorial
         result = 31 * result + fkUsuario
         result = 31 * result + fkMedicamento
         result = 31 * result + fechaInicio.hashCode()
@@ -80,5 +78,3 @@ data class HistorialEntity(
         return result
     }
 }
-
-//TODO: Funciones de extensión

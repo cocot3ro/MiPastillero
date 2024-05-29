@@ -4,7 +4,7 @@ object HistorialTable {
     const val TABLE_NAME = "tbl_historial"
 
     object Columns {
-        const val ID = "id"
+        const val PK_HISTORIAL = "pk_historial"
         const val FK_MEDICAMENTO = "fk_medicamento"
         const val FK_USUARIO = "fk_usuario"
         const val FECHA_INICIO = "fecha_inicio"

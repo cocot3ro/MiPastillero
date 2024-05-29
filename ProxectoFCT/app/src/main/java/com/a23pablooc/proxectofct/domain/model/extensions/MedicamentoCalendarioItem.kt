@@ -7,14 +7,14 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
 
 fun MedicamentoCalendarioItem.toDatabase(): MedicamentoCalendarioAndMedicamento {
     return MedicamentoCalendarioAndMedicamento(
-        medicamento = medicamento.toDatabase(),
+        medicamento = fkMedicamento.toDatabase(),
         medicamentoCalendarioEntity = MedicamentoCalendarioEntity(
-            id = id,
+            pkMedicamentoCalendario = pkMedicamentoCalendario,
+            fkMedicamento = fkMedicamento.pkMedicamento,
+            fkUsuario = UserInfoProvider.currentUser.pkUsuario,
             hora = hora,
-            idUsuario = UserInfoProvider.currentUser.id,
-            idMedicamento = medicamento.id,
-            seHaTomado = seHaTomado,
-            fecha = fecha
+            fecha = fecha,
+            seHaTomado = seHaTomado
         )
     )
 

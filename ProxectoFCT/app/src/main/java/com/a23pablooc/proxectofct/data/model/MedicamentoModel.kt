@@ -5,7 +5,7 @@ data class MedicamentoModel(
     val nombre: String,
     val url: String,
     val prospecto: String,
-    val imagen: String,
+    val apiImagen: String,
     val laboratorio: String,
     val prescripcion: String,
     val conduccion: Boolean
@@ -15,7 +15,7 @@ data class MedicamentoModel(
         private var nombre: String = ""
         private var url: String = ""
         private var prospecto: String = ""
-        private var imagen: String = ""
+        private var apiImagen: String = ""
         private var laboratorio: String = ""
         private var prescripcion: String = ""
         private var conduccion: Boolean = false
@@ -24,7 +24,7 @@ data class MedicamentoModel(
         fun nombre(nombre: String) = apply { this.nombre = nombre }
         fun url(url: String) = apply { this.url = url }
         fun prospecto(prospecto: String) = apply { this.prospecto = prospecto }
-        fun imagen(imagen: String) = apply { this.imagen = imagen }
+        fun apiImagen(apiImagen: String) = apply { this.apiImagen = apiImagen }
         fun laboratorio(laboratorio: String) = apply { this.laboratorio = laboratorio }
         fun prescripcion(prescripcion: String) = apply { this.prescripcion = prescripcion }
         fun conduccion(conduccion: Boolean) = apply { this.conduccion = conduccion }
@@ -34,7 +34,7 @@ data class MedicamentoModel(
             nombre,
             url,
             prospecto,
-            imagen,
+            apiImagen,
             laboratorio,
             prescripcion,
             conduccion
@@ -47,16 +47,14 @@ data class MedicamentoModel(
 
         other as MedicamentoModel
 
-        if (numRegistro != other.numRegistro) return false
-        if (nombre != other.nombre) return false
-        if (url != other.url) return false
-        if (prospecto != other.prospecto) return false
-        if (imagen != other.imagen) return false
-        if (laboratorio != other.laboratorio) return false
-        if (prescripcion != other.prescripcion) return false
-        if (conduccion != other.conduccion) return false
-
-        return true
+        return ((numRegistro != other.numRegistro)
+                || (nombre != other.nombre)
+                || (url != other.url)
+                || (prospecto != other.prospecto)
+                || (apiImagen != other.apiImagen)
+                || (laboratorio != other.laboratorio)
+                || (prescripcion != other.prescripcion)
+                || (conduccion != other.conduccion))
     }
 
     override fun hashCode(): Int {
@@ -64,7 +62,7 @@ data class MedicamentoModel(
         result = 31 * result + nombre.hashCode()
         result = 31 * result + url.hashCode()
         result = 31 * result + prospecto.hashCode()
-        result = 31 * result + imagen.hashCode()
+        result = 31 * result + apiImagen.hashCode()
         result = 31 * result + laboratorio.hashCode()
         result = 31 * result + prescripcion.hashCode()
         result = 31 * result + conduccion.hashCode()

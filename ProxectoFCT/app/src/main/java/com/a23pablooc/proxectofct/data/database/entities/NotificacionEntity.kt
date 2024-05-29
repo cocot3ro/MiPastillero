@@ -1,10 +1,10 @@
 package com.a23pablooc.proxectofct.data.database.entities
 
-import androidx.room.Entity
 import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
+import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
+import androidx.room.PrimaryKey
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTable
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTable
 import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
@@ -15,13 +15,13 @@ import java.util.Date
     foreignKeys = [
         ForeignKey(
             entity = MedicamentoEntity::class,
-            parentColumns = [MedicamentoTable.Columns.ID],
+            parentColumns = [MedicamentoTable.Columns.PK_COD_NACIONAL],
             childColumns = [NotificacionTable.Columns.FK_MEDICAMENTO],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = UsuarioEntity::class,
-            parentColumns = [UsuarioTable.Columns.ID],
+            parentColumns = [UsuarioTable.Columns.PK_USUARIO],
             childColumns = [NotificacionTable.Columns.FK_USUARIO],
             onDelete = ForeignKey.CASCADE
         )
@@ -41,14 +41,14 @@ import java.util.Date
 )
 data class NotificacionEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = NotificacionTable.Columns.ID)
-    val id: Int = 0,
+    @ColumnInfo(name = NotificacionTable.Columns.PK_NOTIFICACION)
+    val pkNotificacion: Int = 0,
 
     @ColumnInfo(name = NotificacionTable.Columns.FK_MEDICAMENTO)
-    val idMedicamento: Int,
+    val fkMedicamento: Int,
 
     @ColumnInfo(name = NotificacionTable.Columns.FK_USUARIO)
-    val idUsuario: Int,
+    val fkUsuario: Int,
 
     @ColumnInfo(name = NotificacionTable.Columns.FECHA)
     val fecha: Date,
@@ -62,23 +62,19 @@ data class NotificacionEntity(
 
         other as NotificacionEntity
 
-        if (id != other.id) return false
-        if (idMedicamento != other.idMedicamento) return false
-        if (idUsuario != other.idUsuario) return false
-        if (fecha != other.fecha) return false
-        if (hora != other.hora) return false
-
-        return true
+        return ((pkNotificacion != other.pkNotificacion)
+                || (fkMedicamento != other.fkMedicamento)
+                || (fkUsuario != other.fkUsuario)
+                || (fecha != other.fecha)
+                || (hora != other.hora))
     }
 
     override fun hashCode(): Int {
-        var result = id
-        result = 31 * result + idMedicamento
-        result = 31 * result + idUsuario
+        var result = pkNotificacion
+        result = 31 * result + fkMedicamento
+        result = 31 * result + fkUsuario
         result = 31 * result + fecha.hashCode()
         result = 31 * result + hora.hashCode()
         return result
     }
 }
-
-//TODO: Funciones de extensión

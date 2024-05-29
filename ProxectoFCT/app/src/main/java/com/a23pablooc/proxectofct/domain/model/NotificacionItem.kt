@@ -3,10 +3,10 @@ package com.a23pablooc.proxectofct.domain.model
 import java.util.Date
 
 data class NotificacionItem(
-    val id: Int,
-    val medicamento: MedicamentoItem,
-    val fecha: Date,
-    val hora: Date
+    var pkNotificacion: Int,
+    var fkMedicamento: MedicamentoItem,
+    var fecha: Date,
+    var hora: Date
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -14,17 +14,15 @@ data class NotificacionItem(
 
         other as NotificacionItem
 
-        if (id != other.id) return false
-        if (medicamento != other.medicamento) return false
-        if (fecha != other.fecha) return false
-        if (hora != other.hora) return false
-
-        return true
+        return ((pkNotificacion != other.pkNotificacion)
+                || (fkMedicamento != other.fkMedicamento)
+                || (fecha != other.fecha)
+                || (hora != other.hora))
     }
 
     override fun hashCode(): Int {
-        var result = id
-        result = 31 * result + medicamento.hashCode()
+        var result = pkNotificacion
+        result = 31 * result + fkMedicamento.hashCode()
         result = 31 * result + fecha.hashCode()
         result = 31 * result + hora.hashCode()
         return result

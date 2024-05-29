@@ -14,7 +14,7 @@ import java.util.Date
     foreignKeys = [
         ForeignKey(
             entity = UsuarioEntity::class,
-            parentColumns = [UsuarioTable.Columns.ID],
+            parentColumns = [UsuarioTable.Columns.PK_USUARIO],
             childColumns = [AgendaTable.Columns.FK_USUARIO],
             onDelete = ForeignKey.CASCADE
         )
@@ -29,17 +29,17 @@ import java.util.Date
 )
 data class AgendaEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = AgendaTable.Columns.ID)
-    val id: Int = 0,
+    @ColumnInfo(name = AgendaTable.Columns.PK_AGENDA)
+    val pkAgenda: Int = 0,
 
     @ColumnInfo(name = AgendaTable.Columns.FK_USUARIO)
-    val idUsuario: Int,
-
-    @ColumnInfo(name = AgendaTable.Columns.FECHA)
-    val fecha: Date,
+    val fkUsuario: Int,
 
     @ColumnInfo(name = AgendaTable.Columns.HORA)
-    val descripcion: String
+    val descripcion: String,
+
+    @ColumnInfo(name = AgendaTable.Columns.FECHA)
+    val fecha: Date
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -47,20 +47,17 @@ data class AgendaEntity(
 
         other as AgendaEntity
 
-        if (id != other.id) return false
-        if (idUsuario != other.idUsuario) return false
-        if (fecha != other.fecha) return false
-        if (descripcion != other.descripcion) return false
-
-        return true
+        return ((pkAgenda != other.pkAgenda)
+                || (fkUsuario != other.fkUsuario)
+                || (fecha != other.fecha)
+                || (descripcion != other.descripcion))
     }
 
     override fun hashCode(): Int {
-        var result = id
-        result = 31 * result + idUsuario
+        var result = pkAgenda
+        result = 31 * result + fkUsuario
         result = 31 * result + fecha.hashCode()
         result = 31 * result + descripcion.hashCode()
         return result
     }
 }
-//TODO: Funciones de extensión

@@ -1,8 +1,8 @@
 package com.a23pablooc.proxectofct.domain.model
 
 data class HistorialItem(
-    val id: Int,
-    val medicamento: MedicamentoItem,
+    val pkHistorial: Int,
+    val fkMedicamento: MedicamentoItem,
     val fechaInicio: String,
     val fechaFin: String
 ) {
@@ -12,17 +12,15 @@ data class HistorialItem(
 
         other as HistorialItem
 
-        if (id != other.id) return false
-        if (medicamento != other.medicamento) return false
-        if (fechaInicio != other.fechaInicio) return false
-        if (fechaFin != other.fechaFin) return false
-
-        return true
+        return ((pkHistorial != other.pkHistorial)
+                || (fkMedicamento != other.fkMedicamento)
+                || (fechaInicio != other.fechaInicio)
+                || (fechaFin != other.fechaFin))
     }
 
     override fun hashCode(): Int {
-        var result = id
-        result = 31 * result + medicamento.hashCode()
+        var result = pkHistorial
+        result = 31 * result + fkMedicamento.hashCode()
         result = 31 * result + fechaInicio.hashCode()
         result = 31 * result + fechaFin.hashCode()
         return result
