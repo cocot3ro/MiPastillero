@@ -20,14 +20,15 @@ import androidx.core.view.children
 import androidx.core.view.get
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DateTimeUtils
-import com.a23pablooc.proxectofct.core.DateTimeUtils.formatTime
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zero
 import com.a23pablooc.proxectofct.databinding.FragmentAddActiveMedDialogBinding
 import com.a23pablooc.proxectofct.databinding.TimePickerBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
+import com.a23pablooc.proxectofct.ui.view.adapters.TimePickerRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.view.viewholders.AddActiveMedDialogViewModel
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,6 +40,9 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
     private lateinit var binding: FragmentAddActiveMedDialogBinding
     private val viewModel: AddActiveMedDialogViewModel by viewModels()
+
+    private var scheduleList: List<Date> = emptyList()
+    private lateinit var timePickerAdapter: TimePickerRecyclerViewAdapter
 
     private lateinit var listener: OnDataEnteredListener
 
@@ -70,6 +74,21 @@ class AddActiveMedDialogFragment : DialogFragment() {
     ): View {
         binding = FragmentAddActiveMedDialogBinding.inflate(layoutInflater)
 
+        timePickerAdapter = TimePickerRecyclerViewAdapter(
+            scheduleList,
+            onSelectTime = {
+                onSelectTime(it)
+            },
+            onRemoveTimer = {
+                onRemoveTimer(it)
+            }
+        )
+
+        binding.scheduleLayout.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = timePickerAdapter
+        }
+
         binding.imgLayout.setOnClickListener {
             pickMedia.launch(
                 PickVisualMediaRequest(
@@ -90,13 +109,13 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
         binding.btnSearch.setOnClickListener { search() }
 
-        binding.btnAddTimer.setOnClickListener { addTimer(true) }
+        binding.btnAddTimer.setOnClickListener { onAddTimer(true) }
 
         binding.favFrame.setOnClickListener {
             binding.btnFavBg.visibility = binding.btnFavBg.visibility.xor(View.VISIBLE)
         }
 
-        addTimer(false)
+        onAddTimer(false)
 
         return binding.root
     }
@@ -230,35 +249,30 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
     }
 
-    private fun addTimer(showAfterAdd: Boolean) {
+    private fun onAddTimer(showAfterAdd: Boolean) {
         if (binding.scheduleLayout.childCount == 1) {
             TimePickerBinding.bind(binding.scheduleLayout[0]).btnDeleteTimer.isEnabled = true
         }
 
-        TimePickerBinding.inflate(layoutInflater, binding.scheduleLayout, false).apply {
-            hour.text = Date().apply {
-                zero()
-            }.formatTime()
+        val newTime = Date().apply {
+            zero()
+        }
 
-            btnSelectTime.setOnClickListener {
-                onSelectTime(this)
-            }
+        scheduleList = scheduleList.plus(newTime).sortedBy { it.time }
 
-            btnDeleteTimer.setOnClickListener {
-                binding.scheduleLayout.removeView(root)
+        timePickerAdapter.updateData(scheduleList)
+    }
 
-                if (binding.scheduleLayout.childCount == 1) {
-                    TimePickerBinding.bind(binding.scheduleLayout[0])
-                        .btnDeleteTimer.isEnabled = false
-                }
-            }
+    private fun onRemoveTimer(date: Date) {
+        scheduleList = scheduleList.minus(date).sortedBy { it.time}
+        timePickerAdapter.updateData(scheduleList)
 
-            if (showAfterAdd)
-                btnSelectTime.performClick()
+        if (binding.scheduleLayout.childCount == 1) {
+            TimePickerBinding.bind(binding.scheduleLayout[0]).btnDeleteTimer.isEnabled = false
         }
     }
 
-    private fun onSelectTime(timePickerBinding: TimePickerBinding) {
+    private fun onSelectTime(date: Date) {
         TimePickerDialog(
             requireContext(), { _, hourOfDay, minute ->
                 val pickedTime = Calendar.getInstance().apply {
@@ -267,28 +281,17 @@ class AddActiveMedDialogFragment : DialogFragment() {
                     set(Calendar.MINUTE, minute)
                 }.time
 
-                if (binding.scheduleLayout.children
-                        .map { DateTimeUtils.parseTime(TimePickerBinding.bind(it).hour.text.toString()) }
-                        .any { it == DateTimeUtils.parseTime(timePickerBinding.hour.text.toString()) }
-                ) {
+                if (scheduleList.any { it.time == pickedTime.time }) {
                     Toast.makeText(
                         requireContext(),
                         R.string.hora_ya_seleccionada,
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    timePickerBinding.hour.text = pickedTime.formatTime()
-
-                    for (i in 0..binding.scheduleLayout.childCount) {
-                        if (i == binding.scheduleLayout.childCount) {
-                            binding.scheduleLayout.addView(timePickerBinding.root)
-                        } else if (DateTimeUtils.parseTime(TimePickerBinding.bind(binding.scheduleLayout[i]).hour.text.toString()) > pickedTime) {
-                            binding.scheduleLayout.addView(timePickerBinding.root, i)
-                            break
-                        }
-                    }
-
+                    date.time = pickedTime.time
+                    timePickerAdapter.updateData(scheduleList)
                 }
+
             },
             0,
             0,

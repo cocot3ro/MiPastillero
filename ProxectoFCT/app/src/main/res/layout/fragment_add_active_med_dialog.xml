@@ -300,7 +300,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/schedule_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
