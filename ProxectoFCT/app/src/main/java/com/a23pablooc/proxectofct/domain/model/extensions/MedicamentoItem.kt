@@ -15,9 +15,8 @@ fun MedicamentoItem.toDatabase(): MedicamentoEntity {
         prospecto = prospecto,
         prescripcion = prescripcion,
         afectaConduccion = afectaConduccion,
-        apiImagen = apiImagen,
+        imagen = imagen,
         laboratorio = laboratorio,
         esFavorito = esFavorito,
-        customImage = customImage
     )
 }

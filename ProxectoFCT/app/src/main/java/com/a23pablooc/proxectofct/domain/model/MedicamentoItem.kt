@@ -9,9 +9,8 @@ data class MedicamentoItem(
     var numRegistro: String,
     var laboratorio: String,
     var esFavorito: Boolean,
-    var apiImagen: ByteArray,
+    var imagen: ByteArray,
     var prescripcion: String,
-    var customImage: ByteArray,
     var afectaConduccion: Boolean
 ) {
     override fun equals(other: Any?): Boolean {
@@ -27,9 +26,8 @@ data class MedicamentoItem(
                 || (numRegistro != other.numRegistro)
                 || (laboratorio != other.laboratorio)
                 || (esFavorito != other.esFavorito)
-                || (!apiImagen.contentEquals(other.apiImagen))
+                || (!imagen.contentEquals(other.imagen))
                 || (prescripcion != other.prescripcion)
-                || (!customImage.contentEquals(other.customImage))
                 || (afectaConduccion != other.afectaConduccion))
     }
 
@@ -41,9 +39,8 @@ data class MedicamentoItem(
         result = 31 * result + numRegistro.hashCode()
         result = 31 * result + laboratorio.hashCode()
         result = 31 * result + esFavorito.hashCode()
-        result = 31 * result + apiImagen.contentHashCode()
+        result = 31 * result + imagen.contentHashCode()
         result = 31 * result + prescripcion.hashCode()
-        result = 31 * result + customImage.contentHashCode()
         result = 31 * result + afectaConduccion.hashCode()
         return result
     }

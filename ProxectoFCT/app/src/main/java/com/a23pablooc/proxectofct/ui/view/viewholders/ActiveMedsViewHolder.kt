@@ -24,13 +24,9 @@ class ActiveMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         onInfo: (MedicamentoActivoItem) -> Unit,
         onAdd: (MedicamentoActivoItem) -> Unit
     ) {
-        if (med.fkMedicamento.customImage.isNotEmpty()) {
+        if (med.fkMedicamento.imagen.isNotEmpty()) {
             Glide.with(binding.root)
-                .load(med.fkMedicamento.customImage)
-                .into(binding.medImg)
-        } else if (med.fkMedicamento.apiImagen.isNotEmpty()) {
-            Glide.with(binding.root)
-                .load(med.fkMedicamento.apiImagen)
+                .load(med.fkMedicamento.imagen)
                 .into(binding.medImg)
         }
 

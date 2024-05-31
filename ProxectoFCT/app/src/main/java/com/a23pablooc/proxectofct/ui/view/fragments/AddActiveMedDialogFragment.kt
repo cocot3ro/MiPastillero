@@ -153,8 +153,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
                     numRegistro = "",
                     nombre = nombre,
                     alias = nombre,
-                    apiImagen = image,
-                    customImage = byteArrayOf(),
+                    imagen = image,
                     url = "",
                     prescripcion = "",
                     esFavorito = binding.btnFavBg.visibility == View.VISIBLE,
@@ -213,7 +212,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
             binding.favFrame.setOnClickListener {}
 
-            Glide.with(requireContext()).load(fetchedMed.apiImagen).into(binding.img)
+            Glide.with(requireContext()).load(fetchedMed.imagen).into(binding.img)
         } catch (e: IllegalArgumentException) {
             Toast.makeText(requireContext(), R.string.codigo_nacional_no_valido, Toast.LENGTH_SHORT)
                 .show()

@@ -11,7 +11,6 @@ object MedicamentoTable {
         const val ALIAS = "alias"
         const val URL = "url"
         const val PROSPECTO = "prospecto"
-        const val API_IMAGEN = "api_imagen"
         const val IMAGEN = "imagen"
         const val LABORATORIO = "laboratorio"
         const val PRESCRIPCION = "prescripcion"

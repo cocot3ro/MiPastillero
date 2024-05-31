@@ -55,14 +55,11 @@ data class MedicamentoEntity(
     @ColumnInfo(name = MedicamentoTable.Columns.NUM_REGISTRO)
     val numRegistro: String,
 
-    @ColumnInfo(name = MedicamentoTable.Columns.API_IMAGEN)
-    val apiImagen: ByteArray,
+    @ColumnInfo(name = MedicamentoTable.Columns.IMAGEN)
+    val imagen: ByteArray,
 
     @ColumnInfo(name = MedicamentoTable.Columns.PRESCRIPCION)
     val prescripcion: String,
-
-    @ColumnInfo(name = MedicamentoTable.Columns.IMAGEN)
-    val customImage: ByteArray,
 
     @ColumnInfo(name = MedicamentoTable.Columns.AFECTA_CONDUCCION)
     val afectaConduccion: Boolean
@@ -82,9 +79,8 @@ data class MedicamentoEntity(
                 || (esFavorito != other.esFavorito)
                 || (laboratorio != other.laboratorio)
                 || (numRegistro != other.numRegistro)
-                || (!apiImagen.contentEquals(other.apiImagen))
+                || (!imagen.contentEquals(other.imagen))
                 || (prescripcion != other.prescripcion)
-                || (!customImage.contentEquals(other.customImage))
                 || (afectaConduccion != other.afectaConduccion))
     }
 
@@ -98,9 +94,8 @@ data class MedicamentoEntity(
         result = 31 * result + esFavorito.hashCode()
         result = 31 * result + laboratorio.hashCode()
         result = 31 * result + numRegistro.hashCode()
-        result = 31 * result + apiImagen.contentHashCode()
+        result = 31 * result + imagen.contentHashCode()
         result = 31 * result + prescripcion.hashCode()
-        result = 31 * result + customImage.contentHashCode()
         result = 31 * result + afectaConduccion.hashCode()
         return result
     }

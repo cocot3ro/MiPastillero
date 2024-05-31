@@ -27,12 +27,12 @@ class CimaRepository @Inject constructor(
         var imgResource: String
 
         return cimaService.getMedicamentoByCodNacional(codNacional).also {
-            imgResource = it.apiImagen
+            imgResource = it.imagen
         }.toDomain().apply {
             runCatching {
-                apiImagen = downloadImage(numRegistro, imgResource)
+                imagen = downloadImage(numRegistro, imgResource)
             }.onFailure {
-                apiImagen = byteArrayOf()
+                imagen = byteArrayOf()
             }
         }
     }

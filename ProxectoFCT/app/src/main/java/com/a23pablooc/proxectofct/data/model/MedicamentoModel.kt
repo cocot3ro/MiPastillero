@@ -5,7 +5,7 @@ data class MedicamentoModel(
     val nombre: String,
     val url: String,
     val prospecto: String,
-    val apiImagen: String,
+    val imagen: String,
     val laboratorio: String,
     val prescripcion: String,
     val afectaConduccion: Boolean
@@ -13,7 +13,7 @@ data class MedicamentoModel(
     class Builder {
         private var url: String? = null
         private var nombre: String? = null
-        private var apiImagen: String? = null
+        private var imagen: String? = null
         private var prospecto: String? = null
         private var numRegistro: String? = null
         private var laboratorio: String? = null
@@ -24,7 +24,7 @@ data class MedicamentoModel(
         fun nombre(nombre: String) = apply { this.nombre = nombre }
         fun url(url: String) = apply { this.url = url }
         fun prospecto(prospecto: String) = apply { this.prospecto = prospecto }
-        fun apiImagen(apiImagen: String) = apply { this.apiImagen = apiImagen }
+        fun imagen(imagen: String) = apply { this.imagen = imagen }
         fun laboratorio(laboratorio: String) = apply { this.laboratorio = laboratorio }
         fun prescripcion(prescripcion: String) = apply { this.prescripcion = prescripcion }
         fun afectaConduccion(afectaConduccion: Boolean) = apply { this.afectaConduccion = afectaConduccion }
@@ -32,7 +32,7 @@ data class MedicamentoModel(
         /**
          * Builds the [MedicamentoModel] instance
          * @return a [MedicamentoModel] instance
-         * @throws IllegalStateException if the [numRegistro], [nombre], [url], [prospecto], [apiImagen], [laboratorio], [prescripcion] or [afectaConduccion] is null
+         * @throws IllegalStateException if the [numRegistro], [nombre], [url], [prospecto], [imagen], [laboratorio], [prescripcion] or [afectaConduccion] is null
          */
         fun build(): MedicamentoModel {
             try {
@@ -41,13 +41,13 @@ data class MedicamentoModel(
                     nombre!!,
                     url!!,
                     prospecto!!,
-                    apiImagen!!,
+                    imagen!!,
                     laboratorio!!,
                     prescripcion!!,
                     afectaConduccion!!
                 )
             } catch (e: NullPointerException) {
-                throw IllegalStateException("The numRegistro, nombre, url, prospecto, apiImagen, laboratorio, prescripcion and afectaConduccion must not be null")
+                throw IllegalStateException("The 'numRegistro', 'nombre', 'url', 'prospecto', 'imagen', 'laboratorio', 'prescripcion' and 'afectaConduccion' must not be null")
             }
         }
     }
