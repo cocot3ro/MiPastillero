@@ -5,25 +5,24 @@ import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
-import androidx.core.view.children
+import androidx.core.view.drawToBitmap
 import androidx.core.view.get
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DateTimeUtils
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zero
+import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.databinding.FragmentAddActiveMedDialogBinding
 import com.a23pablooc.proxectofct.databinding.TimePickerBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
@@ -32,6 +31,9 @@ import com.a23pablooc.proxectofct.ui.view.adapters.TimePickerRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.view.viewholders.AddActiveMedDialogViewModel
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.util.Date
 
@@ -47,17 +49,17 @@ class AddActiveMedDialogFragment : DialogFragment() {
     private lateinit var listener: OnDataEnteredListener
 
     private var fetchedMed: MedicamentoItem? = null
-    private lateinit var image: ByteArray
+    private var image: ByteArray = byteArrayOf()
 
     private val pickMedia = registerForActivityResult(PickVisualMedia()) {
         it?.let {
             Glide.with(requireContext()).load(it).into(binding.img)
 
-            image = ByteArrayOutputStream().also { baos ->
-                (binding.img.drawable as BitmapDrawable).bitmap.compress(
+            image = ByteArrayOutputStream().also { byteArrayOutputStream ->
+                binding.img.drawToBitmap().compress(
                     Bitmap.CompressFormat.JPEG,
                     100,
-                    baos
+                    byteArrayOutputStream
                 )
             }.toByteArray()
         }
@@ -67,11 +69,32 @@ class AddActiveMedDialogFragment : DialogFragment() {
         fun onDataEntered(med: MedicamentoActivoItem)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        try {
+            listener = parentFragment as OnDataEnteredListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException(("$context must implement OnDataEnteredListener"))
+        }
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return activity?.let {
+            AlertDialog.Builder(it).apply {
+                setView(createView())
+                setTitle(R.string.añadir_medicamento)
+                setPositiveButton(R.string.aceptar, null)
+                setNegativeButton(R.string.cancelar, null)
+            }.create().apply {
+                setOnShowListener {
+                    setUpPositiveButton(this)
+                }
+            }
+        } ?: throw IllegalStateException("Activity cannot be null")
+    }
+
+    private fun createView(): View {
         binding = FragmentAddActiveMedDialogBinding.inflate(layoutInflater)
 
         timePickerAdapter = TimePickerRecyclerViewAdapter(
@@ -99,50 +122,26 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
         binding.favFrame.setOnLongClickListener {
             Toast.makeText(
-                requireContext(),
-                getString(R.string.seleccionar_una_imagen), Toast.LENGTH_SHORT
+                context,
+                getString(R.string.seleccionar_una_imagen),
+                Toast.LENGTH_SHORT
             ).show()
             true
         }
 
-        binding.btnHelp.setOnClickListener { showHelp() }
+        binding.btnHelp.setOnClickListener { toggleHelp() }
 
         binding.btnSearch.setOnClickListener { search() }
 
-        binding.btnAddTimer.setOnClickListener { onAddTimer(true) }
+        binding.btnAddTimer.setOnClickListener { onAddTimer() }
 
         binding.favFrame.setOnClickListener {
-            binding.btnFavBg.visibility = binding.btnFavBg.visibility.xor(View.VISIBLE)
+            binding.btnFavBg.visibility = binding.btnFavBg.visibility.xor(View.GONE)
         }
 
-        onAddTimer(false)
+        onAddTimer()
 
         return binding.root
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        try {
-            listener = context as OnDataEnteredListener
-        } catch (e: ClassCastException) {
-            throw ClassCastException(("$context must implement OnDataEnteredListener"))
-        }
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return activity?.let {
-            AlertDialog.Builder(it).apply {
-                setView(requireView())
-                setTitle(R.string.añadir_medicamento)
-                setPositiveButton(R.string.aceptar, null)
-                setNegativeButton(R.string.cancelar, null)
-            }.create().apply {
-                setOnShowListener {
-                    setUpPositiveButton(this)
-                }
-            }
-        } ?: throw IllegalStateException("Activity cannot be null")
     }
 
     private fun setUpPositiveButton(dialog: AlertDialog) {
@@ -150,32 +149,31 @@ class AddActiveMedDialogFragment : DialogFragment() {
             if (!validateForm())
                 return@setOnClickListener
 
-            val nombre = binding.nombre.text.toString()
+            val alias = binding.nombre.text.toString()
             val dateStart = DateTimeUtils.parseDate(binding.dateStart.text.toString())
             val dateEnd = DateTimeUtils.parseDate(binding.dateEnd.text.toString())
             val dosis = binding.dosis.text.toString()
-            val schedule = binding.scheduleLayout.children
-                .map { DateTimeUtils.parseTime(TimePickerBinding.bind(it).hour.text.toString()) }
-                .toSet()
+            val schedule = scheduleList.toSet()
 
             dialog.dismiss()
 
-            //TODO: todo
             val med = MedicamentoActivoItem(
                 pkMedicamentoActivo = 0,
-                dosis = dosis,
+                dosis = dosis.ifBlank { "" },
                 horario = schedule,
                 fechaFin = dateEnd,
                 fechaInicio = dateStart,
-                fkMedicamento = fetchedMed ?: MedicamentoItem(
-                    pkMedicamento = 0,
-                    numRegistro = "",
-                    nombre = nombre,
-                    alias = nombre,
+                fkMedicamento = fetchedMed?.apply {
+                    esFavorito = binding.btnFavBg.visibility == View.VISIBLE
+                } ?: MedicamentoItem(
+                    pkCodNacionalMedicamento = 0,
+                    nombre = alias,
+                    alias = alias,
                     imagen = image,
+                    esFavorito = binding.btnFavBg.visibility == View.VISIBLE,
+                    numRegistro = "",
                     url = "",
                     prescripcion = "",
-                    esFavorito = binding.btnFavBg.visibility == View.VISIBLE,
                     laboratorio = "",
                     prospecto = "",
                     afectaConduccion = false
@@ -188,12 +186,24 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
     private fun validateForm(): Boolean {
         if (binding.nombre.text.isNullOrBlank()) {
-            Toast.makeText(requireContext(), R.string.sin_nombre, Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                R.string.sin_nombre,
+                Toast.LENGTH_SHORT
+            ).show()
             return false
         }
 
-        if (binding.dateStart.text.toString() <= binding.dateEnd.text.toString()) {
-            Toast.makeText(requireContext(), R.string.fecha_invalida, Toast.LENGTH_SHORT).show()
+        val startDate = DateTimeUtils.parseDate(binding.dateStart.text.toString()).time
+        val endDate = DateTimeUtils.parseDate(binding.dateEnd.text.toString()).time
+        val today = Date().zeroTime().time
+
+        if (startDate <= endDate || startDate < today) {
+            Toast.makeText(
+                context,
+                R.string.fecha_invalida,
+                Toast.LENGTH_SHORT
+            ).show()
             return false
         }
 
@@ -202,46 +212,71 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
     private fun search() {
         try {
-            Toast.makeText(requireContext(), R.string.buscando, Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                R.string.buscando,
+                Toast.LENGTH_SHORT
+            ).show()
 
             binding.progressBar.visibility = View.VISIBLE
 
             val codNacional = binding.codNacional.text.toString()
 
-            val fetchedMed = viewModel.search(codNacional)
+            lifecycleScope.launch(Dispatchers.IO) {
+                val fetchedMed = viewModel.search(codNacional)
 
-            if (fetchedMed == null) {
-                Toast.makeText(
-                    requireContext(),
-                    R.string.codigo_nacional_no_encontrado,
-                    Toast.LENGTH_SHORT
-                ).show()
-                return
+                withContext(Dispatchers.Main) {
+                    //TODO: medicamento_no_encontrado en vez de codigo_nacional_no_encontrado
+                    if (fetchedMed == null) {
+                        Toast.makeText(
+                            context,
+                            R.string.codigo_nacional_no_encontrado,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@withContext
+                    }
+
+                    this@AddActiveMedDialogFragment.fetchedMed = fetchedMed
+
+                    binding.codNacional.setText(codNacional)
+
+                    binding.nombre.setText(fetchedMed.nombre)
+
+                    if (fetchedMed.imagen.isNotEmpty()) {
+                        Glide.with(requireContext()).load(fetchedMed.imagen).into(binding.img)
+                        image = fetchedMed.imagen
+                    } else {
+                        binding.img.setImageResource(R.mipmap.no_image_available)
+                        image = byteArrayOf()
+                    }
+
+                    if (fetchedMed.esFavorito) {
+                        binding.btnFavBg.visibility = View.VISIBLE
+                        binding.favFrame.setOnClickListener {}
+                    } else {
+                        binding.btnFavBg.visibility = View.GONE
+                        binding.favFrame.setOnClickListener {
+                            binding.btnFavBg.visibility =
+                                binding.btnFavBg.visibility.xor(View.GONE)
+                        }
+                    }
+                }
             }
-
-            this.fetchedMed = fetchedMed
-
-            binding.codNacional.setText(codNacional)
-
-            binding.nombre.setText(fetchedMed.nombre)
-
-            binding.btnFavBg.apply {
-                visibility = if (fetchedMed.esFavorito) View.VISIBLE else View.GONE
-            }
-
-            binding.favFrame.setOnClickListener {}
-
-            Glide.with(requireContext()).load(fetchedMed.imagen).into(binding.img)
         } catch (e: IllegalArgumentException) {
-            Toast.makeText(requireContext(), R.string.codigo_nacional_no_valido, Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(
+                context,
+                R.string.codigo_nacional_no_valido,
+                Toast.LENGTH_SHORT
+            ).show()
+
+            toggleHelp()
 
             Log.e(
                 "AddActiveMedDialogFragment.search",
                 "IllegalArgumentException: ${e.stackTraceToString()}"
             )
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             Log.e("AddActiveMedDialogFragment.search", "Exception: ${e.stackTraceToString()}")
         } finally {
             binding.progressBar.visibility = View.GONE
@@ -249,7 +284,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
     }
 
-    private fun onAddTimer(showAfterAdd: Boolean) {
+    private fun onAddTimer() {
         if (binding.scheduleLayout.childCount == 1) {
             TimePickerBinding.bind(binding.scheduleLayout[0]).btnDeleteTimer.isEnabled = true
         }
@@ -264,7 +299,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
     }
 
     private fun onRemoveTimer(date: Date) {
-        scheduleList = scheduleList.minus(date).sortedBy { it.time}
+        scheduleList = scheduleList.minus(date).sortedBy { it.time }
         timePickerAdapter.updateData(scheduleList)
 
         if (binding.scheduleLayout.childCount == 1) {
@@ -274,7 +309,8 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
     private fun onSelectTime(date: Date) {
         TimePickerDialog(
-            requireContext(), { _, hourOfDay, minute ->
+            context,
+            { _, hourOfDay, minute ->
                 val pickedTime = Calendar.getInstance().apply {
                     time.zero()
                     set(Calendar.HOUR_OF_DAY, hourOfDay)
@@ -283,7 +319,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
                 if (scheduleList.any { it.time == pickedTime.time }) {
                     Toast.makeText(
-                        requireContext(),
+                        context,
                         R.string.hora_ya_seleccionada,
                         Toast.LENGTH_SHORT
                     ).show()
@@ -295,13 +331,13 @@ class AddActiveMedDialogFragment : DialogFragment() {
             },
             0,
             0,
-            DateFormat.is24HourFormat(requireContext())
+            DateFormat.is24HourFormat(context)
         ).show()
     }
 
-    private fun showHelp() {
+    private fun toggleHelp() {
         if (binding.textHelp.apply {
-                visibility = visibility.xor(View.VISIBLE)
+                visibility = visibility.xor(View.GONE)
             }.visibility == View.VISIBLE) {
 
             binding.textHelp.handler.removeCallbacksAndMessages(null)
@@ -314,10 +350,5 @@ class AddActiveMedDialogFragment : DialogFragment() {
         } else {
             binding.textHelp.handler.removeCallbacksAndMessages(null)
         }
-
-        Log.d(
-            "AddActiveMedDialogFragment.showHelp",
-            "Help text visibility: ${binding.textHelp.visibility}"
-        )
     }
 }

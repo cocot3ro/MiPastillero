@@ -10,7 +10,7 @@ fun MedicamentoCalendarioItem.toDatabase(): MedicamentoCalendarioAndMedicamento 
         medicamento = fkMedicamento.toDatabase(),
         medicamentoCalendarioEntity = MedicamentoCalendarioEntity(
             pkMedicamentoCalendario = pkMedicamentoCalendario,
-            fkMedicamento = fkMedicamento.pkMedicamento,
+            fkMedicamento = fkMedicamento.pkCodNacionalMedicamento,
             fkUsuario = UserInfoProvider.currentUser.pkUsuario,
             hora = hora,
             fecha = fecha,

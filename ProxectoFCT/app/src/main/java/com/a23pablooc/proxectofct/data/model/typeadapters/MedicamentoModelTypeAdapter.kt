@@ -45,11 +45,10 @@ class MedicamentoModelTypeAdapter : TypeAdapter<MedicamentoModel>() {
                                                 nextName()
                                                 builder.prospecto(nextString())
                                             }
-
-                                            else -> skipValue()
                                         }
                                     }
 
+                                    else -> skipValue()
                                 }
                             }
 

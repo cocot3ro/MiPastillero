@@ -48,7 +48,7 @@ object RoomModule {
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-                    db.execSQL("UPDATE sqlite_sequence SET seq = 999999 WHERE name = ${MedicamentoTable.Columns.PK_COD_NACIONAL}")
+                    db.execSQL("UPDATE sqlite_sequence SET seq = 999999 WHERE name = '${MedicamentoTable.Columns.PK_COD_NACIONAL}'")
                 }
             })
 //            .openHelperFactory(supportFactory)

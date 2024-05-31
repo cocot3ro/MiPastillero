@@ -2,7 +2,7 @@ Para añadir un MenuManager, usar en onViewCreated(). Ej:
 
 ```kotlin
 override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+    (activity as MenuHost).addMenuProvider(object : MenuProvider {
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
             menuInflater.inflate(R.menu.home_menu, menu)
         }

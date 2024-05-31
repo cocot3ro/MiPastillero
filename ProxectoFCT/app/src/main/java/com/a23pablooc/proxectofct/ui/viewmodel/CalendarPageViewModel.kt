@@ -32,8 +32,8 @@ class CalendarPageViewModel @Inject constructor(
         viewModelScope.launch {
             getMedicamentosCalendarioUseCase(date)
                 .catch {
-                    _uiState.value = MainScreenUiState
-                        .Error("Error fetching calendar meds from DB")
+                    _uiState.value =
+                        MainScreenUiState.Error("Error fetching calendar meds from DB", it)
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {

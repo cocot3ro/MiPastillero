@@ -5,7 +5,7 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 
 fun MedicamentoEntity.toDomain(): MedicamentoItem {
     return MedicamentoItem(
-        pkMedicamento = pkMedicamento,
+        pkCodNacionalMedicamento = pkCodNacionalMedicamento,
         numRegistro = numRegistro,
         nombre = nombre,
         alias = alias,

@@ -31,30 +31,28 @@ object DateTimeUtils {
         return ((endDate.time - startDate.time) / (1000 * 60 * 60 * 24)).toInt()
     }
 
-    fun Date.zero() {
+    fun Date.zero() = apply {
         zeroTime()
         zeroDate()
     }
 
-    fun Date.zeroTime() {
-        val calendar = Calendar.getInstance().apply {
+    fun Date.zeroTime() = apply {
+        this.time = Calendar.getInstance().apply {
             time = this@zeroTime
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
-        }
-        this.time = calendar.timeInMillis
+        }.timeInMillis
     }
 
-    fun Date.zeroDate() {
-        val calendar = Calendar.getInstance().apply {
+    fun Date.zeroDate() = apply {
+        this.time = Calendar.getInstance().apply {
             time = this@zeroDate
             set(Calendar.DAY_OF_MONTH, 1)
             set(Calendar.MONTH, 0)
             set(Calendar.YEAR, 0)
-        }
-        this.time = calendar.timeInMillis
+        }.timeInMillis
     }
 
     fun parseDate(date: String): Date {

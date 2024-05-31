@@ -29,7 +29,7 @@ class ActiveMedsViewModel @Inject constructor(
             getMedicamentosActivosUseCase()
                 .catch {
                     _uiState.value = MainScreenUiState
-                        .Error("Error fetching active meds from DB")
+                        .Error("Error fetching active meds from DB", it)
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {

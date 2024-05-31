@@ -12,7 +12,7 @@ class FavoriteMedsDiffUtil(
     override fun getNewListSize(): Int = newList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].pkMedicamento == newList[newItemPosition].pkMedicamento
+        return oldList[oldItemPosition].pkCodNacionalMedicamento == newList[newItemPosition].pkCodNacionalMedicamento
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

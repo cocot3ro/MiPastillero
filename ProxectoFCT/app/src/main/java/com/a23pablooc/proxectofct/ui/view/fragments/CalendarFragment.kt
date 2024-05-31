@@ -54,7 +54,7 @@ class CalendarFragment : Fragment() {
             binding.drawerLayout
         )
 
-        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         binding.toolbar.setupWithNavController(findNavController(), appBarConfiguration)
 
         NavigationUI.setupWithNavController(binding.navView, navController)
@@ -73,7 +73,7 @@ class CalendarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+        (activity as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_toolbar_calendar, menu)
             }

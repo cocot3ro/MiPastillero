@@ -74,12 +74,16 @@ class CalendarPageFragment : Fragment() {
 
                             // TODO: vista para lista vacia
                             // binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
+                            Toast.makeText(context, "Empty list", Toast.LENGTH_LONG).show()
                         }
 
                         is MainScreenUiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
-                            Log.e("CalendarPageFragment", "Error: ${uiState.errorMessage}")
+                            Log.e(
+                                "CalendarPageFragment",
+                                "Error: ${uiState.errorMessage}"
+                            )
                         }
                     }
                 }

@@ -28,7 +28,7 @@ class FavoriteMedsViewModel @Inject constructor(
             getFavoriteMedsUseCase()
                 .catch {
                     _uiState.value = MainScreenUiState
-                        .Error("Error fetching favorite meds")
+                        .Error("Error fetching favorite meds", it)
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {

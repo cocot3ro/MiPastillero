@@ -52,17 +52,13 @@ class FavoriteMedsFragment : Fragment() {
             binding.drawerLayout
         )
 
-        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         binding.toolbar.setupWithNavController(findNavController(), appBarConfiguration)
 
         favoriteRecyclerViewAdapter = FavoriteRecyclerViewAdapter(
             emptyList(),
-            onAdd = {
-                onAdd(it)
-            },
-            onInfo = {
-                onInfo(it)
-            }
+            onAdd = { onAdd(it) },
+            onInfo = { onInfo(it) }
         )
 
         binding.recyclerViewFavoriteMeds.apply {
@@ -76,7 +72,7 @@ class FavoriteMedsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+        (activity as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_toolbar_fav_med, menu)
             }
@@ -104,11 +100,11 @@ class FavoriteMedsFragment : Fragment() {
                         is MainScreenUiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
 
-                            favoriteRecyclerViewAdapter
-                                .updateData(uiState.data.map { it as MedicamentoItem })
+                            favoriteRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoItem })
 
                             // TODO: vista para lista vacia
                             //  ? binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
+                            Toast.makeText(context, "Empty list", Toast.LENGTH_LONG).show()
                         }
 
                         is MainScreenUiState.Error -> {

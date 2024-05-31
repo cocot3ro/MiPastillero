@@ -12,11 +12,47 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MedicamentoDAO {
-    @Query("SELECT * FROM ${MedicamentoTable.TABLE_NAME}")
+    @Query(
+        """
+            SELECT *
+            FROM ${MedicamentoTable.TABLE_NAME}
+        """
+    )
     fun getAll(): Flow<List<MedicamentoEntity>>
 
-    @Query("SELECT * FROM ${MedicamentoTable.TABLE_NAME} WHERE ${MedicamentoTable.Columns.FK_USUARIO} = :idUsuario AND ${MedicamentoTable.Columns.ES_FAVORITO} = 1")
+    @Query(
+        """
+            SELECT *
+            FROM ${MedicamentoTable.TABLE_NAME}
+            WHERE ${MedicamentoTable.Columns.FK_USUARIO} = :idUsuario
+                AND ${MedicamentoTable.Columns.ES_FAVORITO} = 1
+        """
+    )
     fun getAllFavoritos(idUsuario: Int): Flow<List<MedicamentoEntity>>
+
+    @Query(
+        """
+            SELECT *
+            FROM ${MedicamentoTable.TABLE_NAME}
+            WHERE ${MedicamentoTable.Columns.FK_USUARIO} = :userId
+                AND ${MedicamentoTable.Columns.PK_COD_NACIONAL} = :codNacional
+                AND ${MedicamentoTable.Columns.ES_FAVORITO} = :favorito
+        """
+    )
+    fun findMedicamentoByCodNacionalWhereFavorito(
+        userId: Int,
+        codNacional: Int,
+        favorito: Boolean
+    ): MedicamentoEntity?
+
+    @Query(
+        """
+            SELECT *
+            FROM ${MedicamentoTable.TABLE_NAME}
+            WHERE ${MedicamentoTable.Columns.PK_COD_NACIONAL} = :codNacional
+        """
+    )
+    fun findByCodNacional(codNacional: Int): MedicamentoEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(medicamento: MedicamentoEntity)
@@ -26,15 +62,4 @@ interface MedicamentoDAO {
 
     @Delete
     suspend fun delete(medicamento: MedicamentoEntity)
-
-    @Query(
-        """
-                SELECT *
-                FROM ${MedicamentoTable.TABLE_NAME}
-                WHERE ${MedicamentoTable.Columns.FK_USUARIO} = :userId AND
-                ${MedicamentoTable.Columns.NUM_REGISTRO} = :numRegistro AND
-                ${MedicamentoTable.Columns.ES_FAVORITO} = 1
-        """
-    )
-    fun findFavoritoByNumRegistro(userId: Int, numRegistro: String): MedicamentoEntity?
 }

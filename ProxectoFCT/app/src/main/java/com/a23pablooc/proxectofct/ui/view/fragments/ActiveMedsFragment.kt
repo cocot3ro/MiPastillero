@@ -31,13 +31,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ActiveMedsFragment : Fragment() {
+class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredListener {
     private lateinit var binding: FragmentActiveMedsBinding
     private val viewModel: ActiveMedsViewModel by viewModels()
     private lateinit var activeRecyclerViewAdapter: ActiveMedsRecyclerViewAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentActiveMedsBinding.inflate(layoutInflater)
@@ -51,7 +52,7 @@ class ActiveMedsFragment : Fragment() {
             binding.drawerLayout
         )
 
-        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         binding.toolbar.setupWithNavController(findNavController(), appBarConfiguration)
 
         activeRecyclerViewAdapter = ActiveMedsRecyclerViewAdapter(
@@ -70,6 +71,11 @@ class ActiveMedsFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
 
+        binding.dialog.setOnClickListener {
+            val dialog = AddActiveMedDialogFragment()
+            dialog.show(childFragmentManager, "AddActiveMedDialogFragment")
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
@@ -84,6 +90,7 @@ class ActiveMedsFragment : Fragment() {
 
                             // TODO: vista para lista vacia
                             // binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
+                            Toast.makeText(context, "Empty list", Toast.LENGTH_LONG).show()
                         }
 
                         is MainScreenUiState.Error -> {
@@ -107,7 +114,7 @@ class ActiveMedsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+        (activity as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_toolbar_active_med, menu)
             }
@@ -127,5 +134,13 @@ class ActiveMedsFragment : Fragment() {
 
     private fun addActiveMed() {
         // TODO
+    }
+
+    override fun onDataEntered(med: MedicamentoActivoItem) {
+        Toast.makeText(
+            context,
+            "Medicamento añadido ${med.fkMedicamento.alias}",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }

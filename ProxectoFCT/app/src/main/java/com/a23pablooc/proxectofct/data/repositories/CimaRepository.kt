@@ -1,6 +1,7 @@
 package com.a23pablooc.proxectofct.data.repositories
 
-import com.a23pablooc.proxectofct.core.CimaImageType
+import android.util.Log
+import com.a23pablooc.proxectofct.data.model.enums.CimaImageType
 import com.a23pablooc.proxectofct.data.model.extensions.toDomain
 import com.a23pablooc.proxectofct.data.network.CimaService
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
@@ -13,26 +14,37 @@ class CimaRepository @Inject constructor(
         nregistro: String,
         imgResource: String
     ): ByteArray {
+//        TODO: preferencias imagenes
 
-//        TODO: preferencia usarImagenAltaCalidad
-//        if (usarImagenAltaCalidad) {
-//            return repository.downloadImage(CimaImageType.FULL, nregistro, imgResource)
-//                ?: repository.downloadImage(CimaImageType.THUMBNAIL, nregistro, imgResource)
+        if (imgResource.isBlank()) return byteArrayOf()
+        if (imgResource.isBlank()) return byteArrayOf()
+
+//        if (!usarImagenes) return byteArrayOf()
+//
+//        return if (usarImagenesAltaCalidad) {
+//          cimaService.getMedImage(CimaImageType.FULL, nregistro, imgResource)
+//              ?: cimaService.getMedImage(CimaImageType.THUMBNAIL, nregistro, imgResource)
+//              ?: byteArrayOf()
+//        } else {
+//            cimaService.getMedImage(CimaImageType.THUMBNAIL, nregistro, imgResource)
+//                ?: byteArrayOf()
 //        }
 
         return cimaService.getMedImage(CimaImageType.FULL, nregistro, imgResource)
+            ?: cimaService.getMedImage(CimaImageType.THUMBNAIL, nregistro, imgResource)
+            ?: byteArrayOf()
     }
 
-    suspend fun searchMedicamento(codNacional: String): MedicamentoItem {
-        var imgResource: String
+    suspend fun searchMedicamento(codNacional: Int): MedicamentoItem? {
+        var imgResource = ""
 
-        return cimaService.getMedicamentoByCodNacional(codNacional).also {
+        return cimaService.getMedicamentoByCodNacional(codNacional)?.also {
             imgResource = it.imagen
-        }.toDomain().apply {
-            runCatching {
-                imagen = downloadImage(numRegistro, imgResource)
-            }.onFailure {
-                imagen = byteArrayOf()
+        }?.toDomain()?.apply {
+            imagen = try {
+                downloadImage(numRegistro, imgResource)
+            } catch (e: Exception) {
+                byteArrayOf()
             }
         }
     }

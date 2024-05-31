@@ -1,7 +1,7 @@
 package com.a23pablooc.proxectofct.domain.model
 
 data class MedicamentoItem(
-    var pkMedicamento: Int,
+    var pkCodNacionalMedicamento: Int,
     var url: String,
     var nombre: String,
     var alias: String,
@@ -19,7 +19,7 @@ data class MedicamentoItem(
 
         other as MedicamentoItem
 
-        return ((pkMedicamento != other.pkMedicamento)
+        return ((pkCodNacionalMedicamento != other.pkCodNacionalMedicamento)
                 || (url != other.url)
                 || (nombre != other.nombre)
                 || (prospecto != other.prospecto)
@@ -32,7 +32,7 @@ data class MedicamentoItem(
     }
 
     override fun hashCode(): Int {
-        var result = pkMedicamento
+        var result = pkCodNacionalMedicamento
         result = 31 * result + url.hashCode()
         result = 31 * result + nombre.hashCode()
         result = 31 * result + prospecto.hashCode()

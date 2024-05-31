@@ -29,7 +29,7 @@ import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
 data class MedicamentoEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = MedicamentoTable.Columns.PK_COD_NACIONAL)
-    val pkMedicamento: Int = 0,
+    val pkCodNacionalMedicamento: Int = 0,
 
     @ColumnInfo(name = MedicamentoTable.Columns.FK_USUARIO)
     val fkUsuario: Int,
@@ -70,7 +70,7 @@ data class MedicamentoEntity(
 
         other as MedicamentoEntity
 
-        return ((pkMedicamento != other.pkMedicamento)
+        return ((pkCodNacionalMedicamento != other.pkCodNacionalMedicamento)
                 || (fkUsuario != other.fkUsuario)
                 || (url != other.url)
                 || (nombre != other.nombre)
@@ -85,7 +85,7 @@ data class MedicamentoEntity(
     }
 
     override fun hashCode(): Int {
-        var result = pkMedicamento
+        var result = pkCodNacionalMedicamento
         result = 31 * result + fkUsuario
         result = 31 * result + url.hashCode()
         result = 31 * result + nombre.hashCode()
