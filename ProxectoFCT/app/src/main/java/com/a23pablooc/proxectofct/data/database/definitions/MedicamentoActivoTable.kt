@@ -11,6 +11,7 @@ object MedicamentoActivoTable {
         const val FECHA_FIN = "fecha_fin"
         const val HORARIO = "horario"
         const val DOSIS = "dosis"
+        const val TOMAS = "tomas"
     }
 
     object Indexes {

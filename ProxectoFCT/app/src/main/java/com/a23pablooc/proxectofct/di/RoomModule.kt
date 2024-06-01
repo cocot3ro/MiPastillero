@@ -8,7 +8,6 @@ import com.a23pablooc.proxectofct.data.database.PillboxDatabase
 import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
 import com.a23pablooc.proxectofct.data.database.dao.HistorialDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoActivoDAO
-import com.a23pablooc.proxectofct.data.database.dao.MedicamentoCalendarioDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
 import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
@@ -64,11 +63,6 @@ object RoomModule {
     @Provides
     fun provideMedicamentoActivoDao(database: PillboxDatabase): MedicamentoActivoDAO =
         database.getMedicamentoActivoDao()
-
-    @Singleton
-    @Provides
-    fun provideCalendarioDao(database: PillboxDatabase): MedicamentoCalendarioDAO =
-        database.getMedicamentoCalendarioDao()
 
     @Singleton
     @Provides

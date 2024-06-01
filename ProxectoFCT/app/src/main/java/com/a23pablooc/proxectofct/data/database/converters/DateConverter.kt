@@ -1,11 +1,13 @@
 package com.a23pablooc.proxectofct.data.database.converters
 
+import android.icu.util.Calendar
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import android.icu.util.Calendar
 import java.util.Date
 
 object DateConverter {
+    private val gson = Gson()
+
     @TypeConverter
     fun dateToLong(date: Date): Long {
         return Calendar.getInstance().apply {
@@ -19,14 +21,5 @@ object DateConverter {
             timeInMillis = long
         }.time
     }
-
-    @TypeConverter
-    fun dateSetToJson(set: Set<Date>): String {
-        return Gson().toJson(set.map { dateToLong(it) })
-    }
-
-    @TypeConverter
-    fun jsonToDateSet(json: String): Set<Date> {
-        return Gson().fromJson(json, Array<Long>::class.java).map { longToDate(it) }.toSet()
-    }
 }
+

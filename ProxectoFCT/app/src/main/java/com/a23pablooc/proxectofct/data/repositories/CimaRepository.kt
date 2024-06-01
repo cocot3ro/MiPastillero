@@ -1,35 +1,35 @@
 package com.a23pablooc.proxectofct.data.repositories
 
+import com.a23pablooc.proxectofct.core.DataStoreManager
 import com.a23pablooc.proxectofct.data.model.enums.CimaImageType
 import com.a23pablooc.proxectofct.data.model.extensions.toDomain
 import com.a23pablooc.proxectofct.data.network.CimaService
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class CimaRepository @Inject constructor(
-    private val cimaService: CimaService
+    private val cimaService: CimaService,
+    private val dataStoreManager: DataStoreManager
 ) {
     private suspend fun downloadImage(
         nregistro: String,
         imgResource: String
     ): ByteArray {
-//        TODO: preferencias imagenes
-
-        if (imgResource.isBlank()) return byteArrayOf()
+        if (nregistro.isBlank()) return byteArrayOf()
         if (imgResource.isBlank()) return byteArrayOf()
 
-//        if (!usarImagenes) return byteArrayOf()
-//
-//        return if (usarImagenesAltaCalidad) {
-//          cimaService.getMedImage(CimaImageType.FULL, nregistro, imgResource)
-//              ?: cimaService.getMedImage(CimaImageType.THUMBNAIL, nregistro, imgResource)
-//              ?: byteArrayOf()
-//        } else {
-//            cimaService.getMedImage(CimaImageType.THUMBNAIL, nregistro, imgResource)
-//                ?: byteArrayOf()
-//        }
+        val useImages = dataStoreManager.useImages().first()
+        val useHighQualityImages = dataStoreManager.useHighQualityImages().first()
 
-        return cimaService.getMedImage(CimaImageType.FULL, nregistro, imgResource)
+        if (useImages) return byteArrayOf()
+
+        var image: ByteArray? = null
+
+        if (useHighQualityImages)
+            image = cimaService.getMedImage(CimaImageType.FULL, nregistro, imgResource)
+
+        return image
             ?: cimaService.getMedImage(CimaImageType.THUMBNAIL, nregistro, imgResource)
             ?: byteArrayOf()
     }

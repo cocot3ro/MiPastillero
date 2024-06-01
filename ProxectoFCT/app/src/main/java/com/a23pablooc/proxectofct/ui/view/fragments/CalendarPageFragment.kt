@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.getDayName
 import com.a23pablooc.proxectofct.databinding.FragmentCalendarPageBinding
-import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
+import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.CalendarRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
 import com.a23pablooc.proxectofct.ui.viewmodel.CalendarPageViewModel
@@ -48,8 +48,8 @@ class CalendarPageFragment : Fragment() {
     ): View {
         binding = FragmentCalendarPageBinding.inflate(layoutInflater)
 
-        calendarRecyclerViewAdapter = CalendarRecyclerViewAdapter(emptyList()) {
-            viewModel.marcarToma(it)
+        calendarRecyclerViewAdapter = CalendarRecyclerViewAdapter(date, emptyList()) { med, dia, hora ->
+            viewModel.marcarToma(med, dia, hora)
         }
 
         binding.recyclerViewCalendarPage.apply {
@@ -69,7 +69,7 @@ class CalendarPageFragment : Fragment() {
 
                         is MainScreenUiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
-                            calendarRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoCalendarioItem })
+                            calendarRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoActivoItem })
 
                             // TODO: vista para lista vacia
                             // binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)

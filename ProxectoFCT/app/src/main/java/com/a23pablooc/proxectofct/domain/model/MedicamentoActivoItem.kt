@@ -7,6 +7,7 @@ data class MedicamentoActivoItem(
     var fkMedicamento: MedicamentoItem,
     var fechaInicio: Date,
     var fechaFin: Date,
-    var horario: Set<Date>,
-    var dosis: String
+    var horario: MutableSet<Date>,
+    var dosis: String,
+    var tomas: MutableMap<Date, MutableMap<Date, Boolean>>
 )

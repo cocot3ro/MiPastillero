@@ -174,9 +174,10 @@ class AddActiveMedDialogFragment : DialogFragment() {
             val med = MedicamentoActivoItem(
                 pkMedicamentoActivo = 0,
                 dosis = dosis.ifBlank { "" },
-                horario = schedule.toSet(),
+                horario = schedule.toMutableSet(),
                 fechaFin = dateEnd,
                 fechaInicio = dateStart,
+                tomas = mutableMapOf(),
                 fkMedicamento = fetchedMed?.apply {
                     esFavorito = binding.btnFavBg.visibility == View.VISIBLE
                     this.alias = alias.ifBlank { this.alias }

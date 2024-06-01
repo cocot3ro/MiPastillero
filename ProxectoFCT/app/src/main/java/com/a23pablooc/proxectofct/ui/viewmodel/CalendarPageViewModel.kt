@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.a23pablooc.proxectofct.domain.GetMedicamentosCalendarioUseCase
 import com.a23pablooc.proxectofct.domain.MarcarTomaUseCase
-import com.a23pablooc.proxectofct.domain.model.MedicamentoCalendarioItem
+import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -42,9 +42,9 @@ class CalendarPageViewModel @Inject constructor(
         }
     }
 
-    fun marcarToma(med: MedicamentoCalendarioItem) {
+    fun marcarToma(med: MedicamentoActivoItem, dia: Date, hora: Date) {
         viewModelScope.launch {
-            marcarTomaUseCase(med)
+            marcarTomaUseCase(med, dia, hora)
         }
     }
 }

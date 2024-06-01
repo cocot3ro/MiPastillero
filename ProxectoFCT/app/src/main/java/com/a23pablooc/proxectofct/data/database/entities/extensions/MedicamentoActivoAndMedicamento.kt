@@ -10,6 +10,7 @@ fun MedicamentoActivoAndMedicamento.toDomain(): MedicamentoActivoItem {
         fechaFin = medicamentoActivoEntity.fechaFin,
         fechaInicio = medicamentoActivoEntity.fechaInicio,
         horario = medicamentoActivoEntity.horario,
-        fkMedicamento = medicamento.toDomain()
+        fkMedicamento = medicamento.toDomain(),
+        tomas = medicamentoActivoEntity.tomas
     )
 }

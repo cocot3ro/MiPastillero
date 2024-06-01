@@ -57,8 +57,11 @@ data class MedicamentoActivoEntity(
     val fechaFin: Date,
 
     @ColumnInfo(name = MedicamentoActivoTable.Columns.HORARIO)
-    val horario: Set<Date>,
+    val horario: MutableSet<Date>,
 
     @ColumnInfo(name = MedicamentoActivoTable.Columns.DOSIS)
-    val dosis: String
+    val dosis: String,
+
+    @ColumnInfo(name = MedicamentoActivoTable.Columns.TOMAS)
+    val tomas: MutableMap<Date, MutableMap<Date, Boolean>>
 )
