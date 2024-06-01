@@ -2,7 +2,7 @@ package com.a23pablooc.proxectofct.data.database.converters
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import java.util.Calendar
+import android.icu.util.Calendar
 import java.util.Date
 
 object DateConverter {

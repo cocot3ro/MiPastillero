@@ -2,7 +2,6 @@ package com.a23pablooc.proxectofct.ui.view.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,16 +73,12 @@ class CalendarPageFragment : Fragment() {
 
                             // TODO: vista para lista vacia
                             // binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
-                            Toast.makeText(context, "Empty list", Toast.LENGTH_LONG).show()
+                            // Toast.makeText(context, "Empty list", Toast.LENGTH_SHORT).show()
                         }
 
                         is MainScreenUiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
-                            Log.e(
-                                "CalendarPageFragment",
-                                "Error: ${uiState.errorMessage}"
-                            )
                         }
                     }
                 }

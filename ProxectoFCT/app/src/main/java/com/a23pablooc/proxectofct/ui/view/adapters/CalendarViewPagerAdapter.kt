@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.ui.view.fragments.CalendarPageFragment
-import java.util.Calendar
+import android.icu.util.Calendar
 
 class CalendarViewPagerAdapter(
     fragmentManager: FragmentManager,

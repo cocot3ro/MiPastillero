@@ -1,6 +1,7 @@
 package com.a23pablooc.proxectofct.ui.view.fragments
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
@@ -8,23 +9,23 @@ import android.graphics.Bitmap
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.core.view.drawToBitmap
-import androidx.core.view.get
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DateTimeUtils
+import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zero
+import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.databinding.FragmentAddActiveMedDialogBinding
-import com.a23pablooc.proxectofct.databinding.TimePickerBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.TimePickerRecyclerViewAdapter
@@ -43,7 +44,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
     private lateinit var binding: FragmentAddActiveMedDialogBinding
     private val viewModel: AddActiveMedDialogViewModel by viewModels()
 
-    private var scheduleList: List<Date> = emptyList()
+    private var scheduleList: List<Date> = listOf(Date().zero())
     private lateinit var timePickerAdapter: TimePickerRecyclerViewAdapter
 
     private lateinit var listener: OnDataEnteredListener
@@ -67,6 +68,10 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
     interface OnDataEnteredListener {
         fun onDataEntered(med: MedicamentoActivoItem)
+    }
+
+    companion object {
+        const val TAG = "AddActiveMedDialogFragment"
     }
 
     override fun onAttach(context: Context) {
@@ -99,12 +104,8 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
         timePickerAdapter = TimePickerRecyclerViewAdapter(
             scheduleList,
-            onSelectTime = {
-                onSelectTime(it)
-            },
-            onRemoveTimer = {
-                onRemoveTimer(it)
-            }
+            onSelectTime = { onSelectTime(it) },
+            onRemoveTimer = { onRemoveTimer(it) }
         )
 
         binding.scheduleLayout.apply {
@@ -120,7 +121,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
             )
         }
 
-        binding.favFrame.setOnLongClickListener {
+        binding.imgLayout.setOnLongClickListener {
             Toast.makeText(
                 context,
                 getString(R.string.seleccionar_una_imagen),
@@ -133,13 +134,26 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
         binding.btnSearch.setOnClickListener { search() }
 
+        binding.btnStartDatePicker.setOnClickListener {
+            onSelectDate(binding.dateStart)
+        }
+
+        binding.btnEndDatePicker.setOnClickListener {
+            onSelectDate(binding.dateEnd)
+        }
+
         binding.btnAddTimer.setOnClickListener { onAddTimer() }
 
         binding.favFrame.setOnClickListener {
             binding.btnFavBg.visibility = binding.btnFavBg.visibility.xor(View.GONE)
         }
 
-        onAddTimer()
+        Date().zeroTime().formatDate().also {
+            binding.dateStart.text = it
+            binding.dateEnd.text = it
+        }
+
+        timePickerAdapter.updateData(scheduleList)
 
         return binding.root
     }
@@ -153,18 +167,20 @@ class AddActiveMedDialogFragment : DialogFragment() {
             val dateStart = DateTimeUtils.parseDate(binding.dateStart.text.toString())
             val dateEnd = DateTimeUtils.parseDate(binding.dateEnd.text.toString())
             val dosis = binding.dosis.text.toString()
-            val schedule = scheduleList.toSet()
+            val schedule = scheduleList
 
             dialog.dismiss()
 
             val med = MedicamentoActivoItem(
                 pkMedicamentoActivo = 0,
                 dosis = dosis.ifBlank { "" },
-                horario = schedule,
+                horario = schedule.toSet(),
                 fechaFin = dateEnd,
                 fechaInicio = dateStart,
                 fkMedicamento = fetchedMed?.apply {
                     esFavorito = binding.btnFavBg.visibility == View.VISIBLE
+                    this.alias = alias.ifBlank { this.alias }
+                    this.imagen = image
                 } ?: MedicamentoItem(
                     pkCodNacionalMedicamento = 0,
                     nombre = alias,
@@ -194,11 +210,21 @@ class AddActiveMedDialogFragment : DialogFragment() {
             return false
         }
 
+        if (scheduleList.toSet().size != scheduleList.size) {
+            // TODO: Hardcode string
+            Toast.makeText(
+                context,
+                "Las horas de toma deben de ser únicas",
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
+        }
+
         val startDate = DateTimeUtils.parseDate(binding.dateStart.text.toString()).time
         val endDate = DateTimeUtils.parseDate(binding.dateEnd.text.toString()).time
         val today = Date().zeroTime().time
 
-        if (startDate <= endDate || startDate < today) {
+        if (startDate < endDate || startDate < today) {
             Toast.makeText(
                 context,
                 R.string.fecha_invalida,
@@ -211,19 +237,21 @@ class AddActiveMedDialogFragment : DialogFragment() {
     }
 
     private fun search() {
-        try {
-            Toast.makeText(
-                context,
-                R.string.buscando,
-                Toast.LENGTH_SHORT
-            ).show()
+        binding.progressBar.visibility = View.VISIBLE
 
-            binding.progressBar.visibility = View.VISIBLE
+        val codNacional = binding.codNacional.text.toString()
 
-            val codNacional = binding.codNacional.text.toString()
-
-            lifecycleScope.launch(Dispatchers.IO) {
-                val fetchedMed = viewModel.search(codNacional)
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val fetchedMed = viewModel.search(codNacional).also {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context,
+                            R.string.buscando,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
 
                 withContext(Dispatchers.Main) {
                     //TODO: medicamento_no_encontrado en vez de codigo_nacional_no_encontrado
@@ -252,7 +280,14 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
                     if (fetchedMed.esFavorito) {
                         binding.btnFavBg.visibility = View.VISIBLE
-                        binding.favFrame.setOnClickListener {}
+                        binding.favFrame.setOnClickListener {
+                            // TODO: Hardcode string
+                            Toast.makeText(
+                                context,
+                                "Este medicamento ya está en favoritos",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     } else {
                         binding.btnFavBg.visibility = View.GONE
                         binding.favFrame.setOnClickListener {
@@ -261,34 +296,30 @@ class AddActiveMedDialogFragment : DialogFragment() {
                         }
                     }
                 }
+            } catch (e: IllegalArgumentException) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        context,
+                        R.string.codigo_nacional_no_valido,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    toggleHelp()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                }
+            } finally {
+                withContext(Dispatchers.Main) {
+                    binding.progressBar.visibility = View.GONE
+                }
             }
-        } catch (e: IllegalArgumentException) {
-            Toast.makeText(
-                context,
-                R.string.codigo_nacional_no_valido,
-                Toast.LENGTH_SHORT
-            ).show()
-
-            toggleHelp()
-
-            Log.e(
-                "AddActiveMedDialogFragment.search",
-                "IllegalArgumentException: ${e.stackTraceToString()}"
-            )
-        } catch (e: Exception) {
-            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-            Log.e("AddActiveMedDialogFragment.search", "Exception: ${e.stackTraceToString()}")
-        } finally {
-            binding.progressBar.visibility = View.GONE
         }
 
     }
 
     private fun onAddTimer() {
-        if (binding.scheduleLayout.childCount == 1) {
-            TimePickerBinding.bind(binding.scheduleLayout[0]).btnDeleteTimer.isEnabled = true
-        }
-
         val newTime = Date().apply {
             zero()
         }
@@ -299,23 +330,34 @@ class AddActiveMedDialogFragment : DialogFragment() {
     }
 
     private fun onRemoveTimer(date: Date) {
-        scheduleList = scheduleList.minus(date).sortedBy { it.time }
-        timePickerAdapter.updateData(scheduleList)
-
-        if (binding.scheduleLayout.childCount == 1) {
-            TimePickerBinding.bind(binding.scheduleLayout[0]).btnDeleteTimer.isEnabled = false
+        if (scheduleList.size == 1) {
+            // TODO: Hardcode string
+            Toast.makeText(
+                context,
+                "Se debe tener al menos una hora de toma",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
         }
+
+        scheduleList = scheduleList.minus(date)
+        timePickerAdapter.updateData(scheduleList)
     }
 
     private fun onSelectTime(date: Date) {
+        val calendar = Calendar.getInstance().apply {
+            time = date
+        }
+
         TimePickerDialog(
             context,
             { _, hourOfDay, minute ->
                 val pickedTime = Calendar.getInstance().apply {
-                    time.zero()
                     set(Calendar.HOUR_OF_DAY, hourOfDay)
                     set(Calendar.MINUTE, minute)
-                }.time
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }.time.zeroDate()
 
                 if (scheduleList.any { it.time == pickedTime.time }) {
                     Toast.makeText(
@@ -324,14 +366,33 @@ class AddActiveMedDialogFragment : DialogFragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    date.time = pickedTime.time
+                    scheduleList = scheduleList.minus(date).plus(pickedTime).sortedBy { it.time }
                     timePickerAdapter.updateData(scheduleList)
                 }
 
             },
-            0,
-            0,
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
             DateFormat.is24HourFormat(context)
+        ).show()
+    }
+
+    private fun onSelectDate(textView: TextView) {
+        DatePickerDialog(
+            requireContext(),
+            { _, year, monthOfYear, dayOfMonth ->
+                val date = Calendar.getInstance().apply {
+                    set(Calendar.YEAR, year)
+                    set(Calendar.MONTH, monthOfYear)
+                    set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                }.time.zeroTime()
+
+                textView.text = date.formatDate()
+            },
+            // Establece la fecha actual como predeterminada
+            Calendar.getInstance().get(Calendar.YEAR),
+            Calendar.getInstance().get(Calendar.MONTH),
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         ).show()
     }
 

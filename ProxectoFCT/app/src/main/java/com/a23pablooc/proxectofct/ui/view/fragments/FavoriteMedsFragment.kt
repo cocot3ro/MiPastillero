@@ -1,7 +1,6 @@
 package com.a23pablooc.proxectofct.ui.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -104,13 +103,12 @@ class FavoriteMedsFragment : Fragment() {
 
                             // TODO: vista para lista vacia
                             //  ? binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
-                            Toast.makeText(context, "Empty list", Toast.LENGTH_LONG).show()
+                            // Toast.makeText(context, "Empty list", Toast.LENGTH_SHORT).show()
                         }
 
                         is MainScreenUiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
-                            Log.e("FavoriteMedsFragment", "Error: ${uiState.errorMessage}")
                         }
                     }
                 }
@@ -126,11 +124,11 @@ class FavoriteMedsFragment : Fragment() {
 
     private fun onAdd(med: MedicamentoItem) {
         // TODO
-        Toast.makeText(context, "Añadir medicamento: ${med.nombre}", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "Añadir medicamento: ${med.alias}", Toast.LENGTH_LONG).show()
     }
 
     private fun onInfo(med: MedicamentoItem) {
         // TODO
-        Toast.makeText(context, "Info medicamento: ${med.nombre}", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "Info medicamento: ${med.alias}", Toast.LENGTH_LONG).show()
     }
 }

@@ -15,8 +15,6 @@ class TimePickerRecyclerViewAdapter(
     private val onRemoveTimer: (Date) -> Unit
 ) : RecyclerView.Adapter<TimePickerViewHolder>() {
 
-    private var showOnAdd = false
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimePickerViewHolder {
         return TimePickerViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.time_picker, parent, false)
@@ -26,8 +24,7 @@ class TimePickerRecyclerViewAdapter(
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: TimePickerViewHolder, position: Int) {
-        holder.render(list[position], onSelectTime, onRemoveTimer, showOnAdd)
-        showOnAdd = true
+        holder.render(list[position], onSelectTime, onRemoveTimer)
     }
 
     fun updateData(newData: List<Date>) {

@@ -3,7 +3,7 @@ package com.a23pablooc.proxectofct.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import com.a23pablooc.proxectofct.core.DateTimeUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.Calendar
+import android.icu.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel

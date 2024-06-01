@@ -1,6 +1,5 @@
 package com.a23pablooc.proxectofct.ui.view.viewholders
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.a23pablooc.proxectofct.domain.SearchMedicamentoUseCase
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
@@ -18,9 +17,6 @@ class AddActiveMedDialogViewModel @Inject constructor(
         if (!codNacionalPattern.matches(codNacional))
             throw IllegalArgumentException("Invalid codNacional")
 
-        val medicamentoItem: MedicamentoItem? =
-            searchMedicamentoUseCase(codNacional.substringBefore('.').toInt())
-
-        return medicamentoItem.also { Log.d("AddActiveMedDialogViewModel", "MedicamentoItem: $it") }
+        return searchMedicamentoUseCase(codNacional.substringBefore('.').toInt())
     }
 }

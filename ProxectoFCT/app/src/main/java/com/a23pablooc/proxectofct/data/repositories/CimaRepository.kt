@@ -1,6 +1,5 @@
 package com.a23pablooc.proxectofct.data.repositories
 
-import android.util.Log
 import com.a23pablooc.proxectofct.data.model.enums.CimaImageType
 import com.a23pablooc.proxectofct.data.model.extensions.toDomain
 import com.a23pablooc.proxectofct.data.network.CimaService

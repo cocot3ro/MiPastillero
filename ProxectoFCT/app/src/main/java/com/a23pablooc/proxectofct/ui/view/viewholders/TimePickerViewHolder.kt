@@ -9,27 +9,15 @@ import java.util.Date
 class TimePickerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding = TimePickerBinding.bind(view)
 
-    private var firstShow = true
-
     fun render(
         date: Date,
         onSelectTime: (Date) -> Unit,
-        onRemoveTimer: (Date) -> Unit,
-        showOnAdd: Boolean
+        onRemoveTimer: (Date) -> Unit
     ) {
         binding.hour.text = date.formatTime()
 
-        binding.btnDeleteTimer.setOnClickListener {
-            onRemoveTimer(date)
-        }
+        binding.btnDeleteTimer.setOnClickListener { onRemoveTimer(date) }
 
-        binding.btnSelectTime.setOnClickListener {
-            onSelectTime(date)
-        }
-
-        if (firstShow && showOnAdd) {
-            binding.btnSelectTime.performClick()
-            firstShow = false
-        }
+        binding.btnSelectTime.setOnClickListener { onSelectTime(date) }
     }
 }

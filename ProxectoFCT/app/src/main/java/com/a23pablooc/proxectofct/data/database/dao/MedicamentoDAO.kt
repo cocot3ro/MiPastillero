@@ -54,7 +54,7 @@ interface MedicamentoDAO {
     )
     fun findByCodNacional(codNacional: Int): MedicamentoEntity?
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(medicamento: MedicamentoEntity)
 
     @Update

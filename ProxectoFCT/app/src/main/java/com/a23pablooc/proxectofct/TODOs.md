@@ -3,3 +3,4 @@
 [//]: # (TODO: Borrar medicamentos activos que se han terminado de tomar)
 [//]: # (TODO: strings.xml)
 [//]: # (TODO: Repasar warnings en layouts)
+[//]: # (TODO: ¿? MedicamentoCalendario garda referencia a MedicamenetoActivo)

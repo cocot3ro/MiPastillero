@@ -3,7 +3,7 @@ package com.a23pablooc.proxectofct.domain
 import com.a23pablooc.proxectofct.data.repositories.PillboxRepository
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import kotlinx.coroutines.flow.Flow
-import java.util.Calendar
+import android.icu.util.Calendar
 import javax.inject.Inject
 
 class GetMedicamentosActivosUseCase @Inject constructor(private val repository: PillboxRepository) {

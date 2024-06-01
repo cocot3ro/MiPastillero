@@ -1,7 +1,6 @@
 package com.a23pablooc.proxectofct.ui.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -57,11 +56,13 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
 
         activeRecyclerViewAdapter = ActiveMedsRecyclerViewAdapter(
             emptyList(),
-            {
+            onFav = {
                 // TODO: onFavClick
-            }, {
+            },
+            onInfo = {
                 // TODO: onInfoClick
-            }, {
+            },
+            onAdd = {
                 // TODO: onAddClick
             }
         )
@@ -69,11 +70,6 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
         binding.recyclerViewActiveMeds.apply {
             adapter = activeRecyclerViewAdapter
             layoutManager = LinearLayoutManager(context)
-        }
-
-        binding.dialog.setOnClickListener {
-            val dialog = AddActiveMedDialogFragment()
-            dialog.show(childFragmentManager, "AddActiveMedDialogFragment")
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -90,16 +86,11 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
 
                             // TODO: vista para lista vacia
                             // binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
-                            Toast.makeText(context, "Empty list", Toast.LENGTH_LONG).show()
                         }
 
                         is MainScreenUiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
-                            Log.e(
-                                "ActiveMedsFragment::OnCreateView",
-                                "Error: ${uiState.errorMessage}"
-                            )
                         }
                     }
                 }
@@ -112,35 +103,37 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        (activity as MenuHost).addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_toolbar_active_med, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.addActiveMed -> {
-                        addActiveMed()
-                        true
-                    }
-
-                    else -> false
+        (activity as MenuHost).addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.menu_toolbar_active_med, menu)
                 }
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-    }
 
-    private fun addActiveMed() {
-        // TODO
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        R.id.addActiveMed -> {
+                            addActiveMed()
+                            true
+                        }
+
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
     }
 
     override fun onDataEntered(med: MedicamentoActivoItem) {
         Toast.makeText(
             context,
-            "Medicamento añadido ${med.fkMedicamento.alias}",
+            "Medicamento añadido",
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    private fun addActiveMed() {
+        AddActiveMedDialogFragment().show(childFragmentManager, AddActiveMedDialogFragment.TAG)
     }
 }

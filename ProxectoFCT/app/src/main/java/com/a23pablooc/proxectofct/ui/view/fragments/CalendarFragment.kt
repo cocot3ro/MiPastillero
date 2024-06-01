@@ -24,7 +24,7 @@ import com.a23pablooc.proxectofct.databinding.FragmentCalendarBinding
 import com.a23pablooc.proxectofct.ui.view.adapters.CalendarViewPagerAdapter
 import com.a23pablooc.proxectofct.ui.viewmodel.CalendarViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Calendar
+import android.icu.util.Calendar
 
 @AndroidEntryPoint
 class CalendarFragment : Fragment() {
@@ -101,7 +101,9 @@ class CalendarFragment : Fragment() {
     }
 
     private fun search() {
-        val datePickerDialog = DatePickerDialog(
+        val calendar = Calendar.getInstance()
+
+        DatePickerDialog(
             requireContext(),
             { _, year, monthOfYear, dayOfMonth ->
                 val offset = viewModel.calculateOffset(year, monthOfYear, dayOfMonth)
@@ -112,11 +114,9 @@ class CalendarFragment : Fragment() {
             },
 
             // Establece la fecha actual como predeterminada
-            Calendar.getInstance().get(Calendar.YEAR),
-            Calendar.getInstance().get(Calendar.MONTH),
-            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-        )
-
-        datePickerDialog.show()
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
     }
 }

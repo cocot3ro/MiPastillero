@@ -2,8 +2,8 @@ package com.a23pablooc.proxectofct.core
 
 import android.content.Context
 import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import com.a23pablooc.proxectofct.R
-import java.util.Calendar
 import java.util.Date
 
 object DateTimeUtils {
@@ -23,8 +23,16 @@ object DateTimeUtils {
         return SimpleDateFormat.getDateInstance().format(this)
     }
 
+    fun parseDate(date: String): Date {
+        return SimpleDateFormat.getDateInstance().parse(date)!!
+    }
+
     fun Date.formatTime(): String {
         return SimpleDateFormat.getTimeInstance().format(this)
+    }
+
+    fun parseTime(time: String): Date {
+        return SimpleDateFormat.getTimeInstance().parse(time)!!
     }
 
     fun daysBetweenDates(startDate: Date, endDate: Date): Int {
@@ -32,13 +40,13 @@ object DateTimeUtils {
     }
 
     fun Date.zero() = apply {
-        zeroTime()
-        zeroDate()
+        this.zeroTime()
+        this.zeroDate()
     }
 
     fun Date.zeroTime() = apply {
         this.time = Calendar.getInstance().apply {
-            time = this@zeroTime
+            timeInMillis = this@zeroTime.time
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
@@ -48,18 +56,10 @@ object DateTimeUtils {
 
     fun Date.zeroDate() = apply {
         this.time = Calendar.getInstance().apply {
-            time = this@zeroDate
+            timeInMillis = this@zeroDate.time
             set(Calendar.DAY_OF_MONTH, 1)
             set(Calendar.MONTH, 0)
             set(Calendar.YEAR, 0)
         }.timeInMillis
-    }
-
-    fun parseDate(date: String): Date {
-        return SimpleDateFormat.getDateInstance().parse(date)!!
-    }
-
-    fun parseTime(time: String): Date {
-        return SimpleDateFormat.getTimeInstance().parse(time)!!
     }
 }
