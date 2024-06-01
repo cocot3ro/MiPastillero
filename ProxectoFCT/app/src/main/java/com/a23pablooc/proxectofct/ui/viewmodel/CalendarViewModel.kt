@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.a23pablooc.proxectofct.core.DateTimeUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import android.icu.util.Calendar
+import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -14,9 +15,9 @@ class CalendarViewModel @Inject constructor() : ViewModel() {
             set(Calendar.YEAR, year)
             set(Calendar.MONTH, monthOfYear)
             set(Calendar.DAY_OF_MONTH, dayOfMonth)
-        }.time
+        }.time.zeroTime()
 
-        val today = Calendar.getInstance().time
+        val today = Calendar.getInstance().time.zeroTime()
 
         return DateTimeUtils.daysBetweenDates(today, date)
     }
