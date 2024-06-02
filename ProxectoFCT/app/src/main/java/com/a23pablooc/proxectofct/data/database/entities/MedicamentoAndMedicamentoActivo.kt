@@ -5,13 +5,13 @@ import androidx.room.Relation
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoActivoTable
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTable
 
-data class MedicamentoActivoAndMedicamento(
+data class MedicamentoAndMedicamentoActivo(
     @Embedded
-    val medicamentoActivoEntity: MedicamentoActivoEntity,
+    val medicamento: MedicamentoEntity,
 
     @Relation(
-        parentColumn = MedicamentoActivoTable.Columns.PK_MEDICAMENTO_ACTIVO,
-        entityColumn = MedicamentoTable.Columns.PK_COD_NACIONAL_MEDICAMENTO
+        parentColumn = MedicamentoTable.Columns.PK_COD_NACIONAL_MEDICAMENTO,
+        entityColumn = MedicamentoActivoTable.Columns.FK_MEDICAMENTO
     )
-    val medicamento: MedicamentoEntity
+    val medicamentoActivo: MedicamentoActivoEntity
 )

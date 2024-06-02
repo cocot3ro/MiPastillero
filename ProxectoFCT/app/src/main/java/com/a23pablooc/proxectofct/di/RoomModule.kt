@@ -82,4 +82,9 @@ object RoomModule {
     @Provides
     fun provideNotificacionDao(database: PillboxDatabase): NotificacionDAO =
         database.getNotificacionDao()
+
+    @Singleton
+    @Provides
+    fun provideMedicamentoAndMedicamentoActivoDao(database: PillboxDatabase) =
+        database.getMedicamentoAndMedicamentoActivoDao()
 }
