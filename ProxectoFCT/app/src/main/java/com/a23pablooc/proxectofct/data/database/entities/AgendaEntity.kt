@@ -16,7 +16,8 @@ import java.util.Date
             entity = UsuarioEntity::class,
             parentColumns = [UsuarioTable.Columns.PK_USUARIO],
             childColumns = [AgendaTable.Columns.FK_USUARIO],
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
         )
     ],
     indices = [

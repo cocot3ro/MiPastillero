@@ -45,19 +45,16 @@ class PillboxRepository @Inject constructor(
     fun getMedicamentosActivos(fromDate: Date): Flow<List<MedicamentoActivoItem>> {
         return medicamentoActivoDAO.getAllWithMedicamento(
             UserInfoProvider.currentUser.pkUsuario,
-            fromDate
+            fromDate.time
         ).map { list -> list.map { med -> med.toDomain() } }
     }
 
-    fun findMedicamentoByCodNacionalWhereFavorito(numRegistro: Int, favorito: Boolean): MedicamentoEntity? {
-        return medicamentoDAO.findMedicamentoByCodNacionalWhereFavorito(
-            UserInfoProvider.currentUser.pkUsuario,
-            numRegistro,
-            favorito
-        )
+    fun findMedicamentoByCodNacional(userId: Int, codNacional: Int): MedicamentoItem? {
+        return medicamentoDAO.findByCodNacional(userId, codNacional)?.toDomain()
     }
 
-    fun findMedicamentoByCodNacional(codNacional: Int): MedicamentoItem? {
-        return medicamentoDAO.findByCodNacional(codNacional)?.toDomain()
+    suspend fun addMedicamentoActivo(med: MedicamentoActivoItem) {
+        medicamentoDAO.insert(med.toDatabase().medicamento)
+        medicamentoActivoDAO.insert(med.toDatabase().medicamentoActivoEntity)
     }
 }

@@ -22,7 +22,7 @@ class CimaRepository @Inject constructor(
         val useImages = dataStoreManager.useImages().first()
         val useHighQualityImages = dataStoreManager.useHighQualityImages().first()
 
-        if (useImages) return byteArrayOf()
+        if (!useImages) return byteArrayOf()
 
         var image: ByteArray? = null
 
@@ -40,6 +40,7 @@ class CimaRepository @Inject constructor(
         return cimaService.getMedicamentoByCodNacional(codNacional)?.also {
             imgResource = it.imagen
         }?.toDomain()?.apply {
+            pkCodNacionalMedicamento = codNacional
             imagen = try {
                 downloadImage(numRegistro, imgResource)
             } catch (e: Exception) {

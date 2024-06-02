@@ -1,6 +1,7 @@
 package com.a23pablooc.proxectofct.ui.view.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -82,7 +83,7 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
 
                         is MainScreenUiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
-                            activeRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoActivoItem })
+                            activeRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoActivoItem }.also { Log.v("ActiveMedsFragment", "size: ${it.size}") })
 
                             // TODO: vista para lista vacia
                             // binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
@@ -91,6 +92,7 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
                         is MainScreenUiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
+                            Log.e("ActiveMedsFragment", uiState.errorMessage, uiState.exception)
                         }
                     }
                 }
@@ -126,11 +128,7 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
     }
 
     override fun onDataEntered(med: MedicamentoActivoItem) {
-        Toast.makeText(
-            context,
-            "Medicamento añadido",
-            Toast.LENGTH_SHORT
-        ).show()
+        viewModel.addActiveMed(med)
     }
 
     private fun addActiveMed() {

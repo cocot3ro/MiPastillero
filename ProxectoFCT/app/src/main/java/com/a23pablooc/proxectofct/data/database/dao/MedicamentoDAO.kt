@@ -35,7 +35,7 @@ interface MedicamentoDAO {
             SELECT *
             FROM ${MedicamentoTable.TABLE_NAME}
             WHERE ${MedicamentoTable.Columns.FK_USUARIO} = :userId
-                AND ${MedicamentoTable.Columns.PK_COD_NACIONAL} = :codNacional
+                AND ${MedicamentoTable.Columns.PK_COD_NACIONAL_MEDICAMENTO} = :codNacional
                 AND ${MedicamentoTable.Columns.ES_FAVORITO} = :favorito
         """
     )
@@ -49,10 +49,11 @@ interface MedicamentoDAO {
         """
             SELECT *
             FROM ${MedicamentoTable.TABLE_NAME}
-            WHERE ${MedicamentoTable.Columns.PK_COD_NACIONAL} = :codNacional
+            WHERE ${MedicamentoTable.Columns.PK_COD_NACIONAL_MEDICAMENTO} = :codNacional AND
+                ${MedicamentoTable.Columns.FK_USUARIO} = :userId
         """
     )
-    fun findByCodNacional(codNacional: Int): MedicamentoEntity?
+    fun findByCodNacional(userId: Int, codNacional: Int): MedicamentoEntity?
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(medicamento: MedicamentoEntity)

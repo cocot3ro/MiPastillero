@@ -4,7 +4,7 @@ object MedicamentoTable {
     const val TABLE_NAME = "tbl_medicamentos"
 
     object Columns {
-        const val PK_COD_NACIONAL = "pk_medicamento"
+        const val PK_COD_NACIONAL_MEDICAMENTO = "pk_cod_nacional_medicamento"
         const val FK_USUARIO = "fk_usuario"
         const val NUM_REGISTRO = "num_registro"
         const val NOMBRE = "nombre"

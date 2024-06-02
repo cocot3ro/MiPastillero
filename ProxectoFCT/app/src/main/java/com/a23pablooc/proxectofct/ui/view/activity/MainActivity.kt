@@ -34,5 +34,6 @@ class MainActivity : AppCompatActivity() {
 
         // TODO: Eliminar esto. Es solo para pruebas
         UserInfoProvider.currentUser = UsuarioItem(1, "Pablo")
+        viewModel.example(UserInfoProvider.currentUser)
     }
 }

@@ -11,7 +11,7 @@ data class MedicamentoActivoAndMedicamento(
 
     @Relation(
         parentColumn = MedicamentoActivoTable.Columns.PK_MEDICAMENTO_ACTIVO,
-        entityColumn = MedicamentoTable.Columns.PK_COD_NACIONAL
+        entityColumn = MedicamentoTable.Columns.PK_COD_NACIONAL_MEDICAMENTO
     )
     val medicamento: MedicamentoEntity
 )

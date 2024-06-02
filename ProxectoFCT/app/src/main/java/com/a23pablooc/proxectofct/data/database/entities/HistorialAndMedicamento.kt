@@ -11,7 +11,7 @@ data class HistorialAndMedicamento(
 
     @Relation(
         parentColumn = HistorialTable.Columns.PK_HISTORIAL,
-        entityColumn = MedicamentoTable.Columns.PK_COD_NACIONAL
+        entityColumn = MedicamentoTable.Columns.PK_COD_NACIONAL_MEDICAMENTO
     )
     val medicamento: MedicamentoEntity
 )

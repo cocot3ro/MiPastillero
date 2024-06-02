@@ -2,7 +2,9 @@ package com.a23pablooc.proxectofct.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.a23pablooc.proxectofct.domain.AddMedicamentoActivoUseCase
 import com.a23pablooc.proxectofct.domain.GetMedicamentosActivosUseCase
+import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ActiveMedsViewModel @Inject constructor(
-    private val getMedicamentosActivosUseCase: GetMedicamentosActivosUseCase
+    private val getMedicamentosActivosUseCase: GetMedicamentosActivosUseCase,
+    private val addMedicamentoActivoUseCase: AddMedicamentoActivoUseCase
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<MainScreenUiState> =
@@ -26,7 +29,7 @@ class ActiveMedsViewModel @Inject constructor(
     // TODO: Hardcode string on error message
     fun fetchData() {
         viewModelScope.launch {
-            getMedicamentosActivosUseCase()
+            getMedicamentosActivosUseCase.invoke()
                 .catch {
                     _uiState.value = MainScreenUiState
                         .Error("Error fetching active meds from DB", it)
@@ -35,6 +38,12 @@ class ActiveMedsViewModel @Inject constructor(
                 .collect {
                     _uiState.value = MainScreenUiState.Success(it)
                 }
+        }
+    }
+
+    fun addActiveMed(med: MedicamentoActivoItem) {
+        viewModelScope.launch(Dispatchers.IO) {
+            addMedicamentoActivoUseCase.invoke(med)
         }
     }
 }

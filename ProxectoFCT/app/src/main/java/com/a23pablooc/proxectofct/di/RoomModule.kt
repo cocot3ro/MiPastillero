@@ -1,6 +1,7 @@
 package com.a23pablooc.proxectofct.di
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -47,7 +48,8 @@ object RoomModule {
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-                    db.execSQL("UPDATE sqlite_sequence SET seq = 999999 WHERE name = '${MedicamentoTable.Columns.PK_COD_NACIONAL}'")
+                    db.execSQL("INSERT INTO sqlite_sequence VALUES ('tbl_medicamentos', 999999);")
+                    Log.v("RoomModule", "onCreate")
                 }
             })
 //            .openHelperFactory(supportFactory)

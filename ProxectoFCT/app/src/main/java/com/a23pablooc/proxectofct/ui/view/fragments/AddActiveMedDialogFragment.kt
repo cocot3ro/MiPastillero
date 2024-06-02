@@ -211,6 +211,15 @@ class AddActiveMedDialogFragment : DialogFragment() {
             return false
         }
 
+        if (scheduleList.isEmpty()) {
+            Toast.makeText(
+                context,
+                "Se debe tener al menos una hora de tomar",
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
+        }
+
         if (scheduleList.toSet().size != scheduleList.size) {
             // TODO: Hardcode string
             Toast.makeText(
@@ -242,17 +251,22 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
         val codNacional = binding.codNacional.text.toString()
 
+        var searchingToast: Toast? = null
+
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val fetchedMed = viewModel.search(codNacional).also {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            context,
-                            R.string.buscando,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                val fetchedMed = viewModel.search(codNacional)
+                withContext(Dispatchers.Main) {
+                    searchingToast = Toast.makeText(
+                        context,
+                        R.string.buscando,
+                        Toast.LENGTH_SHORT
+                    )
+
+                    searchingToast?.show()
                 }
+
+                this@AddActiveMedDialogFragment.fetchedMed = fetchedMed
 
                 withContext(Dispatchers.Main) {
                     //TODO: medicamento_no_encontrado en vez de codigo_nacional_no_encontrado
@@ -264,8 +278,6 @@ class AddActiveMedDialogFragment : DialogFragment() {
                         ).show()
                         return@withContext
                     }
-
-                    this@AddActiveMedDialogFragment.fetchedMed = fetchedMed
 
                     binding.codNacional.setText(codNacional)
 
@@ -299,6 +311,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
                 }
             } catch (e: IllegalArgumentException) {
                 withContext(Dispatchers.Main) {
+                    searchingToast?.cancel()
                     Toast.makeText(
                         context,
                         R.string.codigo_nacional_no_valido,
@@ -309,10 +322,12 @@ class AddActiveMedDialogFragment : DialogFragment() {
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
+                    searchingToast?.cancel()
                     Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                 }
             } finally {
                 withContext(Dispatchers.Main) {
+                    searchingToast?.cancel()
                     binding.progressBar.visibility = View.GONE
                 }
             }
@@ -321,13 +336,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
     }
 
     private fun onAddTimer() {
-        val newTime = Date().apply {
-            zero()
-        }
-
-        scheduleList = scheduleList.plus(newTime).sortedBy { it.time }
-
-        timePickerAdapter.updateData(scheduleList)
+        onSelectTime(Date().zeroDate())
     }
 
     private fun onRemoveTimer(date: Date) {
@@ -361,9 +370,10 @@ class AddActiveMedDialogFragment : DialogFragment() {
                 }.time.zeroDate()
 
                 if (scheduleList.any { it.time == pickedTime.time }) {
+                    // TODO: Hardcode string
                     Toast.makeText(
                         context,
-                        R.string.hora_ya_seleccionada,
+                        "Atención: La hora de toma ya está añadida",
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {

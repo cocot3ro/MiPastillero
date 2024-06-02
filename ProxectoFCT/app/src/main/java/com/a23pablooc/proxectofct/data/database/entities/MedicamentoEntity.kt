@@ -15,7 +15,8 @@ import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
             entity = UsuarioEntity::class,
             parentColumns = [UsuarioTable.Columns.PK_USUARIO],
             childColumns = [MedicamentoTable.Columns.FK_USUARIO],
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
         )
     ],
     indices = [
@@ -28,41 +29,41 @@ import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
 )
 data class MedicamentoEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = MedicamentoTable.Columns.PK_COD_NACIONAL)
-    val pkCodNacionalMedicamento: Int = 0,
+    @ColumnInfo(name = MedicamentoTable.Columns.PK_COD_NACIONAL_MEDICAMENTO)
+    var pkCodNacionalMedicamento: Int = 0,
 
     @ColumnInfo(name = MedicamentoTable.Columns.FK_USUARIO)
-    val fkUsuario: Int,
+    var fkUsuario: Int,
 
     @ColumnInfo(name = MedicamentoTable.Columns.URL)
-    val url: String,
+    var url: String,
 
     @ColumnInfo(name = MedicamentoTable.Columns.NOMBRE)
-    val nombre: String,
+    var nombre: String,
 
     @ColumnInfo(name = MedicamentoTable.Columns.ALIAS)
-    val alias: String,
+    var alias: String,
 
     @ColumnInfo(name = MedicamentoTable.Columns.PROSPECTO)
-    val prospecto: String,
+    var prospecto: String,
 
     @ColumnInfo(name = MedicamentoTable.Columns.ES_FAVORITO)
-    val esFavorito: Boolean,
+    var esFavorito: Boolean,
 
     @ColumnInfo(name = MedicamentoTable.Columns.LABORATORIO)
-    val laboratorio: String,
+    var laboratorio: String,
 
     @ColumnInfo(name = MedicamentoTable.Columns.NUM_REGISTRO)
-    val numRegistro: String,
+    var numRegistro: String,
 
     @ColumnInfo(name = MedicamentoTable.Columns.IMAGEN)
-    val imagen: ByteArray,
+    var imagen: ByteArray,
 
     @ColumnInfo(name = MedicamentoTable.Columns.PRESCRIPCION)
-    val prescripcion: String,
+    var prescripcion: String,
 
     @ColumnInfo(name = MedicamentoTable.Columns.AFECTA_CONDUCCION)
-    val afectaConduccion: Boolean
+    var afectaConduccion: Boolean
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

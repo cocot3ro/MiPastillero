@@ -15,15 +15,17 @@ import java.util.Date
     foreignKeys = [
         ForeignKey(
             entity = MedicamentoEntity::class,
-            parentColumns = [MedicamentoTable.Columns.PK_COD_NACIONAL],
+            parentColumns = [MedicamentoTable.Columns.PK_COD_NACIONAL_MEDICAMENTO],
             childColumns = [MedicamentoActivoTable.Columns.FK_MEDICAMENTO],
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = UsuarioEntity::class,
             parentColumns = [UsuarioTable.Columns.PK_USUARIO],
             childColumns = [MedicamentoActivoTable.Columns.FK_USUARIO],
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
         )
     ],
     indices = [
@@ -42,26 +44,26 @@ import java.util.Date
 data class MedicamentoActivoEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = MedicamentoActivoTable.Columns.PK_MEDICAMENTO_ACTIVO)
-    val pkMedicamentoActivo: Int = 0,
+    var pkMedicamentoActivo: Int = 0,
 
     @ColumnInfo(name = MedicamentoActivoTable.Columns.FK_MEDICAMENTO)
-    val fkMedicamento: Int,
+    var fkMedicamento: Int,
 
     @ColumnInfo(name = MedicamentoActivoTable.Columns.FK_USUARIO)
-    val fkUsuario: Int,
+    var fkUsuario: Int,
 
     @ColumnInfo(name = MedicamentoActivoTable.Columns.FECHA_INICIO)
-    val fechaInicio: Date,
+    var fechaInicio: Date,
 
     @ColumnInfo(name = MedicamentoActivoTable.Columns.FECHA_FIN)
-    val fechaFin: Date,
+    var fechaFin: Date,
 
     @ColumnInfo(name = MedicamentoActivoTable.Columns.HORARIO)
-    val horario: MutableSet<Date>,
+    var horario: MutableSet<Date>,
 
     @ColumnInfo(name = MedicamentoActivoTable.Columns.DOSIS)
-    val dosis: String,
+    var dosis: String,
 
     @ColumnInfo(name = MedicamentoActivoTable.Columns.TOMAS)
-    val tomas: MutableMap<Date, MutableMap<Date, Boolean>>
+    var tomas: MutableMap<Date, MutableMap<Date, Boolean>>
 )

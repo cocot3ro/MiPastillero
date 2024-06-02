@@ -11,7 +11,7 @@ data class NotificacionAndMedicamento(
 
     @Relation(
         parentColumn = NotificacionTable.Columns.PK_NOTIFICACION,
-        entityColumn = MedicamentoTable.Columns.PK_COD_NACIONAL
+        entityColumn = MedicamentoTable.Columns.PK_COD_NACIONAL_MEDICAMENTO
     )
     val medicamento: MedicamentoEntity
 )

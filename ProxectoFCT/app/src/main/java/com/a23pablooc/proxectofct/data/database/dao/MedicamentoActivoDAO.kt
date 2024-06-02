@@ -30,7 +30,7 @@ interface MedicamentoActivoDAO {
     )
     fun getAllWithMedicamento(
         idUsuario: Int,
-        fromDate: Date
+        fromDate: Long
     ): Flow<List<MedicamentoActivoAndMedicamento>>
 
     @Transaction
