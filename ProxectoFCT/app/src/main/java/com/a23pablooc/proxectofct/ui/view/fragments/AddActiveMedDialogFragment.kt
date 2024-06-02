@@ -225,7 +225,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
         val endDate = DateTimeUtils.parseDate(binding.dateEnd.text.toString()).time
         val today = Date().zeroTime().time
 
-        if (startDate < endDate || startDate < today) {
+        if (endDate < startDate || endDate < today) {
             Toast.makeText(
                 context,
                 R.string.fecha_invalida,
