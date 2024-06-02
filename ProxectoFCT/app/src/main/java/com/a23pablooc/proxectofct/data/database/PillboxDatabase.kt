@@ -10,7 +10,8 @@ import com.a23pablooc.proxectofct.data.database.converters.DateSetConverter
 import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
 import com.a23pablooc.proxectofct.data.database.dao.HistorialDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoActivoDAO
-import com.a23pablooc.proxectofct.data.database.dao.MedicamentoAndMedicamentoActivoDAO
+import com.a23pablooc.proxectofct.data.database.dao.MedicamentoActivoWithNotificacionDAO
+import com.a23pablooc.proxectofct.data.database.dao.MedicamentoWithMedicamentoActivoDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
 import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
@@ -54,5 +55,7 @@ abstract class PillboxDatabase : RoomDatabase() {
 
     abstract fun getNotificacionDao(): NotificacionDAO
 
-    abstract fun getMedicamentoAndMedicamentoActivoDao(): MedicamentoAndMedicamentoActivoDAO
+    abstract fun getMedicamentoAndMedicamentoActivoDao(): MedicamentoWithMedicamentoActivoDAO
+
+    abstract fun getMedicamentoActivoWithNotificacionDAO(): MedicamentoActivoWithNotificacionDAO
 }

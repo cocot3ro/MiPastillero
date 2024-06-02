@@ -1,7 +1,6 @@
 package com.a23pablooc.proxectofct.di
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -12,7 +11,8 @@ import com.a23pablooc.proxectofct.data.database.dao.MedicamentoActivoDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
 import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
-import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTable
+import com.a23pablooc.proxectofct.data.database.definitions.DatabaseDefinition
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition
 import com.a23pablooc.proxectofct.data.database.security.DatabasePassphrase
 import dagger.Module
 import dagger.Provides
@@ -25,8 +25,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RoomModule {
-    private const val DATABASE_NAME = "pillbox_database"
-
     @Provides
     @Singleton
     fun provideUserDatabasePassphrase(@ApplicationContext context: Context): DatabasePassphrase =
@@ -44,12 +42,11 @@ object RoomModule {
         @ApplicationContext context: Context,
         supportFactory: SupportFactory
     ): PillboxDatabase {
-        return Room.databaseBuilder(context, PillboxDatabase::class.java, DATABASE_NAME)
+        return Room.databaseBuilder(context, PillboxDatabase::class.java, DatabaseDefinition.DATABASE_NAME)
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-                    db.execSQL("INSERT INTO sqlite_sequence VALUES ('tbl_medicamentos', 999999);")
-                    Log.v("RoomModule", "onCreate")
+                    db.execSQL("INSERT INTO sqlite_sequence VALUES ('${MedicamentoTableDefinition.TABLE_NAME}', 999999);")
                 }
             })
 //            .openHelperFactory(supportFactory)
@@ -87,4 +84,9 @@ object RoomModule {
     @Provides
     fun provideMedicamentoAndMedicamentoActivoDao(database: PillboxDatabase) =
         database.getMedicamentoAndMedicamentoActivoDao()
+
+    @Singleton
+    @Provides
+    fun provideMedicamentoActivoWithNotificacionDAO(database: PillboxDatabase) =
+        database.getMedicamentoActivoWithNotificacionDAO()
 }

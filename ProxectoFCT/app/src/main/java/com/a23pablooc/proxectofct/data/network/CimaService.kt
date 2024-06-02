@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class CimaService @Inject constructor(private val cimaApiClient: CimaApiClient) {
 
-    suspend fun getMedicamentoByCodNacional(cn: Int): MedicamentoModel? {
+    suspend fun getMedicamentoByCodNacional(cn: Long): MedicamentoModel? {
         val response = cimaApiClient.getMedicamentoByCodNacional(cn)
         return response.body()
     }

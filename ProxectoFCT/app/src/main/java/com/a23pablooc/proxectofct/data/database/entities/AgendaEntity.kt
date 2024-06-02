@@ -5,40 +5,40 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.a23pablooc.proxectofct.data.database.definitions.AgendaTable
-import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
+import com.a23pablooc.proxectofct.data.database.definitions.AgendaTableDefinition
+import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTableDefinition
 import java.util.Date
 
 @Entity(
-    tableName = AgendaTable.TABLE_NAME,
+    tableName = AgendaTableDefinition.TABLE_NAME,
     foreignKeys = [
         ForeignKey(
             entity = UsuarioEntity::class,
-            parentColumns = [UsuarioTable.Columns.PK_USUARIO],
-            childColumns = [AgendaTable.Columns.FK_USUARIO],
+            parentColumns = [UsuarioTableDefinition.Columns.PK_USUARIO],
+            childColumns = [AgendaTableDefinition.Columns.FK_USUARIO],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         )
     ],
     indices = [
         Index(
-            name = AgendaTable.Indexes.IDX_AGENDA_FK_USUARIO,
-            value = [AgendaTable.Columns.FK_USUARIO],
+            name = AgendaTableDefinition.Indexes.IDX_AGENDA_FK_USUARIO,
+            value = [AgendaTableDefinition.Columns.FK_USUARIO],
             unique = false
         ),
     ]
 )
 data class AgendaEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = AgendaTable.Columns.PK_AGENDA)
-    val pkAgenda: Int = 0,
+    @ColumnInfo(name = AgendaTableDefinition.Columns.PK_AGENDA)
+    val pkAgenda: Long = 0,
 
-    @ColumnInfo(name = AgendaTable.Columns.FK_USUARIO)
-    val fkUsuario: Int,
+    @ColumnInfo(name = AgendaTableDefinition.Columns.FK_USUARIO)
+    val fkUsuario: Long,
 
-    @ColumnInfo(name = AgendaTable.Columns.HORA)
+    @ColumnInfo(name = AgendaTableDefinition.Columns.HORA)
     val descripcion: String,
 
-    @ColumnInfo(name = AgendaTable.Columns.FECHA)
+    @ColumnInfo(name = AgendaTableDefinition.Columns.FECHA)
     val fecha: Date
 )

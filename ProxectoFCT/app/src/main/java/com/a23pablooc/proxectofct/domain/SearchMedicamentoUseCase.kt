@@ -10,7 +10,7 @@ class SearchMedicamentoUseCase @Inject constructor(
     private val cimaRepository: CimaRepository,
     private val pillboxRepository: PillboxRepository
 ) {
-    suspend operator fun invoke(codNacional: Int): MedicamentoItem? {
+    suspend operator fun invoke(codNacional: Long): MedicamentoItem? {
         return pillboxRepository.findMedicamentoByCodNacional(
             UserInfoProvider.currentUser.pkUsuario,
             codNacional

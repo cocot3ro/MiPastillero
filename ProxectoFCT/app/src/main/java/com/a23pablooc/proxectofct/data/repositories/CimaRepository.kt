@@ -34,7 +34,7 @@ class CimaRepository @Inject constructor(
             ?: byteArrayOf()
     }
 
-    suspend fun searchMedicamento(codNacional: Int): MedicamentoItem? {
+    suspend fun searchMedicamento(codNacional: Long): MedicamentoItem? {
         var imgResource = ""
 
         return cimaService.getMedicamentoByCodNacional(codNacional)?.also {

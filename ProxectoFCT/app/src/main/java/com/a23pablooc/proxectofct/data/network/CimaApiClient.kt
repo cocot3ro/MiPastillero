@@ -11,7 +11,7 @@ import retrofit2.http.Query
 interface CimaApiClient {
     @GET("rest/medicamento")
     suspend fun getMedicamentoByCodNacional(
-        @Query("cn") cn: Int
+        @Query("cn") cn: Long
     ): Response<MedicamentoModel>
 
     @GET("rest/medicamento")

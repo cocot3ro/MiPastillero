@@ -5,65 +5,65 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoActivoTable
-import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTable
-import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoActivoTableDefinition
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition
+import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTableDefinition
 import java.util.Date
 
 @Entity(
-    tableName = MedicamentoActivoTable.TABLE_NAME,
+    tableName = MedicamentoActivoTableDefinition.TABLE_NAME,
     foreignKeys = [
         ForeignKey(
             entity = MedicamentoEntity::class,
-            parentColumns = [MedicamentoTable.Columns.PK_COD_NACIONAL_MEDICAMENTO],
-            childColumns = [MedicamentoActivoTable.Columns.FK_MEDICAMENTO],
+            parentColumns = [MedicamentoTableDefinition.Columns.PK_COD_NACIONAL_MEDICAMENTO],
+            childColumns = [MedicamentoActivoTableDefinition.Columns.FK_MEDICAMENTO],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = UsuarioEntity::class,
-            parentColumns = [UsuarioTable.Columns.PK_USUARIO],
-            childColumns = [MedicamentoActivoTable.Columns.FK_USUARIO],
+            parentColumns = [UsuarioTableDefinition.Columns.PK_USUARIO],
+            childColumns = [MedicamentoActivoTableDefinition.Columns.FK_USUARIO],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         )
     ],
     indices = [
         Index(
-            name = MedicamentoActivoTable.Indexes.IDX_MEDICAMENTO_ACTIVO_FK_MEDICAMENTO,
+            name = MedicamentoActivoTableDefinition.Indexes.IDX_MEDICAMENTO_ACTIVO_FK_MEDICAMENTO,
             unique = false,
-            value = [MedicamentoActivoTable.Columns.FK_MEDICAMENTO]
+            value = [MedicamentoActivoTableDefinition.Columns.FK_MEDICAMENTO]
         ),
         Index(
-            name = MedicamentoActivoTable.Indexes.IDX_MEDICAMENTO_ACTIVO_FK_USUARIO,
+            name = MedicamentoActivoTableDefinition.Indexes.IDX_MEDICAMENTO_ACTIVO_FK_USUARIO,
             unique = false,
-            value = [MedicamentoActivoTable.Columns.FK_USUARIO]
+            value = [MedicamentoActivoTableDefinition.Columns.FK_USUARIO]
         )
     ]
 )
 data class MedicamentoActivoEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = MedicamentoActivoTable.Columns.PK_MEDICAMENTO_ACTIVO)
-    var pkMedicamentoActivo: Int = 0,
+    @ColumnInfo(name = MedicamentoActivoTableDefinition.Columns.PK_MEDICAMENTO_ACTIVO)
+    var pkMedicamentoActivo: Long = 0,
 
-    @ColumnInfo(name = MedicamentoActivoTable.Columns.FK_MEDICAMENTO)
-    var fkMedicamento: Int,
+    @ColumnInfo(name = MedicamentoActivoTableDefinition.Columns.FK_MEDICAMENTO)
+    var fkMedicamento: Long,
 
-    @ColumnInfo(name = MedicamentoActivoTable.Columns.FK_USUARIO)
-    var fkUsuario: Int,
+    @ColumnInfo(name = MedicamentoActivoTableDefinition.Columns.FK_USUARIO)
+    var fkUsuario: Long,
 
-    @ColumnInfo(name = MedicamentoActivoTable.Columns.FECHA_INICIO)
+    @ColumnInfo(name = MedicamentoActivoTableDefinition.Columns.FECHA_INICIO)
     var fechaInicio: Date,
 
-    @ColumnInfo(name = MedicamentoActivoTable.Columns.FECHA_FIN)
+    @ColumnInfo(name = MedicamentoActivoTableDefinition.Columns.FECHA_FIN)
     var fechaFin: Date,
 
-    @ColumnInfo(name = MedicamentoActivoTable.Columns.HORARIO)
+    @ColumnInfo(name = MedicamentoActivoTableDefinition.Columns.HORARIO)
     var horario: MutableSet<Date>,
 
-    @ColumnInfo(name = MedicamentoActivoTable.Columns.DOSIS)
+    @ColumnInfo(name = MedicamentoActivoTableDefinition.Columns.DOSIS)
     var dosis: String,
 
-    @ColumnInfo(name = MedicamentoActivoTable.Columns.TOMAS)
+    @ColumnInfo(name = MedicamentoActivoTableDefinition.Columns.TOMAS)
     var tomas: MutableMap<Date, MutableMap<Date, Boolean>>
 )

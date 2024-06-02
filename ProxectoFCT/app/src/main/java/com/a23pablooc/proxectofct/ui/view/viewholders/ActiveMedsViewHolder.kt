@@ -32,7 +32,7 @@ class ActiveMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         //TODO: Ajustar indentado
         binding.medName.text = SpannableString(med.fkMedicamento.nombre).apply {
-            setSpan(LeadingMarginSpan.Standard(30, 0), 0, 1, 0)
+            setSpan(LeadingMarginSpan.Standard(100, 0), 0, 1, 0)
         }
 
         binding.btnFavBg.visibility = if (med.fkMedicamento.esFavorito) View.VISIBLE else View.GONE

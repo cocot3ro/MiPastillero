@@ -5,56 +5,56 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.a23pablooc.proxectofct.data.database.definitions.HistorialTable
-import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTable
-import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
+import com.a23pablooc.proxectofct.data.database.definitions.HistorialTableDefinition
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition
+import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTableDefinition
 import java.util.Date
 
 @Entity(
-    tableName = HistorialTable.TABLE_NAME,
+    tableName = HistorialTableDefinition.TABLE_NAME,
     foreignKeys = [
         ForeignKey(
             entity = UsuarioEntity::class,
-            parentColumns = [UsuarioTable.Columns.PK_USUARIO],
-            childColumns = [HistorialTable.Columns.FK_USUARIO],
+            parentColumns = [UsuarioTableDefinition.Columns.PK_USUARIO],
+            childColumns = [HistorialTableDefinition.Columns.FK_USUARIO],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = MedicamentoEntity::class,
-            parentColumns = [MedicamentoTable.Columns.PK_COD_NACIONAL_MEDICAMENTO],
-            childColumns = [HistorialTable.Columns.FK_MEDICAMENTO],
+            parentColumns = [MedicamentoTableDefinition.Columns.PK_COD_NACIONAL_MEDICAMENTO],
+            childColumns = [HistorialTableDefinition.Columns.FK_MEDICAMENTO],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         )
     ],
     indices = [
         Index(
-            name = HistorialTable.Indexes.IDX_HISTORIAL_FK_USUARIO,
+            name = HistorialTableDefinition.Indexes.IDX_HISTORIAL_FK_USUARIO,
             unique = false,
-            value = [HistorialTable.Columns.FK_USUARIO]
+            value = [HistorialTableDefinition.Columns.FK_USUARIO]
         ),
         Index(
-            name = HistorialTable.Indexes.IDX_HISTORIAL_FK_MEDICAMENTO,
+            name = HistorialTableDefinition.Indexes.IDX_HISTORIAL_FK_MEDICAMENTO,
             unique = false,
-            value = [HistorialTable.Columns.FK_MEDICAMENTO]
+            value = [HistorialTableDefinition.Columns.FK_MEDICAMENTO]
         )
     ]
 )
 data class HistorialEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = HistorialTable.Columns.PK_HISTORIAL)
-    val pkHistorial: Int = 0,
+    @ColumnInfo(name = HistorialTableDefinition.Columns.PK_HISTORIAL)
+    val pkHistorial: Long = 0,
 
-    @ColumnInfo(name = HistorialTable.Columns.FK_USUARIO)
-    val fkUsuario: Int,
+    @ColumnInfo(name = HistorialTableDefinition.Columns.FK_USUARIO)
+    val fkUsuario: Long,
 
-    @ColumnInfo(name = HistorialTable.Columns.FK_MEDICAMENTO)
-    val fkMedicamento: Int,
+    @ColumnInfo(name = HistorialTableDefinition.Columns.FK_MEDICAMENTO)
+    val fkMedicamento: Long,
 
-    @ColumnInfo(name = HistorialTable.Columns.FECHA_INICIO)
+    @ColumnInfo(name = HistorialTableDefinition.Columns.FECHA_INICIO)
     val fechaInicio: Date,
 
-    @ColumnInfo(name = HistorialTable.Columns.FECHA_FIN)
+    @ColumnInfo(name = HistorialTableDefinition.Columns.FECHA_FIN)
     val fechaFin: Date
 )

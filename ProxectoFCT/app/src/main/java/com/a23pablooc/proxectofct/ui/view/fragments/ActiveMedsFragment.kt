@@ -83,7 +83,7 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
 
                         is MainScreenUiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
-                            activeRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoActivoItem }.also { Log.v("ActiveMedsFragment", "size: ${it.size}") })
+                            activeRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoActivoItem })
 
                             // TODO: vista para lista vacia
                             // binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)

@@ -17,6 +17,6 @@ class AddActiveMedDialogViewModel @Inject constructor(
         if (!codNacionalPattern.matches(codNacional))
             throw IllegalArgumentException("Invalid codNacional")
 
-        return searchMedicamentoUseCase.invoke(codNacional.substringBefore('.').toInt())
+        return searchMedicamentoUseCase.invoke(codNacional.substringBefore('.').toLong())
     }
 }

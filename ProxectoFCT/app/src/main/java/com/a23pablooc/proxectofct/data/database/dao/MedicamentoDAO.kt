@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTable
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition
 import com.a23pablooc.proxectofct.data.database.entities.MedicamentoEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -15,7 +15,7 @@ interface MedicamentoDAO {
     @Query(
         """
             SELECT *
-            FROM ${MedicamentoTable.TABLE_NAME}
+            FROM ${MedicamentoTableDefinition.TABLE_NAME}
         """
     )
     fun getAll(): Flow<List<MedicamentoEntity>>
@@ -23,20 +23,20 @@ interface MedicamentoDAO {
     @Query(
         """
             SELECT *
-            FROM ${MedicamentoTable.TABLE_NAME}
-            WHERE ${MedicamentoTable.Columns.FK_USUARIO} = :idUsuario
-                AND ${MedicamentoTable.Columns.ES_FAVORITO} = 1
+            FROM ${MedicamentoTableDefinition.TABLE_NAME}
+            WHERE ${MedicamentoTableDefinition.Columns.FK_USUARIO} = :idUsuario
+                AND ${MedicamentoTableDefinition.Columns.ES_FAVORITO} = 1
         """
     )
-    fun getAllFavoritos(idUsuario: Int): Flow<List<MedicamentoEntity>>
+    fun getAllFavoritos(idUsuario: Long): Flow<List<MedicamentoEntity>>
 
     @Query(
         """
             SELECT *
-            FROM ${MedicamentoTable.TABLE_NAME}
-            WHERE ${MedicamentoTable.Columns.FK_USUARIO} = :userId
-                AND ${MedicamentoTable.Columns.PK_COD_NACIONAL_MEDICAMENTO} = :codNacional
-                AND ${MedicamentoTable.Columns.ES_FAVORITO} = :favorito
+            FROM ${MedicamentoTableDefinition.TABLE_NAME}
+            WHERE ${MedicamentoTableDefinition.Columns.FK_USUARIO} = :userId
+                AND ${MedicamentoTableDefinition.Columns.PK_COD_NACIONAL_MEDICAMENTO} = :codNacional
+                AND ${MedicamentoTableDefinition.Columns.ES_FAVORITO} = :favorito
         """
     )
     fun findMedicamentoByCodNacionalWhereFavorito(
@@ -48,15 +48,15 @@ interface MedicamentoDAO {
     @Query(
         """
             SELECT *
-            FROM ${MedicamentoTable.TABLE_NAME}
-            WHERE ${MedicamentoTable.Columns.PK_COD_NACIONAL_MEDICAMENTO} = :codNacional AND
-                ${MedicamentoTable.Columns.FK_USUARIO} = :userId
+            FROM ${MedicamentoTableDefinition.TABLE_NAME}
+            WHERE ${MedicamentoTableDefinition.Columns.PK_COD_NACIONAL_MEDICAMENTO} = :codNacional AND
+                ${MedicamentoTableDefinition.Columns.FK_USUARIO} = :userId
         """
     )
-    fun findByCodNacional(userId: Int, codNacional: Int): MedicamentoEntity?
+    fun findByCodNacional(userId: Long, codNacional: Long): MedicamentoEntity?
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insert(medicamento: MedicamentoEntity)
+    suspend fun insert(medicamento: MedicamentoEntity): Long
 
     @Update
     suspend fun update(medicamento: MedicamentoEntity)

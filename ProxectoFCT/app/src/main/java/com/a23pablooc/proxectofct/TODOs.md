@@ -1,3 +1,6 @@
+[//]: # (TODO: URGENTE: Guardar las imagenes en el almacenamiento del dispositovo y no en la base de datos.)
+
+
 [//]: # (TODO: IMPORTANTE En MainActivity se asigna manualmente un usuraio para pruebas.)
 
 

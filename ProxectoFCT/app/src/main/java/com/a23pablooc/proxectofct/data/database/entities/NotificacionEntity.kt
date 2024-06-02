@@ -5,56 +5,56 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTable
-import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTable
-import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTable
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition
+import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition
+import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTableDefinition
 import java.util.Date
 
 @Entity(
-    tableName = NotificacionTable.TABLE_NAME,
+    tableName = NotificacionTableDefinition.TABLE_NAME,
     foreignKeys = [
         ForeignKey(
             entity = MedicamentoEntity::class,
-            parentColumns = [MedicamentoTable.Columns.PK_COD_NACIONAL_MEDICAMENTO],
-            childColumns = [NotificacionTable.Columns.FK_MEDICAMENTO],
+            parentColumns = [MedicamentoTableDefinition.Columns.PK_COD_NACIONAL_MEDICAMENTO],
+            childColumns = [NotificacionTableDefinition.Columns.FK_MEDICAMENTO_ACTIVO],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = UsuarioEntity::class,
-            parentColumns = [UsuarioTable.Columns.PK_USUARIO],
-            childColumns = [NotificacionTable.Columns.FK_USUARIO],
+            parentColumns = [UsuarioTableDefinition.Columns.PK_USUARIO],
+            childColumns = [NotificacionTableDefinition.Columns.FK_USUARIO],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         )
     ],
     indices = [
         Index(
-            name = NotificacionTable.Indexes.IDX_NOTIFICACION_FK_MEDICAMENTO,
+            name = NotificacionTableDefinition.Indexes.IDX_NOTIFICACION_FK_MEDICAMENTO,
             unique = false,
-            value = [NotificacionTable.Columns.FK_MEDICAMENTO]
+            value = [NotificacionTableDefinition.Columns.FK_MEDICAMENTO_ACTIVO]
         ),
         Index(
-            name = NotificacionTable.Indexes.IDX_NOTIFICACION_FK_USUARIO,
+            name = NotificacionTableDefinition.Indexes.IDX_NOTIFICACION_FK_USUARIO,
             unique = false,
-            value = [NotificacionTable.Columns.FK_USUARIO]
+            value = [NotificacionTableDefinition.Columns.FK_USUARIO]
         )
     ]
 )
 data class NotificacionEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = NotificacionTable.Columns.PK_NOTIFICACION)
-    val pkNotificacion: Int = 0,
+    @ColumnInfo(name = NotificacionTableDefinition.Columns.PK_NOTIFICACION)
+    val pkNotificacion: Long = 0,
 
-    @ColumnInfo(name = NotificacionTable.Columns.FK_MEDICAMENTO)
-    val fkMedicamento: Int,
+    @ColumnInfo(name = NotificacionTableDefinition.Columns.FK_MEDICAMENTO_ACTIVO)
+    val fkMedicamentoActivo: Long,
 
-    @ColumnInfo(name = NotificacionTable.Columns.FK_USUARIO)
-    val fkUsuario: Int,
+    @ColumnInfo(name = NotificacionTableDefinition.Columns.FK_USUARIO)
+    val fkUsuario: Long,
 
-    @ColumnInfo(name = NotificacionTable.Columns.FECHA)
+    @ColumnInfo(name = NotificacionTableDefinition.Columns.FECHA)
     val fecha: Date,
 
-    @ColumnInfo(name = NotificacionTable.Columns.HORA)
+    @ColumnInfo(name = NotificacionTableDefinition.Columns.HORA)
     val hora: Date
 )
