@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.map
 import java.util.Date
 import javax.inject.Inject
 
-class PillboxRepository @Inject constructor(
+class PillboxDbRepository @Inject constructor(
     private val usuarioDAO: UsuarioDAO,
     private val medicamentoDAO: MedicamentoDAO,
     private val medicamentoActivoDAO: MedicamentoActivoDAO,
@@ -28,8 +28,6 @@ class PillboxRepository @Inject constructor(
     private val medicamentoActivoWithNotificacionDAO: MedicamentoActivoWithNotificacionDAO,
     private val medicamentoWithMedicamentoActivoDAO: MedicamentoWithMedicamentoActivoDAO
 ) {
-    // Insert MedicamentoActivoConMedicamento -> insetar medicamento y luego insertar medicamento activo
-
     fun getAllWithMedicamentosByDiaOrderByHora(dia: Date): Flow<List<MedicamentoActivoItem>> {
         return medicamentoWithMedicamentoActivoDAO.getAllByDiaOrderByHora(
             UserInfoProvider.currentUser.pkUsuario, dia.time
@@ -68,9 +66,19 @@ class PillboxRepository @Inject constructor(
         return medicamentoDAO.findByCodNacional(userId, codNacional)?.toDomain()
     }
 
-    suspend fun addMedicamentoActivo(med: MedicamentoActivoItem) {
+    suspend fun addMedicamentoActivo(med: MedicamentoActivoItem): Long {
         val dbMed = med.toDatabase()
-        val id = medicamentoDAO.insert(dbMed.medicamento)
-        medicamentoActivoDAO.insert(dbMed.medicamentosActivos[0].apply { fkMedicamento = id })
+        val codNacional = medicamentoDAO.insert(dbMed.medicamento)
+        medicamentoActivoDAO.insert(dbMed.medicamentosActivos[0].apply { fkMedicamento = codNacional })
+
+        return codNacional
+    }
+
+    suspend fun updateMedicamentoActivo(med: MedicamentoActivoItem) {
+        medicamentoActivoDAO.update(med.toDatabase().medicamentosActivos[0])
+    }
+
+    suspend fun updateMedicamento(medicamento: MedicamentoItem) {
+        medicamentoDAO.update(medicamento.toDatabase())
     }
 }

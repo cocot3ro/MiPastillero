@@ -11,7 +11,7 @@ fun MedicamentoModel.toDomain(): MedicamentoItem {
         prescripcion = prescripcion,
         numRegistro = numRegistro,
         laboratorio = laboratorio,
-        imagen = byteArrayOf(),
+        imagen = imagen,
         afectaConduccion = afectaConduccion,
         esFavorito = false,
         nombre = nombre,

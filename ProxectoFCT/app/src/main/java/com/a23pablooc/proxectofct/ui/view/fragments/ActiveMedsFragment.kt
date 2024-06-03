@@ -128,7 +128,7 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
     }
 
     override fun onDataEntered(med: MedicamentoActivoItem) {
-        viewModel.addActiveMed(med)
+        viewModel.addActiveMed(requireContext(), med)
     }
 
     private fun addActiveMed() {

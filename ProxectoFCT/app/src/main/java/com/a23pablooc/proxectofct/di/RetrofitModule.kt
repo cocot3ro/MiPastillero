@@ -3,6 +3,7 @@ package com.a23pablooc.proxectofct.di
 import com.a23pablooc.proxectofct.data.model.MedicamentoModel
 import com.a23pablooc.proxectofct.data.model.typeadapters.MedicamentoModelTypeAdapter
 import com.a23pablooc.proxectofct.data.network.CimaApiClient
+import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -25,7 +26,7 @@ object RetrofitModule {
 
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .baseUrl("https://cima.aemps.es/cima/")
+            .baseUrl(CimaApiDefinitions.BASE_URL)
             .build()
     }
 

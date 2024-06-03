@@ -50,19 +50,14 @@ class AddActiveMedDialogFragment : DialogFragment() {
     private lateinit var listener: OnDataEnteredListener
 
     private var fetchedMed: MedicamentoItem? = null
-    private var image: ByteArray = byteArrayOf()
+    private var image: String = ""
 
     private val pickMedia = registerForActivityResult(PickVisualMedia()) {
         it?.let {
             Glide.with(requireContext()).load(it).into(binding.img)
-
-            image = ByteArrayOutputStream().also { byteArrayOutputStream ->
-                binding.img.drawToBitmap().compress(
-                    Bitmap.CompressFormat.JPEG,
-                    100,
-                    byteArrayOutputStream
-                )
-            }.toByteArray()
+            lifecycleScope.launch(Dispatchers.IO) {
+                image = viewModel.saveImage(requireContext(), it)
+            }
         }
     }
 
@@ -158,18 +153,114 @@ class AddActiveMedDialogFragment : DialogFragment() {
         return binding.root
     }
 
+    private fun search() {
+        val searchingToast: Toast = Toast.makeText(
+            context,
+            R.string.buscando,
+            Toast.LENGTH_SHORT
+        ).also { it.show() }
+
+        binding.progressBar.visibility = View.VISIBLE
+
+        val codNacional = binding.codNacional.text.toString()
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val fetchedMed = viewModel.search(codNacional)
+
+                this@AddActiveMedDialogFragment.fetchedMed = fetchedMed
+
+                withContext(Dispatchers.Main) {
+                    //TODO: medicamento_no_encontrado en vez de codigo_nacional_no_encontrado
+                    if (fetchedMed == null) {
+                        Toast.makeText(
+                            context,
+                            R.string.codigo_nacional_no_encontrado,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@withContext
+                    }
+
+                    binding.codNacional.setText(codNacional)
+
+                    binding.nombre.setText(fetchedMed.nombre)
+
+                    if (fetchedMed.imagen.isBlank()) {
+                        binding.img.setImageResource(R.mipmap.no_image_available)
+                        image = ""
+                    } else if (fetchedMed.imagen.startsWith(requireContext().filesDir.absolutePath)) {
+                        Glide.with(requireContext()).load(fetchedMed.imagen).into(binding.img)
+                        image = fetchedMed.imagen
+                    } else {
+                        val i = image
+                        withContext(Dispatchers.IO) {
+                            image = viewModel.downloadAndSaveImage(
+                                requireContext(),
+                                fetchedMed.numRegistro,
+                                fetchedMed.imagen
+                            ) ?: image
+                        }
+                        if (i != image)
+                            Glide.with(requireContext()).load(image).into(binding.img)
+                    }
+
+                    if (fetchedMed.esFavorito) {
+                        binding.btnFavBg.visibility = View.VISIBLE
+                        binding.favFrame.setOnClickListener {
+                            // TODO: Hardcode string
+                            Toast.makeText(
+                                context,
+                                "Este medicamento ya está en favoritos",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else {
+                        binding.btnFavBg.visibility = View.GONE
+                        binding.favFrame.setOnClickListener {
+                            binding.btnFavBg.visibility =
+                                binding.btnFavBg.visibility.xor(View.GONE)
+                        }
+                    }
+                }
+            } catch (e: IllegalArgumentException) {
+                this@AddActiveMedDialogFragment.fetchedMed = null
+
+                withContext(Dispatchers.Main) {
+                    searchingToast.cancel()
+                    Toast.makeText(
+                        context,
+                        R.string.codigo_nacional_no_valido,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    toggleHelp()
+                }
+            } catch (e: Exception) {
+                this@AddActiveMedDialogFragment.fetchedMed = null
+
+                withContext(Dispatchers.Main) {
+                    searchingToast.cancel()
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                }
+            } finally {
+                withContext(Dispatchers.Main) {
+                    searchingToast.cancel()
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
+    }
+
     private fun setUpPositiveButton(dialog: AlertDialog) {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             if (!validateForm())
                 return@setOnClickListener
 
-            val alias = binding.nombre.text.toString()
+            val nombre = binding.nombre.text.toString()
             val dateStart = DateTimeUtils.parseDate(binding.dateStart.text.toString())
             val dateEnd = DateTimeUtils.parseDate(binding.dateEnd.text.toString())
             val dosis = binding.dosis.text.toString()
             val schedule = scheduleList
-
-            dialog.dismiss()
 
             val med = MedicamentoActivoItem(
                 pkMedicamentoActivo = 0,
@@ -180,13 +271,20 @@ class AddActiveMedDialogFragment : DialogFragment() {
                 tomas = mutableMapOf(),
                 fkMedicamento = fetchedMed?.apply {
                     esFavorito = binding.btnFavBg.visibility == View.VISIBLE
-                    this.alias = alias.ifBlank { this.alias }
-                    this.imagen = image
+                    this.alias = nombre.ifBlank { this.nombre }
+                    this.imagen = image.ifBlank { "" }
                 } ?: MedicamentoItem(
                     pkCodNacionalMedicamento = 0,
-                    nombre = alias,
-                    alias = alias,
-                    imagen = image,
+                    nombre = nombre.ifBlank {
+                        Toast.makeText(
+                            context,
+                            "Se debe introducir un nombre",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setOnClickListener
+                    },
+                    alias = nombre,
+                    imagen = image.ifBlank { "" },
                     esFavorito = binding.btnFavBg.visibility == View.VISIBLE,
                     numRegistro = "",
                     url = "",
@@ -196,6 +294,8 @@ class AddActiveMedDialogFragment : DialogFragment() {
                     afectaConduccion = false
                 )
             )
+
+            dialog.dismiss()
 
             listener.onDataEntered(med)
         }
@@ -212,9 +312,10 @@ class AddActiveMedDialogFragment : DialogFragment() {
         }
 
         if (scheduleList.isEmpty()) {
+            // TODO: Hardcode string
             Toast.makeText(
                 context,
-                "Se debe tener al menos una hora de tomar",
+                "Se debe tener al menos una hora de toma",
                 Toast.LENGTH_SHORT
             ).show()
             return false
@@ -244,95 +345,6 @@ class AddActiveMedDialogFragment : DialogFragment() {
         }
 
         return true
-    }
-
-    private fun search() {
-        binding.progressBar.visibility = View.VISIBLE
-
-        val codNacional = binding.codNacional.text.toString()
-
-        var searchingToast: Toast? = null
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val fetchedMed = viewModel.search(codNacional)
-                withContext(Dispatchers.Main) {
-                    searchingToast = Toast.makeText(
-                        context,
-                        R.string.buscando,
-                        Toast.LENGTH_SHORT
-                    )
-
-                    searchingToast?.show()
-                }
-
-                this@AddActiveMedDialogFragment.fetchedMed = fetchedMed
-
-                withContext(Dispatchers.Main) {
-                    //TODO: medicamento_no_encontrado en vez de codigo_nacional_no_encontrado
-                    if (fetchedMed == null) {
-                        Toast.makeText(
-                            context,
-                            R.string.codigo_nacional_no_encontrado,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        return@withContext
-                    }
-
-                    binding.codNacional.setText(codNacional)
-
-                    binding.nombre.setText(fetchedMed.nombre)
-
-                    if (fetchedMed.imagen.isNotEmpty()) {
-                        Glide.with(requireContext()).load(fetchedMed.imagen).into(binding.img)
-                        image = fetchedMed.imagen
-                    } else {
-                        binding.img.setImageResource(R.mipmap.no_image_available)
-                        image = byteArrayOf()
-                    }
-
-                    if (fetchedMed.esFavorito) {
-                        binding.btnFavBg.visibility = View.VISIBLE
-                        binding.favFrame.setOnClickListener {
-                            // TODO: Hardcode string
-                            Toast.makeText(
-                                context,
-                                "Este medicamento ya está en favoritos",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    } else {
-                        binding.btnFavBg.visibility = View.GONE
-                        binding.favFrame.setOnClickListener {
-                            binding.btnFavBg.visibility =
-                                binding.btnFavBg.visibility.xor(View.GONE)
-                        }
-                    }
-                }
-            } catch (e: IllegalArgumentException) {
-                withContext(Dispatchers.Main) {
-                    searchingToast?.cancel()
-                    Toast.makeText(
-                        context,
-                        R.string.codigo_nacional_no_valido,
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    toggleHelp()
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    searchingToast?.cancel()
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                }
-            } finally {
-                withContext(Dispatchers.Main) {
-                    searchingToast?.cancel()
-                    binding.progressBar.visibility = View.GONE
-                }
-            }
-        }
-
     }
 
     private fun onAddTimer() {

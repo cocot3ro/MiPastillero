@@ -2,7 +2,7 @@ package com.a23pablooc.proxectofct.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.a23pablooc.proxectofct.domain.GetFavoriteMedsUseCase
+import com.a23pablooc.proxectofct.domain.usecases.GetFavoriteMedsUseCase
 import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +25,7 @@ class FavoriteMedsViewModel @Inject constructor(
 
     fun fetchData() {
         viewModelScope.launch {
-            getFavoriteMedsUseCase()
+            getFavoriteMedsUseCase.invoke()
                 .catch {
                     _uiState.value = MainScreenUiState
                         .Error("Error fetching favorite meds", it)

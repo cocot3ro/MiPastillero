@@ -1,7 +1,5 @@
 package com.a23pablooc.proxectofct.ui.view.viewholders
 
-import android.text.SpannableString
-import android.text.style.LeadingMarginSpan
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -24,16 +22,14 @@ class ActiveMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         onInfo: (MedicamentoActivoItem) -> Unit,
         onAdd: (MedicamentoActivoItem) -> Unit
     ) {
-        if (med.fkMedicamento.imagen.isNotEmpty()) {
+        if (med.fkMedicamento.imagen.isNotBlank()) {
             Glide.with(binding.root)
                 .load(med.fkMedicamento.imagen)
+                .override(400, 400)
                 .into(binding.medImg)
         }
 
-        //TODO: Ajustar indentado
-        binding.medName.text = SpannableString(med.fkMedicamento.nombre).apply {
-            setSpan(LeadingMarginSpan.Standard(100, 0), 0, 1, 0)
-        }
+        binding.medName.text = med.fkMedicamento.nombre
 
         binding.btnFavBg.visibility = if (med.fkMedicamento.esFavorito) View.VISIBLE else View.GONE
 
@@ -56,7 +52,5 @@ class ActiveMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 }
             )
         }
-
     }
-
 }

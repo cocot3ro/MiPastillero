@@ -17,11 +17,7 @@ class FavoriteMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         onAdd: (MedicamentoItem) -> Unit,
         onInfo: (MedicamentoItem) -> Unit
     ) {
-
-        //TODO: Ajustar indentado
-        binding.name.text = SpannableString(med.nombre).apply {
-            setSpan(LeadingMarginSpan.Standard(30, 0), 0, 1, 0)
-        }
+        binding.name.text = med.nombre
 
         if (med.imagen.isNotEmpty()) {
             Glide.with(binding.root.context)

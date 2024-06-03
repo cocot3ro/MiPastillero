@@ -1,7 +1,7 @@
 package com.a23pablooc.proxectofct.data.network
 
-import com.a23pablooc.proxectofct.data.model.enums.CimaImageType
 import com.a23pablooc.proxectofct.data.model.MedicamentoModel
+import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions.CimaImageType
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.GET
@@ -19,7 +19,7 @@ interface CimaApiClient {
         @Query("nregistro") nregistro: String
     ): Response<MedicamentoModel>
 
-    @GET("fotos/{imageType}/materialas/{nregistro}/{imgResource}")
+    @GET(CimaApiDefinitions.FOTOS)
     suspend fun getImagenMedicamento(
         @Path("imageType") imageType: CimaImageType,
         @Path("nregistro") nregistro: String,

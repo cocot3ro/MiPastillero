@@ -1,8 +1,9 @@
 package com.a23pablooc.proxectofct.data.repositories
 
 import com.a23pablooc.proxectofct.core.DataStoreManager
-import com.a23pablooc.proxectofct.data.model.enums.CimaImageType
 import com.a23pablooc.proxectofct.data.model.extensions.toDomain
+import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
+import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions.CimaImageType
 import com.a23pablooc.proxectofct.data.network.CimaService
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import kotlinx.coroutines.flow.first
@@ -12,7 +13,8 @@ class CimaRepository @Inject constructor(
     private val cimaService: CimaService,
     private val dataStoreManager: DataStoreManager
 ) {
-    private suspend fun downloadImage(
+
+    suspend fun downloadImage(
         nregistro: String,
         imgResource: String
     ): ByteArray {
@@ -35,17 +37,21 @@ class CimaRepository @Inject constructor(
     }
 
     suspend fun searchMedicamento(codNacional: Long): MedicamentoItem? {
-        var imgResource = ""
-
-        return cimaService.getMedicamentoByCodNacional(codNacional)?.also {
-            imgResource = it.imagen
-        }?.toDomain()?.apply {
+        return cimaService.getMedicamentoByCodNacional(codNacional)?.toDomain()?.apply {
             pkCodNacionalMedicamento = codNacional
-            imagen = try {
-                downloadImage(numRegistro, imgResource)
-            } catch (e: Exception) {
-                byteArrayOf()
-            }
         }
+    }
+
+    suspend fun getImageResourceUrl(
+        nregistro: String,
+        imgResource: String
+    ): String {
+        val useHighQualityImages = dataStoreManager.useHighQualityImages().first()
+        val imageType = if (useHighQualityImages) CimaImageType.FULL else CimaImageType.THUMBNAIL
+
+        return CimaApiDefinitions.BASE_URL + CimaApiDefinitions.FOTOS
+            .replace("{imageType}", imageType.toString())
+            .replace("{nregistro}", nregistro)
+            .replace("{imgResource}", imgResource)
     }
 }

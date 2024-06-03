@@ -57,47 +57,11 @@ data class MedicamentoEntity(
     var numRegistro: String,
 
     @ColumnInfo(name = MedicamentoTableDefinition.Columns.IMAGEN)
-    var imagen: ByteArray,
+    var imagen: String,
 
     @ColumnInfo(name = MedicamentoTableDefinition.Columns.PRESCRIPCION)
     var prescripcion: String,
 
     @ColumnInfo(name = MedicamentoTableDefinition.Columns.AFECTA_CONDUCCION)
     var afectaConduccion: Boolean
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as MedicamentoEntity
-
-        return ((pkCodNacionalMedicamento != other.pkCodNacionalMedicamento)
-                || (fkUsuario != other.fkUsuario)
-                || (url != other.url)
-                || (nombre != other.nombre)
-                || (alias != other.alias)
-                || (prospecto != other.prospecto)
-                || (esFavorito != other.esFavorito)
-                || (laboratorio != other.laboratorio)
-                || (numRegistro != other.numRegistro)
-                || (!imagen.contentEquals(other.imagen))
-                || (prescripcion != other.prescripcion)
-                || (afectaConduccion != other.afectaConduccion))
-    }
-
-    override fun hashCode(): Int {
-        var result = pkCodNacionalMedicamento.hashCode()
-        result = 31 * result + fkUsuario.hashCode()
-        result = 31 * result + url.hashCode()
-        result = 31 * result + nombre.hashCode()
-        result = 31 * result + alias.hashCode()
-        result = 31 * result + prospecto.hashCode()
-        result = 31 * result + esFavorito.hashCode()
-        result = 31 * result + laboratorio.hashCode()
-        result = 31 * result + numRegistro.hashCode()
-        result = 31 * result + imagen.contentHashCode()
-        result = 31 * result + prescripcion.hashCode()
-        result = 31 * result + afectaConduccion.hashCode()
-        return result
-    }
-}
+)

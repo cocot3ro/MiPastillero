@@ -1,8 +1,8 @@
 package com.a23pablooc.proxectofct.data.network
 
 import com.a23pablooc.proxectofct.data.model.MedicamentoModel
-import com.a23pablooc.proxectofct.data.model.enums.CimaImageType
 import javax.inject.Inject
+import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions.CimaImageType
 
 class CimaService @Inject constructor(private val cimaApiClient: CimaApiClient) {
 
@@ -16,7 +16,6 @@ class CimaService @Inject constructor(private val cimaApiClient: CimaApiClient) 
         nregistro: String,
         imgResource: String
     ): ByteArray? {
-        val response = cimaApiClient.getImagenMedicamento(imageType, nregistro, imgResource)
-        return response.body()?.bytes()
+        return cimaApiClient.getImagenMedicamento(imageType, nregistro, imgResource).body()?.bytes()
     }
 }

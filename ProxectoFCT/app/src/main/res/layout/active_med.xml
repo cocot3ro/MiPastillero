@@ -24,18 +24,20 @@
                 android:id="@+id/med_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
                 android:contentDescription="TODO"
                 android:src="@mipmap/no_image_available"
-                app:layout_constraintEnd_toStartOf="@id/med_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <FrameLayout
                 android:id="@+id/fav_frame"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@id/med_img"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/med_img"
+                app:layout_constraintBottom_toBottomOf="@id/med_img">
 
                 <ImageView
                     android:id="@+id/btn_fav_bg"
@@ -53,7 +55,6 @@
                     android:background="@android:color/transparent"
                     android:contentDescription="TODO"
                     android:src="@drawable/star_off" />
-
             </FrameLayout>
 
             <TextView
