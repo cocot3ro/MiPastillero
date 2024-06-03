@@ -20,6 +20,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentActiveMedsBinding
@@ -70,7 +71,10 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
 
         binding.recyclerViewActiveMeds.apply {
             adapter = activeRecyclerViewAdapter
-            layoutManager = LinearLayoutManager(context)
+            val manager = LinearLayoutManager(context)
+            layoutManager = manager
+            val decoration = DividerItemDecoration(context, manager.orientation)
+            addItemDecoration(decoration)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -128,7 +132,7 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
     }
 
     override fun onDataEntered(med: MedicamentoActivoItem) {
-        viewModel.addActiveMed(requireContext(), med)
+        viewModel.addActiveMed(med)
     }
 
     private fun addActiveMed() {

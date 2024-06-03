@@ -66,16 +66,12 @@ class PillboxDbRepository @Inject constructor(
         return medicamentoDAO.findByCodNacional(userId, codNacional)?.toDomain()
     }
 
-    suspend fun addMedicamentoActivo(med: MedicamentoActivoItem): Long {
+    suspend fun addMedicamentoActivo(med: MedicamentoActivoItem) {
         val dbMed = med.toDatabase()
-        val codNacional = medicamentoDAO.insert(dbMed.medicamento)
-        medicamentoActivoDAO.insert(dbMed.medicamentosActivos[0].apply { fkMedicamento = codNacional })
-
-        return codNacional
-    }
-
-    suspend fun updateMedicamentoActivo(med: MedicamentoActivoItem) {
-        medicamentoActivoDAO.update(med.toDatabase().medicamentosActivos[0])
+        val codNacional = medicamentoDAO.upsert(dbMed.medicamento)
+        medicamentoActivoDAO.insert(dbMed.medicamentosActivos[0].apply {
+            fkMedicamento = codNacional
+        })
     }
 
     suspend fun updateMedicamento(medicamento: MedicamentoItem) {

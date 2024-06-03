@@ -10,7 +10,6 @@ fun MedicamentoItem.toDatabase(): MedicamentoEntity {
         fkUsuario = UserInfoProvider.currentUser.pkUsuario,
         numRegistro = numRegistro,
         nombre = nombre,
-        alias = alias,
         url = url,
         prospecto = prospecto,
         prescripcion = prescripcion,

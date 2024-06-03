@@ -16,7 +16,7 @@ interface MedicamentoActivoDAO {
     @Query("SELECT * FROM ${MedicamentoActivoTableDefinition.TABLE_NAME} WHERE ${MedicamentoActivoTableDefinition.Columns.FK_USUARIO} = :idUsuario")
     fun getAll(idUsuario: Int): Flow<List<MedicamentoActivoEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(medicamentoActivo: MedicamentoActivoEntity)
 
     @Update

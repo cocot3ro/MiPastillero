@@ -1,5 +1,7 @@
 package com.a23pablooc.proxectofct.data.repositories
 
+import android.net.Uri
+import androidx.core.net.toUri
 import com.a23pablooc.proxectofct.core.DataStoreManager
 import com.a23pablooc.proxectofct.data.model.extensions.toDomain
 import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
@@ -13,7 +15,6 @@ class CimaRepository @Inject constructor(
     private val cimaService: CimaService,
     private val dataStoreManager: DataStoreManager
 ) {
-
     suspend fun downloadImage(
         nregistro: String,
         imgResource: String
@@ -37,21 +38,23 @@ class CimaRepository @Inject constructor(
     }
 
     suspend fun searchMedicamento(codNacional: Long): MedicamentoItem? {
-        return cimaService.getMedicamentoByCodNacional(codNacional)?.toDomain()?.apply {
+        return cimaService.getMedicamentoByCodNacional(codNacional)?.apply {
+            imagen = getImageResourceUri(numRegistro, imagen).toString()
+        }?.toDomain()?.apply {
             pkCodNacionalMedicamento = codNacional
         }
     }
 
-    suspend fun getImageResourceUrl(
+    private suspend fun getImageResourceUri(
         nregistro: String,
         imgResource: String
-    ): String {
+    ): Uri {
         val useHighQualityImages = dataStoreManager.useHighQualityImages().first()
         val imageType = if (useHighQualityImages) CimaImageType.FULL else CimaImageType.THUMBNAIL
 
-        return CimaApiDefinitions.BASE_URL + CimaApiDefinitions.FOTOS
+        return (CimaApiDefinitions.BASE_URL + CimaApiDefinitions.FOTOS
             .replace("{imageType}", imageType.toString())
             .replace("{nregistro}", nregistro)
-            .replace("{imgResource}", imgResource)
+            .replace("{imgResource}", imgResource)).toUri()
     }
 }

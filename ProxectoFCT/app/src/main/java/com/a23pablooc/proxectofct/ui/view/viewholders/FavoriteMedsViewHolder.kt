@@ -1,7 +1,5 @@
 package com.a23pablooc.proxectofct.ui.view.viewholders
 
-import android.text.SpannableString
-import android.text.style.LeadingMarginSpan
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.a23pablooc.proxectofct.databinding.FavoriteMedBinding
@@ -19,7 +17,7 @@ class FavoriteMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     ) {
         binding.name.text = med.nombre
 
-        if (med.imagen.isNotEmpty()) {
+        if (med.imagen.toString().isNotBlank()) {
             Glide.with(binding.root.context)
                 .load(med.imagen)
                 .into(binding.img)

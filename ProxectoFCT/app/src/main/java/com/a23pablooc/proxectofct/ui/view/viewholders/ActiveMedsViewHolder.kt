@@ -22,7 +22,7 @@ class ActiveMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         onInfo: (MedicamentoActivoItem) -> Unit,
         onAdd: (MedicamentoActivoItem) -> Unit
     ) {
-        if (med.fkMedicamento.imagen.isNotBlank()) {
+        if (med.fkMedicamento.imagen.toString().isNotBlank()) {
             Glide.with(binding.root)
                 .load(med.fkMedicamento.imagen)
                 .override(400, 400)

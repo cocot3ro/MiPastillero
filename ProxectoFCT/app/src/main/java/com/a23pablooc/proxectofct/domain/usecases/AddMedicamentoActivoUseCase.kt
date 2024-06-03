@@ -5,7 +5,7 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import javax.inject.Inject
 
 class AddMedicamentoActivoUseCase @Inject constructor(private val repository: PillboxDbRepository) {
-    suspend operator fun invoke(med: MedicamentoActivoItem): Long {
-        return repository.addMedicamentoActivo(med)
+    suspend operator fun invoke(med: MedicamentoActivoItem) {
+        repository.addMedicamentoActivo(med)
     }
 }

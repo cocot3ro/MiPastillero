@@ -1,5 +1,6 @@
 package com.a23pablooc.proxectofct.data.database.entities
 
+import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -41,9 +42,6 @@ data class MedicamentoEntity(
     @ColumnInfo(name = MedicamentoTableDefinition.Columns.NOMBRE)
     var nombre: String,
 
-    @ColumnInfo(name = MedicamentoTableDefinition.Columns.ALIAS)
-    var alias: String,
-
     @ColumnInfo(name = MedicamentoTableDefinition.Columns.PROSPECTO)
     var prospecto: String,
 
@@ -57,7 +55,7 @@ data class MedicamentoEntity(
     var numRegistro: String,
 
     @ColumnInfo(name = MedicamentoTableDefinition.Columns.IMAGEN)
-    var imagen: String,
+    var imagen: Uri,
 
     @ColumnInfo(name = MedicamentoTableDefinition.Columns.PRESCRIPCION)
     var prescripcion: String,

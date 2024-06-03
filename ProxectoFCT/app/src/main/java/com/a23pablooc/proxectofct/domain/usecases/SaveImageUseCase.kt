@@ -1,17 +1,21 @@
 package com.a23pablooc.proxectofct.domain.usecases
 
+import android.content.Context
+import android.net.Uri
+import androidx.core.net.toUri
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
 
-class SaveImageUseCase @Inject constructor() {
-    operator fun invoke(folder: File, fileName: String, imageData: ByteArray): String {
-        if (!folder.exists()) {
-            folder.mkdir()
-        }
+class SaveImageUseCase @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
 
-        val file = File(folder, fileName)
+    operator fun invoke(fileName: String, imageData: ByteArray): Uri {
+        val file = File(context.filesDir, fileName)
+
         file.outputStream().use { it.write(imageData) }
 
-        return file.absolutePath
+        return file.toUri()
     }
 }

@@ -32,15 +32,8 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.checkFinished()
 
-        viewModel.clearTempData(this)
-
         // TODO: Eliminar esto. Es solo para pruebas
         UserInfoProvider.currentUser = UsuarioItem(1, "Pablo")
         viewModel.insertTestUser(UserInfoProvider.currentUser)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.clearTempData(this)
     }
 }

@@ -8,7 +8,6 @@ fun MedicamentoEntity.toDomain(): MedicamentoItem {
         pkCodNacionalMedicamento = pkCodNacionalMedicamento,
         numRegistro = numRegistro,
         nombre = nombre,
-        alias = alias,
         url = url,
         prospecto = prospecto,
         imagen = imagen,

@@ -16,7 +16,7 @@ interface AgendaDAO {
     @Query("SELECT * FROM ${AgendaTableDefinition.TABLE_NAME} WHERE ${AgendaTableDefinition.Columns.FK_USUARIO} = :idUsuario")
     fun getAll(idUsuario: Int): Flow<List<AgendaEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(agenda: AgendaEntity)
 
     @Update

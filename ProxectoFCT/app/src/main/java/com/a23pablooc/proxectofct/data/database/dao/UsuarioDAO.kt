@@ -15,7 +15,7 @@ interface UsuarioDAO {
     @Query("SELECT * FROM ${UsuarioTableDefinition.TABLE_NAME}")
     fun getAll(): Flow<List<UsuarioEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(usuario: UsuarioEntity)
 
     @Update

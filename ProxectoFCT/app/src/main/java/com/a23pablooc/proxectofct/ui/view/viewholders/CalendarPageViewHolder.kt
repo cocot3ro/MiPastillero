@@ -1,9 +1,10 @@
 package com.a23pablooc.proxectofct.ui.view.viewholders
 
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatTime
 import com.a23pablooc.proxectofct.databinding.CalendarMedBinding
 import com.a23pablooc.proxectofct.databinding.CalendarMedGroupBinding
@@ -21,30 +22,24 @@ class CalendarPageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         meds: List<MedicamentoActivoItem>,
         onClick: (MedicamentoActivoItem, Date, Date) -> Unit
     ) {
-        // TODO: colores?
-
-        // binding.body.setBackgroundColor()
-
         binding.hour.text = hora.formatTime()
 
         for (med in meds) {
             CalendarMedBinding.inflate(
-                LayoutInflater.from(itemView.context), binding.body, true
+                LayoutInflater.from(itemView.context), binding.calendarMedsLayout, true
             ).apply {
-                if (med.fkMedicamento.imagen.isNotEmpty()) {
-                    Glide.with(root.context)
-                        .load(med.fkMedicamento.imagen)
-                        .into(medImg)
-                } else {
-                    Glide.with(root.context)
-                        .load(R.mipmap.no_image_available)
-                        .into(medImg)
-                }
+                Handler(Looper.getMainLooper()).postDelayed({
+                    if (med.fkMedicamento.imagen.toString().isNotBlank()) {
+                        Glide.with(root.context)
+                            .load(med.fkMedicamento.imagen)
+                            .into(medImg)
+                    }
+                }, 1)
 
-                medName.text = med.fkMedicamento.alias
+                medName.text = med.fkMedicamento.nombre
 
                 btnTake.apply {
-                    isChecked = med.tomas[hora]?.get(dia) ?: false
+                    isChecked = med.tomas[dia]?.get(hora) ?: false
                     setOnClickListener {
                         onClick(med, dia, hora)
                     }

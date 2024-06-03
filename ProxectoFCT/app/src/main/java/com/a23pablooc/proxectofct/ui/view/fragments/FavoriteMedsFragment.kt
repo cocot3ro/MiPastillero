@@ -124,11 +124,11 @@ class FavoriteMedsFragment : Fragment() {
 
     private fun onAdd(med: MedicamentoItem) {
         // TODO
-        Toast.makeText(context, "Añadir medicamento: ${med.alias}", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "Añadir medicamento: ${med.nombre}", Toast.LENGTH_LONG).show()
     }
 
     private fun onInfo(med: MedicamentoItem) {
         // TODO
-        Toast.makeText(context, "Info medicamento: ${med.alias}", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "Info medicamento: ${med.nombre}", Toast.LENGTH_LONG).show()
     }
 }

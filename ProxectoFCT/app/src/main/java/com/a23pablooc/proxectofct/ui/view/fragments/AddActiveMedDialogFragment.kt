@@ -5,8 +5,8 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.graphics.Bitmap
 import android.icu.util.Calendar
+import android.net.Uri
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.View
@@ -14,7 +14,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
-import androidx.core.view.drawToBitmap
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -35,7 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.ByteArrayOutputStream
 import java.util.Date
 
 @AndroidEntryPoint
@@ -50,14 +48,12 @@ class AddActiveMedDialogFragment : DialogFragment() {
     private lateinit var listener: OnDataEnteredListener
 
     private var fetchedMed: MedicamentoItem? = null
-    private var image: String = ""
+    private var image: Uri = Uri.EMPTY
 
     private val pickMedia = registerForActivityResult(PickVisualMedia()) {
         it?.let {
             Glide.with(requireContext()).load(it).into(binding.img)
-            lifecycleScope.launch(Dispatchers.IO) {
-                image = viewModel.saveImage(requireContext(), it)
-            }
+            image = it
         }
     }
 
@@ -171,11 +167,11 @@ class AddActiveMedDialogFragment : DialogFragment() {
                 this@AddActiveMedDialogFragment.fetchedMed = fetchedMed
 
                 withContext(Dispatchers.Main) {
-                    //TODO: medicamento_no_encontrado en vez de codigo_nacional_no_encontrado
+                    //TODO: hardcode string
                     if (fetchedMed == null) {
                         Toast.makeText(
                             context,
-                            R.string.codigo_nacional_no_encontrado,
+                            "Medicamento no encontrado",
                             Toast.LENGTH_SHORT
                         ).show()
                         return@withContext
@@ -185,23 +181,12 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
                     binding.nombre.setText(fetchedMed.nombre)
 
-                    if (fetchedMed.imagen.isBlank()) {
+                    if (fetchedMed.imagen.toString().isBlank()) {
                         binding.img.setImageResource(R.mipmap.no_image_available)
-                        image = ""
-                    } else if (fetchedMed.imagen.startsWith(requireContext().filesDir.absolutePath)) {
+                        image = Uri.EMPTY
+                    } else {
                         Glide.with(requireContext()).load(fetchedMed.imagen).into(binding.img)
                         image = fetchedMed.imagen
-                    } else {
-                        val i = image
-                        withContext(Dispatchers.IO) {
-                            image = viewModel.downloadAndSaveImage(
-                                requireContext(),
-                                fetchedMed.numRegistro,
-                                fetchedMed.imagen
-                            ) ?: image
-                        }
-                        if (i != image)
-                            Glide.with(requireContext()).load(image).into(binding.img)
                     }
 
                     if (fetchedMed.esFavorito) {
@@ -270,9 +255,9 @@ class AddActiveMedDialogFragment : DialogFragment() {
                 fechaInicio = dateStart,
                 tomas = mutableMapOf(),
                 fkMedicamento = fetchedMed?.apply {
-                    esFavorito = binding.btnFavBg.visibility == View.VISIBLE
-                    this.alias = nombre.ifBlank { this.nombre }
-                    this.imagen = image.ifBlank { "" }
+                    this.esFavorito = binding.btnFavBg.visibility == View.VISIBLE
+                    this.imagen = image.takeIf { it != Uri.EMPTY } ?: Uri.EMPTY
+                    this.nombre = nombre.ifBlank { this.nombre }
                 } ?: MedicamentoItem(
                     pkCodNacionalMedicamento = 0,
                     nombre = nombre.ifBlank {
@@ -283,8 +268,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
                         ).show()
                         return@setOnClickListener
                     },
-                    alias = nombre,
-                    imagen = image.ifBlank { "" },
+                    imagen = image.takeIf { it != Uri.EMPTY } ?: Uri.EMPTY,
                     esFavorito = binding.btnFavBg.visibility == View.VISIBLE,
                     numRegistro = "",
                     url = "",

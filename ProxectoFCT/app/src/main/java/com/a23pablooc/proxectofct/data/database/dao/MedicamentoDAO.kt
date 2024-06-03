@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import androidx.room.Upsert
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition
 import com.a23pablooc.proxectofct.data.database.entities.MedicamentoEntity
 import kotlinx.coroutines.flow.Flow
@@ -57,6 +58,9 @@ interface MedicamentoDAO {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(medicamento: MedicamentoEntity): Long
+
+    @Upsert
+    suspend fun upsert(medicamento: MedicamentoEntity): Long
 
     @Update
     suspend fun update(medicamento: MedicamentoEntity)

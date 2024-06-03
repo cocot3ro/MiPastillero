@@ -7,6 +7,7 @@ import com.a23pablooc.proxectofct.data.database.converters.DateBooleanMapConvert
 import com.a23pablooc.proxectofct.data.database.converters.DateConverter
 import com.a23pablooc.proxectofct.data.database.converters.DateMapDateBooleanMapConverter
 import com.a23pablooc.proxectofct.data.database.converters.DateSetConverter
+import com.a23pablooc.proxectofct.data.database.converters.UriConverter
 import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
 import com.a23pablooc.proxectofct.data.database.dao.HistorialDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoActivoDAO
@@ -36,6 +37,7 @@ import com.a23pablooc.proxectofct.data.database.entities.UsuarioEntity
 )
 @TypeConverters(
     value = [
+        UriConverter::class,
         DateConverter::class,
         DateSetConverter::class,
         DateBooleanMapConverter::class,
