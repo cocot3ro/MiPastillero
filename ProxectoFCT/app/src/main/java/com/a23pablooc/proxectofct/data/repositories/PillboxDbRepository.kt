@@ -1,5 +1,6 @@
 package com.a23pablooc.proxectofct.data.repositories
 
+import android.util.Log
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
@@ -71,8 +72,9 @@ class PillboxDbRepository @Inject constructor(
     suspend fun addMedicamentoActivo(med: MedicamentoActivoItem) {
         val dbMed = med.toDatabase()
         val codNacional = medicamentoDAO.upsert(dbMed.medicamento)
+        Log.v("PillboxDbRepository", "codNacional after upsert: $codNacional")
         medicamentoActivoDAO.insert(dbMed.medicamentosActivos[0].apply {
-            fkMedicamento = codNacional
+            fkMedicamento = codNacional ?: dbMed.medicamento.pkCodNacionalMedicamento
         })
     }
 

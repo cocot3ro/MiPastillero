@@ -24,6 +24,7 @@ import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zero
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
+import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
 import com.a23pablooc.proxectofct.databinding.FragmentAddActiveMedDialogBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
@@ -181,10 +182,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
                     binding.nombre.setText(fetchedMed.nombre)
 
-                    if (fetchedMed.imagen.toString().isBlank()) {
-                        binding.img.setImageResource(R.mipmap.no_image_available)
-                        image = Uri.EMPTY
-                    } else {
+                    if (fetchedMed.imagen.toString().startsWith(CimaApiDefinitions.BASE_URL)) {
                         withContext(Dispatchers.IO) {
                             val img = viewModel.downloadImage(
                                 fetchedMed.numRegistro,
@@ -195,6 +193,12 @@ class AddActiveMedDialogFragment : DialogFragment() {
                                 image = fetchedMed.imagen
                             }
                         }
+                    } else if (fetchedMed.imagen.toString().startsWith("file:///")) {
+                        Glide.with(requireContext()).load(fetchedMed.imagen).into(binding.img)
+                        image = fetchedMed.imagen
+                    } else {
+                        binding.img.setImageResource(R.mipmap.no_image_available)
+                        image = Uri.EMPTY
                     }
 
                     if (fetchedMed.esFavorito) {
@@ -264,7 +268,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
                 tomas = mutableMapOf(),
                 fkMedicamento = fetchedMed?.apply {
                     this.esFavorito = binding.btnFavBg.visibility == View.VISIBLE
-                    this.imagen = image.takeIf { it != Uri.EMPTY } ?: Uri.EMPTY
+                    this.imagen = image
                     this.nombre = nombre.ifBlank { this.nombre }
                 } ?: MedicamentoItem(
                     pkCodNacionalMedicamento = 0,
@@ -276,7 +280,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
                         ).show()
                         return@setOnClickListener
                     },
-                    imagen = image.takeIf { it != Uri.EMPTY } ?: Uri.EMPTY,
+                    imagen = image,
                     esFavorito = binding.btnFavBg.visibility == View.VISIBLE,
                     numRegistro = "",
                     url = "",
