@@ -1,7 +1,5 @@
 package com.a23pablooc.proxectofct.ui.view.viewholders
 
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -28,13 +26,11 @@ class CalendarPageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             CalendarMedBinding.inflate(
                 LayoutInflater.from(itemView.context), binding.calendarMedsLayout, true
             ).apply {
-                Handler(Looper.getMainLooper()).postDelayed({
-                    if (med.fkMedicamento.imagen.toString().isNotBlank()) {
-                        Glide.with(root.context)
-                            .load(med.fkMedicamento.imagen)
-                            .into(medImg)
-                    }
-                }, 1)
+                if (med.fkMedicamento.imagen.toString().isNotBlank()) {
+                    Glide.with(root.context)
+                        .load(med.fkMedicamento.imagen)
+                        .into(medImg)
+                }
 
                 medName.text = med.fkMedicamento.nombre
 

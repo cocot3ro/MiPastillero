@@ -48,9 +48,10 @@ class CalendarPageFragment : Fragment() {
     ): View {
         binding = FragmentCalendarPageBinding.inflate(layoutInflater)
 
-        calendarRecyclerViewAdapter = CalendarRecyclerViewAdapter(date, emptyList()) { med, dia, hora ->
-            viewModel.marcarToma(med, dia, hora)
-        }
+        calendarRecyclerViewAdapter =
+            CalendarRecyclerViewAdapter(date, emptyList()) { med, dia, hora ->
+                viewModel.marcarToma(med, dia, hora)
+            }
 
         binding.recyclerViewCalendarPage.apply {
             layoutManager = LinearLayoutManager(context)
@@ -58,6 +59,12 @@ class CalendarPageFragment : Fragment() {
         }
 
         binding.calendarDay.text = "${date.getDayName(requireContext())} - ${date.formatDate()}"
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -86,8 +93,6 @@ class CalendarPageFragment : Fragment() {
         }
 
         viewModel.fetchData(date)
-
-        return binding.root
     }
 
     companion object {
