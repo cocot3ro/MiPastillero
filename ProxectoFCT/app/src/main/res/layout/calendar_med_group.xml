@@ -20,13 +20,12 @@
             android:paddingHorizontal="4dp"
             android:textSize="20sp" />
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/calendar_meds_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="4dp"
-            android:layout_marginVertical="2dp"
-            android:orientation="vertical" />
+            android:layout_marginVertical="2dp" />
 
     </LinearLayout>
 
