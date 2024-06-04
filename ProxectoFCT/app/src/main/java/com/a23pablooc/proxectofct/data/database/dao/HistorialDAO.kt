@@ -5,10 +5,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Transaction
 import androidx.room.Update
 import com.a23pablooc.proxectofct.data.database.definitions.HistorialTableDefinition
-import com.a23pablooc.proxectofct.data.database.entities.HistorialAndMedicamento
 import com.a23pablooc.proxectofct.data.database.entities.HistorialEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -18,11 +16,7 @@ interface HistorialDAO {
     @Query("SELECT * FROM ${HistorialTableDefinition.TABLE_NAME} WHERE ${HistorialTableDefinition.Columns.FK_USUARIO} = :idUsuario")
     fun getAll(idUsuario: Int): Flow<List<HistorialEntity>>
 
-    @Transaction
-    @Query("SELECT * FROM ${HistorialTableDefinition.TABLE_NAME} WHERE ${HistorialTableDefinition.Columns.FK_USUARIO} = :idUsuario")
-    fun getAllWithMedicamentos(idUsuario: Int): Flow<List<HistorialAndMedicamento>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(historial: HistorialEntity)
 
     @Update

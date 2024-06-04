@@ -36,6 +36,9 @@ data class HistorialEntity(
     @ColumnInfo(name = HistorialTableDefinition.Columns.FK_USUARIO)
     val fkUsuario: Long,
 
+    @Embedded(prefix = HistorialTableDefinition.Prefixes.MEDICAMENTO)
+    val fkMedicamento: MedicamentoEntity,
+
     @Embedded(prefix = HistorialTableDefinition.Prefixes.MEDICAMENTO_ACTIVO)
     val fkMedicamentoActivo: MedicamentoActivoEntity
 )

@@ -1,5 +1,6 @@
 package com.a23pablooc.proxectofct.data.repositories
 
+import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
 import com.a23pablooc.proxectofct.data.database.dao.HistorialDAO
@@ -10,6 +11,7 @@ import com.a23pablooc.proxectofct.data.database.dao.MedicamentoWithMedicamentoAc
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
 import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
 import com.a23pablooc.proxectofct.data.database.entities.extensions.toDomain
+import com.a23pablooc.proxectofct.domain.model.HistorialItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.domain.model.extensions.toDatabase
@@ -76,5 +78,24 @@ class PillboxDbRepository @Inject constructor(
 
     suspend fun updateMedicamento(medicamento: MedicamentoItem) {
         medicamentoDAO.update(medicamento.toDatabase())
+    }
+
+    fun getMedicamentosTerminados(): List<MedicamentoActivoItem> {
+        return medicamentoWithMedicamentoActivoDAO.getMedicamentosTerminados(
+            UserInfoProvider.currentUser.pkUsuario,
+            Date().zeroTime().time
+        ).map { medWithMedActivo ->
+            medWithMedActivo.medicamentosActivos.map { medActivo ->
+                medActivo.toDomain(medWithMedActivo.medicamento)
+            }
+        }.flatten()
+    }
+
+    suspend fun deleteMedicamentosTerminados(meds: List<MedicamentoActivoItem>) {
+        medicamentoActivoDAO.deleteAll(meds.map { it.toDatabase().medicamentosActivos[0] })
+    }
+
+    suspend fun addHistorial(med: HistorialItem) {
+        historialDAO.insert(med.toDatabase())
     }
 }

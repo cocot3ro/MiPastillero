@@ -13,6 +13,7 @@ object HistorialTableDefinition {
     }
 
     object Prefixes {
+        const val MEDICAMENTO = "${TABLE_NAME}_medicamento__"
         const val MEDICAMENTO_ACTIVO = "${TABLE_NAME}_medicamento_activo__"
     }
 }

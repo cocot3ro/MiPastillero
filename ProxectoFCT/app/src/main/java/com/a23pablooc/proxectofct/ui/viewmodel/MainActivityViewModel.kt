@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.domain.model.extensions.toDatabase
+import com.a23pablooc.proxectofct.domain.usecases.BorrarTerminadosUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,13 +13,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    /*private val checkFinishedUseCase: CheckFinishedUseCase*/
-    private val usuarioDAO: UsuarioDAO,
+    private val borrarTerminadosUseCase: BorrarTerminadosUseCase,
+    private val usuarioDAO: UsuarioDAO, // TODO: Remove this line when not needed anymore.
 ) : ViewModel() {
 
     fun checkFinished() {
         viewModelScope.launch(Dispatchers.IO) {
-            // TODO: checkFinishedUseCase.invoke()
+            borrarTerminadosUseCase.invoke()
         }
     }
 

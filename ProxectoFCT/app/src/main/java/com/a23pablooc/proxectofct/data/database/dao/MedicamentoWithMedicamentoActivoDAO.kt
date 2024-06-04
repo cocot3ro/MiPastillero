@@ -49,4 +49,18 @@ interface MedicamentoWithMedicamentoActivoDAO {
         dia: Long
     ): Flow<List<MedicamentoWithMedicamentoActivo>>
 
+    @Query(
+        """
+            SELECT *
+            FROM ${MedicamentoTableDefinition.TABLE_NAME} AS m
+            INNER JOIN ${MedicamentoActivoTableDefinition.TABLE_NAME} AS ma
+                ON m.${MedicamentoTableDefinition.Columns.PK_COD_NACIONAL_MEDICAMENTO} = ma.${MedicamentoActivoTableDefinition.Columns.FK_MEDICAMENTO}
+            WHERE ma.${MedicamentoActivoTableDefinition.Columns.FK_USUARIO} = :idUsuario
+                AND ma.${MedicamentoActivoTableDefinition.Columns.FECHA_FIN} < :date
+        """
+    )
+    fun getMedicamentosTerminados(
+        idUsuario: Long,
+        date: Long
+    ): List<MedicamentoWithMedicamentoActivo>
 }
