@@ -275,7 +275,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
                     nombre = nombre.ifBlank {
                         Toast.makeText(
                             context,
-                            "Se debe introducir un nombre",
+                            "Se debe introducir un nombre", // TODO: Hardcode string
                             Toast.LENGTH_SHORT
                         ).show()
                         return@setOnClickListener
@@ -397,6 +397,8 @@ class AddActiveMedDialogFragment : DialogFragment() {
     }
 
     private fun onSelectDate(textView: TextView) {
+        val calendar = Calendar.getInstance()
+
         DatePickerDialog(
             requireContext(),
             { _, year, monthOfYear, dayOfMonth ->
@@ -409,9 +411,9 @@ class AddActiveMedDialogFragment : DialogFragment() {
                 textView.text = date.formatDate()
             },
             // Establece la fecha actual como predeterminada
-            Calendar.getInstance().get(Calendar.YEAR),
-            Calendar.getInstance().get(Calendar.MONTH),
-            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
         ).show()
     }
 
@@ -422,11 +424,9 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
             binding.textHelp.handler.removeCallbacksAndMessages(null)
 
-            binding.textHelp.handler.postDelayed(
-                {
-                    binding.textHelp.visibility = View.GONE
-                }, null, 5000
-            )
+            binding.textHelp.handler.postDelayed({
+                binding.textHelp.visibility = View.GONE
+            }, null, 5000)
         } else {
             binding.textHelp.handler.removeCallbacksAndMessages(null)
         }

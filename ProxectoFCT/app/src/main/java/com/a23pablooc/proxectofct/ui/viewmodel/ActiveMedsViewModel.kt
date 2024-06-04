@@ -49,10 +49,7 @@ class ActiveMedsViewModel @Inject constructor(
     }
 
     fun addActiveMed(med: MedicamentoActivoItem) {
-
         viewModelScope.launch(Dispatchers.IO) {
-            addMedicamentoActivoUseCase.invoke(med)
-
             val imgPath = med.fkMedicamento.imagen.toString()
 
             if (imgPath.startsWith(CimaApiDefinitions.BASE_URL)) {
@@ -65,8 +62,9 @@ class ActiveMedsViewModel @Inject constructor(
                     saveImageUseCase.invoke("${med.fkMedicamento.numRegistro}.jpg", imageData)
 
                 med.fkMedicamento.imagen = localStoragePath
-                updateMedicamentoUseCase.invoke(med.fkMedicamento)
             }
+
+            addMedicamentoActivoUseCase.invoke(med)
         }
     }
 }
