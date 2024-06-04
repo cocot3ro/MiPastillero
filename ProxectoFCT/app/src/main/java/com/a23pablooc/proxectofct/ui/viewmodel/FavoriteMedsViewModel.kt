@@ -3,7 +3,7 @@ package com.a23pablooc.proxectofct.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.a23pablooc.proxectofct.domain.usecases.GetFavoriteMedsUseCase
-import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
+import com.a23pablooc.proxectofct.ui.view.states.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,21 +18,21 @@ class FavoriteMedsViewModel @Inject constructor(
     private val getFavoriteMedsUseCase: GetFavoriteMedsUseCase
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<MainScreenUiState> =
-        MutableStateFlow(MainScreenUiState.Loading)
+    private val _uiState: MutableStateFlow<UiState> =
+        MutableStateFlow(UiState.Loading)
 
-    val uiState: StateFlow<MainScreenUiState> = _uiState
+    val uiState: StateFlow<UiState> = _uiState
 
     fun fetchData() {
         viewModelScope.launch {
             getFavoriteMedsUseCase.invoke()
                 .catch {
-                    _uiState.value = MainScreenUiState
+                    _uiState.value = UiState
                         .Error("Error fetching favorite meds", it)
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {
-                    _uiState.value = MainScreenUiState.Success(it)
+                    _uiState.value = UiState.Success(it)
                 }
         }
     }

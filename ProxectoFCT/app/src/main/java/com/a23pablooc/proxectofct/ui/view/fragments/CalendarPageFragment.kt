@@ -18,7 +18,7 @@ import com.a23pablooc.proxectofct.core.DateTimeUtils.getDayName
 import com.a23pablooc.proxectofct.databinding.FragmentCalendarPageBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.CalendarRecyclerViewAdapter
-import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
+import com.a23pablooc.proxectofct.ui.view.states.UiState
 import com.a23pablooc.proxectofct.ui.viewmodel.CalendarPageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -64,27 +64,23 @@ class CalendarPageFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.uiState.collect { uiState ->
-                    Log.v("CalendarPageFragment", "uiState: ${uiState.javaClass.simpleName}")
-
                     when (uiState) {
-                        is MainScreenUiState.Loading -> {
+                        is UiState.Loading -> {
                             binding.progressBar.visibility = View.VISIBLE
                         }
 
-                        is MainScreenUiState.Success<*> -> {
+                        is UiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
-                            Log.v("CalendarPageFragment", "new data: ${uiState.data}")
-                            Log.v("CalendarPageFragment", "before updateData")
                             calendarRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoActivoItem })
-                            Log.v("CalendarPageFragment", "after updateData")
                             // TODO: vista para lista vacia
                             // binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
                             // Toast.makeText(context, "Empty list", Toast.LENGTH_SHORT).show()
                         }
 
-                        is MainScreenUiState.Error -> {
+                        is UiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
+                            Log.e("CalendarPageFragment", uiState.errorMessage, uiState.exception)
                         }
                     }
                 }

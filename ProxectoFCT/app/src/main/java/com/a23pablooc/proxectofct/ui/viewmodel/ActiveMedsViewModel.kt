@@ -1,6 +1,5 @@
 package com.a23pablooc.proxectofct.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
@@ -10,7 +9,7 @@ import com.a23pablooc.proxectofct.domain.usecases.DownloadImageUseCase
 import com.a23pablooc.proxectofct.domain.usecases.GetMedicamentosActivosUseCase
 import com.a23pablooc.proxectofct.domain.usecases.SaveImageUseCase
 import com.a23pablooc.proxectofct.domain.usecases.UpdateMedicamentoUseCase
-import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
+import com.a23pablooc.proxectofct.ui.view.states.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,22 +28,22 @@ class ActiveMedsViewModel @Inject constructor(
     private val downloadImageUseCase: DownloadImageUseCase
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<MainScreenUiState> =
-        MutableStateFlow(MainScreenUiState.Loading)
+    private val _uiState: MutableStateFlow<UiState> =
+        MutableStateFlow(UiState.Loading)
 
-    val uiState: StateFlow<MainScreenUiState> = _uiState
+    val uiState: StateFlow<UiState> = _uiState
 
     // TODO: Hardcode string
     fun fetchData() {
         viewModelScope.launch(Dispatchers.IO) {
             getMedicamentosActivosUseCase.invoke()
                 .catch {
-                    _uiState.value = MainScreenUiState
+                    _uiState.value = UiState
                         .Error("Error fetching active meds from DB", it)
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {
-                    _uiState.value = MainScreenUiState.Success(it)
+                    _uiState.value = UiState.Success(it)
                 }
         }
     }

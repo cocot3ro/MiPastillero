@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.a23pablooc.proxectofct.domain.usecases.GetMedicamentosCalendarioUseCase
 import com.a23pablooc.proxectofct.domain.usecases.MarcarTomaUseCase
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
-import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
+import com.a23pablooc.proxectofct.ui.view.states.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,10 +22,10 @@ class CalendarPageViewModel @Inject constructor(
     private val marcarTomaUseCase: MarcarTomaUseCase
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<MainScreenUiState> =
-        MutableStateFlow(MainScreenUiState.Loading)
+    private val _uiState: MutableStateFlow<UiState> =
+        MutableStateFlow(UiState.Loading)
 
-    val uiState: StateFlow<MainScreenUiState> = _uiState
+    val uiState: StateFlow<UiState> = _uiState
 
     // TODO: Hardcode string
     fun fetchData(date: Date) {
@@ -33,11 +33,11 @@ class CalendarPageViewModel @Inject constructor(
             getMedicamentosCalendarioUseCase.invoke(date)
                 .catch {
                     _uiState.value =
-                        MainScreenUiState.Error("Error fetching calendar meds from DB", it)
+                        UiState.Error("Error fetching calendar meds from DB", it)
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {
-                    _uiState.value = MainScreenUiState.Success(it)
+                    _uiState.value = UiState.Success(it)
                 }
         }
     }

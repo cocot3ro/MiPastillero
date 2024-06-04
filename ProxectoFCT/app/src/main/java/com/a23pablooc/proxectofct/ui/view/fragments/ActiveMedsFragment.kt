@@ -26,7 +26,7 @@ import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentActiveMedsBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.ActiveMedsRecyclerViewAdapter
-import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
+import com.a23pablooc.proxectofct.ui.view.states.UiState
 import com.a23pablooc.proxectofct.ui.viewmodel.ActiveMedsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -81,11 +81,11 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {
-                        is MainScreenUiState.Loading -> {
+                        is UiState.Loading -> {
                             binding.progressBar.visibility = View.VISIBLE
                         }
 
-                        is MainScreenUiState.Success<*> -> {
+                        is UiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
                             activeRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoActivoItem })
 
@@ -93,7 +93,7 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
                             // binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
                         }
 
-                        is MainScreenUiState.Error -> {
+                        is UiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
                             Log.e("ActiveMedsFragment", uiState.errorMessage, uiState.exception)

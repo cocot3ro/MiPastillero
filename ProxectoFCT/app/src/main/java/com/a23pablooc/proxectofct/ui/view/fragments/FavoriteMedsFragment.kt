@@ -1,6 +1,7 @@
 package com.a23pablooc.proxectofct.ui.view.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -24,7 +25,7 @@ import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentFavoriteMedsBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.FavoriteRecyclerViewAdapter
-import com.a23pablooc.proxectofct.ui.view.states.MainScreenUiState
+import com.a23pablooc.proxectofct.ui.view.states.UiState
 import com.a23pablooc.proxectofct.ui.viewmodel.FavoriteMedsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -92,11 +93,11 @@ class FavoriteMedsFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {
-                        is MainScreenUiState.Loading -> {
+                        is UiState.Loading -> {
                             binding.progressBar.visibility = View.VISIBLE
                         }
 
-                        is MainScreenUiState.Success<*> -> {
+                        is UiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
 
                             favoriteRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoItem })
@@ -106,9 +107,10 @@ class FavoriteMedsFragment : Fragment() {
                             // Toast.makeText(context, "Empty list", Toast.LENGTH_SHORT).show()
                         }
 
-                        is MainScreenUiState.Error -> {
+                        is UiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
+                            Log.e("FavoriteMedsFragment", uiState.errorMessage, uiState.exception)
                         }
                     }
                 }
