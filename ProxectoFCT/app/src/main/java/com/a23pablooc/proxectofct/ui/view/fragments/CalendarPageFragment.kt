@@ -2,6 +2,7 @@ package com.a23pablooc.proxectofct.ui.view.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,15 +61,11 @@ class CalendarPageFragment : Fragment() {
 
         binding.calendarDay.text = "${date.getDayName(requireContext())} - ${date.formatDate()}"
 
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.uiState.collect { uiState ->
+                    Log.v("CalendarPageFragment", "uiState: ${uiState.javaClass.simpleName}")
+
                     when (uiState) {
                         is MainScreenUiState.Loading -> {
                             binding.progressBar.visibility = View.VISIBLE
@@ -76,8 +73,10 @@ class CalendarPageFragment : Fragment() {
 
                         is MainScreenUiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
+                            Log.v("CalendarPageFragment", "new data: ${uiState.data}")
+                            Log.v("CalendarPageFragment", "before updateData")
                             calendarRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoActivoItem })
-
+                            Log.v("CalendarPageFragment", "after updateData")
                             // TODO: vista para lista vacia
                             // binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
                             // Toast.makeText(context, "Empty list", Toast.LENGTH_SHORT).show()
@@ -93,6 +92,8 @@ class CalendarPageFragment : Fragment() {
         }
 
         viewModel.fetchData(date)
+
+        return binding.root
     }
 
     companion object {

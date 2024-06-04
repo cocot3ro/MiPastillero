@@ -60,7 +60,7 @@ interface MedicamentoDAO {
     suspend fun insert(medicamento: MedicamentoEntity): Long
 
     @Upsert
-    suspend fun upsert(medicamento: MedicamentoEntity): Long?
+    suspend fun upsert(medicamento: MedicamentoEntity): Long
 
     @Update
     suspend fun update(medicamento: MedicamentoEntity)

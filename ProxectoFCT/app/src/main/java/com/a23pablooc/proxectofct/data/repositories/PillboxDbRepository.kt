@@ -1,6 +1,5 @@
 package com.a23pablooc.proxectofct.data.repositories
 
-import android.util.Log
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
@@ -35,7 +34,7 @@ class PillboxDbRepository @Inject constructor(
         return medicamentoWithMedicamentoActivoDAO.getAllByDiaOrderByHora(
             UserInfoProvider.currentUser.pkUsuario, dia.time
         ).map { list ->
-            list.map { medWithMedActivo ->
+            list.distinct().map { medWithMedActivo ->
                 medWithMedActivo.medicamentosActivos.map { medActivo ->
                     medActivo.toDomain(medWithMedActivo.medicamento)
                 }
@@ -52,10 +51,9 @@ class PillboxDbRepository @Inject constructor(
             .map { list -> list.map { med -> med.toDomain() } }
     }
 
-    fun getMedicamentosActivos(fromDate: Date): Flow<List<MedicamentoActivoItem>> {
+    fun getMedicamentosActivos(): Flow<List<MedicamentoActivoItem>> {
         return medicamentoWithMedicamentoActivoDAO.getAllFromDate(
-            UserInfoProvider.currentUser.pkUsuario,
-            fromDate.time
+            UserInfoProvider.currentUser.pkUsuario
         ).map { list ->
             list.map { medWithMedActivo ->
                 medWithMedActivo.medicamentosActivos.map { medActivo ->
@@ -71,10 +69,10 @@ class PillboxDbRepository @Inject constructor(
 
     suspend fun addMedicamentoActivo(med: MedicamentoActivoItem) {
         val dbMed = med.toDatabase()
-        val codNacional = medicamentoDAO.upsert(dbMed.medicamento)
-        Log.v("PillboxDbRepository", "codNacional after upsert: $codNacional")
+        val insertedCodNacional = medicamentoDAO.upsert(dbMed.medicamento)
         medicamentoActivoDAO.insert(dbMed.medicamentosActivos[0].apply {
-            fkMedicamento = codNacional ?: dbMed.medicamento.pkCodNacionalMedicamento
+            fkMedicamento = insertedCodNacional.takeIf { it != -1L }
+                ?: dbMed.medicamento.pkCodNacionalMedicamento
         })
     }
 

@@ -64,6 +64,7 @@ class CalendarFragment : Fragment() {
 
         binding.viewPager.apply {
             adapter = calendarViewPagerAdapter
+            offscreenPageLimit = 1
             setCurrentItem(CalendarViewPagerAdapter.START_POSITION, false)
         }
 

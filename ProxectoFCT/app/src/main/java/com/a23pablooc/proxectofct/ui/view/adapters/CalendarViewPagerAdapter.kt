@@ -23,9 +23,7 @@ class CalendarViewPagerAdapter(
 
         val date = Calendar.getInstance().apply {
             add(Calendar.DAY_OF_YEAR, offset)
-        }.time.apply {
-            zeroTime()
-        }
+        }.time.zeroTime()
 
         return CalendarPageFragment.newInstance(date)
     }

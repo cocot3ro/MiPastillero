@@ -30,10 +30,10 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        viewModel.checkFinished()
-
         // TODO: Eliminar esto. Es solo para pruebas
         UserInfoProvider.currentUser = UsuarioItem(1, "Pablo")
         viewModel.insertTestUser(UserInfoProvider.currentUser)
+
+        viewModel.checkFinished()
     }
 }

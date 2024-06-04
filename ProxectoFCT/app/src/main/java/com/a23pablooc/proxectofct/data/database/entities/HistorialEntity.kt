@@ -6,39 +6,44 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.a23pablooc.proxectofct.data.database.definitions.HistorialTableDefinition
+import com.a23pablooc.proxectofct.data.database.definitions.HistorialTableDefinition.Columns.FK_USUARIO
+import com.a23pablooc.proxectofct.data.database.definitions.HistorialTableDefinition.Columns.PK_HISTORIAL
+import com.a23pablooc.proxectofct.data.database.definitions.HistorialTableDefinition.Indexes.IDX_HISTORIAL_FK_USUARIO
+import com.a23pablooc.proxectofct.data.database.definitions.HistorialTableDefinition.Prefixes.MEDICAMENTO
+import com.a23pablooc.proxectofct.data.database.definitions.HistorialTableDefinition.Prefixes.MEDICAMENTO_ACTIVO
+import com.a23pablooc.proxectofct.data.database.definitions.HistorialTableDefinition.TABLE_NAME
 import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTableDefinition
 
 @Entity(
-    tableName = HistorialTableDefinition.TABLE_NAME,
+    tableName = TABLE_NAME,
     foreignKeys = [
         ForeignKey(
             entity = UsuarioEntity::class,
             parentColumns = [UsuarioTableDefinition.Columns.PK_USUARIO],
-            childColumns = [HistorialTableDefinition.Columns.FK_USUARIO],
+            childColumns = [FK_USUARIO],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         )
     ],
     indices = [
         Index(
-            name = HistorialTableDefinition.Indexes.IDX_HISTORIAL_FK_USUARIO,
+            name = IDX_HISTORIAL_FK_USUARIO,
             unique = false,
-            value = [HistorialTableDefinition.Columns.FK_USUARIO]
+            value = [FK_USUARIO]
         )
     ]
 )
 data class HistorialEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = HistorialTableDefinition.Columns.PK_HISTORIAL)
+    @ColumnInfo(name = PK_HISTORIAL)
     val pkHistorial: Long = 0,
 
-    @ColumnInfo(name = HistorialTableDefinition.Columns.FK_USUARIO)
+    @ColumnInfo(name = FK_USUARIO)
     val fkUsuario: Long,
 
-    @Embedded(prefix = HistorialTableDefinition.Prefixes.MEDICAMENTO)
+    @Embedded(prefix = MEDICAMENTO)
     val fkMedicamento: MedicamentoEntity,
 
-    @Embedded(prefix = HistorialTableDefinition.Prefixes.MEDICAMENTO_ACTIVO)
+    @Embedded(prefix = MEDICAMENTO_ACTIVO)
     val fkMedicamentoActivo: MedicamentoActivoEntity
 )

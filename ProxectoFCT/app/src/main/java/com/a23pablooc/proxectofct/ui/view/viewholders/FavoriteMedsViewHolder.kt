@@ -31,12 +31,8 @@ class FavoriteMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }, 100)
         }
 
-        binding.addBtn.setOnClickListener {
-            onAdd(med)
-        }
+        binding.addBtn.setOnClickListener { onAdd(med) }
 
-        binding.infoBtn.setOnClickListener {
-            onInfo(med)
-        }
+        binding.infoBtn.setOnClickListener { onInfo(med) }
     }
 }

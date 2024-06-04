@@ -1,5 +1,6 @@
 package com.a23pablooc.proxectofct.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
@@ -35,7 +36,7 @@ class ActiveMedsViewModel @Inject constructor(
 
     // TODO: Hardcode string
     fun fetchData() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getMedicamentosActivosUseCase.invoke()
                 .catch {
                     _uiState.value = MainScreenUiState
