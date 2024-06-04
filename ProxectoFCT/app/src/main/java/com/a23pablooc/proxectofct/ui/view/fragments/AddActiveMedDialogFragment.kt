@@ -185,8 +185,16 @@ class AddActiveMedDialogFragment : DialogFragment() {
                         binding.img.setImageResource(R.mipmap.no_image_available)
                         image = Uri.EMPTY
                     } else {
-                        Glide.with(requireContext()).load(fetchedMed.imagen).into(binding.img)
-                        image = fetchedMed.imagen
+                        withContext(Dispatchers.IO) {
+                            val img = viewModel.downloadImage(
+                                fetchedMed.numRegistro,
+                                fetchedMed.imagen.toString().substringAfterLast('/')
+                            )
+                            withContext(Dispatchers.Main) {
+                                Glide.with(requireContext()).load(img).into(binding.img)
+                                image = fetchedMed.imagen
+                            }
+                        }
                     }
 
                     if (fetchedMed.esFavorito) {
@@ -214,7 +222,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
                     searchingToast.cancel()
                     Toast.makeText(
                         context,
-                        R.string.codigo_nacional_no_valido,
+                        R.string.codigo_nacional_no_valido, // TODO: a.k.a formato incorrecto by regex
                         Toast.LENGTH_SHORT
                     ).show()
 

@@ -1,5 +1,6 @@
 [//]: # (TODO: IMPORTANTE En MainActivity se asigna manualmente un usuraio para pruebas.)
 
+[//]: # (TODO: Toast de errores en AddActiveMedDialogFragment::search.)
 
 [//]: # (TODO: strings.xml)
 [//]: # (TODO: Repasar warnings en layouts)
