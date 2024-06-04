@@ -1,5 +1,7 @@
 package com.a23pablooc.proxectofct.ui.view.viewholders
 
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -26,11 +28,16 @@ class CalendarPageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             CalendarMedBinding.inflate(
                 LayoutInflater.from(itemView.context), binding.calendarMedsLayout, true
             ).apply {
-                if (med.fkMedicamento.imagen.toString().isNotBlank()) {
-                    Glide.with(root.context)
-                        .load(med.fkMedicamento.imagen)
-                        .into(medImg)
-                }
+                //Espera 1 milisegundo para cargar la imagen para que primero se muestre la imagen por defecto
+                // y luego la imagen que se carga
+                // Esto se hace para evitar 'misteriosos' problemas de carga de la imagen
+                Handler(Looper.getMainLooper()).postDelayed({
+                    if (med.fkMedicamento.imagen.toString().isNotBlank()) {
+                        Glide.with(root.context)
+                            .load(med.fkMedicamento.imagen)
+                            .into(medImg)
+                    }
+                }, 1)
 
                 medName.text = med.fkMedicamento.nombre
 
