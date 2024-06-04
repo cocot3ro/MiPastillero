@@ -28,16 +28,17 @@ class CalendarPageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             CalendarMedBinding.inflate(
                 LayoutInflater.from(itemView.context), binding.calendarMedsLayout, true
             ).apply {
-                //Espera 1 milisegundo para cargar la imagen para que primero se muestre la imagen por defecto
-                // y luego la imagen que se carga
-                // Esto se hace para evitar 'misteriosos' problemas de carga de la imagen
-                Handler(Looper.getMainLooper()).postDelayed({
-                    if (med.fkMedicamento.imagen.toString().isNotBlank()) {
+                if (med.fkMedicamento.imagen.toString().isNotBlank()) {
+                    // Espera 1 milisegundo para cargar la imagen para que primero se muestre la imagen por defecto
+                    // y luego la imagen que se carga
+                    // Esto se hace para evitar 'misteriosos' problemas de carga de la imagen
+                    // porque se redimensiona a un tamaño no apropiado
+                    Handler(Looper.getMainLooper()).postDelayed({
                         Glide.with(root.context)
                             .load(med.fkMedicamento.imagen)
                             .into(medImg)
-                    }
-                }, 1)
+                    }, 1)
+                }
 
                 medName.text = med.fkMedicamento.nombre
 
