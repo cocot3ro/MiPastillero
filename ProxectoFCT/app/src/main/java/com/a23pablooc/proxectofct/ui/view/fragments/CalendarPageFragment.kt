@@ -54,7 +54,7 @@ class CalendarPageFragment : Fragment() {
                 viewModel.marcarToma(med, dia, hora)
             }
 
-        binding.recyclerViewCalendarPage.apply {
+        binding.rvCalendarPage.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = calendarRecyclerViewAdapter
         }

@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@id/calendar_day" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_calendar_page"
+        android:id="@+id/rv_calendar_page"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -61,7 +61,7 @@ class FavoriteMedsFragment : Fragment() {
             onInfo = { onInfo(it) }
         )
 
-        binding.recyclerViewFavoriteMeds.apply {
+        binding.rvFavorites.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = favoriteRecyclerViewAdapter
         }

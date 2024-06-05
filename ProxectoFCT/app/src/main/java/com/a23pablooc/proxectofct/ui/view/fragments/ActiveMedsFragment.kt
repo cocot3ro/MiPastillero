@@ -69,7 +69,7 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
             }
         )
 
-        binding.recyclerViewActiveMeds.apply {
+        binding.rvActiveMeds.apply {
             adapter = activeRecyclerViewAdapter
             val manager = LinearLayoutManager(context)
             layoutManager = manager

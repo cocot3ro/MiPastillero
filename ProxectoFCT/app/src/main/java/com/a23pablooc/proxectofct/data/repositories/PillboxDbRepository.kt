@@ -14,6 +14,7 @@ import com.a23pablooc.proxectofct.data.database.entities.extensions.toDomain
 import com.a23pablooc.proxectofct.domain.model.HistorialItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
+import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.domain.model.extensions.toDatabase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -97,5 +98,9 @@ class PillboxDbRepository @Inject constructor(
 
     suspend fun addHistorial(med: HistorialItem) {
         historialDAO.insert(med.toDatabase())
+    }
+
+    fun getUsers(): Flow<List<UsuarioItem>> {
+        return usuarioDAO.getAll().map { list -> list.map { user -> user.toDomain() } }
     }
 }

@@ -49,7 +49,7 @@
                 android:background="@android:color/transparent"
                 android:contentDescription="TODO"
                 android:padding="6dp"
-                android:src="@drawable/info" />
+                android:src="@drawable/info_32dp" />
 
             <ImageButton
                 android:id="@+id/add_btn"
@@ -58,7 +58,7 @@
                 android:background="@android:color/transparent"
                 android:contentDescription="TODO"
                 android:padding="6dp"
-                android:src="@drawable/playlist_add" />
+                android:src="@drawable/playlist_add_32dp" />
 
         </LinearLayout>
 

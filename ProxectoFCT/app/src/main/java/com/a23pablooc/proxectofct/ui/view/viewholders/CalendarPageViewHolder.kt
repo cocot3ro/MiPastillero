@@ -24,7 +24,7 @@ class CalendarPageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         binding.hour.text = hora.formatTime()
 
-        binding.calendarMedsLayout.apply {
+        binding.rvMeds.apply {
             adapter = this@CalendarPageViewHolder.adapter
             layoutManager = LinearLayoutManager(context)
         }

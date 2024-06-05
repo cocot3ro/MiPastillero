@@ -100,7 +100,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
             onRemoveTimer = { onRemoveTimer(it) }
         )
 
-        binding.scheduleLayout.apply {
+        binding.rvSchedule.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = timePickerAdapter
         }

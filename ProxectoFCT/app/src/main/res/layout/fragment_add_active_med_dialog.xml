@@ -52,7 +52,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:contentDescription="TODO"
-                        android:src="@drawable/image_search" />
+                        android:src="@drawable/image_search_24dp" />
 
                 </FrameLayout>
 
@@ -71,7 +71,7 @@
                         android:background="@android:color/transparent"
                         android:contentDescription="TODO"
                         android:padding="6dp"
-                        android:src="@drawable/search"
+                        android:src="@drawable/search_32dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -96,7 +96,7 @@
                         android:background="@android:color/transparent"
                         android:contentDescription="TODO"
                         android:padding="6dp"
-                        android:src="@drawable/help"
+                        android:src="@drawable/help_32dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -139,7 +139,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:contentDescription="TODO"
-                        android:src="@drawable/star_on"
+                        android:src="@drawable/star_on_32dp"
                         android:visibility="gone" />
 
                     <ImageView
@@ -148,7 +148,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:contentDescription="TODO"
-                        android:src="@drawable/star_off" />
+                        android:src="@drawable/star_off_32dp" />
                 </FrameLayout>
 
                 <EditText
@@ -217,7 +217,7 @@
                         android:background="@android:color/transparent"
                         android:contentDescription="TODO"
                         android:padding="6dp"
-                        android:src="@drawable/edit_calendar"
+                        android:src="@drawable/edit_calendar_32dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -255,7 +255,7 @@
                         android:background="@android:color/transparent"
                         android:contentDescription="TODO"
                         android:padding="6dp"
-                        android:src="@drawable/edit_calendar"
+                        android:src="@drawable/edit_calendar_32dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -292,7 +292,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/old_rounded_no_bg"
                         android:contentDescription="TODO"
-                        android:src="@drawable/playlist_add" />
+                        android:src="@drawable/playlist_add_32dp" />
 
                 </LinearLayout>
 
@@ -304,7 +304,7 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/schedule_layout"
+                android:id="@+id/rv_schedule"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"

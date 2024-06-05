@@ -25,7 +25,7 @@
         android:background="@android:color/transparent"
         android:contentDescription="TODO"
         android:padding="6dp"
-        android:src="@drawable/alarm" />
+        android:src="@drawable/alarm_32dp" />
 
     <ImageButton
         android:id="@+id/btn_delete_timer"
@@ -34,6 +34,6 @@
         android:background="@android:color/transparent"
         android:contentDescription="TODO"
         android:padding="6dp"
-        android:src="@drawable/delete" />
+        android:src="@drawable/delete_32dp" />
 
 </LinearLayout>
