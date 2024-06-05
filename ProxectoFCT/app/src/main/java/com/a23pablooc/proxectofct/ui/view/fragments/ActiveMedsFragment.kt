@@ -71,10 +71,7 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
 
         binding.rvActiveMeds.apply {
             adapter = activeRecyclerViewAdapter
-            val manager = LinearLayoutManager(context)
-            layoutManager = manager
-            val decoration = DividerItemDecoration(context, manager.orientation)
-            addItemDecoration(decoration)
+            layoutManager = LinearLayoutManager(context)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
