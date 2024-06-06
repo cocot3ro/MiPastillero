@@ -18,18 +18,30 @@ import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentUsersBinding
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.ui.view.adapters.UserRecyclerViewAdapter
+import com.a23pablooc.proxectofct.ui.view.dialogs.CreateUserFragmentDialog
 import com.a23pablooc.proxectofct.ui.view.states.UiState
 import com.a23pablooc.proxectofct.ui.view.viewholders.UsersViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+private const val ARGS_MODE_KEY = "ARGS_MODE_KEY"
+
 @AndroidEntryPoint
-class UsersFragment : Fragment() {
+class UsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener {
     private lateinit var binding: FragmentUsersBinding
     private val viewModel: UsersViewModel by viewModels()
 
     private lateinit var navController: NavController
     private lateinit var adapter: UserRecyclerViewAdapter
+
+    private lateinit var mode: FragmentMode
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            mode = FragmentMode.valueOf(it.getString(ARGS_MODE_KEY)!!)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,8 +67,8 @@ class UsersFragment : Fragment() {
             layoutManager = GridLayoutManager(context, 2)
         }
 
-        binding.fabManageUsers.setOnClickListener {
-            TODO("Not yet implemented")
+        binding.fabAddUser.setOnClickListener {
+            showAddUserDialog()
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -88,5 +100,28 @@ class UsersFragment : Fragment() {
         viewModel.fetchData()
 
         return binding.root
+    }
+
+    override fun onDataEntered(user: UsuarioItem) {
+        viewModel.createUser(user)
+    }
+
+    private fun showAddUserDialog() {
+        CreateUserFragmentDialog().show(childFragmentManager, CreateUserFragmentDialog.TAG)
+    }
+
+    companion object {
+        enum class FragmentMode {
+            LOGIN,
+            MANAGE
+        }
+
+        @JvmStatic
+        fun newInstance(mode: FragmentMode) =
+            UsersFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARGS_MODE_KEY, mode.name)
+                }
+            }
     }
 }

@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.ui.view.fragments
+package com.a23pablooc.proxectofct.ui.view.dialogs
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -299,6 +299,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
     private fun validateForm(): Boolean {
         if (binding.nombre.text.isNullOrBlank()) {
+            binding.nombre.error = getString(R.string.sin_nombre)
             Toast.makeText(
                 context,
                 R.string.sin_nombre,

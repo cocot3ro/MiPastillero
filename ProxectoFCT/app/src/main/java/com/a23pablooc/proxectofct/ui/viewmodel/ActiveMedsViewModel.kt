@@ -2,6 +2,7 @@ package com.a23pablooc.proxectofct.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.usecases.AddMedicamentoActivoUseCase
@@ -25,7 +26,8 @@ class ActiveMedsViewModel @Inject constructor(
     private val addMedicamentoActivoUseCase: AddMedicamentoActivoUseCase,
     private val updateMedicamentoUseCase: UpdateMedicamentoUseCase,
     private val saveImageUseCase: SaveImageUseCase,
-    private val downloadImageUseCase: DownloadImageUseCase
+    private val downloadImageUseCase: DownloadImageUseCase,
+    private val userInfoProvider: UserInfoProvider
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<UiState> =
@@ -35,7 +37,7 @@ class ActiveMedsViewModel @Inject constructor(
 
     // TODO: Hardcode string
     fun fetchData() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
             getMedicamentosActivosUseCase.invoke()
                 .catch {
                     _uiState.value = UiState
@@ -59,7 +61,7 @@ class ActiveMedsViewModel @Inject constructor(
                 )
 
                 val localStoragePath =
-                    saveImageUseCase.invoke("${med.fkMedicamento.numRegistro}.jpg", imageData)
+                    saveImageUseCase.invoke("${userInfoProvider.currentUser.pkUsuario}_${med.fkMedicamento.numRegistro}.jpg", imageData)
 
                 med.fkMedicamento.imagen = localStoragePath
             }

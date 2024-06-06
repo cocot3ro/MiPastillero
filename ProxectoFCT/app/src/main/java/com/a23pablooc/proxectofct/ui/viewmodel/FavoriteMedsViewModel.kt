@@ -24,7 +24,7 @@ class FavoriteMedsViewModel @Inject constructor(
     val uiState: StateFlow<UiState> = _uiState
 
     fun fetchData() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
             getFavoriteMedsUseCase.invoke()
                 .catch {
                     _uiState.value = UiState

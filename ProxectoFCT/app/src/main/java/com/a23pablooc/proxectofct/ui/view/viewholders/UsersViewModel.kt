@@ -3,6 +3,7 @@ package com.a23pablooc.proxectofct.ui.view.viewholders
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
+import com.a23pablooc.proxectofct.domain.usecases.CreateUserUseCase
 import com.a23pablooc.proxectofct.domain.usecases.GetUsersUseCase
 import com.a23pablooc.proxectofct.domain.usecases.SelectUserUseCase
 import com.a23pablooc.proxectofct.ui.view.states.UiState
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class UsersViewModel @Inject constructor(
     private val selectUserUseCase: SelectUserUseCase,
-    private val getUsersUseCase: GetUsersUseCase
+    private val getUsersUseCase: GetUsersUseCase,
+    private val createUserUseCase: CreateUserUseCase
 ) : ViewModel() {
 
     private val _manageFlow: MutableSharedFlow<Boolean> = MutableSharedFlow()
@@ -29,12 +31,14 @@ class UsersViewModel @Inject constructor(
     val uiState: StateFlow<UiState> = _uiState
 
     fun selectUser(user: UsuarioItem) {
-        selectUserUseCase(user)
+        viewModelScope.launch(Dispatchers.Main) {
+            selectUserUseCase.invoke(user)
+        }
     }
 
     // TODO: Hardcode string
     fun fetchData() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
             getUsersUseCase.invoke()
                 .catch {
                     _uiState.value =
@@ -44,6 +48,12 @@ class UsersViewModel @Inject constructor(
                 .collect {
                     _uiState.value = UiState.Success(it)
                 }
+        }
+    }
+
+    fun createUser(user: UsuarioItem) {
+        viewModelScope.launch(Dispatchers.IO) {
+            createUserUseCase.invoke(user)
         }
     }
 }

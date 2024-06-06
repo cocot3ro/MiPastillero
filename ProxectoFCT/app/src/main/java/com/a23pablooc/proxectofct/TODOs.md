@@ -1,4 +1,5 @@
-[//]: # (TODO: Toast de errores en AddActiveMedDialogFragment::search.)
+[//]: # (TODO: Importante: ProgranarNotificaciones en MainViewModel)
+[//]: # (TODO: Importante: Toast de errores en AddActiveMedDialogFragment::search.)
 
 [//]: # (TODO: Hardcoded strings)
 [//]: # (TODO: strings.xml)

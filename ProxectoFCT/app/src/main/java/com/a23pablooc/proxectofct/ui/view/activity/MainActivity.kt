@@ -5,9 +5,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.databinding.ActivityMainBinding
-import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.ui.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,10 +28,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        // TODO: Eliminar esto. Es solo para pruebas
-        UserInfoProvider.currentUser = UsuarioItem(1, "Pablo")
-        viewModel.insertTestUser(UserInfoProvider.currentUser)
-
         viewModel.checkFinished()
+        viewModel.checkNotifications()
     }
 }

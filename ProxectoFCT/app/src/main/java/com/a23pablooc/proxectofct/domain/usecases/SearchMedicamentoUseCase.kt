@@ -8,11 +8,12 @@ import javax.inject.Inject
 
 class SearchMedicamentoUseCase @Inject constructor(
     private val cimaRepository: CimaRepository,
-    private val pillboxDbRepository: PillboxDbRepository
+    private val pillboxDbRepository: PillboxDbRepository,
+    private val userInfoProvider: UserInfoProvider
 ) {
     suspend operator fun invoke(codNacional: Long): MedicamentoItem? {
         return pillboxDbRepository.findMedicamentoByCodNacional(
-            UserInfoProvider.currentUser.pkUsuario,
+            userInfoProvider.currentUser.pkUsuario,
             codNacional
         ) ?: cimaRepository.searchMedicamento(codNacional)
     }

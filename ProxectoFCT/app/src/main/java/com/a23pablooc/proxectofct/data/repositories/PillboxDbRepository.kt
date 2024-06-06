@@ -29,11 +29,12 @@ class PillboxDbRepository @Inject constructor(
     private val historialDAO: HistorialDAO,
     private val notificacionDAO: NotificacionDAO,
     private val medicamentoActivoWithNotificacionDAO: MedicamentoActivoWithNotificacionDAO,
-    private val medicamentoWithMedicamentoActivoDAO: MedicamentoWithMedicamentoActivoDAO
+    private val medicamentoWithMedicamentoActivoDAO: MedicamentoWithMedicamentoActivoDAO,
+    private val userInfoProvider: UserInfoProvider
 ) {
     fun getAllWithMedicamentosByDiaOrderByHora(dia: Date): Flow<List<MedicamentoActivoItem>> {
         return medicamentoWithMedicamentoActivoDAO.getAllByDiaOrderByHora(
-            UserInfoProvider.currentUser.pkUsuario, dia.time
+            userInfoProvider.currentUser.pkUsuario, dia.time
         ).map { list ->
             list.distinct().map { medWithMedActivo ->
                 medWithMedActivo.medicamentosActivos.map { medActivo ->
@@ -44,17 +45,17 @@ class PillboxDbRepository @Inject constructor(
     }
 
     suspend fun update(med: MedicamentoActivoItem) {
-        medicamentoActivoDAO.update(med.toDatabase().medicamentosActivos[0])
+        medicamentoActivoDAO.update(med.toDatabase(userInfoProvider.currentUser.pkUsuario).medicamentosActivos[0])
     }
 
     fun getAllFavoriteMeds(): Flow<List<MedicamentoItem>> {
-        return medicamentoDAO.getAllFavoritos(UserInfoProvider.currentUser.pkUsuario)
+        return medicamentoDAO.getAllFavoritos(userInfoProvider.currentUser.pkUsuario)
             .map { list -> list.map { med -> med.toDomain() } }
     }
 
     fun getMedicamentosActivos(): Flow<List<MedicamentoActivoItem>> {
         return medicamentoWithMedicamentoActivoDAO.getAllFromDate(
-            UserInfoProvider.currentUser.pkUsuario
+            userInfoProvider.currentUser.pkUsuario
         ).map { list ->
             list.map { medWithMedActivo ->
                 medWithMedActivo.medicamentosActivos.map { medActivo ->
@@ -69,7 +70,7 @@ class PillboxDbRepository @Inject constructor(
     }
 
     suspend fun addMedicamentoActivo(med: MedicamentoActivoItem) {
-        val dbMed = med.toDatabase()
+        val dbMed = med.toDatabase(userInfoProvider.currentUser.pkUsuario)
         val insertedCodNacional = medicamentoDAO.upsert(dbMed.medicamento)
         medicamentoActivoDAO.insert(dbMed.medicamentosActivos[0].apply {
             fkMedicamento = insertedCodNacional.takeIf { it != -1L }
@@ -78,12 +79,12 @@ class PillboxDbRepository @Inject constructor(
     }
 
     suspend fun updateMedicamento(medicamento: MedicamentoItem) {
-        medicamentoDAO.update(medicamento.toDatabase())
+        medicamentoDAO.update(medicamento.toDatabase(userInfoProvider.currentUser.pkUsuario))
     }
 
     fun getMedicamentosTerminados(): List<MedicamentoActivoItem> {
         return medicamentoWithMedicamentoActivoDAO.getMedicamentosTerminados(
-            UserInfoProvider.currentUser.pkUsuario,
+            userInfoProvider.currentUser.pkUsuario,
             Date().zeroTime().time
         ).map { medWithMedActivo ->
             medWithMedActivo.medicamentosActivos.map { medActivo ->
@@ -93,14 +94,18 @@ class PillboxDbRepository @Inject constructor(
     }
 
     suspend fun deleteMedicamentosTerminados(meds: List<MedicamentoActivoItem>) {
-        medicamentoActivoDAO.deleteAll(meds.map { it.toDatabase().medicamentosActivos[0] })
+        medicamentoActivoDAO.deleteAll(meds.map { it.toDatabase(userInfoProvider.currentUser.pkUsuario).medicamentosActivos[0] })
     }
 
     suspend fun addHistorial(med: HistorialItem) {
-        historialDAO.insert(med.toDatabase())
+        historialDAO.insert(med.toDatabase(userInfoProvider.currentUser.pkUsuario))
     }
 
     fun getUsers(): Flow<List<UsuarioItem>> {
         return usuarioDAO.getAll().map { list -> list.map { user -> user.toDomain() } }
+    }
+
+    suspend fun createUser(user: UsuarioItem) {
+        usuarioDAO.insert(user.toDatabase())
     }
 }

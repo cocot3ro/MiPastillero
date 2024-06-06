@@ -29,7 +29,7 @@ class CalendarPageViewModel @Inject constructor(
 
     // TODO: Hardcode string
     fun fetchData(date: Date) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
             getMedicamentosCalendarioUseCase.invoke(date)
                 .catch {
                     _uiState.value =
