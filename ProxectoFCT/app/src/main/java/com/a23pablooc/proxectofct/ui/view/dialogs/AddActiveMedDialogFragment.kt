@@ -29,7 +29,7 @@ import com.a23pablooc.proxectofct.databinding.FragmentAddActiveMedDialogBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.TimePickerRecyclerViewAdapter
-import com.a23pablooc.proxectofct.ui.view.viewholders.AddActiveMedDialogViewModel
+import com.a23pablooc.proxectofct.ui.viewmodel.AddActiveMedDialogViewModel
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers

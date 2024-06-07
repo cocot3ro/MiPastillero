@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/manage_users"
+        android:icon="@drawable/manage_accounts_32dp"
+        android:title="Manage users"
+        app:showAsAction="always" /> <!-- TODO: hardcode string -->
+
+</menu>

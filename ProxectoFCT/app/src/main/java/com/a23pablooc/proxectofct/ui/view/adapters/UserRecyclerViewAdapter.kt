@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.ui.view.diffutils.UserDiffUtil
+import com.a23pablooc.proxectofct.ui.view.fragments.UsersFragment
 import com.a23pablooc.proxectofct.ui.view.viewholders.UserViewHolder
 import kotlinx.coroutines.flow.SharedFlow
 
 class UserRecyclerViewAdapter(
     private var list: List<UsuarioItem>,
     private val onSelect: (UsuarioItem) -> Unit,
-    private val onManage: SharedFlow<Boolean>
+    private val onManage: SharedFlow<UsersFragment.FragmentMode>
 ) : RecyclerView.Adapter<UserViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
