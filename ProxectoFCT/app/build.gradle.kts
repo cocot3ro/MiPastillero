@@ -47,7 +47,9 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
+    implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.flexbox)
     implementation(libs.androidx.fragment.ktx)
 
     implementation(libs.androidx.navigation.fragment.ktx)
@@ -56,9 +58,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
+
     //Corrutinas
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.androidx.activity.ktx)
 
     //Retrofit
     implementation(libs.retrofit)

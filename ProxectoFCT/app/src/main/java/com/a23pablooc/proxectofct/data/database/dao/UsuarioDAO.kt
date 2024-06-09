@@ -16,7 +16,7 @@ interface UsuarioDAO {
     fun getAll(): Flow<List<UsuarioEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(usuario: UsuarioEntity)
+    suspend fun insert(usuario: UsuarioEntity): Long
 
     @Update
     suspend fun update(usuario: UsuarioEntity)

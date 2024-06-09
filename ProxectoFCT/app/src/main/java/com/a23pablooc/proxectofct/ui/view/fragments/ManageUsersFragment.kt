@@ -1,0 +1,125 @@
+package com.a23pablooc.proxectofct.ui.view.fragments
+
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.a23pablooc.proxectofct.databinding.FragmentManageUsersBinding
+import com.a23pablooc.proxectofct.domain.model.UsuarioItem
+import com.a23pablooc.proxectofct.ui.view.adapters.ManageUserRecyclerViewAdapter
+import com.a23pablooc.proxectofct.ui.view.dialogs.CreateUserFragmentDialog
+import com.a23pablooc.proxectofct.ui.view.dialogs.DeleteUserDialogFragment
+import com.a23pablooc.proxectofct.ui.view.states.UiState
+import com.a23pablooc.proxectofct.ui.viewmodel.ManageUsersViewModel
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+@AndroidEntryPoint
+class ManageUsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener, DeleteUserDialogFragment.OnUserDeletedListener {
+    private lateinit var binding: FragmentManageUsersBinding
+    private val viewModel: ManageUsersViewModel by viewModels()
+
+    private lateinit var adapter: ManageUserRecyclerViewAdapter
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentManageUsersBinding.inflate(layoutInflater)
+
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+            adapter = ManageUserRecyclerViewAdapter(
+                emptyList(),
+                viewModel.onSaveChangesFlow,
+                {
+                    viewModel.saveChanges(it)
+                },
+                viewModel.onChangeDefaultUserFlow,
+                {
+                    viewModel.changeDefaultUser(it)
+                },
+                viewLifecycleOwner,
+                {
+                    showDeleteUserDialog(it)
+                }
+            )
+
+            binding.rvUsers.apply {
+                adapter = this@ManageUsersFragment.adapter
+                layoutManager = FlexboxLayoutManager(context).apply {
+                    justifyContent = JustifyContent.CENTER
+                    alignItems = AlignItems.CENTER
+                    flexDirection = FlexDirection.ROW
+                    flexWrap = FlexWrap.WRAP
+                }
+            }
+
+            binding.fabSave.setOnClickListener { viewModel.triggerSave() }
+
+            binding.fabAddUser.setOnClickListener {
+                CreateUserFragmentDialog().show(childFragmentManager, CreateUserFragmentDialog.TAG)
+            }
+
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+                        is UiState.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+
+                        is UiState.Success<*> -> {
+                            binding.progressBar.visibility = View.GONE
+                            val data = uiState.data.map { it as UsuarioItem }
+
+                            adapter.updateData(data)
+                        }
+
+                        is UiState.Error -> {
+                            binding.progressBar.visibility = View.GONE
+                            Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
+                            Log.e("ManageUsersFragment", uiState.errorMessage, uiState.exception)
+                        }
+                    }
+                }
+            }
+        }
+
+        viewModel.fetchData()
+
+        viewModel.trigger()
+
+        return binding.root
+    }
+
+    override fun onDataEntered(user: UsuarioItem, isDefault: Boolean) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val defaultUserPk = viewModel.createUser(user)
+
+            if (isDefault) {
+                viewModel.changeDefaultUser(defaultUserPk)
+            }
+        }
+    }
+
+    override fun onUserDeleted(usuario: UsuarioItem) {
+        viewModel.deleteUser(usuario)
+    }
+
+    private fun showDeleteUserDialog(usuario: UsuarioItem) {
+        DeleteUserDialogFragment(usuario).show(childFragmentManager, DeleteUserDialogFragment.TAG)
+    }
+}

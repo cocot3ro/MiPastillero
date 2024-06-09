@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentCreateUserFragmentDialogBinding
@@ -19,7 +20,7 @@ class CreateUserFragmentDialog : DialogFragment() {
     private lateinit var listener: OnDataEnteredListener
 
     interface OnDataEnteredListener {
-        fun onDataEntered(user: UsuarioItem)
+        fun onDataEntered(user: UsuarioItem, isDefault: Boolean)
     }
 
     companion object {
@@ -57,7 +58,7 @@ class CreateUserFragmentDialog : DialogFragment() {
 
             if (nombre.isBlank()) {
                 binding.etUserName.error =
-                    "Campo obligatorio. Debe contener al menos una letra" // TODO: hardcode string
+                    "Campo obligatorio. Debe contener al menos una letra y un máximo de 32 caracteres" // TODO: hardcode string
                 return@setOnClickListener
             }
 
@@ -66,13 +67,29 @@ class CreateUserFragmentDialog : DialogFragment() {
                 nombre = nombre
             )
 
-            listener.onDataEntered(user)
+            val isDefault = binding.btnFavBg.visibility == View.VISIBLE
+
+            listener.onDataEntered(user, isDefault)
             dialog.dismiss()
         }
     }
 
     private fun createView(): View {
         binding = FragmentCreateUserFragmentDialogBinding.inflate(layoutInflater)
+
+        binding.favFrame.setOnClickListener {
+            if (binding.btnFavBg.visibility == View.GONE) {
+                binding.btnFavBg.visibility = View.VISIBLE
+                Toast.makeText(
+                    context,
+                    "Este será ahora el usuario por defecto",
+                    Toast.LENGTH_SHORT
+                ).show() // TODO: hardcode string
+            } else {
+                binding.btnFavBg.visibility = View.GONE
+            }
+        }
+
         return binding.root
     }
 }

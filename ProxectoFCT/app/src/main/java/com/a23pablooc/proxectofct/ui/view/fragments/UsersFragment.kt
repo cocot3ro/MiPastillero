@@ -3,9 +3,15 @@ package com.a23pablooc.proxectofct.ui.view.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -13,18 +19,22 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import com.a23pablooc.proxectofct.R
+import com.a23pablooc.proxectofct.core.DataStoreManager
 import com.a23pablooc.proxectofct.databinding.FragmentUsersBinding
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.ui.view.adapters.UserRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.view.dialogs.CreateUserFragmentDialog
 import com.a23pablooc.proxectofct.ui.view.states.UiState
-import com.a23pablooc.proxectofct.ui.view.viewholders.UsersViewModel
+import com.a23pablooc.proxectofct.ui.viewmodel.UsersViewModel
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
-private const val ARGS_MODE_KEY = "ARGS_MODE_KEY"
 
 @AndroidEntryPoint
 class UsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener {
@@ -34,13 +44,24 @@ class UsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener
     private lateinit var navController: NavController
     private lateinit var adapter: UserRecyclerViewAdapter
 
-    private lateinit var mode: FragmentMode
+    private var firstTime: Boolean = true
+    private val firstTimeKey = "firstTime"
+
+    private val onSelectUser: (UsuarioItem) -> Unit = {
+        viewModel.selectUser(it)
+        navController.navigate(R.id.mainScreenFragment)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            mode = FragmentMode.valueOf(it.getString(ARGS_MODE_KEY)!!)
+        if (savedInstanceState != null) {
+            firstTime = savedInstanceState.getBoolean(firstTimeKey, true)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(firstTimeKey, firstTime)
     }
 
     override fun onCreateView(
@@ -53,25 +74,30 @@ class UsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener
         navController = requireActivity().supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment)?.findNavController()!!
 
-        adapter = UserRecyclerViewAdapter(
-            emptyList(),
-            {
-                viewModel.selectUser(it)
-                navController.navigate(R.id.mainScreenFragment)
-            },
-            viewModel.manageFlow,
-        )
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
-        binding.rvUsers.apply {
-            adapter = this@UsersFragment.adapter
-            layoutManager = GridLayoutManager(context, 2)
-        }
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+            adapter = UserRecyclerViewAdapter(
+                emptyList(),
+                onSelectUser,
+                viewModel.onChangeDefaultUserFlow,
+                viewLifecycleOwner
+            )
 
-        binding.fabAddUser.setOnClickListener {
-            showAddUserDialog()
-        }
+            binding.rvUsers.apply {
+                adapter = this@UsersFragment.adapter
+                layoutManager = FlexboxLayoutManager(context).apply {
+                    justifyContent = JustifyContent.CENTER
+                    alignItems = AlignItems.CENTER
+                    flexDirection = FlexDirection.ROW
+                    flexWrap = FlexWrap.WRAP
+                }
+            }
 
-        viewLifecycleOwner.lifecycleScope.launch {
+            binding.fabAddUser.setOnClickListener {
+                showAddUserDialog()
+            }
+
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {
@@ -80,11 +106,26 @@ class UsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener
                         }
 
                         is UiState.Success<*> -> {
-                            binding.progressBar.visibility = View.GONE
-                            adapter.updateData(uiState.data.map { it as UsuarioItem })
+                            when {
+                                firstTime && uiState.data.size == 1 -> {
+                                    val user = uiState.data.first() as UsuarioItem
+                                    onSelectUser(user)
+                                }
 
-                            // TODO: vista para lista vacia
-                            // binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
+                                firstTime && viewModel.getDefaultUserId() != DataStoreManager.Defaults.DEFAULT_USER_ID -> {
+                                    val defaultUser = viewModel.getDefaultUserId()
+                                    val user = uiState.data.map { it as UsuarioItem }
+                                        .first { it.pkUsuario == defaultUser }
+                                    onSelectUser(user)
+                                }
+
+                                else -> {
+                                    binding.progressBar.visibility = View.GONE
+                                    val data = uiState.data.map { it as UsuarioItem }
+                                    adapter.updateData(data)
+                                }
+                            }
+                            firstTime = false
                         }
 
                         is UiState.Error -> {
@@ -99,29 +140,45 @@ class UsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener
 
         viewModel.fetchData()
 
+        viewModel.trigger()
+
         return binding.root
     }
 
-    override fun onDataEntered(user: UsuarioItem) {
-        viewModel.createUser(user)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        (activity as MenuHost).addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.menu_toolbar_users, menu)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        R.id.manage_users -> {
+                            navController.navigate(R.id.manageUsersFragment)
+                            true
+                        }
+
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
+    }
+
+    override fun onDataEntered(user: UsuarioItem, isDefault: Boolean) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val defaultUserPk = viewModel.createUser(user)
+
+            if (isDefault) {
+                viewModel.changeDefaultUser(defaultUserPk)
+            }
+        }
     }
 
     private fun showAddUserDialog() {
         CreateUserFragmentDialog().show(childFragmentManager, CreateUserFragmentDialog.TAG)
-    }
-
-    companion object {
-        enum class FragmentMode {
-            LOGIN,
-            MANAGE
-        }
-
-        @JvmStatic
-        fun newInstance(mode: FragmentMode) =
-            UsersFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARGS_MODE_KEY, mode.name)
-                }
-            }
     }
 }

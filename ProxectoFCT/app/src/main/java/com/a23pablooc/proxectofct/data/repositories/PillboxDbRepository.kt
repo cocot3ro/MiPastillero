@@ -105,7 +105,11 @@ class PillboxDbRepository @Inject constructor(
         return usuarioDAO.getAll().map { list -> list.map { user -> user.toDomain() } }
     }
 
-    suspend fun createUser(user: UsuarioItem) {
-        usuarioDAO.insert(user.toDatabase())
+    suspend fun createUser(user: UsuarioItem): Long {
+        return usuarioDAO.insert(user.toDatabase())
+    }
+
+    suspend fun deleteUser(user: UsuarioItem) {
+        usuarioDAO.delete(user.toDatabase())
     }
 }

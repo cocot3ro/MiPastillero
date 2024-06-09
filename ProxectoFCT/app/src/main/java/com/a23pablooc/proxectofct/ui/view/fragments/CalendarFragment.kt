@@ -1,6 +1,7 @@
 package com.a23pablooc.proxectofct.ui.view.fragments
 
 import android.app.DatePickerDialog
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -15,16 +16,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentCalendarBinding
 import com.a23pablooc.proxectofct.ui.view.adapters.CalendarViewPagerAdapter
 import com.a23pablooc.proxectofct.ui.viewmodel.CalendarViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import android.icu.util.Calendar
 
 @AndroidEntryPoint
 class CalendarFragment : Fragment() {
@@ -42,8 +42,8 @@ class CalendarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCalendarBinding.inflate(layoutInflater)
-        navController = requireActivity().supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment)?.findNavController()!!
+        navController = (requireActivity().supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -57,7 +57,23 @@ class CalendarFragment : Fragment() {
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         binding.toolbar.setupWithNavController(findNavController(), appBarConfiguration)
 
-        NavigationUI.setupWithNavController(binding.navView, navController)
+        binding.navView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.usersFragment -> {
+                    navController.popBackStack(item.itemId, false)
+                    true
+                }
+
+                R.id.manageUsersFragment -> {
+                    navController.navigate(item.itemId)
+                    true
+                }
+
+                else -> false
+            }.also {
+                if (it) binding.drawerLayout.close()
+            }
+        }
 
         calendarViewPagerAdapter =
             CalendarViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)

@@ -1,4 +1,4 @@
-package com.a23pablooc.proxectofct.ui.view.viewholders
+package com.a23pablooc.proxectofct.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
