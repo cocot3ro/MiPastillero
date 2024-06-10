@@ -129,14 +129,6 @@ class CalendarFragment : Fragment() {
                 search(date)
             }
         }
-
-        val d = Calendar.getInstance().apply {
-            set(Calendar.YEAR, 2024)
-            set(Calendar.MONTH, 2)
-            set(Calendar.DAY_OF_MONTH, 7)
-        }.time
-
-        search(d)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
