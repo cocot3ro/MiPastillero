@@ -3,11 +3,13 @@ package com.a23pablooc.proxectofct.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.a23pablooc.proxectofct.core.DataStoreManager
+import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.domain.usecases.CreateUserUseCase
 import com.a23pablooc.proxectofct.domain.usecases.DeleteUserUseCase
 import com.a23pablooc.proxectofct.domain.usecases.GetUsersUseCase
 import com.a23pablooc.proxectofct.domain.usecases.SelectDefaultUserUseCase
+import com.a23pablooc.proxectofct.domain.usecases.SelectUserUseCase
 import com.a23pablooc.proxectofct.domain.usecases.UpdateUserUseCase
 import com.a23pablooc.proxectofct.ui.view.states.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +29,9 @@ class ManageUsersViewModel @Inject constructor(
     private val updateUserUseCase: UpdateUserUseCase,
     private val getUsersUseCase: GetUsersUseCase,
     private val selectDefaultUserUseCase: SelectDefaultUserUseCase,
-    private val dataStoreManager: DataStoreManager
+    private val dataStoreManager: DataStoreManager,
+    private val userInfoProvider: UserInfoProvider,
+    private val selectUserUseCase: SelectUserUseCase
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.Loading)
@@ -36,8 +40,12 @@ class ManageUsersViewModel @Inject constructor(
     private val _onChangeDefaultUserFlow: MutableStateFlow<Long> =
         MutableStateFlow(DataStoreManager.Defaults.DEFAULT_USER_ID)
     val onChangeDefaultUserFlow: StateFlow<Long> = _onChangeDefaultUserFlow
-    private val _onSaveChangesFlow: MutableStateFlow<Unit> = MutableStateFlow(Unit)
-    val onSaveChangesFlow: StateFlow<Unit> = _onSaveChangesFlow
+
+    private val _onSaveChangesFlow: MutableStateFlow<Any> = MutableStateFlow(Unit)
+    val onSaveChangesFlow: StateFlow<Any> = _onSaveChangesFlow
+
+    private val _changes = mutableSetOf<Long>()
+    val hasChanges get(): Boolean = _changes.isNotEmpty()
 
     fun changeDefaultUser(userId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -77,12 +85,16 @@ class ManageUsersViewModel @Inject constructor(
     fun saveUser(user: UsuarioItem) {
         viewModelScope.launch(Dispatchers.IO) {
             updateUserUseCase.invoke(user)
+
+            if (user.pkUsuario == userInfoProvider.currentUser.pkUsuario) {
+                selectUserUseCase.invoke(user)
+            }
         }
     }
 
     fun triggerSave() {
         viewModelScope.launch(Dispatchers.Main) {
-            _onSaveChangesFlow.emit(Unit)
+            _onSaveChangesFlow.emit(Any())
         }
     }
 
@@ -90,5 +102,10 @@ class ManageUsersViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             deleteUserUseCase.invoke(usuario)
         }
+    }
+
+    fun registerChange(userId: Long, hasChanged: Boolean) {
+        if (hasChanged) _changes.add(userId)
+        else _changes.remove(userId)
     }
 }

@@ -41,7 +41,7 @@ class DeleteUserDialogFragment(
         return activity?.let {
             AlertDialog.Builder(it).apply {
                 setView(createView())
-                setTitle("Borrar usuario") // TODO: hardcode string
+                setTitle("Borrar usuario") // TODO: Hardcode string
                 setPositiveButton(R.string.aceptar, null)
                 setNegativeButton(R.string.cancelar, null)
             }.create().apply {

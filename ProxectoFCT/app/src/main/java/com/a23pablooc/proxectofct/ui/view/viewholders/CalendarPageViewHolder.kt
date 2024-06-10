@@ -6,13 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatTime
 import com.a23pablooc.proxectofct.databinding.CalendarMedGroupBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
-import com.a23pablooc.proxectofct.ui.view.adapters.CalendarMedRecyclerViewAdapter
+import com.a23pablooc.proxectofct.ui.view.adapters.CalendarPageMedRecyclerViewAdapter
 import java.util.Date
 
 class CalendarPageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = CalendarMedGroupBinding.bind(view)
-    private var adapter: CalendarMedRecyclerViewAdapter? = null
+    private var adapter: CalendarPageMedRecyclerViewAdapter? = null
 
     fun render(
         dia: Date,
@@ -20,7 +20,7 @@ class CalendarPageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         meds: List<MedicamentoActivoItem>,
         onClick: (MedicamentoActivoItem, Date, Date) -> Unit
     ) {
-        adapter = adapter.takeIf { it != null } ?: CalendarMedRecyclerViewAdapter(dia, hora, meds, onClick)
+        adapter = adapter.takeIf { it != null } ?: CalendarPageMedRecyclerViewAdapter(dia, hora, meds, onClick)
 
         binding.hour.text = hora.formatTime()
 

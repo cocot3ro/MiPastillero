@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Manage users" /> <!-- TODO: hardcode string -->
+        app:title="Manage users" /> <!-- TODO: Hardcode string -->
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -36,7 +36,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- TODO: hardcode string -->
+        <!-- TODO: Hardcode string -->
         <TextView
             android:id="@+id/tv_no_users_1"
             android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- TODO: hardcode string -->
+        <!-- TODO: Hardcode string -->
         <TextView
             android:id="@+id/tv_no_users_2"
             android:layout_width="wrap_content"
@@ -87,6 +87,7 @@
             android:layout_marginBottom="15dp"
             android:contentDescription="TODO"
             android:src="@drawable/save_32dp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

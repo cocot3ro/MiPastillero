@@ -64,7 +64,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- TODO: hardcode string -->
+            <!-- TODO: Hardcode string -->
             <TextView
                 android:id="@+id/tv_user_name"
                 android:layout_width="match_parent"

@@ -56,6 +56,14 @@ class ManageUsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredLi
                 viewLifecycleOwner,
                 {
                     showDeleteUserDialog(it)
+                },
+                { userId, hasChanged ->
+                    viewModel.registerChange(userId, hasChanged)
+
+                    binding.fabSave.apply {
+                        if (viewModel.hasChanges) show()
+                        else hide()
+                    }
                 }
             )
 
@@ -69,7 +77,14 @@ class ManageUsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredLi
                 }
             }
 
-            binding.fabSave.setOnClickListener { viewModel.triggerSave() }
+            binding.fabSave.setOnClickListener {
+                viewModel.triggerSave()
+
+                // TODO: Hardcode string
+                Toast.makeText(context, "Changes saved", Toast.LENGTH_SHORT).show()
+
+                binding.fabSave.hide()
+            }
 
             binding.fabAddUser.setOnClickListener {
                 CreateUserFragmentDialog().show(childFragmentManager, CreateUserFragmentDialog.TAG)
@@ -86,9 +101,8 @@ class ManageUsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredLi
                             binding.progressBar.visibility = View.GONE
                             val data = uiState.data.map { it as UsuarioItem }
 
-                            binding.emptyDataView.visibility = if (data.isEmpty()) View.VISIBLE else View.GONE
-
-                            binding.fabSave.visibility = if (data.isNotEmpty()) View.VISIBLE else View.GONE
+                            binding.emptyDataView.visibility =
+                                if (data.isEmpty()) View.VISIBLE else View.GONE
 
                             adapter.updateData(data)
                         }

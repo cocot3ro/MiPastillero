@@ -2,6 +2,7 @@ package com.a23pablooc.proxectofct.ui.view.viewholders
 
 import android.view.View
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -22,33 +23,45 @@ class ManageUserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private var firstTime = true
 
     fun render(
-        usuarioItem: UsuarioItem,
-        onSaveUserFlow: StateFlow<Unit>,
+        user: UsuarioItem,
+        onSaveUserFlow: StateFlow<Any>,
         onSaveUser: (UsuarioItem) -> Unit,
         onChangeDefaultFlow: StateFlow<Long>,
         onChangeDefault: (UsuarioItem) -> Unit,
         lifecycleOwner: LifecycleOwner,
-        onDelete: (UsuarioItem) -> Unit
+        onDelete: (UsuarioItem) -> Unit,
+        notifyChange: (Long, Boolean) -> Unit
     ) {
-        originalName = usuarioItem.nombre
+        originalName = user.nombre
 
-        binding.createUserLayout.etUserName.setText(usuarioItem.nombre)
+        binding.createUserLayout.etUserName.apply {
+            setText(user.nombre)
+            addTextChangedListener(
+                afterTextChanged = {
+                    notifyChange(user.pkUsuario, originalName != it.toString())
+                }
+            )
+        }
 
         lifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 onSaveUserFlow.collect {
-                    if (binding.createUserLayout.etUserName.text.toString().isBlank()) {
+                    if (it is Unit) return@collect
+
+                    val name = binding.createUserLayout.etUserName.text.toString()
+
+                    if (name.isBlank()) {
                         // TODO: hardcoded string
                         binding.createUserLayout.etUserName.error = "Campo obligatorio."
                         return@collect
                     }
 
-                    val name = binding.createUserLayout.etUserName.text.toString()
-
                     if (originalName != name) {
-                        val copy = usuarioItem.copy(nombre = name)
+                        val copy = user.copy(nombre = name)
                         onSaveUser(copy)
                         originalName = copy.nombre
+
+                        binding.createUserLayout.etUserName.setText(copy.nombre)
                     }
                 }
             }
@@ -57,15 +70,15 @@ class ManageUserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         lifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 onChangeDefaultFlow.collect { pk ->
-                    val visibility = if (usuarioItem.pkUsuario == pk) View.VISIBLE else View.GONE
+                    val visibility = if (user.pkUsuario == pk) View.VISIBLE else View.GONE
                     binding.createUserLayout.ivFavBg.visibility = visibility
 
                     toast?.cancel()
 
-                    if (!firstTime && usuarioItem.pkUsuario == pk) {
+                    if (!firstTime && user.pkUsuario == pk) {
                         toast = Toast.makeText(
                             binding.root.context,
-                            "${usuarioItem.nombre} es ahora el usuario por defecto",
+                            "${user.nombre} es ahora el usuario por defecto",
                             Toast.LENGTH_SHORT
                         ).also { it.show() }
                     }
@@ -77,12 +90,12 @@ class ManageUserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         binding.createUserLayout.favFrame.setOnClickListener {
             lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                onChangeDefault(usuarioItem)
+                onChangeDefault(user)
             }
         }
 
         binding.ibDelete.setOnClickListener {
-            onDelete(usuarioItem)
+            onDelete(user)
         }
     }
 }

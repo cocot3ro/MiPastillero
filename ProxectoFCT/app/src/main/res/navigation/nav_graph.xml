@@ -13,14 +13,14 @@
         android:label="fragment_main_screen"
         tools:layout="@layout/fragment_main_screen" />
 
-    <!-- TODO: hardcode string -->
+    <!-- TODO: Hardcode string -->
     <fragment
         android:id="@+id/usersFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.UsersFragment"
         android:label="Usuarios"
         tools:layout="@layout/fragment_users" />
 
-    <!-- TODO: hardcode string -->
+    <!-- TODO: Hardcode string -->
     <fragment
         android:id="@+id/manageUsersFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.ManageUsersFragment"

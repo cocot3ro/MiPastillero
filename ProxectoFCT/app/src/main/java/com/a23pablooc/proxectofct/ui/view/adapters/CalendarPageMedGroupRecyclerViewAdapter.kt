@@ -10,7 +10,7 @@ import com.a23pablooc.proxectofct.ui.view.diffutils.CalendarPageDiffUtil
 import com.a23pablooc.proxectofct.ui.view.viewholders.CalendarPageViewHolder
 import java.util.Date
 
-class CalendarRecyclerViewAdapter(
+class CalendarPageMedGroupRecyclerViewAdapter(
     private val dia: Date,
     private var list: List<MedicamentoActivoItem>,
     private val onClick: (MedicamentoActivoItem, Date, Date) -> Unit

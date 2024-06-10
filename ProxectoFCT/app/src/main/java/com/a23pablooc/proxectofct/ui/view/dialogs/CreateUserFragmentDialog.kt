@@ -41,7 +41,7 @@ class CreateUserFragmentDialog : DialogFragment() {
         return activity?.let {
             AlertDialog.Builder(it).apply {
                 setView(createView())
-                setTitle("Crear usuario") // TODO: hardcode string
+                setTitle("Crear usuario") // TODO: Hardcode string
                 setPositiveButton(R.string.aceptar, null)
                 setNegativeButton(R.string.cancelar, null)
             }.create().apply {
@@ -66,7 +66,7 @@ class CreateUserFragmentDialog : DialogFragment() {
                 val nombre = binding.etUserName.text.toString().trim()
 
                 if (nombre.isBlank()) {
-                    binding.etUserName.error = "Campo obligatorio" // TODO: hardcode string
+                    binding.etUserName.error = "Campo obligatorio" // TODO: Hardcode string
                     return@setOnClickListener
                 }
 
@@ -88,7 +88,7 @@ class CreateUserFragmentDialog : DialogFragment() {
                     context,
                     "Este será ahora el usuario por defecto",
                     Toast.LENGTH_SHORT
-                ).show() // TODO: hardcode string
+                ).show() // TODO: Hardcode string
             } else {
                 binding.ivFavBg.visibility = View.GONE
             }

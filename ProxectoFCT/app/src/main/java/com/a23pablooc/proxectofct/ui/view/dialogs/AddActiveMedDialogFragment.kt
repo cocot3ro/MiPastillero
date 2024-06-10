@@ -170,7 +170,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
                 this@AddActiveMedDialogFragment.fetchedMed = fetchedMed
 
                 withContext(Dispatchers.Main) {
-                    //TODO: hardcode string
+                    //TODO: Hardcode string
                     if (fetchedMed == null) {
                         Toast.makeText(
                             context,

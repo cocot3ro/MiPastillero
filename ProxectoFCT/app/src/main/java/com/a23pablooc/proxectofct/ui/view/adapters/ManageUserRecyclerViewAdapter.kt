@@ -13,12 +13,13 @@ import kotlinx.coroutines.flow.StateFlow
 
 class ManageUserRecyclerViewAdapter(
     private var list: List<UsuarioItem>,
-    private val onSaveUserFlow: StateFlow<Unit>,
+    private val onSaveUserFlow: StateFlow<Any>,
     private val onSaveUser: (UsuarioItem) -> Unit,
     private val onChangeDefaultFlow: StateFlow<Long>,
     private val onChangeDefault: (UsuarioItem) -> Unit,
     private val lifecycleOwner: LifecycleOwner,
-    private val onDelete: (UsuarioItem) -> Unit
+    private val onDelete: (UsuarioItem) -> Unit,
+    private val notifyChange: (Long, Boolean) -> Unit
 ) : RecyclerView.Adapter<ManageUserViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ManageUserViewHolder {
@@ -37,7 +38,8 @@ class ManageUserRecyclerViewAdapter(
             onChangeDefaultFlow,
             onChangeDefault,
             lifecycleOwner,
-            onDelete
+            onDelete,
+            notifyChange
         )
     }
 

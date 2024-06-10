@@ -17,7 +17,7 @@ import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.getDayName
 import com.a23pablooc.proxectofct.databinding.FragmentCalendarPageBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
-import com.a23pablooc.proxectofct.ui.view.adapters.CalendarRecyclerViewAdapter
+import com.a23pablooc.proxectofct.ui.view.adapters.CalendarPageMedGroupRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.view.states.UiState
 import com.a23pablooc.proxectofct.ui.viewmodel.CalendarPageViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +31,7 @@ private const val ARGS_DATE_KEY = "ARG_DATE_KEY"
 class CalendarPageFragment : Fragment() {
     private lateinit var binding: FragmentCalendarPageBinding
     private val viewModel: CalendarPageViewModel by viewModels<CalendarPageViewModel>()
-    private lateinit var calendarRecyclerViewAdapter: CalendarRecyclerViewAdapter
+    private lateinit var calendarPageMedGroupRecyclerViewAdapter: CalendarPageMedGroupRecyclerViewAdapter
 
     private lateinit var date: Date
 
@@ -50,14 +50,14 @@ class CalendarPageFragment : Fragment() {
     ): View {
         binding = FragmentCalendarPageBinding.inflate(layoutInflater)
 
-        calendarRecyclerViewAdapter =
-            CalendarRecyclerViewAdapter(date, emptyList()) { med, dia, hora ->
+        calendarPageMedGroupRecyclerViewAdapter =
+            CalendarPageMedGroupRecyclerViewAdapter(date, emptyList()) { med, dia, hora ->
                 viewModel.marcarToma(med, dia, hora)
             }
 
         binding.rvCalendarPage.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = calendarRecyclerViewAdapter
+            adapter = calendarPageMedGroupRecyclerViewAdapter
         }
 
         binding.calendarDay.text = "${date.getDayName(requireContext())} - ${date.formatDate()}"
@@ -72,7 +72,7 @@ class CalendarPageFragment : Fragment() {
 
                         is UiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
-                            calendarRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoActivoItem })
+                            calendarPageMedGroupRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoActivoItem })
                             // TODO: vista para lista vacia
                             // binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
                             // Toast.makeText(context, "Empty list", Toast.LENGTH_SHORT).show()

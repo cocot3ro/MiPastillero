@@ -10,7 +10,7 @@ import com.a23pablooc.proxectofct.ui.view.diffutils.CalendarMedDiffUtil
 import com.a23pablooc.proxectofct.ui.view.viewholders.CalendarMedViewHolder
 import java.util.Date
 
-class CalendarMedRecyclerViewAdapter(
+class CalendarPageMedRecyclerViewAdapter(
     private val dia: Date,
     private var hora: Date,
     private var list: List<MedicamentoActivoItem>,
