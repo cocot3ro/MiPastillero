@@ -3,8 +3,12 @@ package com.a23pablooc.proxectofct.core
 import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
+import android.util.Log
+import androidx.core.math.MathUtils
 import com.a23pablooc.proxectofct.R
 import java.util.Date
+import kotlin.math.ceil
+import kotlin.math.floor
 
 object DateTimeUtils {
 
@@ -36,7 +40,7 @@ object DateTimeUtils {
     }
 
     fun daysBetweenDates(startDate: Date, endDate: Date): Int {
-        return ((endDate.time - startDate.time) / (1000 * 60 * 60 * 24)).toInt()
+        return floor((endDate.time - startDate.time) / (1000 * 60 * 60 * 24).toDouble()).toInt()
     }
 
     fun Date.zero() = apply {

@@ -1,5 +1,6 @@
 package com.a23pablooc.proxectofct.data.repositories
 
+import android.icu.util.Calendar
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
@@ -85,7 +86,7 @@ class PillboxDbRepository @Inject constructor(
     fun getMedicamentosTerminados(): List<MedicamentoActivoItem> {
         return medicamentoWithMedicamentoActivoDAO.getMedicamentosTerminados(
             userInfoProvider.currentUser.pkUsuario,
-            Date().zeroTime().time
+            Calendar.getInstance().time.zeroTime().time
         ).map { medWithMedActivo ->
             medWithMedActivo.medicamentosActivos.map { medActivo ->
                 medActivo.toDomain(medWithMedActivo.medicamento)

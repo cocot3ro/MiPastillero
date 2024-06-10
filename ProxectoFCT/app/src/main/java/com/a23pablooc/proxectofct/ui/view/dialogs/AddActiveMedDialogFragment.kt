@@ -43,7 +43,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
     private lateinit var binding: FragmentAddActiveMedDialogBinding
     private val viewModel: AddActiveMedDialogViewModel by viewModels()
 
-    private var scheduleList: List<Date> = listOf(Date().zero())
+    private var scheduleList: List<Date> = listOf(Calendar.getInstance().time.zero())
     private lateinit var timePickerAdapter: TimePickerRecyclerViewAdapter
 
     private lateinit var listener: OnDataEnteredListener
@@ -140,7 +140,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
             binding.btnFavBg.visibility = binding.btnFavBg.visibility.xor(View.GONE)
         }
 
-        Date().zeroTime().formatDate().also {
+        Calendar.getInstance().time.zeroTime().formatDate().also {
             binding.dateStart.text = it
             binding.dateEnd.text = it
         }
@@ -330,7 +330,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
         val startDate = DateTimeUtils.parseDate(binding.dateStart.text.toString()).time
         val endDate = DateTimeUtils.parseDate(binding.dateEnd.text.toString()).time
-        val today = Date().zeroTime().time
+        val today = Calendar.getInstance().time.zeroTime().time
 
         if (endDate < startDate || endDate < today) {
             Toast.makeText(
@@ -345,7 +345,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
     }
 
     private fun onAddTimer() {
-        onSelectTime(Date().zeroDate())
+        onSelectTime(Calendar.getInstance().time.zeroDate())
     }
 
     private fun onRemoveTimer(date: Date) {
@@ -372,11 +372,10 @@ class AddActiveMedDialogFragment : DialogFragment() {
             context,
             { _, hourOfDay, minute ->
                 val pickedTime = Calendar.getInstance().apply {
+                    time = time.zero()
                     set(Calendar.HOUR_OF_DAY, hourOfDay)
                     set(Calendar.MINUTE, minute)
-                    set(Calendar.SECOND, 0)
-                    set(Calendar.MILLISECOND, 0)
-                }.time.zeroDate()
+                }.time
 
                 if (scheduleList.any { it.time == pickedTime.time }) {
                     // TODO: Hardcode string

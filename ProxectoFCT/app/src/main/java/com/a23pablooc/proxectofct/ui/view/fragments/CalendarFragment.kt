@@ -16,15 +16,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.R
+import com.a23pablooc.proxectofct.core.DateTimeUtils.zero
+import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.databinding.FragmentCalendarBinding
 import com.a23pablooc.proxectofct.ui.view.adapters.CalendarViewPagerAdapter
 import com.a23pablooc.proxectofct.ui.viewmodel.CalendarViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Date
 
 @AndroidEntryPoint
 class CalendarFragment : Fragment() {
@@ -34,6 +36,13 @@ class CalendarFragment : Fragment() {
     private lateinit var calendarViewPagerAdapter: CalendarViewPagerAdapter
     private lateinit var navController: NavController
 
+    private var datePickerDialog: DatePickerDialog? = null
+
+    companion object BundleKeys {
+        private const val SHOWING_DATE_PICKER_DIALOG = "showingDatePickerDialog"
+        private const val DATE_PICKER_DIALOG_DATE = "datePickerDialogDate"
+    }
+
     //TODO: Drawer menu
 
     override fun onCreateView(
@@ -42,8 +51,8 @@ class CalendarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCalendarBinding.inflate(layoutInflater)
-        navController = (requireActivity().supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+        navController = requireActivity().supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment)?.findNavController()!!
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -75,8 +84,7 @@ class CalendarFragment : Fragment() {
             }
         }
 
-        calendarViewPagerAdapter =
-            CalendarViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
+        calendarViewPagerAdapter = CalendarViewPagerAdapter(this)
 
         binding.viewPager.apply {
             adapter = calendarViewPagerAdapter
@@ -113,14 +121,57 @@ class CalendarFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        savedInstanceState?.let {
+            if (it.getBoolean(SHOWING_DATE_PICKER_DIALOG)) {
+                val date = Date(it.getLong(DATE_PICKER_DIALOG_DATE))
+                search(date)
+            }
+        }
+
+        val d = Calendar.getInstance().apply {
+            set(Calendar.YEAR, 2024)
+            set(Calendar.MONTH, 2)
+            set(Calendar.DAY_OF_MONTH, 7)
+        }.time
+
+        search(d)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(SHOWING_DATE_PICKER_DIALOG, datePickerDialog?.isShowing ?: false)
+        val date = datePickerDialog?.let {
+            Calendar.getInstance().apply {
+                time = time.zero()
+                set(Calendar.YEAR, datePickerDialog?.datePicker?.year ?: 0)
+                set(Calendar.MONTH, datePickerDialog?.datePicker?.month ?: 0)
+                set(Calendar.DAY_OF_MONTH, datePickerDialog?.datePicker?.dayOfMonth ?: 0)
+            }.time
+        }
+        outState.putLong(DATE_PICKER_DIALOG_DATE, date?.time ?: 0)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        datePickerDialog = datePickerDialog?.let {
+            it.dismiss()
+            null
+        }
+    }
+
     private fun today() {
         binding.viewPager.setCurrentItem(CalendarViewPagerAdapter.START_POSITION, true)
     }
 
-    private fun search() {
-        val calendar = Calendar.getInstance()
+    private fun search(date: Date? = null) {
+        val calendar = Calendar.getInstance().apply {
+            time = date ?: Calendar.getInstance().time
+            time = time.zeroTime()
+        }
 
-        DatePickerDialog(
+        datePickerDialog = DatePickerDialog(
             requireContext(),
             { _, year, monthOfYear, dayOfMonth ->
                 val offset = viewModel.calculateOffset(year, monthOfYear, dayOfMonth)
@@ -129,11 +180,11 @@ class CalendarFragment : Fragment() {
                     true
                 )
             },
-
-            // Establece la fecha actual como predeterminada
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
-        ).show()
+        ).also {
+            it.show()
+        }
     }
 }

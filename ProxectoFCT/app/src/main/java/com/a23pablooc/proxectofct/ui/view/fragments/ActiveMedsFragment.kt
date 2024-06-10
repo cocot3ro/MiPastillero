@@ -59,7 +59,7 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
         activeRecyclerViewAdapter = ActiveMedsRecyclerViewAdapter(
             emptyList(),
             onFav = {
-                // TODO: onFavClick
+                viewModel.toggleFavMed(it.fkMedicamento)
             },
             onInfo = {
                 // TODO: onInfoClick

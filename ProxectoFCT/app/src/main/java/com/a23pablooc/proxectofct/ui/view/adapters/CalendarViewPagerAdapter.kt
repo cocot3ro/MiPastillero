@@ -1,19 +1,16 @@
 package com.a23pablooc.proxectofct.ui.view.adapters
 
+import android.icu.util.Calendar
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.ui.view.fragments.CalendarPageFragment
-import android.icu.util.Calendar
 
 class CalendarViewPagerAdapter(
-    fragmentManager: FragmentManager,
-    lifecycle: Lifecycle
-) : FragmentStateAdapter(fragmentManager, lifecycle) {
+    fragment: Fragment
+) : FragmentStateAdapter(fragment) {
     companion object {
-        const val START_POSITION = Int.MAX_VALUE / 2
+        const val START_POSITION: Int = Int.MAX_VALUE / 2
     }
 
     override fun getItemCount(): Int = Int.MAX_VALUE
@@ -22,8 +19,9 @@ class CalendarViewPagerAdapter(
         val offset = position - START_POSITION
 
         val date = Calendar.getInstance().apply {
+            time = time.zeroTime()
             add(Calendar.DAY_OF_YEAR, offset)
-        }.time.zeroTime()
+        }.time
 
         return CalendarPageFragment.newInstance(date)
     }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
+import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.domain.usecases.AddMedicamentoActivoUseCase
 import com.a23pablooc.proxectofct.domain.usecases.DownloadImageUseCase
 import com.a23pablooc.proxectofct.domain.usecases.GetMedicamentosActivosUseCase
@@ -61,12 +62,21 @@ class ActiveMedsViewModel @Inject constructor(
                 )
 
                 val localStoragePath =
-                    saveImageUseCase.invoke("${userInfoProvider.currentUser.pkUsuario}_${med.fkMedicamento.numRegistro}.jpg", imageData)
+                    saveImageUseCase.invoke(
+                        "${userInfoProvider.currentUser.pkUsuario}_${med.fkMedicamento.numRegistro}.jpg",
+                        imageData
+                    )
 
                 med.fkMedicamento.imagen = localStoragePath
             }
 
             addMedicamentoActivoUseCase.invoke(med)
+        }
+    }
+
+    fun toggleFavMed(med: MedicamentoItem) {
+        viewModelScope.launch(Dispatchers.IO) {
+            updateMedicamentoUseCase.invoke(med.apply { esFavorito = !esFavorito })
         }
     }
 }
