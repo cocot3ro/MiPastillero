@@ -14,3 +14,5 @@
 [//]: # (TODO: contentDescription en las imagenes. Buscar por 'android:contentDescription="TODO"')
 
 [//]: # (TODO: Delete old)
+
+[//]: # (TODO: Borrar dependencias no usadas)
