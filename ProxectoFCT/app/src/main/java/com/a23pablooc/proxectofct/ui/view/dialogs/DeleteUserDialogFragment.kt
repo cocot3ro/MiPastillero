@@ -64,7 +64,11 @@ class DeleteUserDialogFragment(
 
     private fun setUpPositiveButton(dialog: AlertDialog) {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+            isEnabled = false
+
             setOnClickListener {
+                if (binding.etConfirm.text.toString() != userToDelete.nombre) return@setOnClickListener
+
                 listener.onUserDeleted(userToDelete)
                 dialog.dismiss()
             }
