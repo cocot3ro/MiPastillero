@@ -110,13 +110,10 @@ class ManageUsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredLi
         return binding.root
     }
 
-    override fun onDataEntered(user: UsuarioItem, isDefault: Boolean) {
+    override fun onDataEntered(userName: String, isDefault: Boolean) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val defaultUserPk = viewModel.createUser(user)
-
-            if (isDefault) {
-                viewModel.changeDefaultUser(defaultUserPk)
-            }
+            val defaultUserPk = viewModel.createUser(UsuarioItem(nombre = userName))
+            if (isDefault) viewModel.changeDefaultUser(defaultUserPk)
         }
     }
 

@@ -6,10 +6,10 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentCreateUserFragmentDialogBinding
-import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,7 +20,7 @@ class CreateUserFragmentDialog : DialogFragment() {
     private lateinit var listener: OnDataEnteredListener
 
     interface OnDataEnteredListener {
-        fun onDataEntered(user: UsuarioItem, isDefault: Boolean)
+        fun onDataEntered(userName: String, isDefault: Boolean)
     }
 
     companion object {
@@ -53,24 +53,28 @@ class CreateUserFragmentDialog : DialogFragment() {
     }
 
     private fun setUpPositiveButton(dialog: AlertDialog) {
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            val nombre = binding.etUserName.text.toString().trim()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+            isEnabled = false
 
-            if (nombre.isBlank()) {
-                binding.etUserName.error =
-                    "Campo obligatorio. Debe contener al menos una letra y un máximo de 30 caracteres" // TODO: hardcode string
-                return@setOnClickListener
-            }
-
-            val user = UsuarioItem(
-                pkUsuario = 0,
-                nombre = nombre
+            binding.etUserName.addTextChangedListener(
+                afterTextChanged = { text ->
+                    isEnabled = !text.isNullOrBlank()
+                }
             )
 
-            val isDefault = binding.ivFavBg.visibility == View.VISIBLE
+            setOnClickListener {
+                val nombre = binding.etUserName.text.toString().trim()
 
-            listener.onDataEntered(user, isDefault)
-            dialog.dismiss()
+                if (nombre.isBlank()) {
+                    binding.etUserName.error = "Campo obligatorio" // TODO: hardcode string
+                    return@setOnClickListener
+                }
+
+                val isDefault = binding.ivFavBg.visibility == View.VISIBLE
+
+                listener.onDataEntered(nombre, isDefault)
+                dialog.dismiss()
+            }
         }
     }
 
