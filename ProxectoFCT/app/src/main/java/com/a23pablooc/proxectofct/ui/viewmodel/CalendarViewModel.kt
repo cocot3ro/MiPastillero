@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
-    private val userInfoProvider: UserInfoProvider
+    private val userInfoProvider: UserInfoProvider,
 ) : ViewModel() {
 
     fun calculateOffset(year: Int, monthOfYear: Int, dayOfMonth: Int): Int {
@@ -24,7 +24,5 @@ class CalendarViewModel @Inject constructor(
         return DateTimeUtils.daysBetweenDates(today, date)
     }
 
-    fun getCurrentUser(): UsuarioItem {
-        return userInfoProvider.currentUser
-    }
+    fun getCurrentUser(): UsuarioItem = userInfoProvider.currentUser
 }

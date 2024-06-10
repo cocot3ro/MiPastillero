@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Singleton
 class UserInfoProvider @Inject constructor() {
     private lateinit var _currentUser: UsuarioItem
-    val currentUser: UsuarioItem get() = _currentUser
+    val currentUser: UsuarioItem get() = _currentUser.copy()
 
     private val _userChangedFlow = MutableSharedFlow<UsuarioItem>()
     val userChangedFlow: SharedFlow<UsuarioItem> = _userChangedFlow

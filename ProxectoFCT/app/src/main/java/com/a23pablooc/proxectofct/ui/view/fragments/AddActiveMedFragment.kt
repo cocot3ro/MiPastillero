@@ -1,20 +1,22 @@
-package com.a23pablooc.proxectofct.ui.view.dialogs
+package com.a23pablooc.proxectofct.ui.view.fragments
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.app.Dialog
 import android.app.TimePickerDialog
-import android.content.Context
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.format.DateFormat
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
-import androidx.fragment.app.DialogFragment
+import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,11 +27,11 @@ import com.a23pablooc.proxectofct.core.DateTimeUtils.zero
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
-import com.a23pablooc.proxectofct.databinding.FragmentAddActiveMedDialogBinding
+import com.a23pablooc.proxectofct.databinding.FragmentAddActiveMedBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.TimePickerRecyclerViewAdapter
-import com.a23pablooc.proxectofct.ui.viewmodel.AddActiveMedDialogViewModel
+import com.a23pablooc.proxectofct.ui.viewmodel.AddActiveMedViewModel
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -38,61 +40,34 @@ import kotlinx.coroutines.withContext
 import java.util.Date
 
 @AndroidEntryPoint
-class AddActiveMedDialogFragment : DialogFragment() {
+class AddActiveMedFragment : Fragment() {
 
-    private lateinit var binding: FragmentAddActiveMedDialogBinding
-    private val viewModel: AddActiveMedDialogViewModel by viewModels()
+    private lateinit var binding: FragmentAddActiveMedBinding
+    private val viewModel: AddActiveMedViewModel by viewModels()
 
     private var scheduleList: List<Date> = listOf(Calendar.getInstance().time.zero())
     private lateinit var timePickerAdapter: TimePickerRecyclerViewAdapter
-
-    private lateinit var listener: OnDataEnteredListener
 
     private var fetchedMed: MedicamentoItem? = null
     private var image: Uri = Uri.EMPTY
 
     private val pickMedia = registerForActivityResult(PickVisualMedia()) {
         it?.let {
-            Glide.with(requireContext()).load(it).into(binding.img)
+            Glide.with(requireContext()).load(it).into(binding.addMedDialog.img)
             image = it
         }
     }
 
-    interface OnDataEnteredListener {
-        fun onDataEntered(med: MedicamentoActivoItem)
+    private object BundleKeys {
+        const val IMAGE = "image"
     }
 
-    companion object {
-        const val TAG = "AddActiveMedDialogFragment"
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        try {
-            listener = parentFragment as OnDataEnteredListener
-        } catch (e: ClassCastException) {
-            throw ClassCastException(("$context must implement OnDataEnteredListener"))
-        }
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return activity?.let {
-            AlertDialog.Builder(it).apply {
-                setView(createView())
-                setTitle(R.string.añadir_medicamento)
-                setPositiveButton(R.string.aceptar, null)
-                setNegativeButton(R.string.cancelar, null)
-            }.create().apply {
-                setOnShowListener {
-                    setUpPositiveButton(this)
-                }
-            }
-        } ?: throw IllegalStateException("Activity cannot be null")
-    }
-
-    private fun createView(): View {
-        binding = FragmentAddActiveMedDialogBinding.inflate(layoutInflater)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentAddActiveMedBinding.inflate(layoutInflater, container, false)
 
         timePickerAdapter = TimePickerRecyclerViewAdapter(
             scheduleList,
@@ -105,7 +80,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
             adapter = timePickerAdapter
         }
 
-        binding.imgLayout.setOnClickListener {
+        binding.addMedDialog.imgLayout.setOnClickListener {
             pickMedia.launch(
                 PickVisualMediaRequest(
                     PickVisualMedia.ImageOnly
@@ -113,7 +88,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
             )
         }
 
-        binding.imgLayout.setOnLongClickListener {
+        binding.addMedDialog.imgLayout.setOnLongClickListener {
             Toast.makeText(
                 context,
                 getString(R.string.seleccionar_una_imagen),
@@ -122,9 +97,9 @@ class AddActiveMedDialogFragment : DialogFragment() {
             true
         }
 
-        binding.btnHelp.setOnClickListener { toggleHelp() }
+        binding.addMedDialog.btnHelp.setOnClickListener { toggleHelp() }
 
-        binding.btnSearch.setOnClickListener { search() }
+        binding.addMedDialog.btnSearch.setOnClickListener { search() }
 
         binding.btnStartDatePicker.setOnClickListener {
             onSelectDate(binding.dateStart)
@@ -136,20 +111,48 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
         binding.btnAddTimer.setOnClickListener { onAddTimer() }
 
-        binding.favFrame.setOnClickListener {
-            binding.ivFavBg.apply {
+        binding.addMedDialog.favFrame.setOnClickListener {
+            binding.addMedDialog.ivFavBg.apply {
                 visibility = visibility.xor(View.GONE)
             }
         }
 
-        Calendar.getInstance().time.zeroTime().formatDate().also {
+        Calendar.getInstance().time.zeroTime().formatDate().let {
             binding.dateStart.text = it
             binding.dateEnd.text = it
         }
 
+        binding.fabAddActiveMed.setOnClickListener { onAddActiveMed() }
+
         timePickerAdapter.updateData(scheduleList)
 
         return binding.root
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        savedInstanceState?.let {
+            val image = it.getString(BundleKeys.IMAGE)?.toUri()
+            this.image = image ?: Uri.EMPTY
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                Glide.with(requireContext()).load(
+                    image ?: R.mipmap.no_image_available
+                ).into(binding.addMedDialog.img)
+            }, 1)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(BundleKeys.IMAGE, image.toString())
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Glide.with(requireContext()).load(R.mipmap.no_image_available)
+            .into(binding.addMedDialog.img)
     }
 
     private fun search() {
@@ -161,13 +164,13 @@ class AddActiveMedDialogFragment : DialogFragment() {
 
         binding.progressBar.visibility = View.VISIBLE
 
-        val codNacional = binding.codNacional.text.toString()
+        val codNacional = binding.addMedDialog.codNacional.text.toString()
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val fetchedMed = viewModel.search(codNacional)
 
-                this@AddActiveMedDialogFragment.fetchedMed = fetchedMed
+                this@AddActiveMedFragment.fetchedMed = fetchedMed
 
                 withContext(Dispatchers.Main) {
                     //TODO: Hardcode string
@@ -180,9 +183,9 @@ class AddActiveMedDialogFragment : DialogFragment() {
                         return@withContext
                     }
 
-                    binding.codNacional.setText(codNacional)
+                    binding.addMedDialog.codNacional.setText(codNacional)
 
-                    binding.nombre.setText(fetchedMed.nombre)
+                    binding.addMedDialog.nombre.setText(fetchedMed.nombre)
 
                     if (fetchedMed.imagen.toString().startsWith(CimaApiDefinitions.BASE_URL)) {
                         withContext(Dispatchers.IO) {
@@ -191,21 +194,23 @@ class AddActiveMedDialogFragment : DialogFragment() {
                                 fetchedMed.imagen.toString().substringAfterLast('/')
                             )
                             withContext(Dispatchers.Main) {
-                                Glide.with(requireContext()).load(img).into(binding.img)
+                                Glide.with(requireContext()).load(img)
+                                    .into(binding.addMedDialog.img)
                                 image = fetchedMed.imagen
                             }
                         }
                     } else if (fetchedMed.imagen.toString().startsWith("file:///")) {
-                        Glide.with(requireContext()).load(fetchedMed.imagen).into(binding.img)
+                        Glide.with(requireContext()).load(fetchedMed.imagen)
+                            .into(binding.addMedDialog.img)
                         image = fetchedMed.imagen
                     } else {
-                        binding.img.setImageResource(R.mipmap.no_image_available)
+                        binding.addMedDialog.img.setImageResource(R.mipmap.no_image_available)
                         image = Uri.EMPTY
                     }
 
                     if (fetchedMed.esFavorito) {
-                        binding.ivFavBg.visibility = View.VISIBLE
-                        binding.favFrame.setOnClickListener {
+                        binding.addMedDialog.ivFavBg.visibility = View.VISIBLE
+                        binding.addMedDialog.favFrame.setOnClickListener {
                             // TODO: Hardcode string
                             Toast.makeText(
                                 context,
@@ -214,15 +219,16 @@ class AddActiveMedDialogFragment : DialogFragment() {
                             ).show()
                         }
                     } else {
-                        binding.ivFavBg.visibility = View.GONE
-                        binding.favFrame.setOnClickListener {
-                            binding.ivFavBg.visibility =
-                                binding.ivFavBg.visibility.xor(View.GONE)
+                        binding.addMedDialog.ivFavBg.visibility = View.GONE
+                        binding.addMedDialog.favFrame.setOnClickListener {
+                            binding.addMedDialog.ivFavBg.apply {
+                                visibility = visibility.xor(View.GONE)
+                            }
                         }
                     }
                 }
             } catch (e: IllegalArgumentException) {
-                this@AddActiveMedDialogFragment.fetchedMed = null
+                this@AddActiveMedFragment.fetchedMed = null
 
                 withContext(Dispatchers.Main) {
                     searchingToast.cancel()
@@ -235,7 +241,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
                     toggleHelp()
                 }
             } catch (e: Exception) {
-                this@AddActiveMedDialogFragment.fetchedMed = null
+                this@AddActiveMedFragment.fetchedMed = null
 
                 withContext(Dispatchers.Main) {
                     searchingToast.cancel()
@@ -250,58 +256,54 @@ class AddActiveMedDialogFragment : DialogFragment() {
         }
     }
 
-    private fun setUpPositiveButton(dialog: AlertDialog) {
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            if (!validateForm())
-                return@setOnClickListener
+    private fun onAddActiveMed() {
+        if (!validateForm())
+            return
 
-            val nombre = binding.nombre.text.toString()
-            val dateStart = DateTimeUtils.parseDate(binding.dateStart.text.toString())
-            val dateEnd = DateTimeUtils.parseDate(binding.dateEnd.text.toString())
-            val dosis = binding.dosis.text.toString()
-            val schedule = scheduleList
+        val nombre = binding.addMedDialog.nombre.text.toString()
+        val dateStart = DateTimeUtils.parseDate(binding.dateStart.text.toString())
+        val dateEnd = DateTimeUtils.parseDate(binding.dateEnd.text.toString())
+        val dosis = binding.addMedDialog.dosis.text.toString()
+        val schedule = scheduleList
 
-            val med = MedicamentoActivoItem(
-                pkMedicamentoActivo = 0,
-                dosis = dosis.ifBlank { "" },
-                horario = schedule.toMutableSet(),
-                fechaFin = dateEnd,
-                fechaInicio = dateStart,
-                tomas = mutableMapOf(),
-                fkMedicamento = fetchedMed?.apply {
-                    this.esFavorito = binding.ivFavBg.visibility == View.VISIBLE
-                    this.imagen = image
-                    this.nombre = nombre.ifBlank { this.nombre }
-                } ?: MedicamentoItem(
-                    pkCodNacionalMedicamento = 0,
-                    nombre = nombre.ifBlank {
-                        Toast.makeText(
-                            context,
-                            "Se debe introducir un nombre", // TODO: Hardcode string
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        return@setOnClickListener
-                    },
-                    imagen = image,
-                    esFavorito = binding.ivFavBg.visibility == View.VISIBLE,
-                    numRegistro = "",
-                    url = "",
-                    prescripcion = "",
-                    laboratorio = "",
-                    prospecto = "",
-                    afectaConduccion = false
-                )
+        val med = MedicamentoActivoItem(
+            pkMedicamentoActivo = 0,
+            dosis = dosis.ifBlank { "" },
+            horario = schedule.toMutableSet(),
+            fechaFin = dateEnd,
+            fechaInicio = dateStart,
+            tomas = mutableMapOf(),
+            fkMedicamento = fetchedMed?.apply {
+                this.esFavorito = binding.addMedDialog.ivFavBg.visibility == View.VISIBLE
+                this.imagen = image
+                this.nombre = nombre.ifBlank { this.nombre }
+            } ?: MedicamentoItem(
+                pkCodNacionalMedicamento = 0,
+                nombre = nombre.ifBlank {
+                    Toast.makeText(
+                        context,
+                        "Se debe introducir un nombre", // TODO: Hardcode string
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return
+                },
+                imagen = image,
+                esFavorito = binding.addMedDialog.ivFavBg.visibility == View.VISIBLE,
+                numRegistro = "",
+                url = "",
+                prescripcion = "",
+                laboratorio = "",
+                prospecto = "",
+                afectaConduccion = false
             )
+        )
 
-            dialog.dismiss()
-
-            listener.onDataEntered(med)
-        }
+        viewModel.onDataEntered(med)
     }
 
     private fun validateForm(): Boolean {
-        if (binding.nombre.text.isNullOrBlank()) {
-            binding.nombre.error = getString(R.string.sin_nombre)
+        if (binding.addMedDialog.nombre.text.isNullOrBlank()) {
+            binding.addMedDialog.nombre.error = getString(R.string.sin_nombre)
             Toast.makeText(
                 context,
                 R.string.sin_nombre,
@@ -420,17 +422,17 @@ class AddActiveMedDialogFragment : DialogFragment() {
     }
 
     private fun toggleHelp() {
-        if (binding.textHelp.apply {
+        if (binding.addMedDialog.textHelp.apply {
                 visibility = visibility.xor(View.GONE)
             }.visibility == View.VISIBLE) {
 
-            binding.textHelp.handler.removeCallbacksAndMessages(null)
+            binding.addMedDialog.textHelp.handler.removeCallbacksAndMessages(null)
 
-            binding.textHelp.handler.postDelayed({
-                binding.textHelp.visibility = View.GONE
+            binding.addMedDialog.textHelp.handler.postDelayed({
+                binding.addMedDialog.textHelp.visibility = View.GONE
             }, null, 5000)
         } else {
-            binding.textHelp.handler.removeCallbacksAndMessages(null)
+            binding.addMedDialog.textHelp.handler.removeCallbacksAndMessages(null)
         }
     }
 }

@@ -17,6 +17,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -25,7 +26,6 @@ import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentActiveMedsBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.ActiveMedsRecyclerViewAdapter
-import com.a23pablooc.proxectofct.ui.view.dialogs.AddActiveMedDialogFragment
 import com.a23pablooc.proxectofct.ui.view.states.UiState
 import com.a23pablooc.proxectofct.ui.viewmodel.ActiveMedsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,9 +33,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredListener {
+class ActiveMedsFragment : Fragment() {
     private lateinit var binding: FragmentActiveMedsBinding
     private val viewModel: ActiveMedsViewModel by viewModels()
+    private lateinit var navController: NavController
     private lateinit var activeRecyclerViewAdapter: ActiveMedsRecyclerViewAdapter
 
     override fun onCreateView(
@@ -44,6 +45,9 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentActiveMedsBinding.inflate(layoutInflater)
+
+        navController = requireActivity().supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment)?.findNavController()!!
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -116,7 +120,7 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     return when (menuItem.itemId) {
                         R.id.addActiveMed -> {
-                            addActiveMed()
+                            navController.navigate(R.id.addActiveMedFragment)
                             true
                         }
 
@@ -127,13 +131,5 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
             viewLifecycleOwner,
             Lifecycle.State.RESUMED
         )
-    }
-
-    override fun onDataEntered(med: MedicamentoActivoItem) {
-        viewModel.addActiveMed(med)
-    }
-
-    private fun addActiveMed() {
-        AddActiveMedDialogFragment().show(childFragmentManager, AddActiveMedDialogFragment.TAG)
     }
 }

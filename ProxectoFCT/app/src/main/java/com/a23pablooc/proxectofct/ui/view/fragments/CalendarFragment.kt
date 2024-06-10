@@ -39,7 +39,7 @@ class CalendarFragment : Fragment() {
 
     private var datePickerDialog: DatePickerDialog? = null
 
-    companion object BundleKeys {
+    private companion object BundleKeys {
         private const val SHOWING_DATE_PICKER_DIALOG = "showingDatePickerDialog"
         private const val DATE_PICKER_DIALOG_DATE = "datePickerDialogDate"
     }
@@ -67,35 +67,32 @@ class CalendarFragment : Fragment() {
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         binding.toolbar.setupWithNavController(findNavController(), appBarConfiguration)
 
-        binding.navView.setNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-//                R.id.usersFragment -> {
-//                    navController.popBackStack(item.itemId, false)
-//                    true
-//                }
-//
-//                R.id.manageUsersFragment -> {
-//                    navController.navigate(item.itemId)
-//                    true
-//                }
+        binding.navView.apply {
+            setNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.addActiveMed -> {
+                        addActiveMed()
+                        true
+                    }
 
-                else -> false
-            }.also {
-                if (it) binding.drawerLayout.close()
-            }
-        }
-
-        NavHeaderBinding.bind(binding.navView.getHeaderView(0)).apply {
-            userName.text = viewModel.getCurrentUser().nombre
-
-            ibManageUsers.setOnClickListener {
-                binding.drawerLayout.close()
-                navController.navigate(R.id.manageUsersFragment)
+                    else -> false
+                }.also {
+                    if (it) binding.drawerLayout.close()
+                }
             }
 
-            ibLogout.setOnClickListener {
-                binding.drawerLayout.close()
-                navController.popBackStack(R.id.usersFragment, false)
+            NavHeaderBinding.bind(getHeaderView(0)).apply {
+                userName.text = viewModel.getCurrentUser().nombre
+
+                ibManageUsers.setOnClickListener {
+                    binding.drawerLayout.close()
+                    navController.navigate(R.id.manageUsersFragment)
+                }
+
+                ibLogout.setOnClickListener {
+                    binding.drawerLayout.close()
+                    navController.popBackStack(R.id.usersFragment, false)
+                }
             }
         }
 
@@ -166,6 +163,10 @@ class CalendarFragment : Fragment() {
             it.dismiss()
             null
         }
+    }
+
+    private fun addActiveMed() {
+        navController.navigate(R.id.addActiveMedFragment)
     }
 
     private fun today() {

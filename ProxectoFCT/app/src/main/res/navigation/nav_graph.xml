@@ -5,8 +5,6 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/usersFragment">
 
-    <include app:graph="@navigation/nested_nav_graph" />
-
     <fragment
         android:id="@+id/mainScreenFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.MainScreenFragment"
@@ -26,5 +24,12 @@
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.ManageUsersFragment"
         android:label="Usuarios2"
         tools:layout="@layout/fragment_manage_users" />
+
+    <!-- TODO: Hardcode string -->
+    <fragment
+        android:id="@+id/addActiveMedFragment"
+        android:name="com.a23pablooc.proxectofct.ui.view.fragments.AddActiveMedFragment"
+        android:label="Añadir medicamento"
+        tools:layout="@layout/add_med_dialog_base" />
 
 </navigation>
