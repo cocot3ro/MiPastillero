@@ -94,16 +94,12 @@ class UsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener
                 }
             }
 
-            binding.fabAddUser.setOnClickListener {
-                showAddUserDialog()
-            }
+            binding.fabAddUser.setOnClickListener { showAddUserDialog() }
 
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {
-                        is UiState.Loading -> {
-                            binding.progressBar.visibility = View.VISIBLE
-                        }
+                        is UiState.Loading -> { binding.progressBar.visibility = View.VISIBLE }
 
                         is UiState.Success<*> -> {
                             when {
@@ -122,6 +118,10 @@ class UsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener
                                 else -> {
                                     binding.progressBar.visibility = View.GONE
                                     val data = uiState.data.map { it as UsuarioItem }
+
+                                    binding.emptyDataView.visibility =
+                                        if (data.isEmpty()) View.VISIBLE else View.GONE
+
                                     adapter.updateData(data)
                                 }
                             }
@@ -172,9 +172,7 @@ class UsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener
         lifecycleScope.launch(Dispatchers.IO) {
             val defaultUserPk = viewModel.createUser(user)
 
-            if (isDefault) {
-                viewModel.changeDefaultUser(defaultUserPk)
-            }
+            if (isDefault) viewModel.changeDefaultUser(defaultUserPk)
         }
     }
 

@@ -63,11 +63,11 @@ class UsersViewModel @Inject constructor(
 
     suspend fun changeDefaultUser(userId: Long) {
         selectDefaultUserUseCase.invoke(userId)
-        _onChangeDefaultUserFlow.emit(getDefaultUserId())
+        _onChangeDefaultUserFlow.emit(userId)
     }
 
     fun trigger() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _onChangeDefaultUserFlow.emit(getDefaultUserId())
         }
     }

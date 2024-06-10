@@ -45,7 +45,7 @@ class PillboxDbRepository @Inject constructor(
         }
     }
 
-    suspend fun update(med: MedicamentoActivoItem) {
+    suspend fun updateMed(med: MedicamentoActivoItem) {
         medicamentoActivoDAO.update(med.toDatabase(userInfoProvider.currentUser.pkUsuario).medicamentosActivos[0])
     }
 
@@ -112,5 +112,9 @@ class PillboxDbRepository @Inject constructor(
 
     suspend fun deleteUser(user: UsuarioItem) {
         usuarioDAO.delete(user.toDatabase())
+    }
+
+    suspend fun updateUser(user: UsuarioItem) {
+        usuarioDAO.update(user.toDatabase())
     }
 }

@@ -12,7 +12,7 @@ class MarcarTomaUseCase @Inject constructor(private val repository: PillboxDbRep
         } ?: run {
             med.tomas[dia] = mutableMapOf(hora to true)
         }
-        repository.update(med)
+        repository.updateMed(med)
     }
 
 }

@@ -58,7 +58,7 @@ class CreateUserFragmentDialog : DialogFragment() {
 
             if (nombre.isBlank()) {
                 binding.etUserName.error =
-                    "Campo obligatorio. Debe contener al menos una letra y un máximo de 32 caracteres" // TODO: hardcode string
+                    "Campo obligatorio. Debe contener al menos una letra y un máximo de 30 caracteres" // TODO: hardcode string
                 return@setOnClickListener
             }
 
@@ -67,7 +67,7 @@ class CreateUserFragmentDialog : DialogFragment() {
                 nombre = nombre
             )
 
-            val isDefault = binding.btnFavBg.visibility == View.VISIBLE
+            val isDefault = binding.ivFavBg.visibility == View.VISIBLE
 
             listener.onDataEntered(user, isDefault)
             dialog.dismiss()
@@ -78,15 +78,15 @@ class CreateUserFragmentDialog : DialogFragment() {
         binding = FragmentCreateUserFragmentDialogBinding.inflate(layoutInflater)
 
         binding.favFrame.setOnClickListener {
-            if (binding.btnFavBg.visibility == View.GONE) {
-                binding.btnFavBg.visibility = View.VISIBLE
+            if (binding.ivFavBg.visibility == View.GONE) {
+                binding.ivFavBg.visibility = View.VISIBLE
                 Toast.makeText(
                     context,
                     "Este será ahora el usuario por defecto",
                     Toast.LENGTH_SHORT
                 ).show() // TODO: hardcode string
             } else {
-                binding.btnFavBg.visibility = View.GONE
+                binding.ivFavBg.visibility = View.GONE
             }
         }
 

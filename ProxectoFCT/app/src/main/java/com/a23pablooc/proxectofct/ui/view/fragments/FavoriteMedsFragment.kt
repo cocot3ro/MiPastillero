@@ -28,6 +28,7 @@ import com.a23pablooc.proxectofct.ui.view.adapters.FavoriteRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.view.states.UiState
 import com.a23pablooc.proxectofct.ui.viewmodel.FavoriteMedsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -89,7 +90,7 @@ class FavoriteMedsFragment : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {

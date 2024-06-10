@@ -38,9 +38,15 @@ class ActiveMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         binding.medName.text = med.fkMedicamento.nombre
 
-        binding.btnFavBg.visibility = if (med.fkMedicamento.esFavorito) View.VISIBLE else View.GONE
+        binding.ivFavBg.visibility = if (med.fkMedicamento.esFavorito) View.VISIBLE else View.GONE
 
-        binding.btnFav.setOnClickListener { onFav(med) }
+        binding.favFrame.setOnClickListener {
+            onFav(med)
+            binding.ivFavBg.apply {
+                visibility = visibility.xor(View.GONE)
+            }
+        }
+
         binding.btnAdd.setOnClickListener { onAdd(med) }
         binding.btnInfo.setOnClickListener { onInfo(med) }
 

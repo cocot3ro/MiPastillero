@@ -1,6 +1,7 @@
 package com.a23pablooc.proxectofct.ui.view.viewholders
 
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -17,13 +18,15 @@ class ManageUserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding = ManageUserProfileBinding.bind(view)
 
     private lateinit var originalName: String
+    private var toast: Toast? = null
+    private var firstTime = true
 
     fun render(
         usuarioItem: UsuarioItem,
-        onSaveChangesFlow: StateFlow<Unit>,
-        onSaveChanges: (UsuarioItem) -> Unit,
+        onSaveUserFlow: StateFlow<Unit>,
+        onSaveUser: (UsuarioItem) -> Unit,
         onChangeDefaultFlow: StateFlow<Long>,
-        onChangeDefault: (Long) -> Unit,
+        onChangeDefault: (UsuarioItem) -> Unit,
         lifecycleOwner: LifecycleOwner,
         onDelete: (UsuarioItem) -> Unit
     ) {
@@ -33,16 +36,18 @@ class ManageUserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         lifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                onSaveChangesFlow.collect {
+                onSaveUserFlow.collect {
                     if (binding.createUserLayout.etUserName.text.toString().isBlank()) {
                         // TODO: hardcoded string
-                        binding.createUserLayout.etUserName.error = "Campo obligatorio. Debe contener al menos una letra"
+                        binding.createUserLayout.etUserName.error = "Campo obligatorio."
                         return@collect
                     }
 
-                    if (originalName != binding.createUserLayout.etUserName.text.toString()) {
-                        val copy = usuarioItem.copy(nombre = binding.createUserLayout.etUserName.text.toString())
-                        onSaveChanges(copy)
+                    val name = binding.createUserLayout.etUserName.text.toString()
+
+                    if (originalName != name) {
+                        val copy = usuarioItem.copy(nombre = name)
+                        onSaveUser(copy)
                         originalName = copy.nombre
                     }
                 }
@@ -53,14 +58,26 @@ class ManageUserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 onChangeDefaultFlow.collect { pk ->
                     val visibility = if (usuarioItem.pkUsuario == pk) View.VISIBLE else View.GONE
-                    binding.createUserLayout.btnFavBg.visibility = visibility
+                    binding.createUserLayout.ivFavBg.visibility = visibility
+
+                    toast?.cancel()
+
+                    if (!firstTime && usuarioItem.pkUsuario == pk) {
+                        toast = Toast.makeText(
+                            binding.root.context,
+                            "${usuarioItem.nombre} es ahora el usuario por defecto",
+                            Toast.LENGTH_SHORT
+                        ).also { it.show() }
+                    }
+
+                    firstTime = false
                 }
             }
         }
 
         binding.createUserLayout.favFrame.setOnClickListener {
             lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                onChangeDefault(usuarioItem.pkUsuario)
+                onChangeDefault(usuarioItem)
             }
         }
 

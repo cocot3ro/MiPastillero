@@ -14,4 +14,6 @@
     <color name="summary_bg">#EEF1FF</color>
     <color name="diary_border">#787878</color>
     <color name="hyperlink">#0000FF</color>
+    <color name="header_bg">#1B7DE4</color>
+    <color name="red_delete_bg">#ED0D0D</color>
 </resources>

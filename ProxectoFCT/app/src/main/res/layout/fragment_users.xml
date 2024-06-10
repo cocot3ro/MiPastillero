@@ -27,6 +27,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/empty_data_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- TODO: hardcode string -->
+        <TextView
+            android:id="@+id/tv_no_users_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Parece que no hay usuarios..."
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_no_users_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- TODO: hardcode string -->
+        <TextView
+            android:id="@+id/tv_no_users_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prueba a añadir uno nuevo!"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_no_users_1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_users"
         android:layout_width="0dp"

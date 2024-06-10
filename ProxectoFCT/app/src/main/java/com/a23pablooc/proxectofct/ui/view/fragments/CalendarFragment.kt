@@ -23,6 +23,7 @@ import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zero
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.databinding.FragmentCalendarBinding
+import com.a23pablooc.proxectofct.databinding.NavHeaderBinding
 import com.a23pablooc.proxectofct.ui.view.adapters.CalendarViewPagerAdapter
 import com.a23pablooc.proxectofct.ui.viewmodel.CalendarViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,19 +69,33 @@ class CalendarFragment : Fragment() {
 
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.usersFragment -> {
-                    navController.popBackStack(item.itemId, false)
-                    true
-                }
-
-                R.id.manageUsersFragment -> {
-                    navController.navigate(item.itemId)
-                    true
-                }
+//                R.id.usersFragment -> {
+//                    navController.popBackStack(item.itemId, false)
+//                    true
+//                }
+//
+//                R.id.manageUsersFragment -> {
+//                    navController.navigate(item.itemId)
+//                    true
+//                }
 
                 else -> false
             }.also {
                 if (it) binding.drawerLayout.close()
+            }
+        }
+
+        NavHeaderBinding.bind(binding.navView.getHeaderView(0)).apply {
+            userName.text = viewModel.getCurrentUser().nombre
+
+            ibManageUsers.setOnClickListener {
+                binding.drawerLayout.close()
+                navController.navigate(R.id.manageUsersFragment)
+            }
+
+            ibLogout.setOnClickListener {
+                binding.drawerLayout.close()
+                navController.popBackStack(R.id.usersFragment, false)
             }
         }
 

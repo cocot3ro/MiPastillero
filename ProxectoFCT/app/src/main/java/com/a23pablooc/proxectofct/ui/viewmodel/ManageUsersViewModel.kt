@@ -8,6 +8,7 @@ import com.a23pablooc.proxectofct.domain.usecases.CreateUserUseCase
 import com.a23pablooc.proxectofct.domain.usecases.DeleteUserUseCase
 import com.a23pablooc.proxectofct.domain.usecases.GetUsersUseCase
 import com.a23pablooc.proxectofct.domain.usecases.SelectDefaultUserUseCase
+import com.a23pablooc.proxectofct.domain.usecases.UpdateUserUseCase
 import com.a23pablooc.proxectofct.ui.view.states.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class ManageUsersViewModel @Inject constructor(
     private val createUserUseCase: CreateUserUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
+    private val updateUserUseCase: UpdateUserUseCase,
     private val getUsersUseCase: GetUsersUseCase,
     private val selectDefaultUserUseCase: SelectDefaultUserUseCase,
     private val dataStoreManager: DataStoreManager
@@ -34,14 +36,13 @@ class ManageUsersViewModel @Inject constructor(
     private val _onChangeDefaultUserFlow: MutableStateFlow<Long> =
         MutableStateFlow(DataStoreManager.Defaults.DEFAULT_USER_ID)
     val onChangeDefaultUserFlow: StateFlow<Long> = _onChangeDefaultUserFlow
-
     private val _onSaveChangesFlow: MutableStateFlow<Unit> = MutableStateFlow(Unit)
     val onSaveChangesFlow: StateFlow<Unit> = _onSaveChangesFlow
 
     fun changeDefaultUser(userId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             selectDefaultUserUseCase.invoke(userId)
-            _onChangeDefaultUserFlow.emit(getDefaultUserId())
+            _onChangeDefaultUserFlow.emit(userId)
         }
     }
 
@@ -49,8 +50,8 @@ class ManageUsersViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Main) {
             getUsersUseCase.invoke()
                 .catch {
-                    _uiState.value =
-                        UiState.Error("Error fetching users from DB", it) // TODO: Hardcode string
+                    // TODO: Hardcode string
+                    _uiState.value = UiState.Error("Error fetching users from DB", it)
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {
@@ -68,27 +69,25 @@ class ManageUsersViewModel @Inject constructor(
     }
 
     fun trigger() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Main) {
             _onChangeDefaultUserFlow.emit(getDefaultUserId())
         }
     }
 
-    fun saveChanges(user: UsuarioItem) {
-        viewModelScope.launch {
-            createUser(user)
-            fetchData()
+    fun saveUser(user: UsuarioItem) {
+        viewModelScope.launch(Dispatchers.IO) {
+            updateUserUseCase.invoke(user)
         }
     }
 
     fun triggerSave() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Main) {
             _onSaveChangesFlow.emit(Unit)
         }
     }
 
     fun deleteUser(usuario: UsuarioItem) {
         viewModelScope.launch(Dispatchers.IO) {
-
             deleteUserUseCase.invoke(usuario)
         }
     }

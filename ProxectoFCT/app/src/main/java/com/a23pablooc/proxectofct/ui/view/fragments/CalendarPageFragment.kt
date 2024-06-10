@@ -21,6 +21,7 @@ import com.a23pablooc.proxectofct.ui.view.adapters.CalendarRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.view.states.UiState
 import com.a23pablooc.proxectofct.ui.viewmodel.CalendarPageViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -61,7 +62,7 @@ class CalendarPageFragment : Fragment() {
 
         binding.calendarDay.text = "${date.getDayName(requireContext())} - ${date.formatDate()}"
 
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {

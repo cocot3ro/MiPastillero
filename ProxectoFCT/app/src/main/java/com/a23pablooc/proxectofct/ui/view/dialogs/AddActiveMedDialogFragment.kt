@@ -137,7 +137,9 @@ class AddActiveMedDialogFragment : DialogFragment() {
         binding.btnAddTimer.setOnClickListener { onAddTimer() }
 
         binding.favFrame.setOnClickListener {
-            binding.btnFavBg.visibility = binding.btnFavBg.visibility.xor(View.GONE)
+            binding.ivFavBg.apply {
+                visibility = visibility.xor(View.GONE)
+            }
         }
 
         Calendar.getInstance().time.zeroTime().formatDate().also {
@@ -202,7 +204,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
                     }
 
                     if (fetchedMed.esFavorito) {
-                        binding.btnFavBg.visibility = View.VISIBLE
+                        binding.ivFavBg.visibility = View.VISIBLE
                         binding.favFrame.setOnClickListener {
                             // TODO: Hardcode string
                             Toast.makeText(
@@ -212,10 +214,10 @@ class AddActiveMedDialogFragment : DialogFragment() {
                             ).show()
                         }
                     } else {
-                        binding.btnFavBg.visibility = View.GONE
+                        binding.ivFavBg.visibility = View.GONE
                         binding.favFrame.setOnClickListener {
-                            binding.btnFavBg.visibility =
-                                binding.btnFavBg.visibility.xor(View.GONE)
+                            binding.ivFavBg.visibility =
+                                binding.ivFavBg.visibility.xor(View.GONE)
                         }
                     }
                 }
@@ -267,7 +269,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
                 fechaInicio = dateStart,
                 tomas = mutableMapOf(),
                 fkMedicamento = fetchedMed?.apply {
-                    this.esFavorito = binding.btnFavBg.visibility == View.VISIBLE
+                    this.esFavorito = binding.ivFavBg.visibility == View.VISIBLE
                     this.imagen = image
                     this.nombre = nombre.ifBlank { this.nombre }
                 } ?: MedicamentoItem(
@@ -281,7 +283,7 @@ class AddActiveMedDialogFragment : DialogFragment() {
                         return@setOnClickListener
                     },
                     imagen = image,
-                    esFavorito = binding.btnFavBg.visibility == View.VISIBLE,
+                    esFavorito = binding.ivFavBg.visibility == View.VISIBLE,
                     numRegistro = "",
                     url = "",
                     prescripcion = "",

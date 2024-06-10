@@ -2,19 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: hardcode string -->
-    <item
-        android:id="@+id/usersFragment"
-        android:icon="@drawable/account_circle_32dp"
-        android:title="users"
-        app:showAsAction="withText" />
-
-    <item
-        android:id="@+id/manageUsersFragment"
-        android:icon="@drawable/account_circle_32dp"
-        android:title="Manage users"
-        app:showAsAction="withText" />
-
     <item
         android:id="@+id/addActiveMed"
         android:icon="@drawable/add_32dp"

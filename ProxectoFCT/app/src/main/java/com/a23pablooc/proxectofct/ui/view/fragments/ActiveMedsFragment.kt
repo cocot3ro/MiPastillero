@@ -29,6 +29,7 @@ import com.a23pablooc.proxectofct.ui.view.dialogs.AddActiveMedDialogFragment
 import com.a23pablooc.proxectofct.ui.view.states.UiState
 import com.a23pablooc.proxectofct.ui.viewmodel.ActiveMedsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -74,7 +75,7 @@ class ActiveMedsFragment : Fragment(), AddActiveMedDialogFragment.OnDataEnteredL
             layoutManager = LinearLayoutManager(context)
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {

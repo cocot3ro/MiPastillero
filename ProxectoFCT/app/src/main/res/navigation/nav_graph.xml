@@ -27,10 +27,4 @@
         android:label="Usuarios2"
         tools:layout="@layout/fragment_manage_users" />
 
-    <action
-        android:id="@+id/action_exit_app"
-        app:destination="@android:id/home"
-        app:popUpTo="@id/nav_graph"
-        app:popUpToInclusive="true" />
-
 </navigation>

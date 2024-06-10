@@ -28,7 +28,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ManageUsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener, DeleteUserDialogFragment.OnUserDeletedListener {
+class ManageUsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener,
+    DeleteUserDialogFragment.OnUserDeletedListener {
     private lateinit var binding: FragmentManageUsersBinding
     private val viewModel: ManageUsersViewModel by viewModels()
 
@@ -41,16 +42,16 @@ class ManageUsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredLi
     ): View {
         binding = FragmentManageUsersBinding.inflate(layoutInflater)
 
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+        lifecycleScope.launch(Dispatchers.Main) {
             adapter = ManageUserRecyclerViewAdapter(
                 emptyList(),
                 viewModel.onSaveChangesFlow,
                 {
-                    viewModel.saveChanges(it)
+                    viewModel.saveUser(it)
                 },
                 viewModel.onChangeDefaultUserFlow,
                 {
-                    viewModel.changeDefaultUser(it)
+                    viewModel.changeDefaultUser(it.pkUsuario)
                 },
                 viewLifecycleOwner,
                 {
@@ -84,6 +85,10 @@ class ManageUsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredLi
                         is UiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
                             val data = uiState.data.map { it as UsuarioItem }
+
+                            binding.emptyDataView.visibility = if (data.isEmpty()) View.VISIBLE else View.GONE
+
+                            binding.fabSave.visibility = if (data.isNotEmpty()) View.VISIBLE else View.GONE
 
                             adapter.updateData(data)
                         }

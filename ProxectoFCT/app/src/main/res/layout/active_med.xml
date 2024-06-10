@@ -36,13 +36,14 @@
                 android:id="@+id/fav_frame"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:clickable="true"
                 app:layout_constraintBottom_toBottomOf="@id/med_img"
                 app:layout_constraintEnd_toEndOf="@id/med_img"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/btn_fav_bg"
+                    android:id="@+id/iv_fav_bg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="2dp"
@@ -52,8 +53,8 @@
                     android:src="@drawable/star_on_32dp"
                     android:visibility="gone" />
 
-                <ImageButton
-                    android:id="@+id/btn_fav"
+                <ImageView
+                    android:id="@+id/iv_fav_fg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="2dp"
