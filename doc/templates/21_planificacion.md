@@ -44,3 +44,12 @@ Nesta fase procederase coa implementación da aplicación, seguindo as pautas e 
 - Duración estimada: 1 semana
 
 ## Calendario
+| Fase                 | Periodo                 |
+|----------------------|-------------------------|
+| Estudo preliminar    | 08/04/2024 - 15/04/2024 |
+| Analise              | 15/04/2024 - 29/04/2024 |
+| Deseño               | 15/04/2024 - 29/04/2024 |
+| Prototipo 1          | 29/04/2024 - 20/05/2024 |
+| Prototipo 2          | 20/05/2024 - 10/06/2024 |
+| Codificació e probas | 10/06/2024 - 17/06/2024 |
+| Manuais do proxecto  | 10/06/2024 - 17/06/2024 |
