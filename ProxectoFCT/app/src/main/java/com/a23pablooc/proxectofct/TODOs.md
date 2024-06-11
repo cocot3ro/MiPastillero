@@ -1,5 +1,3 @@
-[//]: # (TODO: borrar imagenes del usuario si se borra)
-
 [//]: # (TODO: Gestionar retoceso de fragmentos)
 
 [//]: # (TODO: Cambiar AddActiveMedDialogFragment a un fragmento)

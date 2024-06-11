@@ -3,19 +3,22 @@ package com.a23pablooc.proxectofct.domain.usecases
 import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
+import com.a23pablooc.proxectofct.core.UserInfoProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
 
 class SaveImageUseCase @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val userInfoProvider: UserInfoProvider
 ) {
-
     fun invoke(fileName: String, imageData: ByteArray): Uri {
-        val file = File(context.filesDir, fileName)
+        val file = File(context.filesDir, userInfoProvider.currentUser.pkUsuario.toString())
 
-        file.outputStream().use { it.write(imageData) }
+        val imageFile = File(file, fileName)
 
-        return file.toUri()
+        imageFile.outputStream().use { it.write(imageData) }
+
+        return imageFile.toUri()
     }
 }
