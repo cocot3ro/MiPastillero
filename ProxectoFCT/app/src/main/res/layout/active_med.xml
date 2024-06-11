@@ -85,33 +85,16 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/med_img" />
 
-            <LinearLayout
-                android:id="@+id/btns"
+            <ImageButton
+                android:id="@+id/btn_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:background="@android:color/transparent"
+                android:contentDescription="TODO"
+                android:padding="6dp"
+                android:src="@drawable/info_32dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageButton
-                    android:id="@+id/btn_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="TODO"
-                    android:padding="6dp"
-                    android:src="@drawable/info_32dp" />
-
-                <ImageButton
-                    android:id="@+id/btn_add"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="TODO"
-                    android:padding="6dp"
-                    android:src="@drawable/playlist_add_32dp" />
-
-            </LinearLayout>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

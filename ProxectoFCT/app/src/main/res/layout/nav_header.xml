@@ -6,6 +6,19 @@
     android:background="@color/header_bg">
 
     <ImageButton
+        android:id="@+id/ib_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="TODO"
+        android:padding="8dp"
+        android:src="@drawable/settings_32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
         android:id="@+id/ib_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,19 +29,6 @@
         android:padding="8dp"
         android:src="@drawable/logout_32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/ib_manage_users"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="TODO"
-        android:padding="8dp"
-        android:src="@drawable/manage_accounts_32dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout

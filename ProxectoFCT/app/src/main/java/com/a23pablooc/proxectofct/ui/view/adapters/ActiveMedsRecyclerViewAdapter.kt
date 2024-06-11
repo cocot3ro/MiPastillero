@@ -12,8 +12,7 @@ import com.a23pablooc.proxectofct.ui.view.viewholders.ActiveMedsViewHolder
 class ActiveMedsRecyclerViewAdapter(
     private var list: List<MedicamentoActivoItem>,
     private val onFav: (MedicamentoActivoItem) -> Unit,
-    private val onInfo: (MedicamentoActivoItem) -> Unit,
-    private val onAdd: (MedicamentoActivoItem) -> Unit
+    private val onInfo: (MedicamentoActivoItem) -> Unit
 ) : RecyclerView.Adapter<ActiveMedsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActiveMedsViewHolder {
         return ActiveMedsViewHolder(
@@ -25,7 +24,7 @@ class ActiveMedsRecyclerViewAdapter(
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: ActiveMedsViewHolder, position: Int) {
-        holder.render(list[position], onFav, onInfo, onAdd)
+        holder.render(list[position], onFav, onInfo)
     }
 
     fun updateData(newData: List<MedicamentoActivoItem>) {

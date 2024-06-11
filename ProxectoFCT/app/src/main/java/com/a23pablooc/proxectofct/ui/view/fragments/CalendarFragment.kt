@@ -82,11 +82,11 @@ class CalendarFragment : Fragment() {
             }
 
             NavHeaderBinding.bind(getHeaderView(0)).apply {
-                userName.text = viewModel.getCurrentUser().nombre
+                userName.text = viewModel.userInfoProvider.currentUser.nombre
 
-                ibManageUsers.setOnClickListener {
+                ibSettings.setOnClickListener {
                     binding.drawerLayout.close()
-                    navController.navigate(R.id.manageUsersFragment)
+                    navController.navigate(R.id.settingsFragment)
                 }
 
                 ibLogout.setOnClickListener {

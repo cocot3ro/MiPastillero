@@ -6,6 +6,7 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.domain.usecases.GetMedicamentosActivosUseCase
 import com.a23pablooc.proxectofct.domain.usecases.UpdateMedicamentoUseCase
 import com.a23pablooc.proxectofct.ui.view.states.UiState
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,13 +18,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ActiveMedsViewModel @Inject constructor(
+    val gson: Gson,
     private val getMedicamentosActivosUseCase: GetMedicamentosActivosUseCase,
     private val updateMedicamentoUseCase: UpdateMedicamentoUseCase
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<UiState> =
-        MutableStateFlow(UiState.Loading)
-
+    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState
 
     // TODO: Hardcode string

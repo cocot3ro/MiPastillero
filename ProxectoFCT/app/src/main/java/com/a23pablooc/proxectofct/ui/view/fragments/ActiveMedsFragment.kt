@@ -67,10 +67,9 @@ class ActiveMedsFragment : Fragment() {
                 viewModel.toggleFavMed(it.fkMedicamento)
             },
             onInfo = {
-                // TODO: onInfoClick
-            },
-            onAdd = {
-                // TODO: onAddClick
+                navController.navigate(R.id.medInfoFragment, Bundle().apply {
+//                    viewModel.gson
+                })
             }
         )
 

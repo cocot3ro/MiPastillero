@@ -1,3 +1,5 @@
+[//]: # (TODO: Implementar drawer en ActiveMedsFragment y FavoritesFragment)
+
 [//]: # (TODO: Gestionar retoceso de fragmentos)
 
 [//]: # (TODO: Cambiar AddActiveMedDialogFragment a un fragmento)

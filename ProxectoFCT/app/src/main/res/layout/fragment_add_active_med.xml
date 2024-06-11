@@ -20,358 +20,364 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="16dp"
         app:layout_constraintBottom_toTopOf="@id/fab_add_active_med"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/content"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/header"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:layout_margin="8dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/headerLayout"
+                    android:id="@+id/header"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <FrameLayout
-                        android:id="@+id/imgLayout"
+                    <ProgressBar
+                        android:id="@+id/progressBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageView
-                            android:id="@+id/img"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="TODO"
-                            android:scaleType="centerCrop"
-                            android:src="@mipmap/no_image_available" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@android:color/transparent"
-                            android:contentDescription="TODO"
-                            android:src="@drawable/image_search_24dp" />
-
-                    </FrameLayout>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/codNacionalLayout"
+                        android:id="@+id/headerLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/imgLayout"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <ImageButton
-                            android:id="@+id/btn_search"
+                        <FrameLayout
+                            android:id="@+id/imgLayout"
                             android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:background="@android:color/transparent"
-                            android:contentDescription="TODO"
-                            android:padding="6dp"
-                            android:src="@drawable/search_32dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_height="wrap_content"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent">
 
-                        <EditText
-                            android:id="@+id/codNacional"
+                            <ImageView
+                                android:id="@+id/img"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="TODO"
+                                android:scaleType="centerCrop"
+                                android:src="@mipmap/no_image_available" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@android:color/transparent"
+                                android:contentDescription="TODO"
+                                android:src="@drawable/image_search_24dp" />
+
+                        </FrameLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/codNacionalLayout"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:autofillHints="name"
-                            android:hint="@string/codigo_nacional_opcional"
-                            android:inputType="numberDecimal"
-                            android:maxLength="8"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/btn_help"
-                            app:layout_constraintStart_toEndOf="@id/btn_search"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/imgLayout"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                        <ImageButton
-                            android:id="@+id/btn_help"
+                            <ImageButton
+                                android:id="@+id/btn_search"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:background="@android:color/transparent"
+                                android:contentDescription="TODO"
+                                android:padding="6dp"
+                                android:src="@drawable/search_32dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <EditText
+                                android:id="@+id/codNacional"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:autofillHints="name"
+                                android:hint="@string/codigo_nacional_opcional"
+                                android:inputType="numberDecimal"
+                                android:maxLength="8"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/btn_help"
+                                app:layout_constraintStart_toEndOf="@id/btn_search"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/btn_help"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@android:color/transparent"
+                                android:contentDescription="TODO"
+                                android:padding="6dp"
+                                android:src="@drawable/help_32dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/text_help"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/codigo_nacional_ayuda"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/headerLayout" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/nombreLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_help">
+
+                        <FrameLayout
+                            android:id="@+id/fav_frame"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@android:color/transparent"
-                            android:contentDescription="TODO"
-                            android:padding="6dp"
-                            android:src="@drawable/help_32dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:clickable="true"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:id="@+id/iv_fav_bg"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@android:color/transparent"
+                                android:contentDescription="TODO"
+                                android:src="@drawable/star_on_48dp"
+                                android:visibility="gone" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@android:color/transparent"
+                                android:contentDescription="TODO"
+                                android:src="@drawable/star_off_48dp" />
+                        </FrameLayout>
+
+                        <EditText
+                            android:id="@+id/nombre"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/nombre"
+                            android:importantForAutofill="no"
+                            android:inputType="textMultiLine"
+                            android:minHeight="48dp"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/fav_frame"
                             app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/text_help"
+                <EditText
+                    android:id="@+id/dosis"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/codigo_nacional_ayuda"
-                    android:visibility="gone"
+                    android:hint="@string/dosis"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/headerLayout" />
+                    app:layout_constraintTop_toBottomOf="@id/header" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/nombreLayout"
-                    android:layout_width="0dp"
+                    android:id="@+id/dates_layout"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/text_help">
+                    app:layout_constraintTop_toBottomOf="@id/dosis">
 
-                    <FrameLayout
-                        android:id="@+id/fav_frame"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/labels"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <ImageView
-                            android:id="@+id/iv_fav_bg"
+                        <TextView
+                            android:id="@+id/date_start_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/inicio"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@id/guideline1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/date_end_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/fin"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/guideline1" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.5" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/dates"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/labels"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/date_start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="dd/MM/yyyy"
+                            app:layout_constraintBottom_toTopOf="@id/guideline2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/date_end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="dd/MM/yyyy"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/guideline2" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.5" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/buttons"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/dates"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageButton
+                            android:id="@+id/btn_start_date_picker"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:contentDescription="TODO"
-                            android:src="@drawable/star_on_48dp"
-                            android:visibility="gone" />
+                            android:padding="6dp"
+                            android:src="@drawable/edit_calendar_32dp"
+                            app:layout_constraintBottom_toTopOf="@id/guideline3"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <ImageView
+                        <ImageButton
+                            android:id="@+id/btn_end_date_picker"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:contentDescription="TODO"
-                            android:src="@drawable/star_off_48dp" />
-                    </FrameLayout>
+                            android:padding="6dp"
+                            android:src="@drawable/edit_calendar_32dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/guideline3" />
 
-                    <EditText
-                        android:id="@+id/nombre"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/nombre"
-                        android:importantForAutofill="no"
-                        android:inputType="textMultiLine"
-                        android:minHeight="48dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/fav_frame"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.5" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <EditText
-                android:id="@+id/dosis"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="@string/dosis"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/header" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/dates_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dosis">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/labels"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/date_start_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/inicio"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@id/guideline1"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/date_end_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/fin"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/guideline1" />
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layout_constraintGuide_percent="0.5" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/dates"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/labels"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/date_start"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="dd/MM/yyyy"
-                        app:layout_constraintBottom_toTopOf="@id/guideline2"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/date_end"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="dd/MM/yyyy"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/guideline2" />
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layout_constraintGuide_percent="0.5" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/buttons"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/dates"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageButton
-                        android:id="@+id/btn_start_date_picker"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:contentDescription="TODO"
-                        android:padding="6dp"
-                        android:src="@drawable/edit_calendar_32dp"
-                        app:layout_constraintBottom_toTopOf="@id/guideline3"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageButton
-                        android:id="@+id/btn_end_date_picker"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:contentDescription="TODO"
-                        android:padding="6dp"
-                        android:src="@drawable/edit_calendar_32dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/guideline3" />
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layout_constraintGuide_percent="0.5" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:id="@+id/schedule_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dates_layout">
 
                 <LinearLayout
+                    android:id="@+id/schedule_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dates_layout">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="18dp"
-                        android:text="@string/horario"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal">
 
-                    <ImageButton
-                        android:id="@+id/btn_add_timer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/old_rounded_no_bg"
-                        android:contentDescription="TODO"
-                        android:src="@drawable/playlist_add_32dp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="18dp"
+                            android:text="@string/horario"
+                            android:textStyle="bold" />
+
+                        <ImageButton
+                            android:id="@+id/btn_add_timer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/old_rounded_no_bg"
+                            android:contentDescription="TODO"
+                            android:src="@drawable/playlist_add_32dp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/black" />
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/black" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_schedule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/schedule_header" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_schedule"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/schedule_header" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
     </ScrollView>
 

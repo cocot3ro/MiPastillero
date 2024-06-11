@@ -22,6 +22,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DateTimeUtils
@@ -29,7 +30,6 @@ import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zero
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
-import com.a23pablooc.proxectofct.data.model.typeadapters.UriTypeAdapter
 import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
 import com.a23pablooc.proxectofct.databinding.FragmentAddActiveMedBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
@@ -37,7 +37,6 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.TimePickerRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.viewmodel.AddActiveMedViewModel
 import com.bumptech.glide.Glide
-import com.google.gson.GsonBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,8 +62,6 @@ class AddActiveMedFragment : Fragment() {
         }
     }
 
-    private val gson = GsonBuilder().registerTypeAdapter(Uri::class.java, UriTypeAdapter()).create()
-
     private object BundleKeys {
         const val MED = "med"
         const val IS_FAV = "is_fav"
@@ -87,6 +84,8 @@ class AddActiveMedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAddActiveMedBinding.inflate(layoutInflater, container, false)
+
+        binding.toolbar.setupWithNavController(findNavController())
 
         binding.imgLayout.setOnClickListener {
             pickMedia.launch(
@@ -172,7 +171,10 @@ class AddActiveMedFragment : Fragment() {
             }, 1)
 
             this.fetchedMed =
-                gson.fromJson(bundle.getString(BundleKeys.MED), MedicamentoItem::class.java)
+                viewModel.gson.fromJson(
+                    bundle.getString(BundleKeys.MED),
+                    MedicamentoItem::class.java
+                )
 
             binding.ivFavBg.visibility =
                 if (bundle.getBoolean(BundleKeys.IS_FAV)) View.VISIBLE else View.GONE
@@ -184,7 +186,10 @@ class AddActiveMedFragment : Fragment() {
         outState.putString(BundleKeys.DATE_START, binding.dateStart.text.toString())
         outState.putString(BundleKeys.DATE_END, binding.dateEnd.text.toString())
         outState.putLongArray(BundleKeys.SCHEDULE, scheduleList.map { it.time }.toLongArray())
-        outState.putString(BundleKeys.MED, gson.toJson(fetchedMed, MedicamentoItem::class.java))
+        outState.putString(
+            BundleKeys.MED,
+            viewModel.gson.toJson(fetchedMed, MedicamentoItem::class.java)
+        )
         outState.putString(BundleKeys.IMAGE, image.toString())
         outState.putBoolean(BundleKeys.IS_FAV, binding.ivFavBg.visibility == View.VISIBLE)
     }
@@ -200,7 +205,7 @@ class AddActiveMedFragment : Fragment() {
 
         val med = MedicamentoActivoItem(
             pkMedicamentoActivo = 0,
-            fkUsuario = viewModel.getUserId(),
+            fkUsuario = viewModel.userInfoProvider.currentUser.pkUsuario,
             dosis = dosis.ifBlank { "" },
             horario = schedule.toMutableSet(),
             fechaFin = dateEnd,
@@ -467,10 +472,11 @@ class AddActiveMedFragment : Fragment() {
             this.esFavorito = binding.ivFavBg.visibility == View.VISIBLE
             this.imagen = image
             this.nombre = nombre.ifBlank { this.nombre }
-            this.fkUsuario = this.fkUsuario.takeIf { it > 0 } ?: viewModel.getUserId()
+            this.fkUsuario =
+                this.fkUsuario.takeIf { it > 0 } ?: viewModel.userInfoProvider.currentUser.pkUsuario
         } ?: MedicamentoItem(
             pkCodNacionalMedicamento = 0,
-            fkUsuario = viewModel.getUserId(),
+            fkUsuario = viewModel.userInfoProvider.currentUser.pkUsuario,
             nombre = nombre,
             imagen = image,
             esFavorito = binding.ivFavBg.visibility == View.VISIBLE,

@@ -21,8 +21,7 @@ class ActiveMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun render(
         med: MedicamentoActivoItem,
         onFav: (MedicamentoActivoItem) -> Unit,
-        onInfo: (MedicamentoActivoItem) -> Unit,
-        onAdd: (MedicamentoActivoItem) -> Unit
+        onInfo: (MedicamentoActivoItem) -> Unit
     ) {
         if (med.fkMedicamento.imagen.toString().isNotBlank()) {
             // Espera 1 milisegundo para cargar la imagen para que primero se muestre la imagen por defecto
@@ -49,7 +48,6 @@ class ActiveMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
         }
 
-        binding.btnAdd.setOnClickListener { onAdd(med) }
         binding.btnInfo.setOnClickListener { onInfo(med) }
 
         binding.dateStart.text = med.fechaInicio.formatDate()
