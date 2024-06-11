@@ -3,6 +3,7 @@ package com.a23pablooc.proxectofct.domain.usecases
 import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
+import com.a23pablooc.proxectofct.core.InternalStorageDefinitions
 import com.a23pablooc.proxectofct.core.UserInfoProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
@@ -13,9 +14,11 @@ class SaveImageUseCase @Inject constructor(
     private val userInfoProvider: UserInfoProvider
 ) {
     fun invoke(fileName: String, imageData: ByteArray): Uri {
-        val file = File(context.filesDir, userInfoProvider.currentUser.pkUsuario.toString())
+        val imagesDirectory = File(context.filesDir, InternalStorageDefinitions.IMAGES_DIRECTORY)
 
-        val imageFile = File(file, fileName)
+        val userDirectory = File(imagesDirectory, userInfoProvider.currentUser.pkUsuario.toString())
+
+        val imageFile = File(userDirectory, fileName)
 
         imageFile.outputStream().use { it.write(imageData) }
 

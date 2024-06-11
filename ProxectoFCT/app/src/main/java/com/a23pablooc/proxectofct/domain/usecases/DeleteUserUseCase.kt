@@ -1,6 +1,7 @@
 package com.a23pablooc.proxectofct.domain.usecases
 
 import android.content.Context
+import com.a23pablooc.proxectofct.core.InternalStorageDefinitions
 import com.a23pablooc.proxectofct.data.repositories.PillboxDbRepository
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -14,8 +15,10 @@ class DeleteUserUseCase @Inject constructor(
     suspend fun invoke(user: UsuarioItem) {
         pillboxDbRepository.deleteUser(user)
 
-        val file = File(context.filesDir, user.pkUsuario.toString())
+        val imagesDirectory = File(context.filesDir, InternalStorageDefinitions.IMAGES_DIRECTORY)
 
-        file.deleteRecursively()
+        val userDirectory = File(imagesDirectory, user.pkUsuario.toString())
+
+        userDirectory.deleteRecursively()
     }
 }

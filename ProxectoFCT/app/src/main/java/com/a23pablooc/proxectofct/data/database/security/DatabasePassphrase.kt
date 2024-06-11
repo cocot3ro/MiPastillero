@@ -3,13 +3,14 @@ package com.a23pablooc.proxectofct.data.database.security
 import android.content.Context
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKeys
+import com.a23pablooc.proxectofct.core.InternalStorageDefinitions
 import java.io.File
 import java.security.SecureRandom
 
 class DatabasePassphrase(private val context: Context) {
 
     fun getPassphrase(): ByteArray {
-        val file = File(context.filesDir, "passphrase.bin")
+        val file = File(context.filesDir, InternalStorageDefinitions.PASSPHRASE_FILE)
         val encryptedFile = EncryptedFile.Builder(
             file,
             context,
