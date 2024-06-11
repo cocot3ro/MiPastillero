@@ -1,10 +1,8 @@
 package com.a23pablooc.proxectofct.di
 
-import com.a23pablooc.proxectofct.data.model.MedicamentoModel
-import com.a23pablooc.proxectofct.data.model.typeadapters.MedicamentoModelTypeAdapter
 import com.a23pablooc.proxectofct.data.network.CimaApiClient
 import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
-import com.google.gson.GsonBuilder
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,11 +17,7 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(): Retrofit {
-        val gson = GsonBuilder()
-            .registerTypeAdapter(MedicamentoModel::class.java, MedicamentoModelTypeAdapter())
-            .create()
-
+    fun provideRetrofit(gson: Gson): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create(gson))
             .baseUrl(CimaApiDefinitions.BASE_URL)

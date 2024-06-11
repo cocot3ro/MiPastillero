@@ -16,7 +16,7 @@ object GsonModule {
 
     @Provides
     @Singleton
-    fun providePreferencesDataStore(): Gson {
+    fun provideGson(): Gson {
         return GsonBuilder()
             .registerTypeAdapter(
                 MedicamentoModelTypeAdapter::class.java,
