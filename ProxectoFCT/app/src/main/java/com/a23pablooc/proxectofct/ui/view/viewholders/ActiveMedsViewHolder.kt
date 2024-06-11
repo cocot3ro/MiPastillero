@@ -38,6 +38,8 @@ class ActiveMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         binding.medName.text = med.fkMedicamento.nombre
 
+        binding.dosis.text = med.dosis
+
         binding.ivFavBg.visibility = if (med.fkMedicamento.esFavorito) View.VISIBLE else View.GONE
 
         binding.favFrame.setOnClickListener {

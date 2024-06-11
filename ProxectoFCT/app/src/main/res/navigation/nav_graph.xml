@@ -30,6 +30,6 @@
         android:id="@+id/addActiveMedFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.AddActiveMedFragment"
         android:label="Añadir medicamento"
-        tools:layout="@layout/add_med_dialog_base" />
+        tools:layout="@layout/fragment_add_med_base" />
 
 </navigation>

@@ -68,12 +68,22 @@
                 android:id="@+id/med_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
                 android:layout_marginTop="8dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@id/btns"
                 app:layout_constraintStart_toEndOf="@id/med_img"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/dosis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginBottom="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/med_img" />
 
             <LinearLayout
                 android:id="@+id/btns"

@@ -67,4 +67,13 @@ interface MedicamentoDAO {
 
     @Delete
     suspend fun delete(medicamento: MedicamentoEntity)
+
+    @Query(
+        """
+            UPDATE ${MedicamentoTableDefinition.TABLE_NAME}
+            SET ${MedicamentoTableDefinition.Columns.PK_COD_NACIONAL_MEDICAMENTO} = :newCodNacional
+            WHERE ${MedicamentoTableDefinition.Columns.PK_COD_NACIONAL_MEDICAMENTO} = :oldCodNacional
+        """
+    )
+    suspend fun updateCodNacional(oldCodNacional: Long, newCodNacional: Long)
 }

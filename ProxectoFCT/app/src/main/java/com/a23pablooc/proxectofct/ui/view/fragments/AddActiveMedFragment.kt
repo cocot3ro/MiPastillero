@@ -8,17 +8,20 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DateTimeUtils
@@ -26,6 +29,7 @@ import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zero
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
+import com.a23pablooc.proxectofct.data.model.typeadapters.UriTypeAdapter
 import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
 import com.a23pablooc.proxectofct.databinding.FragmentAddActiveMedBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
@@ -33,6 +37,7 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.TimePickerRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.viewmodel.AddActiveMedViewModel
 import com.bumptech.glide.Glide
+import com.google.gson.GsonBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -51,15 +56,29 @@ class AddActiveMedFragment : Fragment() {
     private var fetchedMed: MedicamentoItem? = null
     private var image: Uri = Uri.EMPTY
 
-    private val pickMedia = registerForActivityResult(PickVisualMedia()) {
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {
         it?.let {
-            Glide.with(requireContext()).load(it).into(binding.addMedDialogBase.img)
+            Glide.with(requireContext()).load(it).into(binding.img)
             image = it
         }
     }
 
+    private val gson = GsonBuilder().registerTypeAdapter(Uri::class.java, UriTypeAdapter()).create()
+
     private object BundleKeys {
+        const val MED = "med"
+        const val IS_FAV = "is_fav"
         const val IMAGE = "image"
+        const val DATE_START = "date_start"
+        const val DATE_END = "date_end"
+        const val SCHEDULE = "schedule"
+    }
+
+    private lateinit var navController: NavController
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        navController = findNavController()
     }
 
     override fun onCreateView(
@@ -68,6 +87,33 @@ class AddActiveMedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAddActiveMedBinding.inflate(layoutInflater, container, false)
+
+        binding.imgLayout.setOnClickListener {
+            pickMedia.launch(
+                PickVisualMediaRequest(
+                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                )
+            )
+        }
+
+        binding.imgLayout.setOnLongClickListener {
+            Toast.makeText(
+                context,
+                getString(R.string.seleccionar_una_imagen),
+                Toast.LENGTH_SHORT
+            ).show()
+            true
+        }
+
+        binding.btnHelp.setOnClickListener { toggleHelp() }
+
+        binding.btnSearch.setOnClickListener { search() }
+
+        binding.favFrame.setOnClickListener {
+            binding.ivFavBg.apply {
+                visibility = visibility.xor(View.GONE)
+            }
+        }
 
         timePickerAdapter = TimePickerRecyclerViewAdapter(
             scheduleList,
@@ -80,27 +126,6 @@ class AddActiveMedFragment : Fragment() {
             adapter = timePickerAdapter
         }
 
-        binding.addMedDialogBase.imgLayout.setOnClickListener {
-            pickMedia.launch(
-                PickVisualMediaRequest(
-                    PickVisualMedia.ImageOnly
-                )
-            )
-        }
-
-        binding.addMedDialogBase.imgLayout.setOnLongClickListener {
-            Toast.makeText(
-                context,
-                getString(R.string.seleccionar_una_imagen),
-                Toast.LENGTH_SHORT
-            ).show()
-            true
-        }
-
-        binding.addMedDialogBase.btnHelp.setOnClickListener { toggleHelp() }
-
-        binding.addMedDialogBase.btnSearch.setOnClickListener { search() }
-
         binding.btnStartDatePicker.setOnClickListener {
             onSelectDate(binding.dateStart)
         }
@@ -111,18 +136,16 @@ class AddActiveMedFragment : Fragment() {
 
         binding.btnAddTimer.setOnClickListener { onAddTimer() }
 
-        binding.addMedDialogBase.favFrame.setOnClickListener {
-            binding.addMedDialogBase.ivFavBg.apply {
-                visibility = visibility.xor(View.GONE)
-            }
-        }
-
         Calendar.getInstance().time.zeroTime().formatDate().let {
             binding.dateStart.text = it
             binding.dateEnd.text = it
         }
 
-        binding.fabAddActiveMed.setOnClickListener { onAddActiveMed() }
+        binding.fabAddActiveMed.setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+                if (onSave()) navController.popBackStack()
+            }
+        }
 
         timePickerAdapter.updateData(scheduleList)
 
@@ -131,139 +154,48 @@ class AddActiveMedFragment : Fragment() {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
+        savedInstanceState?.let { bundle ->
+            binding.dateStart.text = bundle.getString(BundleKeys.DATE_START)
+            binding.dateEnd.text = bundle.getString(BundleKeys.DATE_END)
+            scheduleList = bundle.getLongArray(BundleKeys.SCHEDULE)!!.map { Date(it) }
+            timePickerAdapter.updateData(scheduleList)
 
-        savedInstanceState?.let {
-            val image = it.getString(BundleKeys.IMAGE)?.toUri()
+            val image = bundle.getString(BundleKeys.IMAGE)?.toUri()
             this.image = image ?: Uri.EMPTY
 
             Handler(Looper.getMainLooper()).postDelayed({
-                Glide.with(requireContext()).load(
-                    image ?: R.mipmap.no_image_available
-                ).into(binding.addMedDialogBase.img)
+                if (this.image.toString() == Uri.EMPTY.toString()) {
+                    binding.img.setImageResource(R.mipmap.no_image_available)
+                    return@postDelayed
+                }
+                Glide.with(this).load(image).into(binding.img)
             }, 1)
+
+            this.fetchedMed =
+                gson.fromJson(bundle.getString(BundleKeys.MED), MedicamentoItem::class.java)
+
+            binding.ivFavBg.visibility =
+                if (bundle.getBoolean(BundleKeys.IS_FAV)) View.VISIBLE else View.GONE
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        outState.putString(BundleKeys.DATE_START, binding.dateStart.text.toString())
+        outState.putString(BundleKeys.DATE_END, binding.dateEnd.text.toString())
+        outState.putLongArray(BundleKeys.SCHEDULE, scheduleList.map { it.time }.toLongArray())
+        outState.putString(BundleKeys.MED, gson.toJson(fetchedMed, MedicamentoItem::class.java))
         outState.putString(BundleKeys.IMAGE, image.toString())
+        outState.putBoolean(BundleKeys.IS_FAV, binding.ivFavBg.visibility == View.VISIBLE)
     }
 
-    override fun onStop() {
-        super.onStop()
-        Glide.with(requireContext()).load(R.mipmap.no_image_available)
-            .into(binding.addMedDialogBase.img)
-    }
-
-    private fun search() {
-        val searchingToast: Toast = Toast.makeText(
-            context,
-            R.string.buscando,
-            Toast.LENGTH_SHORT
-        ).also { it.show() }
-
-        binding.progressBar.visibility = View.VISIBLE
-
-        val codNacional = binding.addMedDialogBase.codNacional.text.toString()
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val fetchedMed = viewModel.search(codNacional)
-
-                this@AddActiveMedFragment.fetchedMed = fetchedMed
-
-                withContext(Dispatchers.Main) {
-                    //TODO: Hardcode string
-                    if (fetchedMed == null) {
-                        Toast.makeText(
-                            context,
-                            "Medicamento no encontrado",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        return@withContext
-                    }
-
-                    binding.addMedDialogBase.codNacional.setText(codNacional)
-
-                    binding.addMedDialogBase.nombre.setText(fetchedMed.nombre)
-
-                    if (fetchedMed.imagen.toString().startsWith(CimaApiDefinitions.BASE_URL)) {
-                        withContext(Dispatchers.IO) {
-                            val img = viewModel.downloadImage(
-                                fetchedMed.numRegistro,
-                                fetchedMed.imagen.toString().substringAfterLast('/')
-                            )
-                            withContext(Dispatchers.Main) {
-                                Glide.with(requireContext()).load(img)
-                                    .into(binding.addMedDialogBase.img)
-                                image = fetchedMed.imagen
-                            }
-                        }
-                    } else if (fetchedMed.imagen.toString().startsWith("file:///")) {
-                        Glide.with(requireContext()).load(fetchedMed.imagen)
-                            .into(binding.addMedDialogBase.img)
-                        image = fetchedMed.imagen
-                    } else {
-                        binding.addMedDialogBase.img.setImageResource(R.mipmap.no_image_available)
-                        image = Uri.EMPTY
-                    }
-
-                    if (fetchedMed.esFavorito) {
-                        binding.addMedDialogBase.ivFavBg.visibility = View.VISIBLE
-                        binding.addMedDialogBase.favFrame.setOnClickListener {
-                            // TODO: Hardcode string
-                            Toast.makeText(
-                                context,
-                                "Este medicamento ya está en favoritos",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    } else {
-                        binding.addMedDialogBase.ivFavBg.visibility = View.GONE
-                        binding.addMedDialogBase.favFrame.setOnClickListener {
-                            binding.addMedDialogBase.ivFavBg.apply {
-                                visibility = visibility.xor(View.GONE)
-                            }
-                        }
-                    }
-                }
-            } catch (e: IllegalArgumentException) {
-                this@AddActiveMedFragment.fetchedMed = null
-
-                withContext(Dispatchers.Main) {
-                    searchingToast.cancel()
-                    Toast.makeText(
-                        context,
-                        R.string.codigo_nacional_no_valido, // TODO: a.k.a formato incorrecto by regex
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    toggleHelp()
-                }
-            } catch (e: Exception) {
-                this@AddActiveMedFragment.fetchedMed = null
-
-                withContext(Dispatchers.Main) {
-                    searchingToast.cancel()
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                }
-            } finally {
-                withContext(Dispatchers.Main) {
-                    searchingToast.cancel()
-                    binding.progressBar.visibility = View.GONE
-                }
-            }
-        }
-    }
-
-    private fun onAddActiveMed() {
+    private suspend fun onSave(): Boolean {
         if (!validateForm())
-            return
+            return false
 
-        val nombre = binding.addMedDialogBase.nombre.text.toString()
+        val dosis = binding.dosis.text.toString()
         val dateStart = DateTimeUtils.parseDate(binding.dateStart.text.toString())
         val dateEnd = DateTimeUtils.parseDate(binding.dateEnd.text.toString())
-        val dosis = binding.addMedDialogBase.dosis.text.toString()
         val schedule = scheduleList
 
         val med = MedicamentoActivoItem(
@@ -274,44 +206,19 @@ class AddActiveMedFragment : Fragment() {
             fechaFin = dateEnd,
             fechaInicio = dateStart,
             tomas = mutableMapOf(),
-            fkMedicamento = fetchedMed?.apply {
-                this.esFavorito = binding.addMedDialogBase.ivFavBg.visibility == View.VISIBLE
-                this.imagen = image
-                this.nombre = nombre.ifBlank { this.nombre }
-                this.fkUsuario = this.fkUsuario.takeIf { it > 0 } ?: viewModel.getUserId()
-            } ?: MedicamentoItem(
-                pkCodNacionalMedicamento = 0,
-                fkUsuario = viewModel.getUserId(),
-                nombre = nombre.ifBlank {
-                    Toast.makeText(
-                        context,
-                        "Se debe introducir un nombre", // TODO: Hardcode string
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return
-                },
-                imagen = image,
-                esFavorito = binding.addMedDialogBase.ivFavBg.visibility == View.VISIBLE,
-                numRegistro = "",
-                url = "",
-                prescripcion = "",
-                laboratorio = "",
-                prospecto = "",
-                afectaConduccion = false,
-            )
+            fkMedicamento = requireMed()
         )
 
-        viewModel.onDataEntered(med)
+        withContext(Dispatchers.IO) {
+            viewModel.onDataEntered(med)
+        }
+
+        return true
     }
 
     private fun validateForm(): Boolean {
-        if (binding.addMedDialogBase.nombre.text.isNullOrBlank()) {
-            binding.addMedDialogBase.nombre.error = getString(R.string.sin_nombre)
-            Toast.makeText(
-                context,
-                R.string.sin_nombre,
-                Toast.LENGTH_SHORT
-            ).show()
+        if (binding.nombre.text.isNullOrBlank()) {
+            binding.nombre.error = getString(R.string.sin_nombre)
             return false
         }
 
@@ -339,7 +246,18 @@ class AddActiveMedFragment : Fragment() {
         val endDate = DateTimeUtils.parseDate(binding.dateEnd.text.toString()).time
         val today = Calendar.getInstance().time.zeroTime().time
 
-        if (endDate < startDate || endDate < today) {
+        if (endDate < startDate) {
+            Log.v("AddActiveMedFragment", "End date is before start date")
+            Toast.makeText(
+                context,
+                R.string.fecha_invalida,
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
+        }
+
+        if (endDate < today) {
+            Log.v("AddActiveMedFragment", "End date is before today")
             Toast.makeText(
                 context,
                 R.string.fecha_invalida,
@@ -424,18 +342,144 @@ class AddActiveMedFragment : Fragment() {
         ).show()
     }
 
-    private fun toggleHelp() {
-        if (binding.addMedDialogBase.textHelp.apply {
-                visibility = visibility.xor(View.GONE)
-            }.visibility == View.VISIBLE) {
+    private fun search() {
+        val searchingToast: Toast = Toast.makeText(
+            context,
+            R.string.buscando,
+            Toast.LENGTH_SHORT
+        ).also { it.show() }
 
-            binding.addMedDialogBase.textHelp.handler.removeCallbacksAndMessages(null)
+        binding.progressBar.visibility = View.VISIBLE
 
-            binding.addMedDialogBase.textHelp.handler.postDelayed({
-                binding.addMedDialogBase.textHelp.visibility = View.GONE
-            }, null, 5000)
-        } else {
-            binding.addMedDialogBase.textHelp.handler.removeCallbacksAndMessages(null)
+        val codNacional = binding.codNacional.text.toString()
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val fetchedMed = viewModel.search(codNacional)
+
+                this@AddActiveMedFragment.fetchedMed = fetchedMed
+
+                withContext(Dispatchers.Main) {
+                    //TODO: Hardcode string
+                    if (fetchedMed == null) {
+                        Toast.makeText(
+                            context,
+                            "Medicamento no encontrado",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@withContext
+                    }
+
+                    binding.codNacional.setText(codNacional)
+
+                    binding.nombre.setText(fetchedMed.nombre)
+
+                    if (fetchedMed.imagen.toString().startsWith(CimaApiDefinitions.BASE_URL)) {
+                        withContext(Dispatchers.IO) {
+                            val img = viewModel.downloadImage(
+                                fetchedMed.numRegistro,
+                                fetchedMed.imagen.toString().substringAfterLast('/')
+                            )
+                            withContext(Dispatchers.Main) {
+                                Glide.with(requireContext()).load(img)
+                                    .into(binding.img)
+                                image = fetchedMed.imagen
+                            }
+                        }
+                    } else if (fetchedMed.imagen.toString().startsWith("file:///")) {
+                        Glide.with(requireContext()).load(fetchedMed.imagen)
+                            .into(binding.img)
+                        image = fetchedMed.imagen
+                    } else {
+                        binding.img.setImageResource(R.mipmap.no_image_available)
+                        image = Uri.EMPTY
+                    }
+
+                    if (fetchedMed.esFavorito) {
+                        binding.ivFavBg.visibility = View.VISIBLE
+                        binding.favFrame.setOnClickListener {
+                            // TODO: Hardcode string
+                            Toast.makeText(
+                                context,
+                                "Este medicamento ya está en favoritos",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else {
+                        binding.ivFavBg.visibility = View.GONE
+                        binding.favFrame.setOnClickListener {
+                            binding.ivFavBg.apply {
+                                visibility = visibility.xor(View.GONE)
+                            }
+                        }
+                    }
+                }
+            } catch (e: IllegalArgumentException) {
+                Log.e("AddMedBaseFragment", e.message ?: "Unknown error", e)
+
+                this@AddActiveMedFragment.fetchedMed = null
+
+                withContext(Dispatchers.Main) {
+                    searchingToast.cancel()
+                    Toast.makeText(
+                        context,
+                        R.string.codigo_nacional_no_valido, // TODO: a.k.a formato incorrecto by regex
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    toggleHelp()
+                }
+            } catch (e: Exception) {
+                Log.e("AddMedBaseFragment", e.message ?: "Unknown error", e)
+
+                this@AddActiveMedFragment.fetchedMed = null
+
+                withContext(Dispatchers.Main) {
+                    searchingToast.cancel()
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                }
+            } finally {
+                withContext(Dispatchers.Main) {
+                    searchingToast.cancel()
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
         }
+    }
+
+    private fun toggleHelp() {
+        binding.textHelp.apply {
+            visibility = visibility.xor(View.GONE)
+            handler.removeCallbacksAndMessages(null)
+
+            if (visibility == View.VISIBLE) {
+                handler.postDelayed({
+                    visibility = View.GONE
+                }, 5000)
+            }
+        }
+    }
+
+    private fun requireMed(): MedicamentoItem {
+        val nombre = binding.nombre.text.toString()
+
+        return fetchedMed?.apply {
+            this.esFavorito = binding.ivFavBg.visibility == View.VISIBLE
+            this.imagen = image
+            this.nombre = nombre.ifBlank { this.nombre }
+            this.fkUsuario = this.fkUsuario.takeIf { it > 0 } ?: viewModel.getUserId()
+        } ?: MedicamentoItem(
+            pkCodNacionalMedicamento = 0,
+            fkUsuario = viewModel.getUserId(),
+            nombre = nombre,
+            imagen = image,
+            esFavorito = binding.ivFavBg.visibility == View.VISIBLE,
+            numRegistro = "",
+            url = "",
+            prescripcion = "",
+            laboratorio = "",
+            prospecto = "",
+            afectaConduccion = false,
+        )
     }
 }
