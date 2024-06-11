@@ -38,4 +38,11 @@
         android:label="fragment_med_info"
         tools:layout="@layout/fragment_med_info" />
 
+    <!-- TODO: Hardcode string -->
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.a23pablooc.proxectofct.ui.view.fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="Settings" />
+
 </navigation>

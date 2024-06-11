@@ -57,6 +57,8 @@ dependencies {
     implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.preference)
 
     //Corrutinas
     implementation(libs.kotlinx.coroutines.android)
@@ -67,7 +69,6 @@ dependencies {
 
     //Dagger Hilt
     implementation(libs.hilt.android)
-    implementation(libs.androidx.legacy.support.v4)
     ksp(libs.hilt.compiler)
 
     //Room
