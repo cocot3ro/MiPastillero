@@ -105,14 +105,14 @@ class UsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener
                             when {
                                 firstTime && uiState.data.size == 1 -> {
                                     val user = uiState.data.first() as UsuarioItem
-                                    onSelectUser(user)
+                                    onSelectUser.invoke(user)
                                 }
 
                                 firstTime && viewModel.getDefaultUserId() != DataStoreManager.Defaults.DEFAULT_USER_ID -> {
                                     val defaultUser = viewModel.getDefaultUserId()
                                     val user = uiState.data.map { it as UsuarioItem }
                                         .first { it.pkUsuario == defaultUser }
-                                    onSelectUser(user)
+                                    onSelectUser.invoke(user)
                                 }
 
                                 else -> {

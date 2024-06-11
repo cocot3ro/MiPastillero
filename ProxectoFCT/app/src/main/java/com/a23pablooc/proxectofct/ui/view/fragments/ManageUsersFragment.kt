@@ -46,18 +46,18 @@ class ManageUsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredLi
             adapter = ManageUserRecyclerViewAdapter(
                 emptyList(),
                 viewModel.onSaveChangesFlow,
-                {
+                onSaveUser = {
                     viewModel.saveUser(it)
                 },
                 viewModel.onChangeDefaultUserFlow,
-                {
+                onChangeDefault = {
                     viewModel.changeDefaultUser(it.pkUsuario)
                 },
                 viewLifecycleOwner,
-                {
+                onDelete = {
                     showDeleteUserDialog(it)
                 },
-                { userId, hasChanged ->
+                notifyChange = { userId, hasChanged ->
                     viewModel.registerChange(userId, hasChanged)
 
                     binding.fabSave.apply {
