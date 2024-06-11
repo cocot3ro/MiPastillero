@@ -11,6 +11,7 @@ import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoWithMedicamentoActivoDAO
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
 import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
+import com.a23pablooc.proxectofct.data.database.entities.MedicamentoActivoEntity
 import com.a23pablooc.proxectofct.data.database.entities.extensions.toDomain
 import com.a23pablooc.proxectofct.domain.model.HistorialItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
@@ -46,7 +47,7 @@ class PillboxDbRepository @Inject constructor(
     }
 
     suspend fun updateMed(med: MedicamentoActivoItem) {
-        medicamentoActivoDAO.update(med.toDatabase(userInfoProvider.currentUser.pkUsuario).medicamentosActivos[0])
+        medicamentoActivoDAO.update(med.toDatabase().medicamentosActivos[0])
     }
 
     fun getAllFavoriteMeds(): Flow<List<MedicamentoItem>> {
@@ -70,17 +71,16 @@ class PillboxDbRepository @Inject constructor(
         return medicamentoDAO.findByCodNacional(userId, codNacional)?.toDomain()
     }
 
-    suspend fun addMedicamentoActivo(med: MedicamentoActivoItem) {
-        val dbMed = med.toDatabase(userInfoProvider.currentUser.pkUsuario)
-        val insertedCodNacional = medicamentoDAO.upsert(dbMed.medicamento)
-        medicamentoActivoDAO.insert(dbMed.medicamentosActivos[0].apply {
-            fkMedicamento = insertedCodNacional.takeIf { it != -1L }
-                ?: dbMed.medicamento.pkCodNacionalMedicamento
-        })
+    suspend fun addMedicamentoActivo(med: MedicamentoActivoEntity) {
+        medicamentoActivoDAO.insert(med)
+    }
+
+    suspend fun addMedicamento(med: MedicamentoItem): Long {
+        return medicamentoDAO.upsert(med.toDatabase())
     }
 
     suspend fun updateMedicamento(medicamento: MedicamentoItem) {
-        medicamentoDAO.update(medicamento.toDatabase(userInfoProvider.currentUser.pkUsuario))
+        medicamentoDAO.update(medicamento.toDatabase())
     }
 
     fun getMedicamentosTerminados(): List<MedicamentoActivoItem> {
@@ -95,11 +95,11 @@ class PillboxDbRepository @Inject constructor(
     }
 
     suspend fun deleteMedicamentosTerminados(meds: List<MedicamentoActivoItem>) {
-        medicamentoActivoDAO.deleteAll(meds.map { it.toDatabase(userInfoProvider.currentUser.pkUsuario).medicamentosActivos[0] })
+        medicamentoActivoDAO.deleteAll(meds.map { it.toDatabase().medicamentosActivos[0] })
     }
 
     suspend fun addHistorial(med: HistorialItem) {
-        historialDAO.insert(med.toDatabase(userInfoProvider.currentUser.pkUsuario))
+        historialDAO.insert(med.toDatabase())
     }
 
     fun getUsers(): Flow<List<UsuarioItem>> {

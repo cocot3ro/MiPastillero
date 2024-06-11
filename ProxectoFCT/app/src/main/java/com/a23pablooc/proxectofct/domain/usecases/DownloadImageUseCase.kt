@@ -6,7 +6,7 @@ import javax.inject.Inject
 class DownloadImageUseCase @Inject constructor(
     private val cimaRepository: CimaRepository
 ) {
-    suspend operator fun invoke(nregistro: String, imgResource: String): ByteArray {
+    suspend fun invoke(nregistro: String, imgResource: String): ByteArray {
         return cimaRepository.downloadImage(nregistro, imgResource)
     }
 }

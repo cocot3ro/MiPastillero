@@ -7,7 +7,7 @@ import java.util.Date
 import javax.inject.Inject
 
 class GetMedicamentosCalendarioUseCase @Inject constructor(private val repository: PillboxDbRepository) {
-    operator fun invoke(date: Date): Flow<List<MedicamentoActivoItem>> {
+    fun invoke(date: Date): Flow<List<MedicamentoActivoItem>> {
         return repository.getAllWithMedicamentosByDiaOrderByHora(date)
     }
 }

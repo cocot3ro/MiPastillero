@@ -6,7 +6,7 @@ import java.util.Date
 import javax.inject.Inject
 
 class MarcarTomaUseCase @Inject constructor(private val repository: PillboxDbRepository) {
-    suspend operator fun invoke(med: MedicamentoActivoItem, dia: Date, hora: Date) {
+    suspend fun invoke(med: MedicamentoActivoItem, dia: Date, hora: Date) {
         med.tomas[dia]?.let { dayMap ->
             dayMap[hora] = dayMap[hora]?.not() ?: true
         } ?: run {

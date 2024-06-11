@@ -4,6 +4,7 @@ import java.util.Date
 
 data class AgendaItem(
     var pkAgenda: Long,
+    var fkUsuario: Long,
     var descripcion: String,
     var fecha: Date
 )

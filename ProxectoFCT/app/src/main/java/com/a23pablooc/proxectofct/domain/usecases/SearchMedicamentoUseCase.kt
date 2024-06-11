@@ -11,7 +11,7 @@ class SearchMedicamentoUseCase @Inject constructor(
     private val pillboxDbRepository: PillboxDbRepository,
     private val userInfoProvider: UserInfoProvider
 ) {
-    suspend operator fun invoke(codNacional: Long): MedicamentoItem? {
+    suspend fun invoke(codNacional: Long): MedicamentoItem? {
         return pillboxDbRepository.findMedicamentoByCodNacional(
             userInfoProvider.currentUser.pkUsuario,
             codNacional

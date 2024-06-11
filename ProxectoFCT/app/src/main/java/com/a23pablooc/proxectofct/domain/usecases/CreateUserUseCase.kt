@@ -5,7 +5,7 @@ import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import javax.inject.Inject
 
 class CreateUserUseCase @Inject constructor(private val pillboxDbRepository: PillboxDbRepository) {
-    suspend operator fun invoke(user: UsuarioItem): Long {
+    suspend fun invoke(user: UsuarioItem): Long {
         return pillboxDbRepository.createUser(user)
     }
 

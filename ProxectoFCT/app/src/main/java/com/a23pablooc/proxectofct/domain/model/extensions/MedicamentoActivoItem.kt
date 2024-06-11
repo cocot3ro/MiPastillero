@@ -4,13 +4,13 @@ import com.a23pablooc.proxectofct.data.database.entities.MedicamentoActivoEntity
 import com.a23pablooc.proxectofct.data.database.entities.MedicamentoWithMedicamentoActivo
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 
-fun MedicamentoActivoItem.toDatabase(userId: Long): MedicamentoWithMedicamentoActivo {
+fun MedicamentoActivoItem.toDatabase(): MedicamentoWithMedicamentoActivo {
     return MedicamentoWithMedicamentoActivo(
         medicamentosActivos = listOf(
             MedicamentoActivoEntity(
                 pkMedicamentoActivo = pkMedicamentoActivo,
                 fkMedicamento = fkMedicamento.pkCodNacionalMedicamento,
-                fkUsuario = userId,
+                fkUsuario = fkUsuario,
                 dosis = dosis,
                 fechaFin = fechaFin,
                 fechaInicio = fechaInicio,
@@ -18,6 +18,6 @@ fun MedicamentoActivoItem.toDatabase(userId: Long): MedicamentoWithMedicamentoAc
                 tomas = tomas
             )
         ),
-        medicamento = fkMedicamento.toDatabase(userId)
+        medicamento = fkMedicamento.toDatabase()
     )
 }

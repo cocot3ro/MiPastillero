@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.a23pablooc.proxectofct.data.database.definitions.AgendaTableDefinition
 import com.a23pablooc.proxectofct.data.database.definitions.AgendaTableDefinition.Columns.FECHA
 import com.a23pablooc.proxectofct.data.database.definitions.AgendaTableDefinition.Columns.FK_USUARIO
 import com.a23pablooc.proxectofct.data.database.definitions.AgendaTableDefinition.Columns.HORA

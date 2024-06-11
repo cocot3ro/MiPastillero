@@ -11,7 +11,7 @@ class SaveImageUseCase @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
-    operator fun invoke(fileName: String, imageData: ByteArray): Uri {
+    fun invoke(fileName: String, imageData: ByteArray): Uri {
         val file = File(context.filesDir, fileName)
 
         file.outputStream().use { it.write(imageData) }

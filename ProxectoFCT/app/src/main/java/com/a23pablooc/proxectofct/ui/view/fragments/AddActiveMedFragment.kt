@@ -53,7 +53,7 @@ class AddActiveMedFragment : Fragment() {
 
     private val pickMedia = registerForActivityResult(PickVisualMedia()) {
         it?.let {
-            Glide.with(requireContext()).load(it).into(binding.addMedDialog.img)
+            Glide.with(requireContext()).load(it).into(binding.addMedDialogBase.img)
             image = it
         }
     }
@@ -80,7 +80,7 @@ class AddActiveMedFragment : Fragment() {
             adapter = timePickerAdapter
         }
 
-        binding.addMedDialog.imgLayout.setOnClickListener {
+        binding.addMedDialogBase.imgLayout.setOnClickListener {
             pickMedia.launch(
                 PickVisualMediaRequest(
                     PickVisualMedia.ImageOnly
@@ -88,7 +88,7 @@ class AddActiveMedFragment : Fragment() {
             )
         }
 
-        binding.addMedDialog.imgLayout.setOnLongClickListener {
+        binding.addMedDialogBase.imgLayout.setOnLongClickListener {
             Toast.makeText(
                 context,
                 getString(R.string.seleccionar_una_imagen),
@@ -97,9 +97,9 @@ class AddActiveMedFragment : Fragment() {
             true
         }
 
-        binding.addMedDialog.btnHelp.setOnClickListener { toggleHelp() }
+        binding.addMedDialogBase.btnHelp.setOnClickListener { toggleHelp() }
 
-        binding.addMedDialog.btnSearch.setOnClickListener { search() }
+        binding.addMedDialogBase.btnSearch.setOnClickListener { search() }
 
         binding.btnStartDatePicker.setOnClickListener {
             onSelectDate(binding.dateStart)
@@ -111,8 +111,8 @@ class AddActiveMedFragment : Fragment() {
 
         binding.btnAddTimer.setOnClickListener { onAddTimer() }
 
-        binding.addMedDialog.favFrame.setOnClickListener {
-            binding.addMedDialog.ivFavBg.apply {
+        binding.addMedDialogBase.favFrame.setOnClickListener {
+            binding.addMedDialogBase.ivFavBg.apply {
                 visibility = visibility.xor(View.GONE)
             }
         }
@@ -139,7 +139,7 @@ class AddActiveMedFragment : Fragment() {
             Handler(Looper.getMainLooper()).postDelayed({
                 Glide.with(requireContext()).load(
                     image ?: R.mipmap.no_image_available
-                ).into(binding.addMedDialog.img)
+                ).into(binding.addMedDialogBase.img)
             }, 1)
         }
     }
@@ -152,7 +152,7 @@ class AddActiveMedFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         Glide.with(requireContext()).load(R.mipmap.no_image_available)
-            .into(binding.addMedDialog.img)
+            .into(binding.addMedDialogBase.img)
     }
 
     private fun search() {
@@ -164,7 +164,7 @@ class AddActiveMedFragment : Fragment() {
 
         binding.progressBar.visibility = View.VISIBLE
 
-        val codNacional = binding.addMedDialog.codNacional.text.toString()
+        val codNacional = binding.addMedDialogBase.codNacional.text.toString()
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -183,9 +183,9 @@ class AddActiveMedFragment : Fragment() {
                         return@withContext
                     }
 
-                    binding.addMedDialog.codNacional.setText(codNacional)
+                    binding.addMedDialogBase.codNacional.setText(codNacional)
 
-                    binding.addMedDialog.nombre.setText(fetchedMed.nombre)
+                    binding.addMedDialogBase.nombre.setText(fetchedMed.nombre)
 
                     if (fetchedMed.imagen.toString().startsWith(CimaApiDefinitions.BASE_URL)) {
                         withContext(Dispatchers.IO) {
@@ -195,22 +195,22 @@ class AddActiveMedFragment : Fragment() {
                             )
                             withContext(Dispatchers.Main) {
                                 Glide.with(requireContext()).load(img)
-                                    .into(binding.addMedDialog.img)
+                                    .into(binding.addMedDialogBase.img)
                                 image = fetchedMed.imagen
                             }
                         }
                     } else if (fetchedMed.imagen.toString().startsWith("file:///")) {
                         Glide.with(requireContext()).load(fetchedMed.imagen)
-                            .into(binding.addMedDialog.img)
+                            .into(binding.addMedDialogBase.img)
                         image = fetchedMed.imagen
                     } else {
-                        binding.addMedDialog.img.setImageResource(R.mipmap.no_image_available)
+                        binding.addMedDialogBase.img.setImageResource(R.mipmap.no_image_available)
                         image = Uri.EMPTY
                     }
 
                     if (fetchedMed.esFavorito) {
-                        binding.addMedDialog.ivFavBg.visibility = View.VISIBLE
-                        binding.addMedDialog.favFrame.setOnClickListener {
+                        binding.addMedDialogBase.ivFavBg.visibility = View.VISIBLE
+                        binding.addMedDialogBase.favFrame.setOnClickListener {
                             // TODO: Hardcode string
                             Toast.makeText(
                                 context,
@@ -219,9 +219,9 @@ class AddActiveMedFragment : Fragment() {
                             ).show()
                         }
                     } else {
-                        binding.addMedDialog.ivFavBg.visibility = View.GONE
-                        binding.addMedDialog.favFrame.setOnClickListener {
-                            binding.addMedDialog.ivFavBg.apply {
+                        binding.addMedDialogBase.ivFavBg.visibility = View.GONE
+                        binding.addMedDialogBase.favFrame.setOnClickListener {
+                            binding.addMedDialogBase.ivFavBg.apply {
                                 visibility = visibility.xor(View.GONE)
                             }
                         }
@@ -260,25 +260,28 @@ class AddActiveMedFragment : Fragment() {
         if (!validateForm())
             return
 
-        val nombre = binding.addMedDialog.nombre.text.toString()
+        val nombre = binding.addMedDialogBase.nombre.text.toString()
         val dateStart = DateTimeUtils.parseDate(binding.dateStart.text.toString())
         val dateEnd = DateTimeUtils.parseDate(binding.dateEnd.text.toString())
-        val dosis = binding.addMedDialog.dosis.text.toString()
+        val dosis = binding.addMedDialogBase.dosis.text.toString()
         val schedule = scheduleList
 
         val med = MedicamentoActivoItem(
             pkMedicamentoActivo = 0,
+            fkUsuario = viewModel.getUserId(),
             dosis = dosis.ifBlank { "" },
             horario = schedule.toMutableSet(),
             fechaFin = dateEnd,
             fechaInicio = dateStart,
             tomas = mutableMapOf(),
             fkMedicamento = fetchedMed?.apply {
-                this.esFavorito = binding.addMedDialog.ivFavBg.visibility == View.VISIBLE
+                this.esFavorito = binding.addMedDialogBase.ivFavBg.visibility == View.VISIBLE
                 this.imagen = image
                 this.nombre = nombre.ifBlank { this.nombre }
+                this.fkUsuario = this.fkUsuario.takeIf { it > 0 } ?: viewModel.getUserId()
             } ?: MedicamentoItem(
                 pkCodNacionalMedicamento = 0,
+                fkUsuario = viewModel.getUserId(),
                 nombre = nombre.ifBlank {
                     Toast.makeText(
                         context,
@@ -288,13 +291,13 @@ class AddActiveMedFragment : Fragment() {
                     return
                 },
                 imagen = image,
-                esFavorito = binding.addMedDialog.ivFavBg.visibility == View.VISIBLE,
+                esFavorito = binding.addMedDialogBase.ivFavBg.visibility == View.VISIBLE,
                 numRegistro = "",
                 url = "",
                 prescripcion = "",
                 laboratorio = "",
                 prospecto = "",
-                afectaConduccion = false
+                afectaConduccion = false,
             )
         )
 
@@ -302,8 +305,8 @@ class AddActiveMedFragment : Fragment() {
     }
 
     private fun validateForm(): Boolean {
-        if (binding.addMedDialog.nombre.text.isNullOrBlank()) {
-            binding.addMedDialog.nombre.error = getString(R.string.sin_nombre)
+        if (binding.addMedDialogBase.nombre.text.isNullOrBlank()) {
+            binding.addMedDialogBase.nombre.error = getString(R.string.sin_nombre)
             Toast.makeText(
                 context,
                 R.string.sin_nombre,
@@ -422,17 +425,17 @@ class AddActiveMedFragment : Fragment() {
     }
 
     private fun toggleHelp() {
-        if (binding.addMedDialog.textHelp.apply {
+        if (binding.addMedDialogBase.textHelp.apply {
                 visibility = visibility.xor(View.GONE)
             }.visibility == View.VISIBLE) {
 
-            binding.addMedDialog.textHelp.handler.removeCallbacksAndMessages(null)
+            binding.addMedDialogBase.textHelp.handler.removeCallbacksAndMessages(null)
 
-            binding.addMedDialog.textHelp.handler.postDelayed({
-                binding.addMedDialog.textHelp.visibility = View.GONE
+            binding.addMedDialogBase.textHelp.handler.postDelayed({
+                binding.addMedDialogBase.textHelp.visibility = View.GONE
             }, null, 5000)
         } else {
-            binding.addMedDialog.textHelp.handler.removeCallbacksAndMessages(null)
+            binding.addMedDialogBase.textHelp.handler.removeCallbacksAndMessages(null)
         }
     }
 }

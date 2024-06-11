@@ -2,9 +2,10 @@ package com.a23pablooc.proxectofct.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
-import com.a23pablooc.proxectofct.domain.usecases.AddMedicamentoActivoUseCase
+import com.a23pablooc.proxectofct.domain.usecases.AddMedicamentoUseCase
 import com.a23pablooc.proxectofct.domain.usecases.DownloadImageUseCase
 import com.a23pablooc.proxectofct.domain.usecases.SearchMedicamentoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,8 @@ import javax.inject.Inject
 class AddActiveMedViewModel @Inject constructor(
     private val searchMedicamentoUseCase: SearchMedicamentoUseCase,
     private val downloadIMageUseCase: DownloadImageUseCase,
-    private val addMedicamentoActivoUseCase: AddMedicamentoActivoUseCase
+    private val addMedicamentoUseCase: AddMedicamentoUseCase,
+    private val userInfoProvider: UserInfoProvider
 ) : ViewModel() {
 
     private val codNacionalPattern = Regex("""[6-9]\d{5}(\.\d)?""")
@@ -34,7 +36,9 @@ class AddActiveMedViewModel @Inject constructor(
 
     fun onDataEntered(med: MedicamentoActivoItem) {
         viewModelScope.launch(Dispatchers.IO) {
-            addMedicamentoActivoUseCase.invoke(med)
+            addMedicamentoUseCase.invoke(med)
         }
     }
+
+    fun getUserId(): Long = userInfoProvider.currentUser.pkUsuario
 }

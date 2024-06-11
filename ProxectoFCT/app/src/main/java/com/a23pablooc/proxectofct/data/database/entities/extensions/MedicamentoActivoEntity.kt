@@ -13,5 +13,6 @@ fun MedicamentoActivoEntity.toDomain(medEntity: MedicamentoEntity): MedicamentoA
         dosis = this.dosis,
         tomas = this.tomas,
         horario = this.horario,
+        fkUsuario = fkUsuario
     )
 }

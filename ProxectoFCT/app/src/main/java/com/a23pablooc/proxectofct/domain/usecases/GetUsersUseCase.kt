@@ -9,7 +9,7 @@ class GetUsersUseCase @Inject constructor(
     private val pillboxDbRepository: PillboxDbRepository
 ) {
 
-    operator fun invoke(): Flow<List<UsuarioItem>> {
+    fun invoke(): Flow<List<UsuarioItem>> {
         return pillboxDbRepository.getUsers()
     }
 

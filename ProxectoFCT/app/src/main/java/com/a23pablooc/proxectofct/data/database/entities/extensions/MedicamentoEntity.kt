@@ -14,6 +14,7 @@ fun MedicamentoEntity.toDomain(): MedicamentoItem {
         laboratorio = laboratorio,
         prescripcion = prescripcion,
         afectaConduccion = afectaConduccion,
-        esFavorito = esFavorito
+        esFavorito = esFavorito,
+        fkUsuario = fkUsuario
     )
 }

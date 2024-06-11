@@ -3,10 +3,10 @@ package com.a23pablooc.proxectofct.domain.model.extensions
 import com.a23pablooc.proxectofct.data.database.entities.MedicamentoEntity
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 
-fun MedicamentoItem.toDatabase(userId: Long): MedicamentoEntity {
+fun MedicamentoItem.toDatabase(): MedicamentoEntity {
     return MedicamentoEntity(
         pkCodNacionalMedicamento = pkCodNacionalMedicamento,
-        fkUsuario = userId,
+        fkUsuario = fkUsuario,
         numRegistro = numRegistro,
         nombre = nombre,
         url = url,

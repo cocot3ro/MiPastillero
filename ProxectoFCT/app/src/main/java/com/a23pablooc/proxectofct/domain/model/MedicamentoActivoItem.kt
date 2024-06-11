@@ -5,6 +5,7 @@ import java.util.Date
 data class MedicamentoActivoItem(
     var pkMedicamentoActivo: Long,
     var fkMedicamento: MedicamentoItem,
+    val fkUsuario: Long,
     var fechaInicio: Date,
     var fechaFin: Date,
     var horario: MutableSet<Date>,
@@ -19,6 +20,7 @@ data class MedicamentoActivoItem(
 
         if (pkMedicamentoActivo != other.pkMedicamentoActivo) return false
         if (fkMedicamento != other.fkMedicamento) return false
+        if (fkUsuario != other.fkUsuario) return false
         if (fechaInicio != other.fechaInicio) return false
         if (fechaFin != other.fechaFin) return false
         if (horario != other.horario) return false
@@ -31,6 +33,7 @@ data class MedicamentoActivoItem(
     override fun hashCode(): Int {
         var result = pkMedicamentoActivo.hashCode()
         result = 31 * result + fkMedicamento.hashCode()
+        result = 31 * result + fkUsuario.hashCode()
         result = 31 * result + fechaInicio.hashCode()
         result = 31 * result + fechaFin.hashCode()
         result = 31 * result + horario.hashCode()

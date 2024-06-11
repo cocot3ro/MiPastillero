@@ -4,15 +4,17 @@ import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
 import com.a23pablooc.proxectofct.data.repositories.PillboxDbRepository
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
+import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
+import com.a23pablooc.proxectofct.domain.model.extensions.toDatabase
 import javax.inject.Inject
 
-class AddMedicamentoActivoUseCase @Inject constructor(
+class AddMedicamentoUseCase @Inject constructor(
     private val downloadImageUseCase: DownloadImageUseCase,
     private val saveImageUseCase: SaveImageUseCase,
     private val userInfoProvider: UserInfoProvider,
     private val repository: PillboxDbRepository
 ) {
-    suspend operator fun invoke(med: MedicamentoActivoItem) {
+    suspend fun invoke(med: MedicamentoActivoItem) {
         val imgPath = med.fkMedicamento.imagen.toString()
 
         if (imgPath.startsWith(CimaApiDefinitions.BASE_URL)) {
@@ -21,15 +23,23 @@ class AddMedicamentoActivoUseCase @Inject constructor(
                 imgPath.substringAfterLast('/')
             )
 
-            val localStoragePath =
-                saveImageUseCase.invoke(
-                    "${userInfoProvider.currentUser.pkUsuario}_${med.fkMedicamento.numRegistro}.jpg",
-                    imageData
-                )
+            val localStoragePath = saveImageUseCase.invoke(
+                "${userInfoProvider.currentUser.pkUsuario}_${med.fkMedicamento.numRegistro}.jpg",
+                imageData
+            )
 
             med.fkMedicamento.imagen = localStoragePath
         }
 
-        repository.addMedicamentoActivo(med)
+        val dbMed = med.toDatabase()
+        val insertedCodNacional = invoke(med.fkMedicamento)
+        repository.addMedicamentoActivo(dbMed.medicamentosActivos[0].apply {
+            fkMedicamento = insertedCodNacional.takeIf { it != -1L }
+                ?: dbMed.medicamento.pkCodNacionalMedicamento
+        })
+    }
+
+    suspend fun invoke(med: MedicamentoItem): Long {
+        return repository.addMedicamento(med)
     }
 }

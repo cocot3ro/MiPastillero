@@ -7,7 +7,7 @@ import javax.inject.Inject
 class UpdateUserUseCase @Inject constructor(
     private val pillboxDbRepository: PillboxDbRepository
 ) {
-    suspend operator fun invoke(user: UsuarioItem) {
+    suspend fun invoke(user: UsuarioItem) {
         pillboxDbRepository.updateUser(user)
     }
 }

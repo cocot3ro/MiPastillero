@@ -4,6 +4,7 @@ import android.net.Uri
 
 data class MedicamentoItem(
     var pkCodNacionalMedicamento: Long,
+    var fkUsuario: Long,
     var url: String,
     var nombre: String,
     var prospecto: String,

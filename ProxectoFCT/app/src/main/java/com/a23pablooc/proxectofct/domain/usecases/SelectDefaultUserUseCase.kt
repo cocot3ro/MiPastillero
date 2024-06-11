@@ -7,7 +7,7 @@ import javax.inject.Inject
 class SelectDefaultUserUseCase @Inject constructor(
     private val dataStoreManager: DataStoreManager
 ) {
-    suspend operator fun invoke(userId: Long) {
+    suspend fun invoke(userId: Long) {
         dataStoreManager.defaultUserId(
             if (userId == dataStoreManager.defaultUserId()
                     .first()

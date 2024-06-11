@@ -8,7 +8,7 @@ class UpdateMedicamentoUseCase @Inject constructor(
     private val pillboxDbRepository: PillboxDbRepository
 ) {
 
-    suspend operator fun invoke(medicamento: MedicamentoItem) {
+    suspend fun invoke(medicamento: MedicamentoItem) {
         pillboxDbRepository.updateMedicamento(medicamento)
     }
 

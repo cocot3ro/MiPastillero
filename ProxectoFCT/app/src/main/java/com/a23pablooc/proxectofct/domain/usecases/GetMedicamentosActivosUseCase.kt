@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class GetMedicamentosActivosUseCase @Inject constructor(private val repository: PillboxDbRepository) {
 
-    operator fun invoke(): Flow<List<MedicamentoActivoItem>> {
+    fun invoke(): Flow<List<MedicamentoActivoItem>> {
         return repository.getMedicamentosActivos()
     }
 

@@ -7,6 +7,7 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 fun MedicamentoModel.toDomain(): MedicamentoItem {
     return MedicamentoItem(
         pkCodNacionalMedicamento = 0,
+        fkUsuario = 0,
         url = url,
         prospecto = prospecto,
         prescripcion = prescripcion,
