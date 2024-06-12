@@ -1,5 +1,7 @@
 package com.a23pablooc.proxectofct.di
 
+import android.net.Uri
+import com.a23pablooc.proxectofct.data.model.MedicamentoModel
 import com.a23pablooc.proxectofct.data.model.typeadapters.MedicamentoModelTypeAdapter
 import com.a23pablooc.proxectofct.data.model.typeadapters.UriTypeAdapter
 import com.google.gson.Gson
@@ -19,10 +21,10 @@ object GsonModule {
     fun provideGson(): Gson {
         return GsonBuilder()
             .registerTypeAdapter(
-                MedicamentoModelTypeAdapter::class.java,
+                MedicamentoModel::class.java,
                 MedicamentoModelTypeAdapter()
             )
-            .registerTypeAdapter(UriTypeAdapter::class.java, UriTypeAdapter())
+            .registerTypeAdapter(Uri::class.java, UriTypeAdapter())
             .create()
     }
 }
