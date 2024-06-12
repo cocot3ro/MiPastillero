@@ -119,7 +119,7 @@ class CalendarFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.today -> {
-                        today()
+                        binding.viewPager.setCurrentItem(CalendarViewPagerAdapter.START_POSITION, true)
                         true
                     }
 
@@ -164,10 +164,6 @@ class CalendarFragment : Fragment() {
             it.dismiss()
             null
         }
-    }
-
-    private fun today() {
-        binding.viewPager.setCurrentItem(CalendarViewPagerAdapter.START_POSITION, true)
     }
 
     private fun search(date: Date? = null) {
