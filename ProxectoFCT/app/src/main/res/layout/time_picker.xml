@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="horizontal">
-
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+    android:paddingHorizontal="8dp">
 
     <TextView
         android:id="@+id/hour"
@@ -16,7 +11,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:gravity="end"
-        android:text="12:00:00 AM" />
+        android:text="XX:XX:XX AM"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_select_time"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/btn_select_time"
@@ -25,7 +23,10 @@
         android:background="@android:color/transparent"
         android:contentDescription="TODO"
         android:padding="6dp"
-        android:src="@drawable/alarm_32dp" />
+        android:src="@drawable/alarm_32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_delete_timer"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/btn_delete_timer"
@@ -34,6 +35,9 @@
         android:background="@android:color/transparent"
         android:contentDescription="TODO"
         android:padding="6dp"
-        android:src="@drawable/delete_32dp" />
+        android:src="@drawable/delete_32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
