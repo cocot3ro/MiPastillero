@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/mainScreenFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.MainScreenFragment"
-        android:label="fragment_main_screen"
+        android:label=""
         tools:layout="@layout/fragment_main_screen" />
 
     <!-- TODO: Hardcode string -->
@@ -22,7 +22,7 @@
     <fragment
         android:id="@+id/manageUsersFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.ManageUsersFragment"
-        android:label="Usuarios2"
+        android:label="Usuarios"
         tools:layout="@layout/fragment_manage_users" />
 
     <!-- TODO: Hardcode string -->

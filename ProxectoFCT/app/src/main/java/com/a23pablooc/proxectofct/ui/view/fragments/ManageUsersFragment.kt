@@ -11,6 +11,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.databinding.FragmentManageUsersBinding
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.ui.view.adapters.ManageUserRecyclerViewAdapter
@@ -41,6 +44,8 @@ class ManageUsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredLi
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentManageUsersBinding.inflate(layoutInflater)
+
+        binding.toolbar.setupWithNavController(findNavController())
 
         lifecycleScope.launch(Dispatchers.Main) {
             adapter = ManageUserRecyclerViewAdapter(
