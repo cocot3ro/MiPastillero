@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.a23pablooc.proxectofct.data.database.PillboxDatabase
 import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
-import com.a23pablooc.proxectofct.data.database.dao.HistorialDAO
+import com.a23pablooc.proxectofct.data.database.dao.MedicamentoHistorialDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoActivoDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
@@ -38,6 +38,7 @@ object RoomModule {
     //TODO: restore openHelperFactory. Disabled for allowing access from the app inspector
     @Singleton
     @Provides
+    @Suppress("UNUSED_PARAMETER")
     fun provideRoom(
         @ApplicationContext context: Context,
         supportFactory: SupportFactory
@@ -65,7 +66,7 @@ object RoomModule {
 
     @Singleton
     @Provides
-    fun provideHistorialDao(database: PillboxDatabase): HistorialDAO = database.getHistorialDao()
+    fun provideMedicamentoHistorialDao(database: PillboxDatabase): MedicamentoHistorialDAO = database.getMedicamentoHistorialDao()
 
     @Singleton
     @Provides
@@ -89,4 +90,9 @@ object RoomModule {
     @Provides
     fun provideMedicamentoActivoWithNotificacionDAO(database: PillboxDatabase) =
         database.getMedicamentoActivoWithNotificacionDAO()
+
+    @Singleton
+    @Provides
+    fun provideMedicamentoHistorialAndMedicamentoActivoDAO(database: PillboxDatabase) =
+        database.getMedicamentoHistorialAndMedicamentoActioDAO()
 }

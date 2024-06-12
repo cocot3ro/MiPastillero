@@ -1,7 +1,6 @@
 package com.a23pablooc.proxectofct.domain.model
 
 import android.net.Uri
-import java.io.Serializable
 
 data class MedicamentoItem(
     var pkCodNacionalMedicamento: Long,
@@ -15,4 +14,4 @@ data class MedicamentoItem(
     var imagen: Uri,
     var prescripcion: String,
     var afectaConduccion: Boolean
-) : Serializable
+)

@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.ir.backend.js.compile
-
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -89,9 +87,6 @@ dependencies {
 
     // DataStore
     implementation(libs.androidx.datastore.preferences)
-
-    // TODO: Borrar esta dependencia al implementar Retrofit
-    implementation(libs.khttp)
 
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter.api)

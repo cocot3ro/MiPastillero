@@ -1,9 +1,11 @@
-package com.a23pablooc.proxectofct.data.database.entities
+package com.a23pablooc.proxectofct.data.database.relationships
 
 import androidx.room.Embedded
 import androidx.room.Relation
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoActivoTableDefinition
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition
+import com.a23pablooc.proxectofct.data.database.entities.MedicamentoActivoEntity
+import com.a23pablooc.proxectofct.data.database.entities.NotificacionEntity
 
 data class MedicamentoActivoWithNotificacion(
     @Embedded

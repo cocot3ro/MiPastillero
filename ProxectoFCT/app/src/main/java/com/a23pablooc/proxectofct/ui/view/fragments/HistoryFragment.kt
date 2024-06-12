@@ -23,6 +23,15 @@ class HistoryFragment : Fragment() {
     ): View {
         binding = FragmentHistoryBinding.inflate(layoutInflater)
 
+//        val list = listOf<MedicamentoHistorialItem>()
+//
+//        list.sortedWith(
+//            compareBy(
+//                { it.fkMedicamentoActivo.fechaInicio },
+//                { abs(it.fkMedicamentoActivo.fechaInicio.time - it.fkMedicamentoActivo.fechaFin.time) }
+//            )
+//        )
+
         return binding.root
     }
 }

@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoActivoTableDefinition
-import com.a23pablooc.proxectofct.data.database.entities.MedicamentoActivoWithNotificacion
+import com.a23pablooc.proxectofct.data.database.relationships.MedicamentoActivoWithNotificacion
 import kotlinx.coroutines.flow.Flow
 
 @Dao

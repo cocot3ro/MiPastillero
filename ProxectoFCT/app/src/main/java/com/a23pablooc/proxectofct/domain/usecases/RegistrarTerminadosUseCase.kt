@@ -1,25 +1,21 @@
 package com.a23pablooc.proxectofct.domain.usecases
 
 import com.a23pablooc.proxectofct.data.repositories.PillboxDbRepository
-import com.a23pablooc.proxectofct.domain.model.HistorialItem
+import com.a23pablooc.proxectofct.domain.model.MedicamentoHistorialItem
 import javax.inject.Inject
 
-class BorrarTerminadosUseCase @Inject constructor(
+class RegistrarTerminadosUseCase @Inject constructor(
     private val repository: PillboxDbRepository
 ) {
     suspend fun invoke() {
-        val terminados = repository.getMedicamentosTerminados()
-
-        terminados.forEach {
-            repository.addHistorial(
-                HistorialItem(
+        repository.getMedicamentosTerminados().forEach {
+            repository.addMedicamentoHistorial(
+                MedicamentoHistorialItem(
                     fkMedicamento = it.fkMedicamento,
                     fkMedicamentoActivo = it,
                     fkUsuario = it.fkUsuario
                 )
             )
         }
-
-        repository.deleteMedicamentosTerminados(terminados)
     }
 }

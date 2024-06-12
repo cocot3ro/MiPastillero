@@ -1,13 +1,13 @@
 package com.a23pablooc.proxectofct.domain.model.extensions
 
-import com.a23pablooc.proxectofct.data.database.entities.HistorialEntity
-import com.a23pablooc.proxectofct.domain.model.HistorialItem
+import com.a23pablooc.proxectofct.data.database.entities.MedicamentoHistorialEntity
+import com.a23pablooc.proxectofct.domain.model.MedicamentoHistorialItem
 
-fun HistorialItem.toDatabase(): HistorialEntity {
-    return HistorialEntity(
-        pkHistorial = pkHistorial,
+fun MedicamentoHistorialItem.toDatabase(): MedicamentoHistorialEntity {
+    return MedicamentoHistorialEntity(
+        pkMedicamentoHistorial = pkMedicamentoHistorial,
         fkUsuario = fkUsuario,
-        fkMedicamento = fkMedicamento.toDatabase(),
-        fkMedicamentoActivo = fkMedicamentoActivo.toDatabase().medicamentosActivos[0],
+        fkMedicamentoActivo = fkMedicamentoActivo.pkMedicamentoActivo,
+        fkMedicamento = fkMedicamento.toDatabase()
     )
 }

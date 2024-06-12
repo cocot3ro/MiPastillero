@@ -24,7 +24,4 @@ interface MedicamentoActivoDAO {
 
     @Delete
     suspend fun delete(medicamentoActivo: MedicamentoActivoEntity)
-
-    @Delete
-    suspend fun deleteAll(medicamentoActivo: List<MedicamentoActivoEntity>)
 }

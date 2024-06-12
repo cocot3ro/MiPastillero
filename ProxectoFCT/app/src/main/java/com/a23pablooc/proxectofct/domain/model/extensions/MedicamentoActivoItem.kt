@@ -1,7 +1,7 @@
 package com.a23pablooc.proxectofct.domain.model.extensions
 
 import com.a23pablooc.proxectofct.data.database.entities.MedicamentoActivoEntity
-import com.a23pablooc.proxectofct.data.database.entities.MedicamentoWithMedicamentoActivo
+import com.a23pablooc.proxectofct.data.database.relationships.MedicamentoWithMedicamentoActivo
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 
 fun MedicamentoActivoItem.toDatabase(): MedicamentoWithMedicamentoActivo {
