@@ -18,6 +18,7 @@ import com.a23pablooc.proxectofct.databinding.FragmentSettingsBinding
 import com.a23pablooc.proxectofct.ui.viewmodel.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -29,6 +30,8 @@ class SettingsFragment : Fragment() {
 
     private lateinit var mapSettings: MutableMap<String, Any>
     private lateinit var changes: MutableSet<String>
+
+    private var loadingJob: Job? = null
 
     private object BundleKeys {
         const val MAP_SETTINGS_KEY = "map_settings_key"
@@ -91,33 +94,37 @@ class SettingsFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        binding.swUseImages.setOnCheckedChangeListener { _, isChecked ->
-            mapSettings[DataStoreManager.PreferencesKeys.USE_IMAGES] = isChecked
-            binding.clHdImages.visibility = if (isChecked) View.VISIBLE else View.GONE
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+            loadingJob?.join()
 
-            toggleChange(ChangesKeys.USE_IMAGES)
-            updateFab()
-        }
+            binding.swUseImages.setOnCheckedChangeListener { _, isChecked ->
+                mapSettings[DataStoreManager.PreferencesKeys.USE_IMAGES] = isChecked
+                binding.clHdImages.visibility = if (isChecked) View.VISIBLE else View.GONE
 
-        binding.swHdImages.setOnCheckedChangeListener { _, isChecked ->
-            mapSettings[DataStoreManager.PreferencesKeys.USE_HIGH_QUALITY_IMAGES] =
-                isChecked
+                toggleChange(ChangesKeys.USE_IMAGES)
+                updateFab()
+            }
 
-            toggleChange(ChangesKeys.USE_HIGH_QUALITY_IMAGES)
-            updateFab()
-        }
+            binding.swHdImages.setOnCheckedChangeListener { _, isChecked ->
+                mapSettings[DataStoreManager.PreferencesKeys.USE_HIGH_QUALITY_IMAGES] =
+                    isChecked
 
-        binding.swUseNotifications.setOnCheckedChangeListener { _, isChecked ->
-            mapSettings[DataStoreManager.PreferencesKeys.USE_NOTIFICATIONS] = isChecked
+                toggleChange(ChangesKeys.USE_HIGH_QUALITY_IMAGES)
+                updateFab()
+            }
 
-            toggleChange(ChangesKeys.USE_NOTIFICATIONS)
-            updateFab()
-        }
+            binding.swUseNotifications.setOnCheckedChangeListener { _, isChecked ->
+                mapSettings[DataStoreManager.PreferencesKeys.USE_NOTIFICATIONS] = isChecked
 
-        binding.fabSave.setOnClickListener {
-            viewModel.saveSettings(mapSettings)
-            changes.clear()
-            updateFab()
+                toggleChange(ChangesKeys.USE_NOTIFICATIONS)
+                updateFab()
+            }
+
+            binding.fabSave.setOnClickListener {
+                viewModel.saveSettings(mapSettings)
+                changes.clear()
+                updateFab()
+            }
         }
     }
 
@@ -132,7 +139,7 @@ class SettingsFragment : Fragment() {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+        loadingJob = viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             savedInstanceState?.let {
                 mapSettings = (viewModel.gson.fromJson(
                     it.getString(BundleKeys.MAP_SETTINGS_KEY),
