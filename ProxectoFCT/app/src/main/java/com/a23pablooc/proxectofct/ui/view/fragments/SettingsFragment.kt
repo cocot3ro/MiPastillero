@@ -9,6 +9,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
+import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DataStoreManager
 import com.a23pablooc.proxectofct.databinding.FragmentSettingsBinding
 import com.a23pablooc.proxectofct.ui.viewmodel.SettingsViewModel
@@ -21,6 +25,7 @@ import kotlinx.coroutines.withContext
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
     private val viewModel: SettingsViewModel by viewModels()
+    private lateinit var navController: NavController
 
     private lateinit var mapSettings: MutableMap<String, Any>
     private lateinit var changes: MutableSet<String>
@@ -39,6 +44,8 @@ class SettingsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        navController = findNavController()
+
         // Register the callback to handle back press events
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -51,6 +58,8 @@ class SettingsFragment : Fragment() {
                         .setTitle("Descartar cambios")
                         .setMessage("¿Estás seguro de que quieres descartar los cambios?")
                         .setPositiveButton("Descartar cambios") { _, _ ->
+                            changes.clear()
+                            isEnabled = false
                             requireActivity().onBackPressedDispatcher.onBackPressed()
                         }
                         .setNegativeButton("Cancelar", null)
@@ -69,40 +78,47 @@ class SettingsFragment : Fragment() {
     ): View {
         binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO) {
-                mapSettings = viewModel.loadSettings()
-            }
+        binding.toolbar.setupWithNavController(navController)
 
-            binding.swUseImages.setOnCheckedChangeListener { _, isChecked ->
-                mapSettings[DataStoreManager.PreferencesKeys.USE_IMAGES] = isChecked
-                binding.clHdImages.visibility = if (isChecked) View.VISIBLE else View.GONE
-
-                toggleChange(ChangesKeys.USE_IMAGES)
-                updateFab()
-            }
-
-            binding.swHdImages.setOnCheckedChangeListener { _, isChecked ->
-                mapSettings[DataStoreManager.PreferencesKeys.USE_HIGH_QUALITY_IMAGES] = isChecked
-
-                toggleChange(ChangesKeys.USE_HIGH_QUALITY_IMAGES)
-                updateFab()
-            }
-
-            binding.swUseNotifications.setOnCheckedChangeListener { _, isChecked ->
-                mapSettings[DataStoreManager.PreferencesKeys.USE_NOTIFICATIONS] = isChecked
-
-                toggleChange(ChangesKeys.USE_NOTIFICATIONS)
-                updateFab()
-            }
-
-            binding.fabSave.setOnClickListener {
-                viewModel.saveSettings(mapSettings)
-                changes.clear()
-            }
+        binding.ibManageUsers.setOnClickListener {
+            navController.popBackStack()
+            navController.navigate(R.id.manageUsersFragment)
         }
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        binding.swUseImages.setOnCheckedChangeListener { _, isChecked ->
+            mapSettings[DataStoreManager.PreferencesKeys.USE_IMAGES] = isChecked
+            binding.clHdImages.visibility = if (isChecked) View.VISIBLE else View.GONE
+
+            toggleChange(ChangesKeys.USE_IMAGES)
+            updateFab()
+        }
+
+        binding.swHdImages.setOnCheckedChangeListener { _, isChecked ->
+            mapSettings[DataStoreManager.PreferencesKeys.USE_HIGH_QUALITY_IMAGES] =
+                isChecked
+
+            toggleChange(ChangesKeys.USE_HIGH_QUALITY_IMAGES)
+            updateFab()
+        }
+
+        binding.swUseNotifications.setOnCheckedChangeListener { _, isChecked ->
+            mapSettings[DataStoreManager.PreferencesKeys.USE_NOTIFICATIONS] = isChecked
+
+            toggleChange(ChangesKeys.USE_NOTIFICATIONS)
+            updateFab()
+        }
+
+        binding.fabSave.setOnClickListener {
+            viewModel.saveSettings(mapSettings)
+            changes.clear()
+            updateFab()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -148,16 +164,17 @@ class SettingsFragment : Fragment() {
             mapSettings[DataStoreManager.PreferencesKeys.USE_NOTIFICATIONS] as Boolean
 
         binding.swUseImages.isChecked = useImages
-
         // TODO: Hardcode string
         binding.tvUseImagesDescription.text =
-            if (useImages) "Permite la descarga de imagenes de internet" else "Solo se usaran imagenes locales"
+            if (useImages) "Permite la descarga de imagenes de internet"
+            else "Solo se usaran imagenes locales"
 
         binding.swHdImages.isChecked = useHdImages
         binding.clHdImages.visibility = if (useImages) View.VISIBLE else View.GONE
         // TODO: Hardcode string
         binding.tvHdImagesDescription.text =
-            if (useHdImages) "Se usarán imagenes de mayor calidad si estan disponibles" else "Se descargaran imagenes en baja calidad"
+            if (useHdImages) "Se usarán imagenes de mayor calidad si estan disponibles"
+            else "Se descargaran imagenes en baja calidad"
 
         binding.swUseNotifications.isChecked = useNotifications
     }

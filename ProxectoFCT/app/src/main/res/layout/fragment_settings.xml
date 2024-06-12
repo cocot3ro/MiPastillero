@@ -281,7 +281,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/ib_redirect"
+                        app:layout_constraintEnd_toStartOf="@id/ib_manage_users"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -308,7 +308,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <ImageButton
-                        android:id="@+id/ib_redirect"
+                        android:id="@+id/ib_manage_users"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
