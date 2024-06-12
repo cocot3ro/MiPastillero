@@ -2,6 +2,7 @@ package com.a23pablooc.proxectofct.ui.view.fragments
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.res.Configuration
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
@@ -10,15 +11,22 @@ import android.os.Looper
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -43,7 +51,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okio.IOException
 import java.util.Date
-import java.util.IllegalFormatFlagsException
 
 @AndroidEntryPoint
 class AddActiveMedFragment : Fragment() {
@@ -87,6 +94,7 @@ class AddActiveMedFragment : Fragment() {
     ): View {
         binding = FragmentAddActiveMedBinding.inflate(layoutInflater, container, false)
 
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         binding.toolbar.setupWithNavController(findNavController())
 
         binding.imgLayout.setOnClickListener {
@@ -142,15 +150,27 @@ class AddActiveMedFragment : Fragment() {
             binding.dateEnd.text = it
         }
 
-        binding.fabAddActiveMed.setOnClickListener {
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-                if (onSave()) navController.popBackStack()
-            }
-        }
+        binding.fabAddActiveMed.setOnClickListener { onAdd() }
 
         timePickerAdapter.updateData(scheduleList)
 
         return binding.root
+    }
+
+    private fun onAdd() {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+            if (onSave()) navController.popBackStack()
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        updateUIBasedOnOrientation()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        updateUIBasedOnOrientation()
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -194,6 +214,43 @@ class AddActiveMedFragment : Fragment() {
         )
         outState.putString(BundleKeys.IMAGE, image.toString())
         outState.putBoolean(BundleKeys.IS_FAV, binding.ivFavBg.visibility == View.VISIBLE)
+    }
+
+    private fun updateUIBasedOnOrientation() {
+        when (resources.configuration.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> { // Horizontal
+                binding.fabAddActiveMed.visibility = View.GONE
+
+                (activity as MenuHost).addMenuProvider(
+                    object : MenuProvider {
+                        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                            menuInflater.inflate(R.menu.menu_toolbar_add_active_med, menu)
+                        }
+
+                        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                            return when (menuItem.itemId) {
+                                R.id.addActiveMed -> {
+                                    onAdd()
+                                    true
+                                }
+
+                                else -> false
+                            }
+                        }
+                    },
+                    viewLifecycleOwner,
+                    Lifecycle.State.RESUMED
+                )
+            }
+
+            Configuration.ORIENTATION_PORTRAIT -> { // Vertical
+                binding.fabAddActiveMed.visibility = View.VISIBLE
+            }
+
+            else -> {
+                Log.w("AddActiveMedFragment", "Unknown orientation")
+            }
+        }
     }
 
     private suspend fun onSave(): Boolean {
