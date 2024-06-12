@@ -1,9 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.safeArgs)
-    alias(libs.plugins.ksp)
 }
 
 android {
@@ -58,34 +56,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
-    //Corrutinas
-    implementation(libs.kotlinx.coroutines.android)
-
-    //Retrofit
-    implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
-    //Dagger Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.legacy.support.v4)
-    ksp(libs.hilt.compiler)
-
-    //Room
-    implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
-
-    // Security
-    implementation(libs.androidx.security.crypto)
-
-    // Sqlcipher
-    implementation(libs.android.database.sqlcipher)
-
-    // Glide
-    implementation(libs.glide)
-    annotationProcessor(libs.glide.compiler)
-
-    // DataStore
-    implementation(libs.androidx.datastore.preferences)
+    //Corrutinas
+    implementation(libs.kotlinx.coroutines.android)
 
     // TODO: Borrar esta dependencia al implementar Retrofit
     implementation(libs.khttp)
