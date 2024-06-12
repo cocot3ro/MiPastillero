@@ -45,4 +45,18 @@
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
 
+    <!-- TODO: Hardcode string -->
+    <fragment
+        android:id="@+id/diaryFragment"
+        android:name="com.a23pablooc.proxectofct.ui.view.fragments.DiaryFragment"
+        android:label="Agenda"
+        tools:layout="@layout/fragment_diary" />
+
+    <!-- TODO: Hardcode string -->
+    <fragment
+        android:id="@+id/historyFragment2"
+        android:name="com.a23pablooc.proxectofct.ui.view.fragments.HistoryFragment"
+        android:label="Historial"
+        tools:layout="@layout/fragment_history" />
+
 </navigation>

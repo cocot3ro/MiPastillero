@@ -1,4 +1,4 @@
-[//]: # (TODO: Implementar drawer en ActiveMedsFragment y FavoritesFragment)
+[//]: # (TODO: Implementar drawer en ActiveMedsFragment y FavoritesFragment.)
 
 [//]: # (TODO: Gestionar retoceso de fragmentos)
 
@@ -6,7 +6,7 @@
 
 [//]: # (TODO: Programar notificaciones en MainViewModel)
 
-[//]: # (TODO: Hardcoded strings)
+[//]: # (TODO: Hardcoded strings, buscar por 'TODO: Hardcode string')
 [//]: # (TODO: strings.xml)
 
 [//]: # (TODO: Repasar warnings en layouts)
