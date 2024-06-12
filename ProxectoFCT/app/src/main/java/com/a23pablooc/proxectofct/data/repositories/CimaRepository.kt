@@ -49,8 +49,6 @@ class CimaRepository @Inject constructor(
         nregistro: String,
         imgResource: String
     ): Uri {
-        if (!dataStoreManager.useImages().first()) return Uri.EMPTY
-
         val useHighQualityImages = dataStoreManager.useHighQualityImages().first()
         val imageType = if (useHighQualityImages) CimaImageType.FULL else CimaImageType.THUMBNAIL
 

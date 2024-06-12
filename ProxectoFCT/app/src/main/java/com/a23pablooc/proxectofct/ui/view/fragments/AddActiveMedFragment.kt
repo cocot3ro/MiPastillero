@@ -31,7 +31,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DateTimeUtils
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
@@ -131,7 +131,7 @@ class AddActiveMedFragment : Fragment() {
         )
 
         binding.rvSchedule.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = GridLayoutManager(context, 2)
             adapter = timePickerAdapter
         }
 
@@ -150,7 +150,7 @@ class AddActiveMedFragment : Fragment() {
             binding.dateEnd.text = it
         }
 
-        binding.fabAddActiveMed.setOnClickListener { onAdd() }
+        binding.fabAddActiveMed?.setOnClickListener { onAdd() }
 
         timePickerAdapter.updateData(scheduleList)
 
@@ -163,22 +163,13 @@ class AddActiveMedFragment : Fragment() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        updateUIBasedOnOrientation()
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        updateUIBasedOnOrientation()
-    }
-
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         savedInstanceState?.let { bundle ->
             binding.dateStart.text = bundle.getString(BundleKeys.DATE_START)
             binding.dateEnd.text = bundle.getString(BundleKeys.DATE_END)
             scheduleList = bundle.getLongArray(BundleKeys.SCHEDULE)!!.map { Date(it) }
+
             timePickerAdapter.updateData(scheduleList)
 
             val image = bundle.getString(BundleKeys.IMAGE)?.toUri()
@@ -216,41 +207,28 @@ class AddActiveMedFragment : Fragment() {
         outState.putBoolean(BundleKeys.IS_FAV, binding.ivFavBg.visibility == View.VISIBLE)
     }
 
-    private fun updateUIBasedOnOrientation() {
-        when (resources.configuration.orientation) {
-            Configuration.ORIENTATION_LANDSCAPE -> { // Horizontal
-                binding.fabAddActiveMed.visibility = View.GONE
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-                (activity as MenuHost).addMenuProvider(
-                    object : MenuProvider {
-                        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                            menuInflater.inflate(R.menu.menu_toolbar_add_active_med, menu)
-                        }
-
-                        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                            return when (menuItem.itemId) {
-                                R.id.addActiveMed -> {
-                                    onAdd()
-                                    true
-                                }
-
-                                else -> false
-                            }
-                        }
-                    },
-                    viewLifecycleOwner,
-                    Lifecycle.State.RESUMED
-                )
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    menuInflater.inflate(R.menu.menu_toolbar_add_active_med_land, menu)
+                }
             }
 
-            Configuration.ORIENTATION_PORTRAIT -> { // Vertical
-                binding.fabAddActiveMed.visibility = View.VISIBLE
-            }
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.addActiveMed -> {
+                        onAdd()
+                        true
+                    }
 
-            else -> {
-                Log.w("AddActiveMedFragment", "Unknown orientation")
+                    else -> false
+                }
             }
-        }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private suspend fun onSave(): Boolean {
