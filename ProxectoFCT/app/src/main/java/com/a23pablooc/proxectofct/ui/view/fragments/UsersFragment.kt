@@ -1,6 +1,8 @@
 package com.a23pablooc.proxectofct.ui.view.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -99,32 +101,40 @@ class UsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {
-                        is UiState.Loading -> { binding.progressBar.visibility = View.VISIBLE }
+                        is UiState.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
 
                         is UiState.Success<*> -> {
+                            val data = uiState.data.map { it as UsuarioItem }
+
+                            binding.emptyDataView.visibility =
+                                if (data.isEmpty()) View.VISIBLE else View.GONE
+
+                            adapter.updateData(data)
+
+                            binding.progressBar.visibility = View.GONE
+
                             when {
                                 firstTime && uiState.data.size == 1 -> {
+                                    binding.progressBar.visibility = View.VISIBLE
                                     val user = uiState.data.first() as UsuarioItem
-                                    onSelectUser.invoke(user)
+                                    Handler(Looper.getMainLooper()).postDelayed({
+                                        onSelectUser.invoke(user)
+                                    }, 500)
                                 }
 
                                 firstTime && viewModel.getDefaultUserId() != DataStoreManager.Defaults.DEFAULT_USER_ID -> {
+                                    binding.progressBar.visibility = View.VISIBLE
                                     val defaultUser = viewModel.getDefaultUserId()
                                     val user = uiState.data.map { it as UsuarioItem }
                                         .first { it.pkUsuario == defaultUser }
-                                    onSelectUser.invoke(user)
-                                }
-
-                                else -> {
-                                    binding.progressBar.visibility = View.GONE
-                                    val data = uiState.data.map { it as UsuarioItem }
-
-                                    binding.emptyDataView.visibility =
-                                        if (data.isEmpty()) View.VISIBLE else View.GONE
-
-                                    adapter.updateData(data)
+                                    Handler(Looper.getMainLooper()).postDelayed({
+                                        onSelectUser.invoke(user)
+                                    }, 500)
                                 }
                             }
+
                             firstTime = false
                         }
 
