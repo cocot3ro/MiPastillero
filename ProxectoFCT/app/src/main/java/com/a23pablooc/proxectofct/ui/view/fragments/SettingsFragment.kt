@@ -50,7 +50,7 @@ class SettingsFragment : Fragment() {
                     AlertDialog.Builder(requireContext())
                         .setTitle("Descartar cambios")
                         .setMessage("¿Estás seguro de que quieres descartar los cambios?")
-                        .setPositiveButton("Descartar") { _, _ ->
+                        .setPositiveButton("Descartar cambios") { _, _ ->
                             requireActivity().onBackPressedDispatcher.onBackPressed()
                         }
                         .setNegativeButton("Cancelar", null)

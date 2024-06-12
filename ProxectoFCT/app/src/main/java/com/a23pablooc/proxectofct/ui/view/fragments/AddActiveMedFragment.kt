@@ -41,7 +41,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okio.IOException
 import java.util.Date
+import java.util.IllegalFormatFlagsException
 
 @AndroidEntryPoint
 class AddActiveMedFragment : Fragment() {
@@ -420,7 +422,11 @@ class AddActiveMedFragment : Fragment() {
                     }
                 }
             } catch (e: IllegalArgumentException) {
-                Log.e("AddMedBaseFragment", e.message ?: "Unknown error", e)
+                Log.e(
+                    "AddActiveMedFragment",
+                    "IllegalFormatFlagsException: " + (e.message ?: "Unknown error"),
+                    e
+                )
 
                 this@AddActiveMedFragment.fetchedMed = null
 
@@ -434,14 +440,29 @@ class AddActiveMedFragment : Fragment() {
 
                     toggleHelp()
                 }
-            } catch (e: Exception) {
-                Log.e("AddMedBaseFragment", e.message ?: "Unknown error", e)
+            } catch (e: IOException) {
+                Log.e(
+                    "AddActiveMedFragment",
+                    "IOException: " + (e.message ?: "Unknown error"),
+                    e
+                )
 
                 this@AddActiveMedFragment.fetchedMed = null
 
                 withContext(Dispatchers.Main) {
                     searchingToast.cancel()
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    // TODO: Hardcode string
+                    Toast.makeText(context, "Error de conexión", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Log.e("AddActiveMedFragment", "Exception: " + (e.message ?: "Unknown error"), e)
+
+                this@AddActiveMedFragment.fetchedMed = null
+
+                withContext(Dispatchers.Main) {
+                    searchingToast.cancel()
+                    // TODO: Hardcode string
+                    Toast.makeText(context, "Error desconocido", Toast.LENGTH_SHORT).show()
                 }
             } finally {
                 withContext(Dispatchers.Main) {
