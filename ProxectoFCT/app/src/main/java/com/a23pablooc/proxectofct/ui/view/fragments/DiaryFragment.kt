@@ -20,7 +20,7 @@ class DiaryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentDiaryBinding.inflate(layoutInflater, container, false)
+        binding = FragmentDiaryBinding.inflate(layoutInflater)
 
         return binding.root
     }

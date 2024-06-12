@@ -90,9 +90,6 @@ dependencies {
     // DataStore
     implementation(libs.androidx.datastore.preferences)
 
-    // Charts
-    implementation(libs.anychart.android)
-
     // TODO: Borrar esta dependencia al implementar Retrofit
     implementation(libs.khttp)
 

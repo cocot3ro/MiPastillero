@@ -92,7 +92,7 @@ class AddActiveMedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentAddActiveMedBinding.inflate(layoutInflater, container, false)
+        binding = FragmentAddActiveMedBinding.inflate(layoutInflater)
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         binding.toolbar.setupWithNavController(findNavController())

@@ -1,7 +1,6 @@
 [versions]
 agp = "8.4.2"
 androidDatabaseSqlcipher = "4.5.4"
-anychartAndroid = "1.1.5"
 datastorePreferences = "1.1.1"
 flexbox = "3.0.0"
 fragmentKtx = "1.7.1"
@@ -42,7 +41,6 @@ androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx",
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
-anychart-android = { module = "com.github.AnyChart:AnyChart-Android", version.ref = "anychartAndroid" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
 flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexbox" }
