@@ -1,6 +1,7 @@
 [versions]
 agp = "8.4.2"
 androidDatabaseSqlcipher = "4.5.4"
+anychartAndroid = "3.0.0"
 datastorePreferences = "1.1.1"
 flexbox = "3.0.0"
 fragmentKtx = "1.7.1"
@@ -11,9 +12,9 @@ coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
-appcompat = "1.6.1"
+appcompat = "1.7.0"
 kotlinxCoroutinesAndroid = "1.8.1"
-lifecycleKtx = "2.8.0"
+lifecycleKtx = "2.8.1"
 material = "1.12.0"
 activity = "1.9.0"
 constraintlayout = "2.1.4"
@@ -25,7 +26,7 @@ viewpager2 = "1.1.0"
 safeArgs = "2.7.7"
 legacySupportV4 = "1.0.0"
 ksp = "1.9.23-1.0.20"
-preference = "1.2.0"
+preference = "1.2.1"
 
 [libraries]
 android-database-sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "androidDatabaseSqlcipher" }
@@ -40,6 +41,7 @@ androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx",
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
+anychart-android = { module = "com.github.AnyChart:AnyChart-Android", version.ref = "anychartAndroid" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
 flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexbox" }

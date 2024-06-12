@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.ir.backend.js.compile
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -87,6 +89,9 @@ dependencies {
 
     // DataStore
     implementation(libs.androidx.datastore.preferences)
+
+    // Charts
+    implementation(libs.anychart.android)
 
     // TODO: Borrar esta dependencia al implementar Retrofit
     implementation(libs.khttp)
