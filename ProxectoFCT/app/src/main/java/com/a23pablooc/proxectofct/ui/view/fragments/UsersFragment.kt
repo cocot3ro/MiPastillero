@@ -115,27 +115,35 @@ class UsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener
 
                             binding.progressBar.visibility = View.GONE
 
-                            when {
+                            val user: UsuarioItem? = when {
                                 firstTime && uiState.data.size == 1 -> {
                                     binding.progressBar.visibility = View.VISIBLE
-                                    val user = uiState.data.first() as UsuarioItem
-                                    Handler(Looper.getMainLooper()).postDelayed({
-                                        onSelectUser.invoke(user)
-                                    }, 500)
+                                    uiState.data.first() as UsuarioItem
                                 }
 
                                 firstTime && viewModel.getDefaultUserId() != DataStoreManager.Defaults.DEFAULT_USER_ID -> {
                                     binding.progressBar.visibility = View.VISIBLE
                                     val defaultUser = viewModel.getDefaultUserId()
-                                    val user = uiState.data.map { it as UsuarioItem }
+                                    uiState.data.map { it as UsuarioItem }
                                         .first { it.pkUsuario == defaultUser }
-                                    Handler(Looper.getMainLooper()).postDelayed({
-                                        onSelectUser.invoke(user)
-                                    }, 500)
                                 }
+
+                                else -> null
                             }
 
                             firstTime = false
+
+                            if (user != null) {
+                                val toast = Toast.makeText(
+                                    context,
+                                    "Iniciando sesión",
+                                    Toast.LENGTH_SHORT
+                                ).also { it.show() }
+                                Handler(Looper.getMainLooper()).postDelayed({
+                                    toast.cancel()
+                                    onSelectUser.invoke(user)
+                                }, 500)
+                            }
                         }
 
                         is UiState.Error -> {
