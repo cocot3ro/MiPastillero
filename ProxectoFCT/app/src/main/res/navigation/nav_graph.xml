@@ -54,7 +54,7 @@
 
     <!-- TODO: Hardcode string -->
     <fragment
-        android:id="@+id/historyFragment2"
+        android:id="@+id/historyFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.HistoryFragment"
         android:label="Historial"
         tools:layout="@layout/fragment_history" />

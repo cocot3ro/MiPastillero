@@ -2,6 +2,7 @@ package com.a23pablooc.proxectofct.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.domain.usecases.GetMedicamentosActivosUseCase
 import com.a23pablooc.proxectofct.domain.usecases.UpdateMedicamentoUseCase
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ActiveMedsViewModel @Inject constructor(
     val gson: Gson,
+    val userInfoProvider: UserInfoProvider,
     private val getMedicamentosActivosUseCase: GetMedicamentosActivosUseCase,
     private val updateMedicamentoUseCase: UpdateMedicamentoUseCase
 ) : ViewModel() {

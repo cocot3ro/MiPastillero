@@ -24,6 +24,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentActiveMedsBinding
+import com.a23pablooc.proxectofct.databinding.NavHeaderBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.ActiveMedsRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.view.states.UiState
@@ -60,6 +61,38 @@ class ActiveMedsFragment : Fragment() {
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         binding.toolbar.setupWithNavController(findNavController(), appBarConfiguration)
+
+        binding.navView.apply {
+            setNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+
+                    R.id.addActiveMedFragment,
+                    R.id.historyFragment,
+                    R.id.diaryFragment -> {
+                        navController.navigate(item.itemId)
+                        true
+                    }
+
+                    else -> false
+                }.also {
+                    if (it) binding.drawerLayout.close()
+                }
+            }
+
+            NavHeaderBinding.bind(getHeaderView(0)).apply {
+                userName.text = viewModel.userInfoProvider.currentUser.nombre
+
+                ibSettings.setOnClickListener {
+                    binding.drawerLayout.close()
+                    navController.navigate(R.id.settingsFragment)
+                }
+
+                ibLogout.setOnClickListener {
+                    binding.drawerLayout.close()
+                    navController.popBackStack(R.id.usersFragment, false)
+                }
+            }
+        }
 
         activeRecyclerViewAdapter = ActiveMedsRecyclerViewAdapter(
             emptyList(),

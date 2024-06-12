@@ -44,8 +44,6 @@ class CalendarFragment : Fragment() {
         private const val DATE_PICKER_DIALOG_DATE = "datePickerDialogDate"
     }
 
-    //TODO: Drawer menu
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,8 +68,11 @@ class CalendarFragment : Fragment() {
         binding.navView.apply {
             setNavigationItemSelectedListener { item ->
                 when (item.itemId) {
-                    R.id.addActiveMed -> {
-                        addActiveMed()
+
+                    R.id.addActiveMedFragment,
+                    R.id.historyFragment,
+                    R.id.diaryFragment -> {
+                        navController.navigate(item.itemId)
                         true
                     }
 
@@ -163,10 +164,6 @@ class CalendarFragment : Fragment() {
             it.dismiss()
             null
         }
-    }
-
-    private fun addActiveMed() {
-        navController.navigate(R.id.addActiveMedFragment)
     }
 
     private fun today() {

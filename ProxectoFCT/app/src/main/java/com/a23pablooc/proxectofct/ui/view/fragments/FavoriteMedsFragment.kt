@@ -17,12 +17,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentFavoriteMedsBinding
+import com.a23pablooc.proxectofct.databinding.NavHeaderBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.FavoriteRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.view.states.UiState
@@ -35,6 +37,8 @@ import kotlinx.coroutines.launch
 class FavoriteMedsFragment : Fragment() {
     private lateinit var binding: FragmentFavoriteMedsBinding
     private val viewModel: FavoriteMedsViewModel by viewModels()
+    private lateinit var navController: NavController
+
     private lateinit var favoriteRecyclerViewAdapter: FavoriteRecyclerViewAdapter
 
     override fun onCreateView(
@@ -43,6 +47,9 @@ class FavoriteMedsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFavoriteMedsBinding.inflate(layoutInflater)
+
+        navController = requireActivity().supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment)?.findNavController()!!
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -55,6 +62,38 @@ class FavoriteMedsFragment : Fragment() {
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         binding.toolbar.setupWithNavController(findNavController(), appBarConfiguration)
+
+        binding.navView.apply {
+            setNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+
+                    R.id.addActiveMedFragment,
+                    R.id.historyFragment,
+                    R.id.diaryFragment -> {
+                        navController.navigate(item.itemId)
+                        true
+                    }
+
+                    else -> false
+                }.also {
+                    if (it) binding.drawerLayout.close()
+                }
+            }
+
+            NavHeaderBinding.bind(getHeaderView(0)).apply {
+                userName.text = viewModel.userInfoProvider.currentUser.nombre
+
+                ibSettings.setOnClickListener {
+                    binding.drawerLayout.close()
+                    navController.navigate(R.id.settingsFragment)
+                }
+
+                ibLogout.setOnClickListener {
+                    binding.drawerLayout.close()
+                    navController.popBackStack(R.id.usersFragment, false)
+                }
+            }
+        }
 
         favoriteRecyclerViewAdapter = FavoriteRecyclerViewAdapter(
             emptyList(),

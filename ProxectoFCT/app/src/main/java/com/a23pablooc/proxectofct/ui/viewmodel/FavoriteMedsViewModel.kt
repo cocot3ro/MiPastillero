@@ -2,6 +2,7 @@ package com.a23pablooc.proxectofct.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.domain.usecases.GetFavoriteMedsUseCase
 import com.a23pablooc.proxectofct.ui.view.states.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteMedsViewModel @Inject constructor(
+    val userInfoProvider: UserInfoProvider,
     private val getFavoriteMedsUseCase: GetFavoriteMedsUseCase
 ) : ViewModel() {
 
