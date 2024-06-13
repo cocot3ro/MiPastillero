@@ -50,10 +50,17 @@ class CalendarPageFragment : Fragment() {
     ): View {
         binding = FragmentCalendarPageBinding.inflate(layoutInflater)
 
-        calendarPageMedGroupRecyclerViewAdapter =
-            CalendarPageMedGroupRecyclerViewAdapter(date, emptyList()) { med, dia, hora ->
+        calendarPageMedGroupRecyclerViewAdapter = CalendarPageMedGroupRecyclerViewAdapter(
+            date,
+            emptyList()
+        ) { med, dia, hora ->
+            try {
                 viewModel.marcarToma(med, dia, hora)
+            } catch (e: IllegalArgumentException) {
+                Toast.makeText(context, "Solo puedes marcar las tomas de hoy", Toast.LENGTH_LONG)
+                    .show()
             }
+        }
 
         binding.rvCalendarPage.apply {
             layoutManager = LinearLayoutManager(context)

@@ -14,7 +14,7 @@ class CalendarMedViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         dia: Date,
         hora: Date,
         med: MedicamentoActivoItem,
-        onTake: (MedicamentoActivoItem, Date, Date) -> Unit
+        onMarcarToma: (MedicamentoActivoItem, Date, Date) -> Unit
     ) {
         binding.medName.text = med.fkMedicamento.nombre
 
@@ -23,7 +23,7 @@ class CalendarMedViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         binding.btnTake.apply {
             isChecked = med.tomas[dia]?.get(hora) ?: false
             setOnClickListener {
-                onTake(med, dia, hora)
+                onMarcarToma(med, dia, hora)
             }
         }
 

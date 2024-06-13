@@ -14,7 +14,7 @@ class CalendarPageMedRecyclerViewAdapter(
     private val dia: Date,
     private var hora: Date,
     private var list: List<MedicamentoActivoItem>,
-    private val onTake: (MedicamentoActivoItem, Date, Date) -> Unit
+    private val onMarcarToma: (MedicamentoActivoItem, Date, Date) -> Unit
 ) : RecyclerView.Adapter<CalendarMedViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarMedViewHolder {
         return CalendarMedViewHolder(
@@ -26,7 +26,7 @@ class CalendarPageMedRecyclerViewAdapter(
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: CalendarMedViewHolder, position: Int) {
-        holder.render(dia, hora, list[position], onTake)
+        holder.render(dia, hora, list[position], onMarcarToma)
     }
 
     fun updateData(newData: List<MedicamentoActivoItem>) {
