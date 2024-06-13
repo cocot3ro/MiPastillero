@@ -5,18 +5,18 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/usersFragment">
 
-    <fragment
-        android:id="@+id/mainScreenFragment"
-        android:name="com.a23pablooc.proxectofct.ui.view.fragments.MainScreenFragment"
-        android:label=""
-        tools:layout="@layout/fragment_main_screen" />
-
     <!-- TODO: Hardcode string -->
     <fragment
         android:id="@+id/usersFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.UsersFragment"
         android:label="Usuarios"
         tools:layout="@layout/fragment_users" />
+
+    <fragment
+        android:id="@+id/mainScreenFragment"
+        android:name="com.a23pablooc.proxectofct.ui.view.fragments.MainScreenFragment"
+        android:label=""
+        tools:layout="@layout/fragment_main_screen" />
 
     <!-- TODO: Hardcode string -->
     <fragment

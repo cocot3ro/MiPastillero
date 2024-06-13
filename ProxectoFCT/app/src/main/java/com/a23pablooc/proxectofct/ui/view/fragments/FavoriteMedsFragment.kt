@@ -106,29 +106,6 @@ class FavoriteMedsFragment : Fragment() {
             adapter = favoriteRecyclerViewAdapter
         }
 
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        (activity as MenuHost).addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_toolbar_fav_med, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.newFavMed -> {
-                        newFavMed()
-                        true
-                    }
-
-                    else -> false
-                }
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
@@ -158,6 +135,29 @@ class FavoriteMedsFragment : Fragment() {
         }
 
         viewModel.fetchData()
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        (activity as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_toolbar_fav_med, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.newFavMed -> {
+                        newFavMed()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun newFavMed() {

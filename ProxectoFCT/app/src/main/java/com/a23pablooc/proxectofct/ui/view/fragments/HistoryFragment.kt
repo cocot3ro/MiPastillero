@@ -52,11 +52,6 @@ class HistoryFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
 
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
@@ -86,5 +81,7 @@ class HistoryFragment : Fragment() {
         }
 
         viewModel.fetchData()
+
+        return binding.root
     }
 }

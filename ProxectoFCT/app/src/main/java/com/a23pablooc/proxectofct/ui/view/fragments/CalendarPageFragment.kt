@@ -1,6 +1,5 @@
 package com.a23pablooc.proxectofct.ui.view.fragments
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,7 +29,7 @@ private const val ARGS_DATE_KEY = "ARG_DATE_KEY"
 @AndroidEntryPoint
 class CalendarPageFragment : Fragment() {
     private lateinit var binding: FragmentCalendarPageBinding
-    private val viewModel: CalendarPageViewModel by viewModels<CalendarPageViewModel>()
+    private val viewModel: CalendarPageViewModel by viewModels()
     private lateinit var calendarPageMedGroupRecyclerViewAdapter: CalendarPageMedGroupRecyclerViewAdapter
 
     private lateinit var date: Date
@@ -42,7 +41,6 @@ class CalendarPageFragment : Fragment() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -67,7 +65,8 @@ class CalendarPageFragment : Fragment() {
             adapter = calendarPageMedGroupRecyclerViewAdapter
         }
 
-        binding.calendarDay.text = "${date.getDayName(requireContext())} - ${date.formatDate()}"
+        val txt = "${date.getDayName(requireContext())} - ${date.formatDate()}"
+        binding.calendarDay.text = txt
 
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             repeatOnLifecycle(Lifecycle.State.CREATED) {

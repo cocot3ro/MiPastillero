@@ -118,16 +118,16 @@ class CalendarFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
+                    R.id.search -> {
+                        search()
+                        true
+                    }
+
                     R.id.today -> {
                         binding.viewPager.setCurrentItem(
                             CalendarViewPagerAdapter.START_POSITION,
                             true
                         )
-                        true
-                    }
-
-                    R.id.search -> {
-                        search()
                         true
                     }
 

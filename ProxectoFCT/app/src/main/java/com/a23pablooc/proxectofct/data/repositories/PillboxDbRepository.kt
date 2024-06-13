@@ -10,12 +10,14 @@ import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
 import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
 import com.a23pablooc.proxectofct.data.database.entities.MedicamentoActivoEntity
 import com.a23pablooc.proxectofct.data.database.entities.extensions.toDomain
+import com.a23pablooc.proxectofct.domain.model.AgendaItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.domain.model.extensions.toDatabase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.util.Date
 import javax.inject.Inject
 
 class PillboxDbRepository @Inject constructor(
@@ -80,5 +82,16 @@ class PillboxDbRepository @Inject constructor(
 
     suspend fun updateUser(user: UsuarioItem) {
         usuarioDAO.update(user.toDatabase())
+    }
+
+    fun getDiary(date: Date): Flow<List<AgendaItem>> {
+        return agendaDAO.getByFecha(userInfoProvider.currentUser.pkUsuario, date.time)
+            .map { list ->
+                list.map { agenda -> agenda.toDomain() }
+            }
+    }
+
+    suspend fun saveDiaryEntry(item: AgendaItem) {
+        agendaDAO.insert(item.toDatabase())
     }
 }

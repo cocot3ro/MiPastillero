@@ -18,3 +18,5 @@
 [//]: # (TODO: Delete old)
 
 [//]: # (TODO: Borrar dependencias no usadas)
+
+<a href="https://www.flaticon.es/iconos-gratis/medicamento" title="medicamento iconos">Medicamento iconos creados por Freepik - Flaticon</a>

@@ -5,10 +5,9 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.a23pablooc.proxectofct.data.database.definitions.AgendaTableDefinition.Columns.FECHA
 import com.a23pablooc.proxectofct.data.database.definitions.AgendaTableDefinition.Columns.FK_USUARIO
 import com.a23pablooc.proxectofct.data.database.definitions.AgendaTableDefinition.Columns.HORA
-import com.a23pablooc.proxectofct.data.database.definitions.AgendaTableDefinition.Columns.PK_AGENDA
+import com.a23pablooc.proxectofct.data.database.definitions.AgendaTableDefinition.Columns.PK_FECHA
 import com.a23pablooc.proxectofct.data.database.definitions.AgendaTableDefinition.Indexes.IDX_AGENDA_FK_USUARIO
 import com.a23pablooc.proxectofct.data.database.definitions.AgendaTableDefinition.TABLE_NAME
 import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTableDefinition
@@ -34,16 +33,13 @@ import java.util.Date
     ]
 )
 data class AgendaEntity(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = PK_AGENDA)
-    val pkAgenda: Long = 0,
+    @PrimaryKey
+    @ColumnInfo(name = PK_FECHA)
+    val pkFecha: Date,
 
     @ColumnInfo(name = FK_USUARIO)
     val fkUsuario: Long,
 
     @ColumnInfo(name = HORA)
-    val descripcion: String,
-
-    @ColumnInfo(name = FECHA)
-    val fecha: Date
+    val descripcion: String
 )

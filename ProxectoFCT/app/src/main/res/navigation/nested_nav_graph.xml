@@ -12,15 +12,15 @@
         tools:layout="@layout/fragment_calendar" />
 
     <fragment
-        android:id="@+id/favoriteMedsFragment"
-        android:name="com.a23pablooc.proxectofct.ui.view.fragments.FavoriteMedsFragment"
-        android:label="@string/favoritos"
-        tools:layout="@layout/fragment_favorite_meds" />
-
-    <fragment
         android:id="@+id/activeMedsFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.ActiveMedsFragment"
         android:label="@string/medicacion_activa"
         tools:layout="@layout/fragment_active_meds" />
+
+    <fragment
+        android:id="@+id/favoriteMedsFragment"
+        android:name="com.a23pablooc.proxectofct.ui.view.fragments.FavoriteMedsFragment"
+        android:label="@string/favoritos"
+        tools:layout="@layout/fragment_favorite_meds" />
 
 </navigation>
