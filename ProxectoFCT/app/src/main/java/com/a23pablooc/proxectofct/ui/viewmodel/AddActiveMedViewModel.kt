@@ -16,8 +16,6 @@ class AddActiveMedViewModel @Inject constructor(
     private val addMedicamentoUseCase: AddMedicamentoUseCase,
     private val searchMedicamentoUseCase: SearchMedicamentoUseCase,
     private val downloadIMageUseCase: DownloadImageUseCase,
-    val userInfoProvider: UserInfoProvider,
-    val gson: Gson
 ) : ViewModel() {
     private val codNacionalPattern = Regex("""[6-9]\d{5}(\.\d)?""")
 

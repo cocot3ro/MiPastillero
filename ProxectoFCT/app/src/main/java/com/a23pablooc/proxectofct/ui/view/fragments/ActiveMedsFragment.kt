@@ -23,18 +23,25 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.R
+import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.databinding.FragmentActiveMedsBinding
 import com.a23pablooc.proxectofct.databinding.NavHeaderBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.ActiveMedsRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.view.states.UiState
 import com.a23pablooc.proxectofct.ui.viewmodel.ActiveMedsViewModel
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ActiveMedsFragment : Fragment() {
+
+    @Inject lateinit var gson: Gson
+    @Inject lateinit var userInfoProvider: UserInfoProvider
+
     private lateinit var binding: FragmentActiveMedsBinding
     private val viewModel: ActiveMedsViewModel by viewModels()
     private lateinit var navController: NavController
@@ -80,7 +87,7 @@ class ActiveMedsFragment : Fragment() {
             }
 
             NavHeaderBinding.bind(getHeaderView(0)).apply {
-                userName.text = viewModel.userInfoProvider.currentUser.nombre
+                userName.text = userInfoProvider.currentUser.nombre
 
                 ibSettings.setOnClickListener {
                     binding.drawerLayout.close()

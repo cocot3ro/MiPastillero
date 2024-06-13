@@ -35,6 +35,7 @@ import com.a23pablooc.proxectofct.core.DateTimeUtils
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
+import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
 import com.a23pablooc.proxectofct.databinding.FragmentAddActiveMedBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
@@ -42,15 +43,20 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.TimePickerRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.viewmodel.AddActiveMedViewModel
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okio.IOException
 import java.util.Date
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AddActiveMedFragment : Fragment() {
+
+    @Inject lateinit var userInfoProvider: UserInfoProvider
+    @Inject lateinit var gson: Gson
 
     private lateinit var binding: FragmentAddActiveMedBinding
     private val viewModel: AddActiveMedViewModel by viewModels()
@@ -177,7 +183,7 @@ class AddActiveMedFragment : Fragment() {
             }
 
             this.fetchedMed =
-                viewModel.gson.fromJson(
+                gson.fromJson(
                     bundle.getString(BundleKeys.MED),
                     MedicamentoItem::class.java
                 )
@@ -194,7 +200,7 @@ class AddActiveMedFragment : Fragment() {
         outState.putLongArray(BundleKeys.SCHEDULE, scheduleList.map { it.time }.toLongArray())
         outState.putString(
             BundleKeys.MED,
-            viewModel.gson.toJson(fetchedMed, MedicamentoItem::class.java)
+            gson.toJson(fetchedMed, MedicamentoItem::class.java)
         )
         outState.putString(BundleKeys.IMAGE, image.toString())
         outState.putBoolean(BundleKeys.IS_FAV, binding.ivFavBg.visibility == View.VISIBLE)
@@ -235,7 +241,7 @@ class AddActiveMedFragment : Fragment() {
 
         val med = MedicamentoActivoItem(
             pkMedicamentoActivo = 0,
-            fkUsuario = viewModel.userInfoProvider.currentUser.pkUsuario,
+            fkUsuario = userInfoProvider.currentUser.pkUsuario,
             dosis = dosis.ifBlank { "" },
             horario = schedule.toMutableSet(),
             fechaFin = dateEnd,
@@ -519,10 +525,10 @@ class AddActiveMedFragment : Fragment() {
             this.imagen = image
             this.nombre = nombre.ifBlank { this.nombre }
             this.fkUsuario =
-                this.fkUsuario.takeIf { it > 0 } ?: viewModel.userInfoProvider.currentUser.pkUsuario
+                this.fkUsuario.takeIf { it > 0 } ?: userInfoProvider.currentUser.pkUsuario
         } ?: MedicamentoItem(
             pkCodNacionalMedicamento = 0,
-            fkUsuario = viewModel.userInfoProvider.currentUser.pkUsuario,
+            fkUsuario = userInfoProvider.currentUser.pkUsuario,
             nombre = nombre,
             imagen = image,
             esFavorito = binding.ivFavBg.visibility == View.VISIBLE,

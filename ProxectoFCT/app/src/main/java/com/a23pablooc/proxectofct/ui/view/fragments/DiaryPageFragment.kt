@@ -15,17 +15,26 @@ import com.a23pablooc.proxectofct.core.DateTimeUtils
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.getDayName
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
+import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.databinding.FragmentDiaryPageBinding
 import com.a23pablooc.proxectofct.domain.model.AgendaItem
 import com.a23pablooc.proxectofct.ui.view.states.UiState
 import com.a23pablooc.proxectofct.ui.viewmodel.DiaryPageViewModel
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DiaryPageFragment : Fragment() {
+    @Inject
+    lateinit var gson: Gson
+
+    @Inject
+    lateinit var userInfoProvider: UserInfoProvider
+
     private lateinit var binding: FragmentDiaryPageBinding
     private val viewModel: DiaryPageViewModel by viewModels()
 
@@ -72,7 +81,7 @@ class DiaryPageFragment : Fragment() {
 
                             savedItem = data.firstOrNull() ?: AgendaItem(
                                 DateTimeUtils.today.zeroTime(),
-                                viewModel.userInfoProvider.currentUser.pkUsuario,
+                                userInfoProvider.currentUser.pkUsuario,
                                 ""
                             )
 
@@ -110,9 +119,12 @@ class DiaryPageFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(BundleKeys.ARGS_ORIGINAL_DESCRIPTION_KEY, binding.bodyText.text.toString())
+        outState.putString(
+            BundleKeys.ARGS_ORIGINAL_DESCRIPTION_KEY,
+            binding.bodyText.text.toString()
+        )
         outState.putLong(BundleKeys.ARGS_DATE_KEY, savedDate.time)
-        outState.putString(BundleKeys.ARGS_ITEM_KEY, viewModel.gson.toJson(savedItem, AgendaItem::class.java))
+        outState.putString(BundleKeys.ARGS_ITEM_KEY, gson.toJson(savedItem, AgendaItem::class.java))
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -128,7 +140,7 @@ class DiaryPageFragment : Fragment() {
 
             val item = it.getString(BundleKeys.ARGS_ITEM_KEY)
             if (item != null) {
-                savedItem = viewModel.gson.fromJson(item, AgendaItem::class.java)
+                savedItem = gson.fromJson(item, AgendaItem::class.java)
             }
 
             updateFab()

@@ -19,6 +19,12 @@
         android:theme="@style/Theme.ProxectoFCT"
         tools:targetApi="31">
 
+        <service android:name=".core.notifications.NotificationService" />
+
+        <receiver
+            android:name=".core.notifications.NotificationBroadcastReceiver"
+            android:enabled="true" />
+
         <activity
             android:name=".ui.view.activity.MainActivity"
             android:exported="true">

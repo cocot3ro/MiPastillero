@@ -44,7 +44,8 @@ class NotificationsService : BroadcastReceiver() {
         val pendingIntent =
             PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
-        val notification = NotificationCompat.Builder(context,
+        val notification = NotificationCompat.Builder(
+            context,
             ContratoNotificaciones.CHANNEL_ID_NAME
         )
             .setSmallIcon(R.mipmap.pildora)
@@ -70,8 +71,14 @@ class NotificationsService : BroadcastReceiver() {
 
         val actionIntent = Intent(context, NotificationAction::class.java)
         actionIntent.putExtra(ContratoNotificaciones.NOMBRE_MEDICAMENTO, nombreMedicamento)
-        actionIntent.putExtra(ContratoNotificaciones.HORA, i.getLongExtra(ContratoNotificaciones.HORA, 0))
-        actionIntent.putExtra(ContratoNotificaciones.DIA, i.getLongExtra(ContratoNotificaciones.DIA, 0))
+        actionIntent.putExtra(
+            ContratoNotificaciones.HORA,
+            i.getLongExtra(ContratoNotificaciones.HORA, 0)
+        )
+        actionIntent.putExtra(
+            ContratoNotificaciones.DIA,
+            i.getLongExtra(ContratoNotificaciones.DIA, 0)
+        )
 
         val actionPendingIntent = PendingIntent.getService(
             context,
@@ -86,7 +93,10 @@ class NotificationsService : BroadcastReceiver() {
             actionPendingIntent
         )
 
-        notificationManager.notify(intent.getIntExtra(ContratoNotificaciones.NOTIFICATION_ID, -1), notification.build())
+        notificationManager.notify(
+            intent.getIntExtra(ContratoNotificaciones.NOTIFICATION_ID, -1),
+            notification.build()
+        )
     }
 
     private fun createChannel(context: Context) {
@@ -195,7 +205,10 @@ class NotificationsService : BroadcastReceiver() {
     }
 
     private fun isNotificationEnabled(context: Context): Boolean {
-        return context.getSharedPreferences(PreferencesUtils.PREFS_NAME, AppCompatActivity.MODE_PRIVATE)
+        return context.getSharedPreferences(
+            PreferencesUtils.PREFS_NAME,
+            AppCompatActivity.MODE_PRIVATE
+        )
             .getBoolean(PreferencesUtils.KEYS.NOTIFICATIONS, true)
     }
 }

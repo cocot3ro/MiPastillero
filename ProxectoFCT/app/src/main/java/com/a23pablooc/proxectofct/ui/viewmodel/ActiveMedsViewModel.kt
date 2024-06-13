@@ -19,8 +19,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ActiveMedsViewModel @Inject constructor(
-    val gson: Gson,
-    val userInfoProvider: UserInfoProvider,
     private val getMedicamentosActivosUseCase: GetMedicamentosActivosUseCase,
     private val updateMedicamentoUseCase: UpdateMedicamentoUseCase
 ) : ViewModel() {
