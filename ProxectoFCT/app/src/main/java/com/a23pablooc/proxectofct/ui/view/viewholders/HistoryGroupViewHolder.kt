@@ -1,7 +1,5 @@
 package com.a23pablooc.proxectofct.ui.view.viewholders
 
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,11 +24,9 @@ class HistoryGroupViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         binding.medName.text = med.fkMedicamento.nombre
 
         if (med.fkMedicamento.imagen.toString().isNotBlank()) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                Glide.with(binding.medImg)
-                    .load(med.fkMedicamento.imagen)
-                    .into(binding.medImg)
-            }, 1)
+            Glide.with(binding.medImg)
+                .load(med.fkMedicamento.imagen)
+                .into(binding.medImg)
         }
 
         binding.ibInfo.setOnClickListener { onInfo(med) }

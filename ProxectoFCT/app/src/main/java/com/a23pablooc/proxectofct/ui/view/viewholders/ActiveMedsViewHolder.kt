@@ -1,7 +1,5 @@
 package com.a23pablooc.proxectofct.ui.view.viewholders
 
-import android.os.Handler
-import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -24,15 +22,9 @@ class ActiveMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         onInfo: (MedicamentoActivoItem) -> Unit
     ) {
         if (med.fkMedicamento.imagen.toString().isNotBlank()) {
-            // Espera 1 milisegundo para cargar la imagen para que primero se muestre la imagen por defecto
-            // y luego la imagen que se carga
-            // Esto se hace para evitar 'misteriosos' problemas de carga de la imagen
-            // porque se redimensiona a un tamaño no apropiado
-            Handler(Looper.getMainLooper()).postDelayed({
-                Glide.with(binding.root)
-                    .load(med.fkMedicamento.imagen)
-                    .into(binding.medImg)
-            }, 1)
+            Glide.with(binding.root)
+                .load(med.fkMedicamento.imagen)
+                .into(binding.medImg)
         }
 
         binding.medName.text = med.fkMedicamento.nombre

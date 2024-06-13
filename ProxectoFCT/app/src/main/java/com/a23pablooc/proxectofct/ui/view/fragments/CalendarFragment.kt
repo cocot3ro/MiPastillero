@@ -20,7 +20,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.R
-import com.a23pablooc.proxectofct.core.DateTimeUtils.zero
+import com.a23pablooc.proxectofct.core.DateTimeUtils
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.databinding.FragmentCalendarBinding
 import com.a23pablooc.proxectofct.databinding.NavHeaderBinding
@@ -119,7 +119,10 @@ class CalendarFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.today -> {
-                        binding.viewPager.setCurrentItem(CalendarViewPagerAdapter.START_POSITION, true)
+                        binding.viewPager.setCurrentItem(
+                            CalendarViewPagerAdapter.START_POSITION,
+                            true
+                        )
                         true
                     }
 
@@ -149,7 +152,7 @@ class CalendarFragment : Fragment() {
         outState.putBoolean(SHOWING_DATE_PICKER_DIALOG, datePickerDialog?.isShowing ?: false)
         val date = datePickerDialog?.let {
             Calendar.getInstance().apply {
-                time = time.zero()
+                time = DateTimeUtils.zero
                 set(Calendar.YEAR, datePickerDialog?.datePicker?.year ?: 0)
                 set(Calendar.MONTH, datePickerDialog?.datePicker?.month ?: 0)
                 set(Calendar.DAY_OF_MONTH, datePickerDialog?.datePicker?.dayOfMonth ?: 0)

@@ -14,5 +14,4 @@ class MarcarTomaUseCase @Inject constructor(private val repository: PillboxDbRep
         }
         repository.updateMed(med)
     }
-
 }

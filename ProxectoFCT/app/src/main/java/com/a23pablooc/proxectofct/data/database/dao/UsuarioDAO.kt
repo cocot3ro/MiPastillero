@@ -6,13 +6,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTableDefinition
+import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTableDefinition.TABLE_NAME
 import com.a23pablooc.proxectofct.data.database.entities.UsuarioEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UsuarioDAO {
-    @Query("SELECT * FROM ${UsuarioTableDefinition.TABLE_NAME}")
+    @Query("SELECT * FROM $TABLE_NAME")
     fun getAll(): Flow<List<UsuarioEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

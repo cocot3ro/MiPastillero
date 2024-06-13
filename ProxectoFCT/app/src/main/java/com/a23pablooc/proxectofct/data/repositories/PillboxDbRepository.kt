@@ -1,7 +1,5 @@
 package com.a23pablooc.proxectofct.data.repositories
 
-import android.icu.util.Calendar
-import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoActivoDAO
@@ -18,7 +16,6 @@ import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.domain.model.extensions.toDatabase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.util.Date
 import javax.inject.Inject
 
 class PillboxDbRepository @Inject constructor(
@@ -31,17 +28,6 @@ class PillboxDbRepository @Inject constructor(
     private val medicamentoWithMedicamentoActivoDAO: MedicamentoWithMedicamentoActivoDAO,
     private val userInfoProvider: UserInfoProvider
 ) {
-    fun getAllWithMedicamentosByDiaOrderByHora(dia: Date): Flow<List<MedicamentoActivoItem>> {
-        return medicamentoWithMedicamentoActivoDAO.getAllByDiaOrderByHora(
-            userInfoProvider.currentUser.pkUsuario, dia.time
-        ).map { list ->
-            list.distinct().map { medWithMedActivo ->
-                medWithMedActivo.medicamentosActivos.map { medActivo ->
-                    medActivo.toDomain(medWithMedActivo.medicamento)
-                }
-            }.flatten()
-        }
-    }
 
     suspend fun updateMed(med: MedicamentoActivoItem) {
         medicamentoActivoDAO.update(med.toDatabase().medicamentosActivos[0])
@@ -52,10 +38,9 @@ class PillboxDbRepository @Inject constructor(
             .map { list -> list.map { med -> med.toDomain() } }
     }
 
-    fun getMedicamentosActivos(date: Date): Flow<List<MedicamentoActivoItem>> {
-        return medicamentoWithMedicamentoActivoDAO.getAllFromDate(
-            userInfoProvider.currentUser.pkUsuario,
-            date.time
+    fun getMedicamentosActivos(): Flow<List<MedicamentoActivoItem>> {
+        return medicamentoWithMedicamentoActivoDAO.getAll(
+            userInfoProvider.currentUser.pkUsuario
         ).map { list ->
             list.map { medWithMedActivo ->
                 medWithMedActivo.medicamentosActivos.map { medActivo ->
@@ -79,19 +64,6 @@ class PillboxDbRepository @Inject constructor(
 
     suspend fun updateMedicamento(medicamento: MedicamentoItem) {
         medicamentoDAO.update(medicamento.toDatabase())
-    }
-
-    fun getMedicamentosTerminados(): Flow<List<MedicamentoActivoItem>> {
-        return medicamentoWithMedicamentoActivoDAO.getMedicamentosTerminados(
-            userInfoProvider.currentUser.pkUsuario,
-            Calendar.getInstance().time.zeroTime().time
-        ).map { list ->
-            list.map { medWithMedActivo ->
-                medWithMedActivo.medicamentosActivos.map { medActivo ->
-                    medActivo.toDomain(medWithMedActivo.medicamento)
-                }
-            }.flatten()
-        }
     }
 
     fun getUsers(): Flow<List<UsuarioItem>> {

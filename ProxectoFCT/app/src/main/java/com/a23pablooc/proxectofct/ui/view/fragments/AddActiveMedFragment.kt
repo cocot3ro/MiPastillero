@@ -6,8 +6,6 @@ import android.content.res.Configuration
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
@@ -35,7 +33,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DateTimeUtils
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
-import com.a23pablooc.proxectofct.core.DateTimeUtils.zero
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
@@ -58,7 +55,7 @@ class AddActiveMedFragment : Fragment() {
     private lateinit var binding: FragmentAddActiveMedBinding
     private val viewModel: AddActiveMedViewModel by viewModels()
 
-    private var scheduleList: List<Date> = listOf(Calendar.getInstance().time.zero())
+    private var scheduleList: List<Date> = listOf(DateTimeUtils.zero)
     private lateinit var timePickerAdapter: TimePickerRecyclerViewAdapter
 
     private var fetchedMed: MedicamentoItem? = null
@@ -145,7 +142,7 @@ class AddActiveMedFragment : Fragment() {
 
         binding.btnAddTimer.setOnClickListener { onAddTimer() }
 
-        Calendar.getInstance().time.zeroTime().formatDate().let {
+        DateTimeUtils.today.zeroTime().formatDate().let {
             binding.dateStart.text = it
             binding.dateEnd.text = it
         }
@@ -175,13 +172,9 @@ class AddActiveMedFragment : Fragment() {
             val image = bundle.getString(BundleKeys.IMAGE)?.toUri()
             this.image = image ?: Uri.EMPTY
 
-            Handler(Looper.getMainLooper()).postDelayed({
-                if (this.image.toString() == Uri.EMPTY.toString()) {
-                    binding.img.setImageResource(R.mipmap.no_image_available)
-                    return@postDelayed
-                }
-                Glide.with(this).load(image).into(binding.img)
-            }, 1)
+            if (this.image.toString().isNotBlank()) {
+                Glide.with(requireContext()).load(this.image).into(binding.img)
+            }
 
             this.fetchedMed =
                 viewModel.gson.fromJson(
@@ -286,10 +279,9 @@ class AddActiveMedFragment : Fragment() {
 
         val startDate = DateTimeUtils.parseDate(binding.dateStart.text.toString()).time
         val endDate = DateTimeUtils.parseDate(binding.dateEnd.text.toString()).time
-        val today = Calendar.getInstance().time.zeroTime().time
+        val today = DateTimeUtils.today.zeroTime().time
 
         if (endDate < startDate) {
-            Log.v("AddActiveMedFragment", "End date is before start date")
             Toast.makeText(
                 context,
                 R.string.fecha_invalida,
@@ -299,7 +291,6 @@ class AddActiveMedFragment : Fragment() {
         }
 
         if (endDate < today) {
-            Log.v("AddActiveMedFragment", "End date is before today")
             Toast.makeText(
                 context,
                 R.string.fecha_invalida,
@@ -339,7 +330,7 @@ class AddActiveMedFragment : Fragment() {
             context,
             { _, hourOfDay, minute ->
                 val pickedTime = Calendar.getInstance().apply {
-                    time = time.zero()
+                    time = DateTimeUtils.zero
                     set(Calendar.HOUR_OF_DAY, hourOfDay)
                     set(Calendar.MINUTE, minute)
                 }.time
@@ -370,10 +361,9 @@ class AddActiveMedFragment : Fragment() {
             requireContext(),
             { _, year, monthOfYear, dayOfMonth ->
                 val date = Calendar.getInstance().apply {
-                    set(Calendar.YEAR, year)
-                    set(Calendar.MONTH, monthOfYear)
-                    set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                }.time.zeroTime()
+                    time = DateTimeUtils.today.zeroTime()
+                    set(year, monthOfYear, dayOfMonth)
+                }.time
 
                 textView.text = date.formatDate()
             },
