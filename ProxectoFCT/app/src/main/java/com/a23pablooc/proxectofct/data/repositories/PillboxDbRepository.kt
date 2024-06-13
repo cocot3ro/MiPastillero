@@ -92,6 +92,10 @@ class PillboxDbRepository @Inject constructor(
     }
 
     suspend fun saveDiaryEntry(item: AgendaItem) {
-        agendaDAO.insert(item.toDatabase())
+        agendaDAO.upsert(item.toDatabase())
+    }
+
+    suspend fun deleteDiaryEntry(item: AgendaItem) {
+        agendaDAO.delete(item.toDatabase())
     }
 }

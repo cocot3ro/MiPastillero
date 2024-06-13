@@ -8,6 +8,10 @@ class SaveDiaryUseCase @Inject constructor(
     private val pillboxDbRepository: PillboxDbRepository
 ) {
     suspend fun invoke(item: AgendaItem) {
-        pillboxDbRepository.saveDiaryEntry(item)
+        if (item.descripcion.isBlank()) {
+            pillboxDbRepository.deleteDiaryEntry(item)
+        } else {
+            pillboxDbRepository.saveDiaryEntry(item)
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.a23pablooc.proxectofct.ui.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,9 +29,9 @@ class DiaryPageFragment : Fragment() {
     private lateinit var binding: FragmentDiaryPageBinding
     private val viewModel: DiaryPageViewModel by viewModels()
 
-    private lateinit var date: Date
-    private lateinit var item: AgendaItem
-    private lateinit var originalDescription: String
+    private lateinit var savedDate: Date
+    private lateinit var savedItem: AgendaItem
+    private var isRestoredFromState = false
 
     private object BundleKeys {
         const val ARGS_DATE_KEY = "ARG_DATE_KEY"
@@ -43,7 +42,7 @@ class DiaryPageFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            date = Date(it.getLong(BundleKeys.ARGS_DATE_KEY))
+            savedDate = Date(it.getLong(BundleKeys.ARGS_DATE_KEY))
         }
     }
 
@@ -54,27 +53,10 @@ class DiaryPageFragment : Fragment() {
     ): View {
         binding = FragmentDiaryPageBinding.inflate(layoutInflater)
 
-        val txt = "${date.getDayName(requireContext())} - ${date.formatDate()}"
+        val txt = "${savedDate.getDayName(requireContext())} - ${savedDate.formatDate()}"
         binding.diaryDay.text = txt
 
-        binding.fabSave.setOnClickListener {
-            val newDescription = binding.bodyText.text.toString()
-            if (newDescription != originalDescription) {
-                viewModel.saveDiaryEntry(
-                    item.copy(descripcion = newDescription).also {
-                        item = it
-                    }
-                )
-            }
-
-            updateFab()
-        }
-
-        binding.bodyText.addTextChangedListener(
-            afterTextChanged = {
-                updateFab()
-            }
-        )
+        binding.fabSave.setOnClickListener { onSave() }
 
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -85,20 +67,18 @@ class DiaryPageFragment : Fragment() {
                         }
 
                         is UiState.Success<*> -> {
-                            Log.v("DiaryPageFragment", "Success")
-
                             binding.progressBar.visibility = View.GONE
                             val data = uiState.data.map { it as AgendaItem }
 
-                            item = data.firstOrNull() ?: AgendaItem(
+                            savedItem = data.firstOrNull() ?: AgendaItem(
                                 DateTimeUtils.today.zeroTime(),
                                 viewModel.userInfoProvider.currentUser.pkUsuario,
                                 ""
                             )
 
-                            originalDescription = item.descripcion
-
-                            binding.bodyText.setText(item.descripcion)
+                            if (!isRestoredFromState) {
+                                binding.bodyText.setText(savedItem.descripcion)
+                            }
                         }
 
                         is UiState.Error -> {
@@ -114,39 +94,63 @@ class DiaryPageFragment : Fragment() {
             }
         }
 
-        viewModel.fetchData(date)
+        viewModel.fetchData(savedDate)
 
         return binding.root
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        Log.v("DiaryPageFragment", "onSaveInstanceState")
-        super.onSaveInstanceState(outState)
-        outState.putString(BundleKeys.ARGS_ORIGINAL_DESCRIPTION_KEY, originalDescription)
-        outState.putLong(BundleKeys.ARGS_DATE_KEY, date.time)
-        outState.putString(
-            BundleKeys.ARGS_ITEM_KEY,
-            viewModel.gson.toJson(item, AgendaItem::class.java)
+    override fun onStart() {
+        super.onStart()
+        binding.bodyText.addTextChangedListener(
+            afterTextChanged = {
+                updateFab()
+            }
         )
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(BundleKeys.ARGS_ORIGINAL_DESCRIPTION_KEY, binding.bodyText.text.toString())
+        outState.putLong(BundleKeys.ARGS_DATE_KEY, savedDate.time)
+        outState.putString(BundleKeys.ARGS_ITEM_KEY, viewModel.gson.toJson(savedItem, AgendaItem::class.java))
+    }
+
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        Log.v("DiaryPageFragment", "onViewStateRestored")
         super.onViewStateRestored(savedInstanceState)
         savedInstanceState?.let {
-            originalDescription = it.getString(BundleKeys.ARGS_ORIGINAL_DESCRIPTION_KEY, "")
-            date = Date(it.getLong(BundleKeys.ARGS_DATE_KEY))
-            item = viewModel.gson.fromJson(
-                it.getString(BundleKeys.ARGS_ITEM_KEY),
-                AgendaItem::class.java
+            val savedText = it.getString(BundleKeys.ARGS_ORIGINAL_DESCRIPTION_KEY)
+            if (savedText != null) {
+                binding.bodyText.setText(savedText)
+                isRestoredFromState = true
+            }
+
+            this.savedDate = Date(it.getLong(BundleKeys.ARGS_DATE_KEY))
+
+            val item = it.getString(BundleKeys.ARGS_ITEM_KEY)
+            if (item != null) {
+                savedItem = viewModel.gson.fromJson(item, AgendaItem::class.java)
+            }
+
+            updateFab()
+        }
+    }
+
+    private fun onSave() {
+        val newDescription = binding.bodyText.text.toString().trim()
+        if (newDescription != savedItem.descripcion) {
+            viewModel.saveDiaryEntry(
+                savedItem.copy(descripcion = newDescription).also {
+                    savedItem = it
+                }
             )
         }
+
+        updateFab()
     }
 
     private fun updateFab() {
         binding.fabSave.apply {
-            if (!::originalDescription.isInitialized) return
-            if (binding.bodyText.text.toString() == originalDescription) hide()
+            if (binding.bodyText.text.toString().trim() == savedItem.descripcion) hide()
             else show()
         }
     }
