@@ -60,5 +60,5 @@ interface MedicamentoWithMedicamentoActivoDAO {
     fun getMedicamentosTerminados(
         idUsuario: Long,
         date: Long
-    ): List<MedicamentoWithMedicamentoActivo>
+    ): Flow<List<MedicamentoWithMedicamentoActivo>>
 }

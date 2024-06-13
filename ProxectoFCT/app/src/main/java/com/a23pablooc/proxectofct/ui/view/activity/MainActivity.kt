@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.checkFinished()
                 viewModel.checkNotifications()
             }
         }

@@ -1,3 +1,5 @@
+[//]: # (TODO: En SettingsFragment opcion de borrar todos los datos)
+
 [//]: # (TODO: MedInfoFragment mas bien es EditMedFragment. Copiar sistema de fab/toolbar de AddActiveMedFragment)
 
 [//]: # (TODO: Gestionar retoceso de fragmentos)

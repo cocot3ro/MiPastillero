@@ -18,6 +18,8 @@ class SaveImageUseCase @Inject constructor(
 
         val userDirectory = File(imagesDirectory, userInfoProvider.currentUser.pkUsuario.toString())
 
+        userDirectory.mkdirs()
+
         val imageFile = File(userDirectory, fileName)
 
         imageFile.outputStream().use { it.write(imageData) }

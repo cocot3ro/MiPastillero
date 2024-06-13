@@ -6,7 +6,6 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.a23pablooc.proxectofct.data.database.PillboxDatabase
 import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
-import com.a23pablooc.proxectofct.data.database.dao.MedicamentoHistorialDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoActivoDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
@@ -66,10 +65,6 @@ object RoomModule {
 
     @Singleton
     @Provides
-    fun provideMedicamentoHistorialDao(database: PillboxDatabase): MedicamentoHistorialDAO = database.getMedicamentoHistorialDao()
-
-    @Singleton
-    @Provides
     fun provideUsuarioDao(database: PillboxDatabase): UsuarioDAO = database.getUsuarioDao()
 
     @Singleton
@@ -90,9 +85,4 @@ object RoomModule {
     @Provides
     fun provideMedicamentoActivoWithNotificacionDAO(database: PillboxDatabase) =
         database.getMedicamentoActivoWithNotificacionDAO()
-
-    @Singleton
-    @Provides
-    fun provideMedicamentoHistorialAndMedicamentoActivoDAO(database: PillboxDatabase) =
-        database.getMedicamentoHistorialAndMedicamentoActioDAO()
 }
