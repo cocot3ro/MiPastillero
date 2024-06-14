@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class GetMedicamentosCalendarioUseCase @Inject constructor(private val repository: PillboxDbRepository) {
     fun invoke(date: Date): Flow<List<MedicamentoActivoItem>> {
-        return repository.getMedicamentosActivos().map { list ->
+        return repository.getMedicamentosActivosFlow().map { list ->
             list.filter { it.fechaInicio <= date && it.fechaFin >= date }
         }
     }

@@ -17,6 +17,7 @@ import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDef
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.TABLE_NAME
 import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTableDefinition
 import java.util.Date
+import java.util.Objects
 
 @Entity(
     tableName = TABLE_NAME,
@@ -50,9 +51,9 @@ import java.util.Date
     ]
 )
 data class NotificacionEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = PK_NOTIFICACION)
-    val pkNotificacion: Long = 0,
+    val pkNotificacion: Int,
 
     @ColumnInfo(name = FK_MEDICAMENTO_ACTIVO)
     val fkMedicamentoActivo: Long,

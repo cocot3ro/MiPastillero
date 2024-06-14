@@ -36,13 +36,13 @@ class PillboxDbRepository @Inject constructor(
         medicamentoActivoDAO.update(med.toDatabase().medicamentosActivos[0])
     }
 
-    fun getAllFavoriteMeds(): Flow<List<MedicamentoItem>> {
+    fun getAllFavoriteMedsFlow(): Flow<List<MedicamentoItem>> {
         return medicamentoDAO.getAllFavoritos(userInfoProvider.currentUser.pkUsuario)
             .map { list -> list.map { med -> med.toDomain() } }
     }
 
-    fun getMedicamentosActivos(): Flow<List<MedicamentoActivoItem>> {
-        return medicamentoWithMedicamentoActivoDAO.getAll(
+    fun getMedicamentosActivosFlow(): Flow<List<MedicamentoActivoItem>> {
+        return medicamentoWithMedicamentoActivoDAO.getAllFlow(
             userInfoProvider.currentUser.pkUsuario
         ).map { list ->
             list.map { medWithMedActivo ->
@@ -51,6 +51,14 @@ class PillboxDbRepository @Inject constructor(
                 }
             }.flatten()
         }
+    }
+
+    suspend fun getMedicamentosActivos(user: UsuarioItem): List<MedicamentoActivoItem> {
+        return medicamentoWithMedicamentoActivoDAO.getAll(user.pkUsuario).map { medWithMedActivo ->
+            medWithMedActivo.medicamentosActivos.map { medActivo ->
+                medActivo.toDomain(medWithMedActivo.medicamento)
+            }
+        }.flatten()
     }
 
     fun findMedicamentoByCodNacional(userId: Long, codNacional: Long): MedicamentoItem? {
@@ -69,8 +77,12 @@ class PillboxDbRepository @Inject constructor(
         medicamentoDAO.update(medicamento.toDatabase())
     }
 
-    fun getUsers(): Flow<List<UsuarioItem>> {
-        return usuarioDAO.getAll().map { list -> list.map { user -> user.toDomain() } }
+    fun getUsersFlow(): Flow<List<UsuarioItem>> {
+        return usuarioDAO.getAllFlow().map { list -> list.map { user -> user.toDomain() } }
+    }
+
+    suspend fun getUsers(): List<UsuarioItem> {
+        return usuarioDAO.getAll().map { user -> user.toDomain() }
     }
 
     suspend fun createUser(user: UsuarioItem): Long {
@@ -85,7 +97,7 @@ class PillboxDbRepository @Inject constructor(
         usuarioDAO.update(user.toDatabase())
     }
 
-    fun getDiary(date: Date): Flow<List<AgendaItem>> {
+    fun getDiaryFlow(date: Date): Flow<List<AgendaItem>> {
         return agendaDAO.getByFecha(userInfoProvider.currentUser.pkUsuario, date.time)
             .map { list ->
                 list.map { agenda -> agenda.toDomain() }

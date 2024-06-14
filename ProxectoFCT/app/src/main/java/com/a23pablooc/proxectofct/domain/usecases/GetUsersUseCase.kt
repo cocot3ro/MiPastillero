@@ -10,7 +10,7 @@ class GetUsersUseCase @Inject constructor(
 ) {
 
     fun invoke(): Flow<List<UsuarioItem>> {
-        return pillboxDbRepository.getUsers()
+        return pillboxDbRepository.getUsersFlow()
     }
 
 }

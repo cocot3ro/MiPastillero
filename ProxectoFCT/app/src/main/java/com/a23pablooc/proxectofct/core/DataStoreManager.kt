@@ -56,7 +56,7 @@ class DataStoreManager @Inject constructor(
         preferences.edit { it[Keys.USE_HIGH_QUALITY_IMAGES] = value }
     }
 
-    private fun useNotifications() = preferences.data.map {
+    fun useNotifications() = preferences.data.map {
         it[Keys.USE_NOTIFICATIONS] ?: Defaults.USE_NOTIFICATIONS
     }
 

@@ -13,7 +13,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface UsuarioDAO {
     @Query("SELECT * FROM $TABLE_NAME")
-    fun getAll(): Flow<List<UsuarioEntity>>
+    fun getAllFlow(): Flow<List<UsuarioEntity>>
+
+    @Query("SELECT * FROM $TABLE_NAME")
+    suspend fun getAll(): List<UsuarioEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(usuario: UsuarioEntity): Long

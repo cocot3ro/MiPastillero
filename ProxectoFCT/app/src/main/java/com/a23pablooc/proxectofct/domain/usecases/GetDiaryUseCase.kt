@@ -10,6 +10,6 @@ class GetDiaryUseCase @Inject constructor(
     private val pillboxDbRepository: PillboxDbRepository
 ) {
     fun invoke(date: Date): Flow<List<AgendaItem>> {
-        return pillboxDbRepository.getDiary(date)
+        return pillboxDbRepository.getDiaryFlow(date)
     }
 }

@@ -34,7 +34,7 @@ class NotificationService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
 
-        val medJson = intent.getStringExtra(NotificationDefinitions.MED)!!
+        val medJson = intent.getStringExtra(NotificationDefinitions.NOTI)!!
         val hora = Date(intent.getLongExtra(NotificationDefinitions.HOUR, 0))
         val dia = Date(intent.getLongExtra(NotificationDefinitions.DAY, 0))
 

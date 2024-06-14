@@ -15,6 +15,10 @@ class NotificationManager @Inject constructor(
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
     fun scheduleNotification(med: MedicamentoActivoItem, dia: Date, hora: Date) {
+        TODO("Not yet implemented")
+    }
 
+    fun cancelNotification(med: MedicamentoActivoItem, dia: Date, hora: Date) {
+        TODO("Not yet implemented")
     }
 }

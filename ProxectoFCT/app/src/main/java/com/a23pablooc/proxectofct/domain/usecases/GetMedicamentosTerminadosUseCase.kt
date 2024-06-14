@@ -13,7 +13,7 @@ class GetMedicamentosTerminadosUseCase @Inject constructor(
 ) {
     fun invoke(): Flow<List<MedicamentoActivoItem>> {
         val today = DateTimeUtils.today.zeroTime()
-        return pillboxDbRepository.getMedicamentosActivos().map { list ->
+        return pillboxDbRepository.getMedicamentosActivosFlow().map { list ->
             list.filter { it.fechaFin < today }
         }
     }

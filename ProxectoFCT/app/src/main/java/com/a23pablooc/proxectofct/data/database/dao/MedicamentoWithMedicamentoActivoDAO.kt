@@ -18,5 +18,15 @@ interface MedicamentoWithMedicamentoActivoDAO {
             WHERE ${M.Columns.FK_USUARIO} = :idUsuario
         """
     )
-    fun getAll(idUsuario: Long): Flow<List<MedicamentoWithMedicamentoActivo>>
+    fun getAllFlow(idUsuario: Long): Flow<List<MedicamentoWithMedicamentoActivo>>
+
+    @Transaction
+    @Query(
+        """
+            SELECT *
+            FROM ${M.TABLE_NAME} 
+            WHERE ${M.Columns.FK_USUARIO} = :idUsuario
+        """
+    )
+    suspend fun getAll(idUsuario: Long): List<MedicamentoWithMedicamentoActivo>
 }
