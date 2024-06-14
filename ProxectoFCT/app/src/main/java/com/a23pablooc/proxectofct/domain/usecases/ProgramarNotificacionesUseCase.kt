@@ -15,23 +15,17 @@ class ProgramarNotificacionesUseCase @Inject constructor(
     private val pillboxDbRepository: PillboxDbRepository,
     private val notificationManager: NotificationManager
 ) {
+
     suspend fun invoke(med: MedicamentoActivoItem) {
         val calendar = Calendar.getInstance().apply { time = DateTimeUtils.today.zeroTime() }
-        val alreadyScheduledNotifications = pillboxDbRepository.getNotificaciones(med)
 
-        if (alreadyScheduledNotifications.size == NotificationDefinitions.NOTIFICATIONS_PER_MED) return
+        val notifications = pillboxDbRepository.getNotificaciones(med)
 
-        val startDate = med.fechaInicio
-        val endDate = med.fechaFin
-        val hours = med.horario.toList()
+        val alreadyNotifiedNotifications = notifications.filter { it.notificado }
+        val notNotifiedNotifications = notifications.filter { !it.notificado }
 
-        var remainingNotifications = NotificationDefinitions.NOTIFICATIONS_PER_MED - alreadyScheduledNotifications.size
+        if (notNotifiedNotifications.size >= NotificationDefinitions.NOTIFICATIONS_PER_MED) return
 
-        // Schedule notifications until the end date or until the maximum number of notifications is reached
-
-    }
-
-    suspend fun invoke(usuario: UsuarioItem) {
 
     }
 }
