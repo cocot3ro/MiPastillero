@@ -5,8 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition
-import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoActivoTableDefinition
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Columns.FECHA
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Columns.FK_MEDICAMENTO_ACTIVO
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Columns.FK_USUARIO
@@ -22,8 +21,8 @@ import java.util.Date
     tableName = TABLE_NAME,
     foreignKeys = [
         ForeignKey(
-            entity = MedicamentoEntity::class,
-            parentColumns = [MedicamentoTableDefinition.Columns.PK_COD_NACIONAL_MEDICAMENTO],
+            entity = MedicamentoActivoEntity::class,
+            parentColumns = [MedicamentoActivoTableDefinition.Columns.PK_MEDICAMENTO_ACTIVO],
             childColumns = [FK_MEDICAMENTO_ACTIVO],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE

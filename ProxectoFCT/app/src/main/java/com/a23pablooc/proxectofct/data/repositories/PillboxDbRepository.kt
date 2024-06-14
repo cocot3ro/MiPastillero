@@ -13,6 +13,7 @@ import com.a23pablooc.proxectofct.data.database.entities.extensions.toDomain
 import com.a23pablooc.proxectofct.domain.model.AgendaItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
+import com.a23pablooc.proxectofct.domain.model.NotificacionItem
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.domain.model.extensions.toDatabase
 import kotlinx.coroutines.flow.Flow
@@ -97,5 +98,16 @@ class PillboxDbRepository @Inject constructor(
 
     suspend fun deleteDiaryEntry(item: AgendaItem) {
         agendaDAO.delete(item.toDatabase())
+    }
+
+    suspend fun getNotificaciones(med: MedicamentoActivoItem): List<NotificacionItem> {
+        return medicamentoActivoWithNotificacionDAO.getAll(
+            userInfoProvider.currentUser.pkUsuario,
+            med.pkMedicamentoActivo
+        ).map { medWithNotif ->
+            medWithNotif.notificaciones.map { notif ->
+                notif.toDomain(med)
+            }
+        }.flatten()
     }
 }

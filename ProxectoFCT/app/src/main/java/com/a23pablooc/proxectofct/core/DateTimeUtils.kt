@@ -66,4 +66,12 @@ object DateTimeUtils {
             set(Calendar.YEAR, 0)
         }.timeInMillis
     }
+
+    fun Date.get(value: Int): Int {
+        val calendar = Calendar.getInstance().apply {
+            time = this@get
+        }
+
+        return calendar.get(value)
+    }
 }

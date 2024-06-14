@@ -9,4 +9,6 @@ object NotificationDefinitions {
     const val MED_IMG = "img_medicamento"
     const val HOUR = "hora"
     const val DAY = "dia"
+
+    const val NOTIFICATIONS_PER_MED = 5
 }
