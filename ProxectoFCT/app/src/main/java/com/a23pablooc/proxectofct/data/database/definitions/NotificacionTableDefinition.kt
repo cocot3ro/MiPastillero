@@ -9,7 +9,6 @@ object NotificacionTableDefinition {
         const val FK_USUARIO = "${TABLE_NAME}__fk_usuario"
         const val FECHA = "${TABLE_NAME}__fecha"
         const val HORA = "${TABLE_NAME}__hora"
-        const val NOTIFICADO = "${TABLE_NAME}__notificado"
     }
 
     object Indexes {

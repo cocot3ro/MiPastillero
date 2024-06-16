@@ -5,9 +5,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.a23pablooc.proxectofct.databinding.ActivityMainBinding
 import com.a23pablooc.proxectofct.ui.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,9 +32,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch(Dispatchers.IO) {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.checkNotifications()
-            }
+            viewModel.checkNotifications()
         }
     }
 }

@@ -10,14 +10,12 @@ import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDef
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Columns.FK_MEDICAMENTO_ACTIVO
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Columns.FK_USUARIO
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Columns.HORA
-import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Columns.NOTIFICADO
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Columns.PK_NOTIFICACION
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Indexes.IDX_NOTIFICACION_FK_MEDICAMENTO
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Indexes.IDX_NOTIFICACION_FK_USUARIO
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.TABLE_NAME
 import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTableDefinition
 import java.util.Date
-import java.util.Objects
 
 @Entity(
     tableName = TABLE_NAME,
@@ -65,8 +63,5 @@ data class NotificacionEntity(
     val fecha: Date,
 
     @ColumnInfo(name = HORA)
-    val hora: Date,
-
-    @ColumnInfo(name = NOTIFICADO)
-    val notificado: Boolean
+    val hora: Date
 )

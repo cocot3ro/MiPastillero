@@ -4,7 +4,7 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
+import com.a23pablooc.proxectofct.domain.model.NotificacionItem
 import com.a23pablooc.proxectofct.domain.usecases.MarcarTomaUseCase
 import com.a23pablooc.proxectofct.domain.usecases.ProgramarNotificacionesUseCase
 import com.google.gson.Gson
@@ -34,15 +34,13 @@ class NotificationService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
 
-        val medJson = intent.getStringExtra(NotificationDefinitions.NOTI)!!
-        val hora = Date(intent.getLongExtra(NotificationDefinitions.HOUR, 0))
-        val dia = Date(intent.getLongExtra(NotificationDefinitions.DAY, 0))
+        val json = intent.getStringExtra(NotificationDefinitions.NOTIF_KEY)!!
 
-        val med = gson.fromJson(medJson, MedicamentoActivoItem::class.java)
+        val noti = gson.fromJson(json, NotificacionItem::class.java)
 
         serviceScope.launch(Dispatchers.IO) {
-            marcarTomaUseCase.invoke(med, hora, dia, true)
-            programarNotificacionesUseCase.invoke(med)
+            marcarTomaUseCase.invoke(noti.fkMedicamentoActivo, noti.fecha, noti.hora, true)
+            programarNotificacionesUseCase.invoke()
         }
 
         stop(intent)
@@ -57,7 +55,7 @@ class NotificationService : Service() {
 
     private fun stop(intent: Intent) {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.cancel(intent.getIntExtra(NotificationDefinitions.NOTIFICATION_ID, -1))
+        notificationManager.cancel(intent.getIntExtra(NotificationDefinitions.NOTIF_KEY, -1))
 
         stopSelf()
     }

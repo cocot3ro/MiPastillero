@@ -14,9 +14,5 @@ class MainActivityViewModel @Inject constructor(
 
     suspend fun checkNotifications() {
         programarNotificacionesUseCase.invoke()
-
-        userInfoProvider.userChangedFlow.collect {
-            programarNotificacionesUseCase.invoke(it)
-        }
     }
 }

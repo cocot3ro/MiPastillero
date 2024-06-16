@@ -122,4 +122,12 @@ class PillboxDbRepository @Inject constructor(
             }
         }.flatten()
     }
+
+    suspend fun insertNotificacion(noti: NotificacionItem) {
+        notificacionDAO.insert(noti.toDatabase())
+    }
+
+    suspend fun deleteNotificacion(notificacion: NotificacionItem) {
+        notificacionDAO.delete(notificacion.toDatabase())
+    }
 }

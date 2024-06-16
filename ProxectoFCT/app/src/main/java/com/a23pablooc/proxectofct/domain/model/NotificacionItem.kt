@@ -7,6 +7,5 @@ data class NotificacionItem(
     val fkUsuario: Long,
     var fkMedicamentoActivo: MedicamentoActivoItem,
     var fecha: Date,
-    var hora: Date,
-    var notificado: Boolean
+    var hora: Date
 )

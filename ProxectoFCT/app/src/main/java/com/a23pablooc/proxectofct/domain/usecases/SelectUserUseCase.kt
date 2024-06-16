@@ -7,7 +7,7 @@ import javax.inject.Inject
 class SelectUserUseCase @Inject constructor(
     private val userInfoProvider: UserInfoProvider
 ) {
-    suspend fun invoke(newUser: UsuarioItem) {
+    fun invoke(newUser: UsuarioItem) {
         userInfoProvider.changeUser(newUser)
     }
 }
