@@ -6,6 +6,6 @@ data class NotificacionItem(
     var pkNotificacion: Int,
     val fkUsuario: Long,
     var fkMedicamentoActivo: MedicamentoActivoItem,
-    var fecha: Date,
+    var dia: Date,
     var hora: Date
 )

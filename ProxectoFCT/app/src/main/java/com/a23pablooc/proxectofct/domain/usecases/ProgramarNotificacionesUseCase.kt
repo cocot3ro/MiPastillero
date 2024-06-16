@@ -1,8 +1,7 @@
 package com.a23pablooc.proxectofct.domain.usecases
 
 import android.icu.util.Calendar
-import com.a23pablooc.proxectofct.core.DateTimeUtils
-import com.a23pablooc.proxectofct.core.notifications.NotificationDefinitions
+import com.a23pablooc.proxectofct.core.notifications.NotificationDefinitions.MAX_NOTIFICATIONS
 import com.a23pablooc.proxectofct.core.notifications.NotificationManager
 import com.a23pablooc.proxectofct.data.repositories.PillboxDbRepository
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
@@ -17,32 +16,46 @@ class ProgramarNotificacionesUseCase @Inject constructor(
 ) {
     private suspend fun invoke(med: MedicamentoActivoItem) {
         val horario: List<Date> = med.horario.sorted().toList()
-        val notifications: List<NotificacionItem> = pillboxDbRepository.getNotificaciones(med)
+        val notifications: List<NotificacionItem> =
+            pillboxDbRepository.getNotificaciones(med.fkUsuario, med)
 
-        val now = DateTimeUtils.today
+        val now = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.time
+
         val notificacionesFuturas =
-            notifications.filter { it.fecha.after(now) || (it.fecha == now && it.hora.after(now)) }
+            notifications.filter { it.dia.after(now) || (it.dia == now && it.hora.after(now)) }
         val notificacionesAEliminar = notifications - notificacionesFuturas.toSet()
 
         notificacionesAEliminar.forEach {
-            notificationManager.cancelNotification(med, it.fecha, it.hora)
+            notificationManager.cancelNotification(med, it.dia, it.hora)
             pillboxDbRepository.deleteNotificacion(it)
         }
 
-        if (notificacionesFuturas.size >= NotificationDefinitions.MAX_NOTIFICATIONS) return
+        if (notificacionesFuturas.size >= MAX_NOTIFICATIONS) return
 
-        var notificacionesAProgramar =
-            NotificationDefinitions.MAX_NOTIFICATIONS - notificacionesFuturas.size
-        val calendar = Calendar.getInstance().apply { time = med.fechaInicio }
+        var notificacionesAProgramar = MAX_NOTIFICATIONS - notificacionesFuturas.size
+        val calendar = Calendar.getInstance().apply {
+            time = med.fechaInicio
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
 
         while (notificacionesAProgramar > 0 && calendar.time.before(med.fechaFin)) {
             for (hora in horario) {
                 if (notificacionesAProgramar <= 0) break
 
-                if (calendar.time.after(now) || (calendar.time == now && hora.after(now))) {
+                if (calendar.time >= now || (calendar.time == now && hora >= now)) {
                     val notificacion =
                         notificationManager.scheduleNotification(med, calendar.time, hora)
+
                     pillboxDbRepository.insertNotificacion(notificacion)
+
                     notificacionesAProgramar--
                 }
             }

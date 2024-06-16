@@ -9,8 +9,7 @@ import kotlin.math.floor
 
 object DateTimeUtils {
 
-    val today: Date get() = Calendar.getInstance().time
-    val zero: Date get() = today.zero()
+    val now: Date get() = Calendar.getInstance().time
 
     fun Date.getDayName(context: Context): String {
         val dayOfWeek = Calendar.getInstance().apply {
@@ -43,35 +42,25 @@ object DateTimeUtils {
         return floor((endDate.time - startDate.time) / (1000 * 60 * 60 * 24).toDouble()).toInt()
     }
 
-    fun Date.zero() = apply {
-        this.zeroTime()
-        this.zeroDate()
-    }
-
-    fun Date.zeroTime() = apply {
-        this.time = Calendar.getInstance().apply {
-            timeInMillis = this@zeroTime.time
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }.timeInMillis
-    }
-
-    fun Date.zeroDate() = apply {
-        this.time = Calendar.getInstance().apply {
-            timeInMillis = this@zeroDate.time
-            set(Calendar.DAY_OF_MONTH, 1)
-            set(Calendar.MONTH, 0)
-            set(Calendar.YEAR, 0)
-        }.timeInMillis
-    }
-
     fun Date.get(value: Int): Int {
         val calendar = Calendar.getInstance().apply {
             time = this@get
         }
 
         return calendar.get(value)
+    }
+
+    fun Date.isToday(): Boolean {
+        val today = Calendar.getInstance().apply {
+            time = now
+        }
+
+        val date = Calendar.getInstance().apply {
+            time = this@isToday
+        }
+
+        return today.get(Calendar.YEAR) == date.get(Calendar.YEAR) &&
+                today.get(Calendar.MONTH) == date.get(Calendar.MONTH) &&
+                today.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
     }
 }

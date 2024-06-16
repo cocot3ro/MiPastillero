@@ -1,7 +1,6 @@
 package com.a23pablooc.proxectofct.domain.usecases
 
-import com.a23pablooc.proxectofct.core.DateTimeUtils
-import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
+import com.a23pablooc.proxectofct.core.DateTimeUtils.isToday
 import com.a23pablooc.proxectofct.data.repositories.PillboxDbRepository
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import java.util.Date
@@ -10,9 +9,7 @@ import javax.inject.Inject
 class MarcarTomaUseCase @Inject constructor(private val repository: PillboxDbRepository) {
 
     suspend fun invoke(med: MedicamentoActivoItem, dia: Date, hora: Date, value: Boolean? = null) {
-        val today = DateTimeUtils.today.zeroTime()
-
-        if (dia.zeroTime() != today)
+        if (dia.isToday().not())
             throw IllegalArgumentException("Not today son!")
 
         if (value == null) {

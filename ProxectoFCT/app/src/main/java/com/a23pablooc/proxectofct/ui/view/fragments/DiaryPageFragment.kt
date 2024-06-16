@@ -1,5 +1,6 @@
 package com.a23pablooc.proxectofct.ui.view.fragments
 
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.a23pablooc.proxectofct.core.DateTimeUtils
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.getDayName
-import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.databinding.FragmentDiaryPageBinding
 import com.a23pablooc.proxectofct.domain.model.AgendaItem
@@ -80,7 +79,12 @@ class DiaryPageFragment : Fragment() {
                             val data = uiState.data.map { it as AgendaItem }
 
                             savedItem = data.firstOrNull() ?: AgendaItem(
-                                DateTimeUtils.today.zeroTime(),
+                                Calendar.getInstance().apply {
+                                    set(Calendar.HOUR_OF_DAY, 0)
+                                    set(Calendar.MINUTE, 0)
+                                    set(Calendar.SECOND, 0)
+                                    set(Calendar.MILLISECOND, 0)
+                                }.time,
                                 userInfoProvider.currentUser.pkUsuario,
                                 ""
                             )

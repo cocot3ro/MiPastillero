@@ -4,7 +4,6 @@ import android.icu.util.Calendar
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.a23pablooc.proxectofct.core.DateTimeUtils
-import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.ui.view.fragments.DiaryPageFragment
 
 class DiaryViewPagerAdapter (
@@ -21,7 +20,7 @@ class DiaryViewPagerAdapter (
         val offset = position - CalendarViewPagerAdapter.START_POSITION
 
         val date = Calendar.getInstance().apply {
-            time = DateTimeUtils.today.zeroTime()
+            time = DateTimeUtils.now
             add(Calendar.DAY_OF_YEAR, offset)
         }.time
 

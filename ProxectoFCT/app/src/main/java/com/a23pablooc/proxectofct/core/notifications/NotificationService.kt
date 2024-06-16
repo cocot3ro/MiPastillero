@@ -14,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import java.util.Date
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -39,11 +38,11 @@ class NotificationService : Service() {
         val noti = gson.fromJson(json, NotificacionItem::class.java)
 
         serviceScope.launch(Dispatchers.IO) {
-            marcarTomaUseCase.invoke(noti.fkMedicamentoActivo, noti.fecha, noti.hora, true)
+            marcarTomaUseCase.invoke(noti.fkMedicamentoActivo, noti.dia, noti.hora, true)
             programarNotificacionesUseCase.invoke()
         }
 
-        stop(intent)
+        stop(noti)
 
         return START_NOT_STICKY
     }
@@ -53,9 +52,9 @@ class NotificationService : Service() {
         serviceScope.cancel()
     }
 
-    private fun stop(intent: Intent) {
+    private fun stop(noti: NotificacionItem) {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.cancel(intent.getIntExtra(NotificationDefinitions.NOTIF_KEY, -1))
+        notificationManager.cancel(noti.pkNotificacion)
 
         stopSelf()
     }

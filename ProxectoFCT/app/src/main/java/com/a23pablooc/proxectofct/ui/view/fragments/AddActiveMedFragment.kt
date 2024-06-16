@@ -33,8 +33,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DateTimeUtils
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
-import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroDate
-import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
 import com.a23pablooc.proxectofct.databinding.FragmentAddActiveMedBinding
@@ -55,13 +53,24 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AddActiveMedFragment : Fragment() {
 
-    @Inject lateinit var userInfoProvider: UserInfoProvider
-    @Inject lateinit var gson: Gson
+    @Inject
+    lateinit var userInfoProvider: UserInfoProvider
+
+    @Inject
+    lateinit var gson: Gson
 
     private lateinit var binding: FragmentAddActiveMedBinding
     private val viewModel: AddActiveMedViewModel by viewModels()
 
-    private var scheduleList: List<Date> = listOf(DateTimeUtils.zero)
+    private var scheduleList: List<Date> = listOf(
+        Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 8)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.time
+    )
+
     private lateinit var timePickerAdapter: TimePickerRecyclerViewAdapter
 
     private var fetchedMed: MedicamentoItem? = null
@@ -148,7 +157,7 @@ class AddActiveMedFragment : Fragment() {
 
         binding.btnAddTimer.setOnClickListener { onAddTimer() }
 
-        DateTimeUtils.today.zeroTime().formatDate().let {
+        DateTimeUtils.now.formatDate().let {
             binding.dateStart.text = it
             binding.dateEnd.text = it
         }
@@ -285,7 +294,6 @@ class AddActiveMedFragment : Fragment() {
 
         val startDate = DateTimeUtils.parseDate(binding.dateStart.text.toString()).time
         val endDate = DateTimeUtils.parseDate(binding.dateEnd.text.toString()).time
-        val today = DateTimeUtils.today.zeroTime().time
 
         if (endDate < startDate) {
             Toast.makeText(
@@ -296,7 +304,7 @@ class AddActiveMedFragment : Fragment() {
             return false
         }
 
-        if (endDate < today) {
+        if (endDate < DateTimeUtils.now.time) {
             Toast.makeText(
                 context,
                 R.string.fecha_invalida,
@@ -309,7 +317,7 @@ class AddActiveMedFragment : Fragment() {
     }
 
     private fun onAddTimer() {
-        onSelectTime(Calendar.getInstance().time.zeroDate())
+        onSelectTime(DateTimeUtils.now)
     }
 
     private fun onRemoveTimer(date: Date) {
@@ -336,9 +344,8 @@ class AddActiveMedFragment : Fragment() {
             context,
             { _, hourOfDay, minute ->
                 val pickedTime = Calendar.getInstance().apply {
-                    time = DateTimeUtils.zero
-                    set(Calendar.HOUR_OF_DAY, hourOfDay)
-                    set(Calendar.MINUTE, minute)
+                    set(0, 0, 0, hourOfDay, minute, 0)
+                    set(Calendar.MILLISECOND, 0)
                 }.time
 
                 if (scheduleList.any { it.time == pickedTime.time }) {
@@ -367,8 +374,8 @@ class AddActiveMedFragment : Fragment() {
             requireContext(),
             { _, year, monthOfYear, dayOfMonth ->
                 val date = Calendar.getInstance().apply {
-                    time = DateTimeUtils.today.zeroTime()
-                    set(year, monthOfYear, dayOfMonth)
+                    set(year, monthOfYear, dayOfMonth, 0, 0, 0)
+                    set(Calendar.MILLISECOND, 0)
                 }.time
 
                 textView.text = date.formatDate()

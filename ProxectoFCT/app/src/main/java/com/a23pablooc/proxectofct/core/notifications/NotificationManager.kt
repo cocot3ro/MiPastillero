@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Build
+import android.util.Log
+import com.a23pablooc.proxectofct.core.DateTimeUtils.formatTime
 import com.a23pablooc.proxectofct.core.DateTimeUtils.get
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.NotificacionItem
@@ -27,19 +29,22 @@ class NotificationManager @Inject constructor(
             pkNotificacion = notificationId,
             fkMedicamentoActivo = med,
             fkUsuario = med.fkUsuario,
-            fecha = dia,
+            dia = dia,
             hora = hora
         )
 
         val intent = Intent(context, NotificationBroadcastReceiver::class.java).apply {
-            putExtra(NotificationDefinitions.NOTIF_KEY, gson.toJson(createdNotification, NotificacionItem::class.java))
+            putExtra(
+                NotificationDefinitions.NOTIF_KEY,
+                gson.toJson(createdNotification, NotificacionItem::class.java)
+            )
         }
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
             notificationId,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms()) {
@@ -47,13 +52,23 @@ class NotificationManager @Inject constructor(
                 AlarmManager.RTC_WAKEUP,
                 calculateTriggerTime(dia, hora),
                 pendingIntent
-            )
+            ).also {
+                Log.v(
+                    "NotificationManager",
+                    "Scheduled setExact notification for ${dia.get(Calendar.DAY_OF_MONTH)} at ${hora.formatTime()}"
+                )
+            }
         } else {
             alarmManager.set(
                 AlarmManager.RTC_WAKEUP,
                 calculateTriggerTime(dia, hora),
                 pendingIntent
-            )
+            ).also {
+                Log.v(
+                    "NotificationManager",
+                    "Scheduled set notification for ${dia.get(Calendar.DAY_OF_MONTH)} at ${hora.formatTime()}"
+                )
+            }
         }
 
         return createdNotification
@@ -64,14 +79,13 @@ class NotificationManager @Inject constructor(
     }
 
     private fun calculateTriggerTime(dia: Date, hora: Date): Long {
-        val calendar = Calendar.getInstance().apply {
+        return Calendar.getInstance().apply {
             time = dia
             set(Calendar.HOUR_OF_DAY, hora.get(Calendar.HOUR_OF_DAY))
             set(Calendar.MINUTE, hora.get(Calendar.MINUTE))
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
-        }
-        return calendar.timeInMillis
+        }.timeInMillis
     }
 
     fun cancelNotification(med: MedicamentoActivoItem, dia: Date, hora: Date) {
@@ -81,8 +95,9 @@ class NotificationManager @Inject constructor(
             context,
             notificationId,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
+
         alarmManager.cancel(pendingIntent)
     }
 }

@@ -6,6 +6,7 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.domain.usecases.AddMedicamentoUseCase
 import com.a23pablooc.proxectofct.domain.usecases.DownloadImageUseCase
+import com.a23pablooc.proxectofct.domain.usecases.ProgramarNotificacionesUseCase
 import com.a23pablooc.proxectofct.domain.usecases.SearchMedicamentoUseCase
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +17,7 @@ class AddActiveMedViewModel @Inject constructor(
     private val addMedicamentoUseCase: AddMedicamentoUseCase,
     private val searchMedicamentoUseCase: SearchMedicamentoUseCase,
     private val downloadIMageUseCase: DownloadImageUseCase,
+    private val programarNotificacionesUseCase: ProgramarNotificacionesUseCase
 ) : ViewModel() {
     private val codNacionalPattern = Regex("""[6-9]\d{5}(\.\d)?""")
 
@@ -32,5 +34,6 @@ class AddActiveMedViewModel @Inject constructor(
 
     suspend fun onDataEntered(med: MedicamentoActivoItem) {
         addMedicamentoUseCase.invoke(med)
+        programarNotificacionesUseCase.invoke()
     }
 }

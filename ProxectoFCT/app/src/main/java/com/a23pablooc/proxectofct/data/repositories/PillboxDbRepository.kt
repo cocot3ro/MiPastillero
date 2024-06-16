@@ -112,9 +112,9 @@ class PillboxDbRepository @Inject constructor(
         agendaDAO.delete(item.toDatabase())
     }
 
-    suspend fun getNotificaciones(med: MedicamentoActivoItem): List<NotificacionItem> {
+    suspend fun getNotificaciones(userId: Long, med: MedicamentoActivoItem): List<NotificacionItem> {
         return medicamentoActivoWithNotificacionDAO.getAll(
-            userInfoProvider.currentUser.pkUsuario,
+            userId,
             med.pkMedicamentoActivo
         ).map { medWithNotif ->
             medWithNotif.notificaciones.map { notif ->

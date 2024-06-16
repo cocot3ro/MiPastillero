@@ -21,7 +21,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DateTimeUtils
-import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.databinding.FragmentCalendarBinding
 import com.a23pablooc.proxectofct.databinding.NavHeaderBinding
 import com.a23pablooc.proxectofct.ui.view.adapters.CalendarViewPagerAdapter
@@ -152,10 +151,13 @@ class CalendarFragment : Fragment() {
         outState.putBoolean(SHOWING_DATE_PICKER_DIALOG, datePickerDialog?.isShowing ?: false)
         val date = datePickerDialog?.let {
             Calendar.getInstance().apply {
-                time = DateTimeUtils.zero
                 set(Calendar.YEAR, datePickerDialog?.datePicker?.year ?: 0)
                 set(Calendar.MONTH, datePickerDialog?.datePicker?.month ?: 0)
                 set(Calendar.DAY_OF_MONTH, datePickerDialog?.datePicker?.dayOfMonth ?: 0)
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
             }.time
         }
         outState.putLong(DATE_PICKER_DIALOG_DATE, date?.time ?: 0)
@@ -171,8 +173,7 @@ class CalendarFragment : Fragment() {
 
     private fun search(date: Date? = null) {
         val calendar = Calendar.getInstance().apply {
-            time = date ?: Calendar.getInstance().time
-            time = time.zeroTime()
+            time = date ?: time
         }
 
         datePickerDialog = DatePickerDialog(

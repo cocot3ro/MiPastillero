@@ -19,7 +19,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DateTimeUtils
-import com.a23pablooc.proxectofct.core.DateTimeUtils.zeroTime
 import com.a23pablooc.proxectofct.databinding.FragmentDiaryBinding
 import com.a23pablooc.proxectofct.ui.view.adapters.DiaryViewPagerAdapter
 import com.a23pablooc.proxectofct.ui.viewmodel.DiaryViewModel
@@ -105,10 +104,13 @@ class DiaryFragment : Fragment() {
         outState.putBoolean(SHOWING_DATE_PICKER_DIALOG, datePickerDialog?.isShowing ?: false)
         val date = datePickerDialog?.let {
             Calendar.getInstance().apply {
-                time = DateTimeUtils.zero
                 set(Calendar.YEAR, datePickerDialog?.datePicker?.year ?: 0)
                 set(Calendar.MONTH, datePickerDialog?.datePicker?.month ?: 0)
                 set(Calendar.DAY_OF_MONTH, datePickerDialog?.datePicker?.dayOfMonth ?: 0)
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
             }.time
         }
         outState.putLong(DATE_PICKER_DIALOG_DATE, date?.time ?: 0)
@@ -124,8 +126,11 @@ class DiaryFragment : Fragment() {
 
     private fun search(date: Date? = null) {
         val calendar = Calendar.getInstance().apply {
-            time = date ?: DateTimeUtils.today
-            time = time.zeroTime()
+            time = date ?: DateTimeUtils.now
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
         }
 
         datePickerDialog = DatePickerDialog(

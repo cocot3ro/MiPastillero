@@ -8,7 +8,7 @@ fun NotificacionItem.toDatabase(): NotificacionEntity {
         pkNotificacion = pkNotificacion,
         fkMedicamentoActivo = fkMedicamentoActivo.pkMedicamentoActivo,
         fkUsuario = fkUsuario,
-        fecha = fecha,
+        fecha = dia,
         hora = hora
     )
 }
