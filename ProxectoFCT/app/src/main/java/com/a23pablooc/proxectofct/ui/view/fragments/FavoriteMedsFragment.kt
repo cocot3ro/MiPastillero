@@ -80,7 +80,7 @@ class FavoriteMedsFragment : Fragment() {
             }
 
             NavHeaderBinding.bind(getHeaderView(0)).apply {
-                userName.text = viewModel.userInfoProvider.currentUser!!.nombre
+                userName.text = viewModel.userInfoProvider.currentUser.nombre
 
                 ibSettings.setOnClickListener {
                     binding.drawerLayout.close()
@@ -148,7 +148,7 @@ class FavoriteMedsFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.newFavMed -> {
-                        newFavMed()
+                        navController.navigate(R.id.addActiveMedFragment)
                         true
                     }
 
@@ -156,10 +156,6 @@ class FavoriteMedsFragment : Fragment() {
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-    }
-
-    private fun newFavMed() {
-        // TODO
     }
 
     private fun onAdd(med: MedicamentoItem) {
