@@ -77,6 +77,8 @@ class UsersFragment : Fragment(), CreateUserDialogFragment.OnDataEnteredListener
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
+        if (!firstTime) binding.loadingView.visibility = View.GONE
+
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             adapter = UserRecyclerViewAdapter(
                 emptyList(),
@@ -133,15 +135,12 @@ class UsersFragment : Fragment(), CreateUserDialogFragment.OnDataEnteredListener
                             firstTime = false
 
                             if (user != null) {
-                                val toast = Toast.makeText(
-                                    context,
-                                    "Iniciando sesión",
-                                    Toast.LENGTH_SHORT
-                                ).also { it.show() }
                                 Handler(Looper.getMainLooper()).postDelayed({
-                                    toast.cancel()
                                     onSelectUser.invoke(user)
-                                }, 500)
+                                }, 1000)
+                            } else {
+                                binding.loadingView.visibility = View.GONE
+                                binding.fabAddUser.visibility = View.VISIBLE
                             }
                         }
 

@@ -1,7 +1,3 @@
-[//]: # (TODO: Pantalla inicial donde comprobar login. Si hay user predeterminado o 1 hacer login.
-            Si se entra desde notificacion hacer login.
-            Si no ir a UsersFragment)
-
 [//]: # (TODO: MedInfoFragment mas bien es EditMedFragment. Copiar sistema de fab/toolbar de AddActiveMedFragment)
 
 [//]: # (TODO: Hardcoded strings, buscar por 'TODO: Hardcode string')
