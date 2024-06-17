@@ -63,12 +63,12 @@ class AddActiveMedFragment : Fragment() {
 
     private var scheduleList: List<Date> = listOf(
         Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 8)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
+            set(0, 0, 0, 8, 0, 0)
             set(Calendar.MILLISECOND, 0)
         }.time
     )
+
+    private var saving = false
 
     private lateinit var timePickerAdapter: TimePickerRecyclerViewAdapter
 
@@ -146,13 +146,9 @@ class AddActiveMedFragment : Fragment() {
             adapter = timePickerAdapter
         }
 
-        binding.btnStartDatePicker.setOnClickListener {
-            onSelectDate(binding.dateStart)
-        }
+        binding.btnStartDatePicker.setOnClickListener { onSelectDate(binding.dateStart) }
 
-        binding.btnEndDatePicker.setOnClickListener {
-            onSelectDate(binding.dateEnd)
-        }
+        binding.btnEndDatePicker.setOnClickListener { onSelectDate(binding.dateEnd) }
 
         binding.btnAddTimer.setOnClickListener { onAddTimer() }
 
@@ -169,8 +165,13 @@ class AddActiveMedFragment : Fragment() {
     }
 
     private fun onAdd() {
+        if (saving) return
+
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-            if (onSave()) navController.popBackStack()
+            if (validateForm()) {
+                save()
+                navController.popBackStack()
+            }
         }
     }
 
@@ -238,9 +239,8 @@ class AddActiveMedFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private suspend fun onSave(): Boolean {
-        if (!validateForm())
-            return false
+    private suspend fun save() {
+        saving = true
 
         val dosis = binding.dosis.text.toString()
         val dateStart = DateTimeUtils.parseDate(binding.dateStart.text.toString())
@@ -249,7 +249,7 @@ class AddActiveMedFragment : Fragment() {
 
         val med = MedicamentoActivoItem(
             pkMedicamentoActivo = 0,
-            fkUsuario = userInfoProvider.currentUser!!.pkUsuario,
+            fkUsuario = userInfoProvider.currentUser.pkUsuario,
             dosis = dosis.ifBlank { "" },
             horario = schedule.toMutableSet(),
             fechaFin = dateEnd,
@@ -258,11 +258,19 @@ class AddActiveMedFragment : Fragment() {
             fkMedicamento = requireMed()
         )
 
+        val toast = Toast.makeText(
+            context,
+            "Guardando",
+            Toast.LENGTH_LONG
+        )
+
+        toast.show()
+
         withContext(Dispatchers.IO) {
             viewModel.onDataEntered(med)
         }
 
-        return true
+        toast.cancel()
     }
 
     private fun validateForm(): Boolean {
@@ -418,21 +426,13 @@ class AddActiveMedFragment : Fragment() {
 
                     binding.nombre.setText(fetchedMed.nombre)
 
-                    if (fetchedMed.imagen.toString().startsWith(CimaApiDefinitions.BASE_URL)) {
-                        withContext(Dispatchers.IO) {
-                            val img = viewModel.downloadImage(
-                                fetchedMed.numRegistro,
-                                fetchedMed.imagen.toString().substringAfterLast('/')
-                            )
-                            withContext(Dispatchers.Main) {
-                                Glide.with(requireContext()).load(img)
-                                    .into(binding.img)
-                                image = fetchedMed.imagen
-                            }
-                        }
-                    } else if (fetchedMed.imagen.toString().startsWith("file:///")) {
-                        Glide.with(requireContext()).load(fetchedMed.imagen)
+                    if (fetchedMed.imagen.toString().startsWith(CimaApiDefinitions.BASE_URL)
+                        || fetchedMed.imagen.toString().startsWith("file:///")
+                    ) {
+                        Glide.with(requireContext())
+                            .load(fetchedMed.imagen)
                             .into(binding.img)
+
                         image = fetchedMed.imagen
                     } else {
                         binding.img.setImageResource(R.mipmap.no_image_available)
@@ -517,10 +517,10 @@ class AddActiveMedFragment : Fragment() {
             this.imagen = image
             this.nombre = nombre.ifBlank { this.nombre }
             this.fkUsuario =
-                this.fkUsuario.takeIf { it > 0 } ?: userInfoProvider.currentUser!!.pkUsuario
+                this.fkUsuario.takeIf { it > 0 } ?: userInfoProvider.currentUser.pkUsuario
         } ?: MedicamentoItem(
             pkCodNacionalMedicamento = 0,
-            fkUsuario = userInfoProvider.currentUser!!.pkUsuario,
+            fkUsuario = userInfoProvider.currentUser.pkUsuario,
             nombre = nombre,
             imagen = image,
             esFavorito = binding.ivFavBg.visibility == View.VISIBLE,
