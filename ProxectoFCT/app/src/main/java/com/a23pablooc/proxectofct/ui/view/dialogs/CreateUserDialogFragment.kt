@@ -13,7 +13,7 @@ import com.a23pablooc.proxectofct.databinding.FragmentCreateUserFragmentDialogBi
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CreateUserFragmentDialog : DialogFragment() {
+class CreateUserDialogFragment : DialogFragment() {
 
     private lateinit var binding: FragmentCreateUserFragmentDialogBinding
 

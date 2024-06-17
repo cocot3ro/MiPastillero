@@ -80,7 +80,7 @@ class FavoriteMedsFragment : Fragment() {
             }
 
             NavHeaderBinding.bind(getHeaderView(0)).apply {
-                userName.text = viewModel.userInfoProvider.currentUser.nombre
+                userName.text = viewModel.userInfoProvider.currentUser!!.nombre
 
                 ibSettings.setOnClickListener {
                     binding.drawerLayout.close()

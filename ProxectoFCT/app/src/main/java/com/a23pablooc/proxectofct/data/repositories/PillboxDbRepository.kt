@@ -37,13 +37,13 @@ class PillboxDbRepository @Inject constructor(
     }
 
     fun getAllFavoriteMedsFlow(): Flow<List<MedicamentoItem>> {
-        return medicamentoDAO.getAllFavoritos(userInfoProvider.currentUser.pkUsuario)
+        return medicamentoDAO.getAllFavoritos(userInfoProvider.currentUser!!.pkUsuario)
             .map { list -> list.map { med -> med.toDomain() } }
     }
 
     fun getMedicamentosActivosFlow(): Flow<List<MedicamentoActivoItem>> {
         return medicamentoWithMedicamentoActivoDAO.getAllFlow(
-            userInfoProvider.currentUser.pkUsuario
+            userInfoProvider.currentUser!!.pkUsuario
         ).map { list ->
             list.map { medWithMedActivo ->
                 medWithMedActivo.medicamentosActivos.map { medActivo ->
@@ -98,7 +98,7 @@ class PillboxDbRepository @Inject constructor(
     }
 
     fun getDiaryFlow(date: Date): Flow<List<AgendaItem>> {
-        return agendaDAO.getByFecha(userInfoProvider.currentUser.pkUsuario, date.time)
+        return agendaDAO.getByFecha(userInfoProvider.currentUser!!.pkUsuario, date.time)
             .map { list ->
                 list.map { agenda -> agenda.toDomain() }
             }

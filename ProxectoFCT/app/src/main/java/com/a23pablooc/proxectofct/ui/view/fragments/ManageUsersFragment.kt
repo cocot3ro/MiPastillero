@@ -10,13 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.databinding.FragmentManageUsersBinding
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.ui.view.adapters.ManageUserRecyclerViewAdapter
-import com.a23pablooc.proxectofct.ui.view.dialogs.CreateUserFragmentDialog
+import com.a23pablooc.proxectofct.ui.view.dialogs.CreateUserDialogFragment
 import com.a23pablooc.proxectofct.ui.view.dialogs.DeleteUserDialogFragment
 import com.a23pablooc.proxectofct.ui.view.states.UiState
 import com.a23pablooc.proxectofct.ui.viewmodel.ManageUsersViewModel
@@ -30,7 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ManageUsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener,
+class ManageUsersFragment : Fragment(), CreateUserDialogFragment.OnDataEnteredListener,
     DeleteUserDialogFragment.OnUserDeletedListener {
     private lateinit var binding: FragmentManageUsersBinding
     private val viewModel: ManageUsersViewModel by viewModels()
@@ -91,7 +90,7 @@ class ManageUsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredLi
             }
 
             binding.fabAddUser.setOnClickListener {
-                CreateUserFragmentDialog().show(childFragmentManager, CreateUserFragmentDialog.TAG)
+                CreateUserDialogFragment().show(childFragmentManager, CreateUserDialogFragment.TAG)
             }
 
             repeatOnLifecycle(Lifecycle.State.STARTED) {

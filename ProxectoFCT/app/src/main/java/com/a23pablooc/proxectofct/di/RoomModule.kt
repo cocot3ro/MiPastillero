@@ -4,12 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.a23pablooc.proxectofct.data.database.DataBaseClearer
+import com.a23pablooc.proxectofct.data.database.DatabaseClearerImpl
 import com.a23pablooc.proxectofct.data.database.PillboxDatabase
-import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
-import com.a23pablooc.proxectofct.data.database.dao.MedicamentoActivoDAO
-import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
-import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
-import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
 import com.a23pablooc.proxectofct.data.database.definitions.DatabaseDefinition
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition
 import com.a23pablooc.proxectofct.data.database.security.DatabasePassphrase
@@ -34,55 +31,83 @@ object RoomModule {
     fun provideSupportFactory(databasePassphrase: DatabasePassphrase): SupportFactory =
         SupportFactory(databasePassphrase.getPassphrase())
 
-    //TODO: restore openHelperFactory. Disabled for allowing access from the app inspector
     @Singleton
     @Provides
-    @Suppress("UNUSED_PARAMETER")
     fun provideRoom(
         @ApplicationContext context: Context,
         supportFactory: SupportFactory
     ): PillboxDatabase {
-        return Room.databaseBuilder(context, PillboxDatabase::class.java, DatabaseDefinition.DATABASE_NAME)
+        return Room.databaseBuilder(
+            context,
+            PillboxDatabase::class.java,
+            DatabaseDefinition.DATABASE_NAME
+        )
+//            .openHelperFactory(supportFactory)
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-                    db.execSQL("INSERT INTO sqlite_sequence VALUES ('${MedicamentoTableDefinition.TABLE_NAME}', 999999);")
+                    initializeDatabase(db)
                 }
             })
-//            .openHelperFactory(supportFactory)
             .build()
+    }
+
+    private fun initializeDatabase(db: SupportSQLiteDatabase) {
+        db.beginTransaction()
+        try {
+            val updatedRows = db.compileStatement(
+                """
+                        UPDATE sqlite_sequence SET seq = 999999 WHERE name = '${MedicamentoTableDefinition.TABLE_NAME}'
+                    """
+            ).executeUpdateDelete()
+
+            if (updatedRows == 0) {
+                db.execSQL(
+                    """
+                            INSERT INTO sqlite_sequence (name, seq) VALUES ('${MedicamentoTableDefinition.TABLE_NAME}', 999999)
+                        """
+                )
+            }
+
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
     }
 
     @Singleton
     @Provides
-    fun provideMedicamentoDao(database: PillboxDatabase): MedicamentoDAO =
-        database.getMedicamentoDao()
+    fun provideDatabaseClearer(db: PillboxDatabase): DataBaseClearer {
+        return DatabaseClearerImpl(db, db.openHelper.writableDatabase)
+    }
 
     @Singleton
     @Provides
-    fun provideMedicamentoActivoDao(database: PillboxDatabase): MedicamentoActivoDAO =
-        database.getMedicamentoActivoDao()
+    fun provideMedicamentoDao(db: PillboxDatabase) = db.getMedicamentoDao()
 
     @Singleton
     @Provides
-    fun provideUsuarioDao(database: PillboxDatabase): UsuarioDAO = database.getUsuarioDao()
+    fun provideMedicamentoActivoDao(db: PillboxDatabase) = db.getMedicamentoActivoDao()
 
     @Singleton
     @Provides
-    fun provideAgendaDao(database: PillboxDatabase): AgendaDAO = database.getAgendaDao()
+    fun provideUsuarioDao(db: PillboxDatabase) = db.getUsuarioDao()
 
     @Singleton
     @Provides
-    fun provideNotificacionDao(database: PillboxDatabase): NotificacionDAO =
-        database.getNotificacionDao()
+    fun provideAgendaDao(db: PillboxDatabase) = db.getAgendaDao()
 
     @Singleton
     @Provides
-    fun provideMedicamentoAndMedicamentoActivoDao(database: PillboxDatabase) =
-        database.getMedicamentoAndMedicamentoActivoDao()
+    fun provideNotificacionDao(db: PillboxDatabase) = db.getNotificacionDao()
 
     @Singleton
     @Provides
-    fun provideMedicamentoActivoWithNotificacionDAO(database: PillboxDatabase) =
-        database.getMedicamentoActivoWithNotificacionDAO()
+    fun provideMedicamentoAndMedicamentoActivoDao(db: PillboxDatabase) =
+        db.getMedicamentoAndMedicamentoActivoDao()
+
+    @Singleton
+    @Provides
+    fun provideMedicamentoActivoWithNotificacionDAO(db: PillboxDatabase) =
+        db.getMedicamentoActivoWithNotificacionDao()
 }

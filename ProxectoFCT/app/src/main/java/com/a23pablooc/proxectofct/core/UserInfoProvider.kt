@@ -6,10 +6,10 @@ import javax.inject.Singleton
 
 @Singleton
 class UserInfoProvider @Inject constructor() {
-    private lateinit var _currentUser: UsuarioItem
-    val currentUser: UsuarioItem get() = _currentUser.copy()
+    private var _currentUser: UsuarioItem? = null
+    val currentUser: UsuarioItem? get() = _currentUser?.copy()
 
-    fun changeUser(user: UsuarioItem) {
+    fun changeUser(user: UsuarioItem?) {
         _currentUser = user
     }
 }

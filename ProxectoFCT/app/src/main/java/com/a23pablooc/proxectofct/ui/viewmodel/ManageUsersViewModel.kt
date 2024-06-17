@@ -86,7 +86,7 @@ class ManageUsersViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             updateUserUseCase.invoke(user)
 
-            if (user.pkUsuario == userInfoProvider.currentUser.pkUsuario) {
+            if (user.pkUsuario == userInfoProvider.currentUser!!.pkUsuario) {
                 selectUserUseCase.invoke(user)
             }
         }

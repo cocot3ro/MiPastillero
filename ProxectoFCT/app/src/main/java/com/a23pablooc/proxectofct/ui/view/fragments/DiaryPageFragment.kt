@@ -85,7 +85,7 @@ class DiaryPageFragment : Fragment() {
                                     set(Calendar.SECOND, 0)
                                     set(Calendar.MILLISECOND, 0)
                                 }.time,
-                                userInfoProvider.currentUser.pkUsuario,
+                                userInfoProvider.currentUser!!.pkUsuario,
                                 ""
                             )
 

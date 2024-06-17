@@ -2,12 +2,6 @@
 
 [//]: # (TODO: MedInfoFragment mas bien es EditMedFragment. Copiar sistema de fab/toolbar de AddActiveMedFragment)
 
-[//]: # (TODO: Gestionar retoceso de fragmentos)
-
-[//]: # (TODO: Restore OpenHelperFactory en  RoomModule)
-
-[//]: # (TODO: Programar notificaciones en MainViewModel)
-
 [//]: # (TODO: Hardcoded strings, buscar por 'TODO: Hardcode string')
 [//]: # (TODO: strings.xml)
 

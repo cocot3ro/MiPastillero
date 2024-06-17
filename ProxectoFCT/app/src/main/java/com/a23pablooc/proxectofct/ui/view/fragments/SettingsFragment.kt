@@ -15,6 +15,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DataStoreManager
 import com.a23pablooc.proxectofct.databinding.FragmentSettingsBinding
+import com.a23pablooc.proxectofct.ui.view.dialogs.DeleteDataDialogFragment
 import com.a23pablooc.proxectofct.ui.viewmodel.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class SettingsFragment : Fragment() {
+class SettingsFragment : Fragment(), DeleteDataDialogFragment.OnDeleteDataListener {
     private lateinit var binding: FragmentSettingsBinding
     private val viewModel: SettingsViewModel by viewModels()
     private lateinit var navController: NavController
@@ -120,6 +121,10 @@ class SettingsFragment : Fragment() {
                 updateFab()
             }
 
+            binding.btnDeleteInfo.setOnClickListener {
+                DeleteDataDialogFragment().show(childFragmentManager, DeleteDataDialogFragment.TAG)
+            }
+
             binding.fabSave.setOnClickListener {
                 viewModel.saveSettings(mapSettings)
                 changes.clear()
@@ -159,6 +164,11 @@ class SettingsFragment : Fragment() {
                 updateFab()
             }
         }
+    }
+
+    override fun onDeleteData() {
+        viewModel.deleteData()
+        navController.popBackStack(R.id.usersFragment, false)
     }
 
     private fun loadSettings() {

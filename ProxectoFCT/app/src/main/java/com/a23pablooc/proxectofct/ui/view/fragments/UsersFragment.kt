@@ -25,7 +25,7 @@ import com.a23pablooc.proxectofct.core.DataStoreManager
 import com.a23pablooc.proxectofct.databinding.FragmentUsersBinding
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.ui.view.adapters.UserRecyclerViewAdapter
-import com.a23pablooc.proxectofct.ui.view.dialogs.CreateUserFragmentDialog
+import com.a23pablooc.proxectofct.ui.view.dialogs.CreateUserDialogFragment
 import com.a23pablooc.proxectofct.ui.view.states.UiState
 import com.a23pablooc.proxectofct.ui.viewmodel.UsersViewModel
 import com.google.android.flexbox.AlignItems
@@ -38,7 +38,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class UsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener {
+class UsersFragment : Fragment(), CreateUserDialogFragment.OnDataEnteredListener {
     private lateinit var binding: FragmentUsersBinding
     private val viewModel: UsersViewModel by viewModels()
 
@@ -192,6 +192,6 @@ class UsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener
     }
 
     private fun showAddUserDialog() {
-        CreateUserFragmentDialog().show(childFragmentManager, CreateUserFragmentDialog.TAG)
+        CreateUserDialogFragment().show(childFragmentManager, CreateUserDialogFragment.TAG)
     }
 }

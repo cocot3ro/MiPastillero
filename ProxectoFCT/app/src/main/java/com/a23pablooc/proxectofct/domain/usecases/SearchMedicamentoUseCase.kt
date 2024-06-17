@@ -13,7 +13,7 @@ class SearchMedicamentoUseCase @Inject constructor(
 ) {
     suspend fun invoke(codNacional: Long): MedicamentoItem? {
         return pillboxDbRepository.findMedicamentoByCodNacional(
-            userInfoProvider.currentUser.pkUsuario,
+            userInfoProvider.currentUser!!.pkUsuario,
             codNacional
         ) ?: cimaRepository.searchMedicamento(codNacional)
     }

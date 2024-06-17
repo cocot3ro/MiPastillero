@@ -249,7 +249,7 @@ class AddActiveMedFragment : Fragment() {
 
         val med = MedicamentoActivoItem(
             pkMedicamentoActivo = 0,
-            fkUsuario = userInfoProvider.currentUser.pkUsuario,
+            fkUsuario = userInfoProvider.currentUser!!.pkUsuario,
             dosis = dosis.ifBlank { "" },
             horario = schedule.toMutableSet(),
             fechaFin = dateEnd,
@@ -517,10 +517,10 @@ class AddActiveMedFragment : Fragment() {
             this.imagen = image
             this.nombre = nombre.ifBlank { this.nombre }
             this.fkUsuario =
-                this.fkUsuario.takeIf { it > 0 } ?: userInfoProvider.currentUser.pkUsuario
+                this.fkUsuario.takeIf { it > 0 } ?: userInfoProvider.currentUser!!.pkUsuario
         } ?: MedicamentoItem(
             pkCodNacionalMedicamento = 0,
-            fkUsuario = userInfoProvider.currentUser.pkUsuario,
+            fkUsuario = userInfoProvider.currentUser!!.pkUsuario,
             nombre = nombre,
             imagen = image,
             esFavorito = binding.ivFavBg.visibility == View.VISIBLE,

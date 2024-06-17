@@ -89,4 +89,10 @@ class DataStoreManager @Inject constructor(
             this[PreferencesKeys.USE_NOTIFICATIONS] = useNotifications().first()
         }
     }
+
+    suspend fun clear() {
+        preferences.edit {
+            it.clear()
+        }
+    }
 }
