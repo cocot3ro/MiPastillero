@@ -10,9 +10,12 @@ import javax.inject.Inject
 
 class DeleteUserUseCase @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val pillboxDbRepository: PillboxDbRepository
+    private val pillboxDbRepository: PillboxDbRepository,
+    private val cancelarNotificacionesUseCase: CancelarNotificacionesUseCase
 ) {
     suspend fun invoke(user: UsuarioItem) {
+        cancelarNotificacionesUseCase.invoke(user)
+
         pillboxDbRepository.deleteUser(user)
 
         val imagesDirectory = File(context.filesDir, InternalStorageDefinitions.IMAGES_DIRECTORY)

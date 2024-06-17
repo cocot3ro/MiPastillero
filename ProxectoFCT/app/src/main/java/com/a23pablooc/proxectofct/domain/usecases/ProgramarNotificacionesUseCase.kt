@@ -14,7 +14,17 @@ class ProgramarNotificacionesUseCase @Inject constructor(
     private val pillboxDbRepository: PillboxDbRepository,
     private val notificationManager: NotificationManager
 ) {
-    private suspend fun invoke(med: MedicamentoActivoItem) {
+    suspend fun invoke() {
+        val users = pillboxDbRepository.getUsers()
+        users.forEach { invoke(it) }
+    }
+
+    suspend fun invoke(user: UsuarioItem) {
+        val medicamentosActivos = pillboxDbRepository.getMedicamentosActivos(user)
+        medicamentosActivos.forEach { invoke(it) }
+    }
+
+    suspend fun invoke(med: MedicamentoActivoItem) {
         val horario: List<Date> = med.horario.sorted().toList()
         val notifications: List<NotificacionItem> =
             pillboxDbRepository.getNotificaciones(med.fkUsuario, med)
@@ -62,15 +72,5 @@ class ProgramarNotificacionesUseCase @Inject constructor(
 
             calendar.add(Calendar.DAY_OF_MONTH, 1)
         }
-    }
-
-    private suspend fun invoke(user: UsuarioItem) {
-        val medicamentosActivos = pillboxDbRepository.getMedicamentosActivos(user)
-        medicamentosActivos.forEach { invoke(it) }
-    }
-
-    suspend fun invoke() {
-        val users = pillboxDbRepository.getUsers()
-        users.forEach { invoke(it) }
     }
 }
