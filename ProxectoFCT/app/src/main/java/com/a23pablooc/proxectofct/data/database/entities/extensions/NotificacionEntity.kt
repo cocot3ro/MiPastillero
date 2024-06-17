@@ -9,7 +9,6 @@ fun NotificacionEntity.toDomain(med: MedicamentoActivoItem): NotificacionItem {
         pkNotificacion = pkNotificacion,
         fkUsuario = fkUsuario,
         fkMedicamentoActivo = med,
-        dia = fecha,
-        hora = hora
+        timeStamp = timeStamp
     )
 }

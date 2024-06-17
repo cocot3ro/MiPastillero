@@ -4,9 +4,8 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.icu.util.Calendar
 import android.os.Build
-import com.a23pablooc.proxectofct.core.DateTimeUtils.get
+import android.util.Log
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.NotificacionItem
 import com.google.gson.Gson
@@ -20,15 +19,14 @@ class NotificationManager @Inject constructor(
 ) {
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    fun scheduleNotification(med: MedicamentoActivoItem, dia: Date, hora: Date): NotificacionItem {
-        val notificationId = generateNotificationId(med, dia, hora)
+    fun scheduleNotification(med: MedicamentoActivoItem, timeStamp: Date): NotificacionItem {
+        val notificationId = generateNotificationId(med, timeStamp)
 
         val createdNotification = NotificacionItem(
             pkNotificacion = notificationId,
             fkMedicamentoActivo = med,
             fkUsuario = med.fkUsuario,
-            dia = dia,
-            hora = hora
+            timeStamp = timeStamp
         )
 
         val intent = Intent(context, NotificationBroadcastReceiver::class.java).apply {
@@ -45,39 +43,44 @@ class NotificationManager @Inject constructor(
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
+        Log.v("NotificationManager", "")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms()) {
             alarmManager.setExact(
                 AlarmManager.RTC_WAKEUP,
-                calculateTriggerTime(dia, hora),
+                timeStamp.time,
                 pendingIntent
-            )
+            ).also {
+                Log.v("NotificationManager", "setExact vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
+                Log.v(
+                    "NotificationManager",
+                    "Scheduled notification for $timeStamp"
+                )
+                Log.v("NotificationManager", "setExact ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+            }
         } else {
             alarmManager.set(
                 AlarmManager.RTC_WAKEUP,
-                calculateTriggerTime(dia, hora),
+                timeStamp.time,
                 pendingIntent
-            )
+            ).also {
+                Log.v("NotificationManager", "set vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
+                Log.v(
+                    "NotificationManager",
+                    "Scheduled set notification for $timeStamp"
+                )
+                Log.v("NotificationManager", "set ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+            }
         }
 
         return createdNotification
     }
 
-    private fun generateNotificationId(med: MedicamentoActivoItem, dia: Date, hora: Date): Int {
-        return (med.pkMedicamentoActivo + dia.time + hora.time).hashCode()
+    private fun generateNotificationId(med: MedicamentoActivoItem, timeStamp: Date): Int {
+        return (med.pkMedicamentoActivo + timeStamp.time).hashCode()
     }
 
-    private fun calculateTriggerTime(dia: Date, hora: Date): Long {
-        return Calendar.getInstance().apply {
-            time = dia
-            set(Calendar.HOUR_OF_DAY, hora.get(Calendar.HOUR_OF_DAY))
-            set(Calendar.MINUTE, hora.get(Calendar.MINUTE))
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }.timeInMillis
-    }
-
-    fun cancelNotification(med: MedicamentoActivoItem, dia: Date, hora: Date) {
-        val notificationId = generateNotificationId(med, dia, hora)
+    fun cancelNotification(med: MedicamentoActivoItem, timeStamp: Date) {
+        val notificationId = generateNotificationId(med, timeStamp)
         val intent = Intent(context, NotificationBroadcastReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             context,
@@ -85,6 +88,14 @@ class NotificationManager @Inject constructor(
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
+
+        Log.v("NotificationManager", "")
+        Log.v("NotificationManager", "cancelNotification vvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
+        Log.v(
+            "NotificationManager",
+            "Cancelling notification for $timeStamp"
+        )
+        Log.v("NotificationManager", "cancelNotification ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
 
         alarmManager.cancel(pendingIntent)
     }

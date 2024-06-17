@@ -10,5 +10,5 @@ data class MedicamentoActivoItem(
     var fechaFin: Date,
     var horario: MutableSet<Date>,
     var dosis: String,
-    var tomas: MutableMap<Date, MutableMap<Date, Boolean>>
+    var tomas: MutableMap<Date, Boolean>
 )

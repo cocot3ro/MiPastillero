@@ -38,7 +38,7 @@ class NotificationService : Service() {
         val noti = gson.fromJson(json, NotificacionItem::class.java)
 
         serviceScope.launch(Dispatchers.IO) {
-            marcarTomaUseCase.invoke(noti.fkMedicamentoActivo, noti.dia, noti.hora, true)
+            marcarTomaUseCase.invoke(noti.fkMedicamentoActivo, noti.timeStamp, true)
             programarNotificacionesUseCase.invoke()
         }
 

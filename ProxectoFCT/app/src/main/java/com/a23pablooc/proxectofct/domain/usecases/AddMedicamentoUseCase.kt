@@ -28,7 +28,13 @@ class AddMedicamentoUseCase @Inject constructor(
                 )
 
                 val localStoragePath =
-                    saveImageUseCase.invoke("${med.fkMedicamento.numRegistro}.jpg", imageData)
+                    saveImageUseCase.invoke(
+                        "${med.fkMedicamento.numRegistro}.${
+                            imgPath.substringAfterLast(
+                                '.'
+                            )
+                        }", imageData
+                    )
 
                 localStoragePath
             } else {

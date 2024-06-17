@@ -16,7 +16,7 @@ class SaveImageUseCase @Inject constructor(
     fun invoke(fileName: String, imageData: ByteArray): Uri {
         val imagesDirectory = File(context.filesDir, InternalStorageDefinitions.IMAGES_DIRECTORY)
 
-        val userDirectory = File(imagesDirectory, userInfoProvider.currentUser!!.pkUsuario.toString())
+        val userDirectory = File(imagesDirectory, userInfoProvider.currentUser.pkUsuario.toString())
 
         userDirectory.mkdirs()
 

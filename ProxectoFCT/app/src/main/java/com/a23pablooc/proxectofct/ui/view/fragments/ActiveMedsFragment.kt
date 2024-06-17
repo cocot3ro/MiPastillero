@@ -86,7 +86,7 @@ class ActiveMedsFragment : Fragment() {
             }
 
             NavHeaderBinding.bind(getHeaderView(0)).apply {
-                userName.text = userInfoProvider.currentUser!!.nombre
+                userName.text = userInfoProvider.currentUser.nombre
 
                 ibSettings.setOnClickListener {
                     binding.drawerLayout.close()

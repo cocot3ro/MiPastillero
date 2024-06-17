@@ -30,7 +30,7 @@ class CancelarNotificacionesUseCase @Inject constructor(
             pillboxDbRepository.getNotificaciones(med.fkUsuario, med)
 
         notificaciones.forEach {
-            notificationManager.cancelNotification(med, it.dia, it.hora)
+            notificationManager.cancelNotification(med, it.timeStamp)
             pillboxDbRepository.deleteNotificacion(it)
         }
     }

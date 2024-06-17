@@ -8,23 +8,11 @@ import javax.inject.Inject
 
 class MarcarTomaUseCase @Inject constructor(private val repository: PillboxDbRepository) {
 
-    suspend fun invoke(med: MedicamentoActivoItem, dia: Date, hora: Date, value: Boolean? = null) {
-        if (dia.isToday().not())
+    suspend fun invoke(med: MedicamentoActivoItem, timeStamp: Date, value: Boolean? = null) {
+        if (timeStamp.isToday().not())
             throw IllegalArgumentException("Not today son!")
 
-        if (value == null) {
-            med.tomas[dia]?.let { dayMap ->
-                dayMap[hora] = dayMap[hora]?.not() ?: true
-            } ?: run {
-                med.tomas[dia] = mutableMapOf(hora to true)
-            }
-        } else {
-            med.tomas[dia]?.let { dayMap ->
-                dayMap[hora] = value
-            } ?: run {
-                med.tomas[dia] = mutableMapOf(hora to value)
-            }
-        }
+        med.tomas[timeStamp] = value ?: med.tomas[timeStamp]?.not() ?: true
 
         repository.updateMed(med)
     }

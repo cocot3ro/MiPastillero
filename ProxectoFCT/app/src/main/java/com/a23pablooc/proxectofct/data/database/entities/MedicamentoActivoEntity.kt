@@ -75,5 +75,5 @@ data class MedicamentoActivoEntity(
     var dosis: String,
 
     @ColumnInfo(name = TOMAS)
-    var tomas: MutableMap<Date, MutableMap<Date, Boolean>>
+    var tomas: MutableMap<Date, Boolean>
 )

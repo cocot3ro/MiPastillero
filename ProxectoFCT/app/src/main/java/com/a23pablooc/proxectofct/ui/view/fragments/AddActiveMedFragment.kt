@@ -243,8 +243,22 @@ class AddActiveMedFragment : Fragment() {
         saving = true
 
         val dosis = binding.dosis.text.toString()
-        val dateStart = DateTimeUtils.parseDate(binding.dateStart.text.toString())
-        val dateEnd = DateTimeUtils.parseDate(binding.dateEnd.text.toString())
+        val dateStart = Calendar.getInstance().apply {
+            time = DateTimeUtils.parseDate(binding.dateStart.text.toString())
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.time
+
+        val dateEnd = Calendar.getInstance().apply {
+            time = DateTimeUtils.parseDate(binding.dateEnd.text.toString())
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.time
+
         val schedule = scheduleList
 
         val med = MedicamentoActivoItem(

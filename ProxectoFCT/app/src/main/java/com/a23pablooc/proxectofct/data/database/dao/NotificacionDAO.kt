@@ -16,7 +16,7 @@ interface NotificacionDAO {
     @Query("SELECT * FROM $TABLE_NAME WHERE $FK_USUARIO = :idUsuario")
     suspend fun getAll(idUsuario: Int): List<NotificacionEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(notificacion: NotificacionEntity)
 
     @Update

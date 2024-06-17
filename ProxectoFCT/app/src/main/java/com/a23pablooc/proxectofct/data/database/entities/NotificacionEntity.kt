@@ -6,11 +6,10 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoActivoTableDefinition
-import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Columns.FECHA
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Columns.FK_MEDICAMENTO_ACTIVO
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Columns.FK_USUARIO
-import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Columns.HORA
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Columns.PK_NOTIFICACION
+import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Columns.TIME_STAMP
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Indexes.IDX_NOTIFICACION_FK_MEDICAMENTO
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.Indexes.IDX_NOTIFICACION_FK_USUARIO
 import com.a23pablooc.proxectofct.data.database.definitions.NotificacionTableDefinition.TABLE_NAME
@@ -59,9 +58,6 @@ data class NotificacionEntity(
     @ColumnInfo(name = FK_USUARIO)
     val fkUsuario: Long,
 
-    @ColumnInfo(name = FECHA)
-    val fecha: Date,
-
-    @ColumnInfo(name = HORA)
-    val hora: Date
+    @ColumnInfo(name = TIME_STAMP)
+    val timeStamp: Date
 )

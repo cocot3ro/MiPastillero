@@ -5,7 +5,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.a23pablooc.proxectofct.data.database.converters.DateBooleanMapConverter
 import com.a23pablooc.proxectofct.data.database.converters.DateConverter
-import com.a23pablooc.proxectofct.data.database.converters.DateMapDateBooleanMapConverter
 import com.a23pablooc.proxectofct.data.database.converters.DateSetConverter
 import com.a23pablooc.proxectofct.data.database.converters.UriConverter
 import com.a23pablooc.proxectofct.data.database.dao.AgendaDAO
@@ -37,8 +36,7 @@ import com.a23pablooc.proxectofct.data.database.entities.UsuarioEntity
         UriConverter::class,
         DateConverter::class,
         DateSetConverter::class,
-        DateBooleanMapConverter::class,
-        DateMapDateBooleanMapConverter::class
+        DateBooleanMapConverter::class
     ]
 )
 abstract class PillboxDatabase : RoomDatabase() {

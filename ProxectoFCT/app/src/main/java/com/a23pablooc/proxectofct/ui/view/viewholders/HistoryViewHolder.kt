@@ -24,7 +24,7 @@ class HistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         binding.dateStart.text = med.fechaInicio.formatDate()
         binding.dateEnd.text = med.fechaFin.formatDate()
 
-        val tomas = med.tomas.map { it -> it.value.map { it.value } }.flatten().filter { it }.size
+        val tomas = med.tomas.filter { it.value }.size
         val total = DateTimeUtils.daysBetweenDates(med.fechaInicio, med.fechaFin) * med.horario.size
         val txt = "$tomas / $total"
         binding.tvTomas.text = txt
