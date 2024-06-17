@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "ProxectoFCT"
 include(":app")
-include(":old")
