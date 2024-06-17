@@ -6,8 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Build
-import android.util.Log
-import com.a23pablooc.proxectofct.core.DateTimeUtils.formatTime
 import com.a23pablooc.proxectofct.core.DateTimeUtils.get
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.NotificacionItem
@@ -52,23 +50,13 @@ class NotificationManager @Inject constructor(
                 AlarmManager.RTC_WAKEUP,
                 calculateTriggerTime(dia, hora),
                 pendingIntent
-            ).also {
-                Log.v(
-                    "NotificationManager",
-                    "Scheduled setExact notification for ${dia.get(Calendar.DAY_OF_MONTH)} at ${hora.formatTime()}"
-                )
-            }
+            )
         } else {
             alarmManager.set(
                 AlarmManager.RTC_WAKEUP,
                 calculateTriggerTime(dia, hora),
                 pendingIntent
-            ).also {
-                Log.v(
-                    "NotificationManager",
-                    "Scheduled set notification for ${dia.get(Calendar.DAY_OF_MONTH)} at ${hora.formatTime()}"
-                )
-            }
+            )
         }
 
         return createdNotification

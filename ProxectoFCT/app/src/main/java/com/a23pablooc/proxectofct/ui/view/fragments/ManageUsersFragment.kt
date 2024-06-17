@@ -1,7 +1,6 @@
 package com.a23pablooc.proxectofct.ui.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -115,7 +114,6 @@ class ManageUsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredLi
                         is UiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
-                            Log.e("ManageUsersFragment", uiState.errorMessage, uiState.exception)
                         }
                     }
                 }

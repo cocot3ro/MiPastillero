@@ -1,6 +1,5 @@
 package com.a23pablooc.proxectofct.ui.view.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil

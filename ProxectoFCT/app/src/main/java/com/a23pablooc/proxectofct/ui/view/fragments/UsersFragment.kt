@@ -3,7 +3,6 @@ package com.a23pablooc.proxectofct.ui.view.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -149,7 +148,6 @@ class UsersFragment : Fragment(), CreateUserFragmentDialog.OnDataEnteredListener
                         is UiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
-                            Log.e("UsersFragment", uiState.errorMessage, uiState.exception)
                         }
                     }
                 }

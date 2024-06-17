@@ -7,7 +7,6 @@ import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -460,12 +459,6 @@ class AddActiveMedFragment : Fragment() {
                     }
                 }
             } catch (e: IllegalArgumentException) {
-                Log.e(
-                    "AddActiveMedFragment",
-                    "IllegalFormatFlagsException: " + (e.message ?: "Unknown error"),
-                    e
-                )
-
                 this@AddActiveMedFragment.fetchedMed = null
 
                 withContext(Dispatchers.Main) {
@@ -479,12 +472,6 @@ class AddActiveMedFragment : Fragment() {
                     toggleHelp()
                 }
             } catch (e: IOException) {
-                Log.e(
-                    "AddActiveMedFragment",
-                    "IOException: " + (e.message ?: "Unknown error"),
-                    e
-                )
-
                 this@AddActiveMedFragment.fetchedMed = null
 
                 withContext(Dispatchers.Main) {
@@ -493,8 +480,6 @@ class AddActiveMedFragment : Fragment() {
                     Toast.makeText(context, "Error de conexión", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Log.e("AddActiveMedFragment", "Exception: " + (e.message ?: "Unknown error"), e)
-
                 this@AddActiveMedFragment.fetchedMed = null
 
                 withContext(Dispatchers.Main) {
