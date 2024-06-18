@@ -1,4 +1,7 @@
 # Referencias
+[CIMA](https://cima.aemps.es/cima/publico/home.htm)
+[CIMA REST API](https://www.aemps.gob.es/apps/cima/docs/CIMA_REST_API.pdf)
+
 [RecyclerView](https://developer.android.com/develop/ui/views/layout/recyclerview?hl=es-419)
 
 [Room](https://developer.android.com/training/data-storage/room?hl=es-419)
