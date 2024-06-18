@@ -19,13 +19,14 @@ Enlace a release do [Prototipo 1](https://gitlab.iessanclemente.net/damo/a23pabl
 | Activar/desactivar imaxes de alta calidade | Non            |
 | Buscar medicamento (na api)                | Si             |
 | Descargar imaxe (da api)                   | Si             |
+| Seleccionar imaxe do dispositivo           | Non            |
 
-Enlace a release do [Prototipo 2]()
+Enlace a release do [Prototipo 2](https://gitlab.iessanclemente.net/damo/a23pablooc/-/releases/v2.0.0)
 
 | Funcionalidade                             | Realizada      |
 |--------------------------------------------|----------------|
 | Engadir medicamento                        | Si             |
-| Modificar medicamento                      | En realizacion |
+| Modificar medicamento                      | Non            |
 | Borrar medicamento                         | En realizacion |
 | Engadir a favoritos                        | En realizacion |
 | Quitar de favoritos                        | En realizacion |
@@ -39,6 +40,30 @@ Enlace a release do [Prototipo 2]()
 | Buscar medicamento por codigo (na api)     | Si             |
 | Descargar imaxe (da api)                   | Si             |
 | Buscar medicamentos por nome (na api)      | Non            |
+| Seleccionar imaxe do dispositivo           | Non            |
+
+
+Prototipo Final
+
+| Funcionalidade                             | Realizada      |
+|--------------------------------------------|----------------|
+| Engadir medicamento                        | Si             |
+| Modificar medicamento                      | Non            |
+| Borrar medicamento                         | Non            |
+| Engadir a favoritos                        | Si             |
+| Marcar toma                                | Si             |
+| Quitar de favoritos                        | Si             |
+| Alta usuario                               | Si             |
+| Modificar usuario                          | Si             |
+| Eliminar usuario                           | Si             |
+| Seleccionar usuario por defecto            | Si             |
+| Activar/desactivar notificacions           | Si             |
+| Activar/desactivar o uso de imaxes         | Si             |
+| Activar/desactivar imaxes de alta calidade | Si             |
+| Buscar medicamento por codigo (na api)     | Si             |
+| Descargar imaxe (da api)                   | Si             |
+| Buscar medicamentos por nome (na api)      | Non            |
+| Seleccionar imaxe do dispositivo           | Si             |
 
 ## Innovación
 
@@ -48,9 +73,6 @@ Para este proxecto utilizaronse as seguintes tecnoloxías.
 
 - [Room](https://developer.android.com/training/data-storage/room?hl=es-419): Unha biblioteca de persistencia que brinda unha capa de
 abstraction sobre as bases de datos SQLite
-
-** Problemas encontrados **
-Para facer as relacións entre as entidades, xa sexan 1-1, 1-N ou N-M, debese crear unha clase a parte que relacione as duas entidades, e ao momento de realizar a consulta nos DAOs, o metodo debe devolver un objecto do tipo da clase que representa a relacion.
 
 - [Retrofit](https://square.github.io/retrofit/): Un cliente HTTP para Java e Kotlin que permite realizar consultar a API comodamente
 
@@ -65,3 +87,6 @@ Para facer as relacións entre as entidades, xa sexan 1-1, 1-N ou N-M, debese cr
 - [SQLCipher](https://github.com/sqlcipher/sqlcipher-android): Unha extensión de SQLite para Android proporciona cifrado da base de datos.
 
 ## Probas
+
+**Problemas encontrados**
+Para facer as relacións entre as entidades en bases de datos con Room, xa sexan 1-1, 1-N ou N-M, debese crear unha clase a parte que relacione as duas entidades, e ao momento de realizar a consulta nos DAOs, o metodo debe devolver un objecto do tipo da clase que representa a relacion.
