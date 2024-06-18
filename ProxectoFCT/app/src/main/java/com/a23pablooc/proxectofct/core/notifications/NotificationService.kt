@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -40,9 +41,12 @@ class NotificationService : Service() {
         serviceScope.launch(Dispatchers.IO) {
             marcarTomaUseCase.invoke(noti.fkMedicamentoActivo, noti.timeStamp, true)
             programarNotificacionesUseCase.invoke()
+
+            withContext(Dispatchers.Main) {
+                stop(noti)
+            }
         }
 
-        stop(noti)
 
         return START_NOT_STICKY
     }

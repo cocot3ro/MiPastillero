@@ -1,6 +1,5 @@
 package com.a23pablooc.proxectofct.ui.view.viewholders
 
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
