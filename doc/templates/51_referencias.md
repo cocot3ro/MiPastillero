@@ -1,5 +1,5 @@
 # Referencias
-[Imaxe da aplicación](https://www.flaticon.es/iconos-gratis/medicamento) foi tomada de Flaticon.com
+A [imaxe da aplicación](https://www.flaticon.es/icono-gratis/pastillas_5157673) pertence a un [paquete de imaxes](https://www.flaticon.es/iconos-gratis/medicamento) gratuitas de [Flaticon](https://www.flaticon.com/)
 
 [CIMA](https://cima.aemps.es/cima/publico/home.htm)
 
