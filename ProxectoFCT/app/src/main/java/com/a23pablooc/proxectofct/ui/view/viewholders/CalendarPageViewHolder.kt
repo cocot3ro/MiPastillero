@@ -3,7 +3,7 @@ package com.a23pablooc.proxectofct.ui.view.viewholders
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.a23pablooc.proxectofct.core.DateTimeUtils.formatTime
+import com.a23pablooc.proxectofct.core.DateTimeUtils.formatShortTime
 import com.a23pablooc.proxectofct.databinding.CalendarMedGroupBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.CalendarPageMedRecyclerViewAdapter
@@ -20,9 +20,9 @@ class CalendarPageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         meds: List<MedicamentoActivoItem>,
         onMarcarToma: (MedicamentoActivoItem, Date, Date) -> Unit
     ) {
-        adapter = adapter.takeIf { it != null } ?: CalendarPageMedRecyclerViewAdapter(dia, hora, meds, onMarcarToma)
+        adapter = adapter ?: CalendarPageMedRecyclerViewAdapter(dia, hora, meds, onMarcarToma)
 
-        binding.hour.text = hora.formatTime()
+        binding.hour.text = hora.formatShortTime()
 
         binding.rvMeds.apply {
             adapter = this@CalendarPageViewHolder.adapter

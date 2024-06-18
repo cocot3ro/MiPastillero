@@ -19,7 +19,7 @@ class HistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private var adapter: ScheduleRecyclerViewAdapter? = null
 
     fun render(med: MedicamentoActivoItem) {
-        adapter = adapter.takeIf { it != null } ?: ScheduleRecyclerViewAdapter(med.horario.toList())
+        adapter = adapter ?: ScheduleRecyclerViewAdapter(med.horario.toList())
 
         binding.dateStart.text = med.fechaInicio.formatDate()
         binding.dateEnd.text = med.fechaFin.formatDate()

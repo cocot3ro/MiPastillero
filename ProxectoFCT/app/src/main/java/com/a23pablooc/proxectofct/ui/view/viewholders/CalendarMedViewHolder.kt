@@ -34,9 +34,8 @@ class CalendarMedViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }.time
 
             isChecked = med.tomas[timeStamp] ?: false
-            setOnClickListener {
-                onMarcarToma(med, dia, hora)
-            }
+
+            setOnClickListener { onMarcarToma(med, dia, hora) }
         }
 
         if (med.fkMedicamento.imagen.toString().isNotBlank()) {

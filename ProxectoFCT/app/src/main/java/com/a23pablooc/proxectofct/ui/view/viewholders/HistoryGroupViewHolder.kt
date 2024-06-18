@@ -19,7 +19,7 @@ class HistoryGroupViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     ) {
         val med = list.first()
 
-        adapter = adapter.takeIf { it != null } ?: HistoryRecyclerViewAdapter(list)
+        adapter = adapter ?: HistoryRecyclerViewAdapter(list)
 
         binding.medName.text = med.fkMedicamento.nombre
 

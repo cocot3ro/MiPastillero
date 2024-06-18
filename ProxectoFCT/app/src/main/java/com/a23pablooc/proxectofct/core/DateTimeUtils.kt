@@ -4,6 +4,7 @@ import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import com.a23pablooc.proxectofct.R
+import com.a23pablooc.proxectofct.core.DateTimeUtils.formatShortTime
 import java.util.Date
 import kotlin.math.floor
 
@@ -28,6 +29,10 @@ object DateTimeUtils {
 
     fun parseDate(date: String): Date {
         return SimpleDateFormat.getDateInstance().parse(date)!!
+    }
+
+    fun Date.formatShortTime(): String {
+        return SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT).format(this)
     }
 
     fun Date.formatTime(): String {
