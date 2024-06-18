@@ -22,6 +22,7 @@ class DataStoreManager @Inject constructor(
         const val USE_NOTIFICATIONS = "use_notifications"
 
         const val DEFAULT_USER_ID = "default_user_id"
+        const val USER_TO_LOGIN_ID = "user_to_login_id"
     }
 
     private object Keys {
@@ -30,6 +31,7 @@ class DataStoreManager @Inject constructor(
         val USE_NOTIFICATIONS = booleanPreferencesKey(PreferencesKeys.USE_NOTIFICATIONS)
 
         val DEFAULT_USER_ID = longPreferencesKey(PreferencesKeys.DEFAULT_USER_ID)
+        val USER_TO_LOGIN_ID = longPreferencesKey(PreferencesKeys.USER_TO_LOGIN_ID)
     }
 
     object Defaults {
@@ -38,6 +40,18 @@ class DataStoreManager @Inject constructor(
         const val USE_NOTIFICATIONS = true
 
         const val DEFAULT_USER_ID = 0L
+    }
+
+    suspend fun setUpUserToLoginId(userId: Long) = preferences.edit {
+        it[Keys.USER_TO_LOGIN_ID] = userId
+    }
+
+    suspend fun getUserToLoginId(): Long? {
+        return preferences.data
+            .map { it[Keys.USER_TO_LOGIN_ID] ?: Defaults.DEFAULT_USER_ID }
+            .first()
+            .takeIf { it != Defaults.DEFAULT_USER_ID }
+            .also { setUpUserToLoginId(Defaults.DEFAULT_USER_ID) }
     }
 
     fun useImages() = preferences.data.map {

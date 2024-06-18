@@ -116,15 +116,17 @@ class UsersFragment : Fragment(), CreateUserDialogFragment.OnDataEnteredListener
 
                             binding.progressBar.visibility = View.GONE
 
+                            val defaultUser = viewModel.getDefaultUserId()
+
                             val user: UsuarioItem? = when {
                                 firstTime && uiState.data.size == 1 -> {
                                     binding.progressBar.visibility = View.VISIBLE
                                     uiState.data.first() as UsuarioItem
                                 }
 
-                                firstTime && viewModel.getDefaultUserId() != DataStoreManager.Defaults.DEFAULT_USER_ID -> {
+
+                                firstTime && defaultUser != DataStoreManager.Defaults.DEFAULT_USER_ID -> {
                                     binding.progressBar.visibility = View.VISIBLE
-                                    val defaultUser = viewModel.getDefaultUserId()
                                     uiState.data.map { it as UsuarioItem }
                                         .first { it.pkUsuario == defaultUser }
                                 }

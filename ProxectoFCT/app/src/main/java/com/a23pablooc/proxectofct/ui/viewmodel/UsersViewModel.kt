@@ -3,6 +3,7 @@ package com.a23pablooc.proxectofct.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.a23pablooc.proxectofct.core.DataStoreManager
+import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.domain.usecases.CreateUserUseCase
 import com.a23pablooc.proxectofct.domain.usecases.GetUsersUseCase
@@ -58,7 +59,7 @@ class UsersViewModel @Inject constructor(
     }
 
     suspend fun getDefaultUserId(): Long {
-        return dataStoreManager.defaultUserId().first()
+        return dataStoreManager.getUserToLoginId() ?: dataStoreManager.defaultUserId().first()
     }
 
     suspend fun changeDefaultUser(userId: Long) {

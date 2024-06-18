@@ -10,6 +10,7 @@ import androidx.core.app.NotificationCompat
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DataStoreManager
 import com.a23pablooc.proxectofct.domain.model.NotificacionItem
+import com.a23pablooc.proxectofct.domain.usecases.SetUpUserToLoginUseCase
 import com.a23pablooc.proxectofct.ui.view.activity.MainActivity
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
@@ -28,6 +29,9 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var dataStoreManager: DataStoreManager
+
+    @Inject
+    lateinit var setUpUserToLoginUseCase: SetUpUserToLoginUseCase
 
     private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
@@ -61,6 +65,7 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
 
         val openAppIntent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra(MainActivity.BundleKeys.USER_ID, noti.fkUsuario)
         }
 
         val openAppPendingIntent = PendingIntent.getActivity(
