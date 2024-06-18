@@ -47,19 +47,13 @@ class ManageUsersFragment : Fragment(), CreateUserDialogFragment.OnDataEnteredLi
 
         lifecycleScope.launch(Dispatchers.Main) {
             adapter = ManageUserRecyclerViewAdapter(
-                emptyList(),
-                viewModel.onSaveChangesFlow,
-                onSaveUser = {
-                    viewModel.saveUser(it)
-                },
-                viewModel.onChangeDefaultUserFlow,
-                onChangeDefault = {
-                    viewModel.changeDefaultUser(it.pkUsuario)
-                },
-                viewLifecycleOwner,
-                onDelete = {
-                    showDeleteUserDialog(it)
-                },
+                list = emptyList(),
+                onSaveUserFlow = viewModel.onSaveChangesFlow,
+                onSaveUser = { viewModel.saveUser(it) },
+                onChangeDefaultFlow = viewModel.onChangeDefaultUserFlow,
+                onChangeDefault = { viewModel.changeDefaultUser(it.pkUsuario) },
+                lifecycleOwner = viewLifecycleOwner,
+                onDelete = { showDeleteUserDialog(it) },
                 notifyChange = { userId, hasChanged ->
                     viewModel.registerChange(userId, hasChanged)
 

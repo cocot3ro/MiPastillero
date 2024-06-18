@@ -6,5 +6,3 @@
 [//]: # (TODO: Repasar warnings en layouts)
 [//]: # (TODO: A los botones que pidan un tamaño de 48dp x 48dp aplicar un padding de 6dp por cada lado)
 [//]: # (TODO: contentDescription en las imagenes. Buscar por 'android:contentDescription="TODO"')
-
-<a href="https://www.flaticon.es/iconos-gratis/medicamento" title="medicamento iconos">Medicamento iconos creados por Freepik - Flaticon</a>

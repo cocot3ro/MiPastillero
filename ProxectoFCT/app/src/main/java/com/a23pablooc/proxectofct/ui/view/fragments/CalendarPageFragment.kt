@@ -82,10 +82,13 @@ class CalendarPageFragment : Fragment() {
 
                         is UiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
-                            adapter.updateData(uiState.data.map { it as MedicamentoActivoItem })
-                            // TODO: vista para lista vacia
-                            // binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
-                            // Toast.makeText(context, "Empty list", Toast.LENGTH_SHORT).show()
+
+                            val data = uiState.data.map { it as MedicamentoActivoItem }
+
+                            adapter.updateData(data)
+
+                            binding.emptyDataView.visibility =
+                                if (data.isEmpty()) View.VISIBLE else View.GONE
                         }
 
                         is UiState.Error -> {

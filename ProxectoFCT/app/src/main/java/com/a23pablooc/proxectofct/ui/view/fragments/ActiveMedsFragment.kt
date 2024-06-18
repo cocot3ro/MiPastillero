@@ -38,8 +38,10 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ActiveMedsFragment : Fragment() {
 
-    @Inject lateinit var gson: Gson
-    @Inject lateinit var userInfoProvider: UserInfoProvider
+    @Inject
+    lateinit var gson: Gson
+    @Inject
+    lateinit var userInfoProvider: UserInfoProvider
 
     private lateinit var binding: FragmentActiveMedsBinding
     private val viewModel: ActiveMedsViewModel by viewModels()
@@ -127,10 +129,13 @@ class ActiveMedsFragment : Fragment() {
 
                         is UiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
-                            activeRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoActivoItem })
 
-                            // TODO: vista para lista vacia
-                            // binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
+                            val data = uiState.data.map { it as MedicamentoActivoItem }
+
+                            activeRecyclerViewAdapter.updateData(data)
+
+                            binding.emptyDataView.visibility =
+                                if (data.isEmpty()) View.VISIBLE else View.GONE
                         }
 
                         is UiState.Error -> {

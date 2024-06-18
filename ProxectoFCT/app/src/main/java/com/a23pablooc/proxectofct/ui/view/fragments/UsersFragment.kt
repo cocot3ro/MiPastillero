@@ -102,6 +102,7 @@ class UsersFragment : Fragment(), CreateUserDialogFragment.OnDataEnteredListener
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {
+
                         is UiState.Loading -> {
                             binding.progressBar.visibility = View.VISIBLE
                         }
@@ -124,7 +125,6 @@ class UsersFragment : Fragment(), CreateUserDialogFragment.OnDataEnteredListener
                                     uiState.data.first() as UsuarioItem
                                 }
 
-
                                 firstTime && defaultUser != DataStoreManager.Defaults.DEFAULT_USER_ID -> {
                                     binding.progressBar.visibility = View.VISIBLE
                                     uiState.data.map { it as UsuarioItem }
@@ -136,14 +136,14 @@ class UsersFragment : Fragment(), CreateUserDialogFragment.OnDataEnteredListener
 
                             firstTime = false
 
-                            if (user != null) {
-                                Handler(Looper.getMainLooper()).postDelayed({
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                if (user != null) {
                                     onSelectUser.invoke(user)
-                                }, 1000)
-                            } else {
-                                binding.loadingView.visibility = View.GONE
-                                binding.fabAddUser.visibility = View.VISIBLE
-                            }
+                                } else {
+                                    binding.loadingView.visibility = View.GONE
+                                    binding.fabAddUser.visibility = View.VISIBLE
+                                }
+                            }, 1000)
                         }
 
                         is UiState.Error -> {

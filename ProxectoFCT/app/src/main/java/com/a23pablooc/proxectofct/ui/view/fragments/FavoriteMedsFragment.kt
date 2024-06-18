@@ -116,11 +116,12 @@ class FavoriteMedsFragment : Fragment() {
                         is UiState.Success<*> -> {
                             binding.progressBar.visibility = View.GONE
 
-                            favoriteRecyclerViewAdapter.updateData(uiState.data.map { it as MedicamentoItem })
+                            val data = uiState.data.map { it as MedicamentoItem }
 
-                            // TODO: vista para lista vacia
-                            //  ? binding.emptyListView.visibility = (uiState.data.isEmpty() ? View.VISIBLE : View.GONE)
-                            // Toast.makeText(context, "Empty list", Toast.LENGTH_SHORT).show()
+                            favoriteRecyclerViewAdapter.updateData(data)
+
+                            binding.emptyDataView.visibility =
+                                if (data.isEmpty()) View.VISIBLE else View.GONE
                         }
 
                         is UiState.Error -> {
