@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/menu_toolbar_users"
-        app:title="Usuarios" /> <!-- TODO: Hardcode string -->
+        app:title="@string/users" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -27,14 +27,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- TODO: Hardcode string -->
     <TextView
         android:id="@+id/empty_data_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="64dp"
         android:gravity="center"
-        android:text="No hay usuarios registrados"
+        android:text="@string/no_users"
         android:textSize="24sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -68,6 +67,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/white"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -99,14 +99,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="24sp"
-            android:text="Cargando"
+            android:text="@string/loading"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/iv_loading"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

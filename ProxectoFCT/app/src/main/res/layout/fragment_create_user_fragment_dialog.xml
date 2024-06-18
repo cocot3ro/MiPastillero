@@ -67,7 +67,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- TODO: Hardcode string -->
             <EditText
                 android:id="@+id/et_user_name"
                 android:layout_width="match_parent"
@@ -75,7 +74,7 @@
                 android:layout_marginHorizontal="4dp"
                 android:autofillHints="username"
                 android:gravity="center"
-                android:hint="Username"
+                android:hint="@string/user_name"
                 android:inputType="textMultiLine"
                 android:maxLength="30"
                 android:textSize="18sp"

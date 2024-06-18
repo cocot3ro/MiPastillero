@@ -2,11 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Hardcode string -->
     <item
         android:id="@+id/addActiveMed"
         android:icon="@drawable/medication_32dp"
-        android:title="Add active med"
+        android:title="@string/add_med"
         app:showAsAction="always" />
 
 </menu>

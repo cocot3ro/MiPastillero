@@ -3,5 +3,4 @@
     android:id="@+id/hour"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="XX:XX:XX AM"
     android:layout_margin="8dp" />

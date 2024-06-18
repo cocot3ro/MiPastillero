@@ -6,33 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".ui.view.dialogs.DeleteUserDialogFragment">
 
-    <!-- TODO: Hardcode string -->
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Atencion!"
+        android:text="@string/warning"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- TODO: Hardcode string -->
     <TextView
         android:id="@+id/tv_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Al continuar se borrarán todos los datos de la aplicación de forma permanente. ¿Estás seguro de que deseas continuar?"
+        android:text="@string/delete_data_confirm"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
-    <!-- TODO: Hardcode string -->
     <TextView
         android:id="@+id/tv_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Escribe 'CONFIRMAR' para confirmar"
+        android:text="@string/delete_data_confirmation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_message" />
 
@@ -40,8 +37,11 @@
         android:id="@+id/et_confirm"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:autofillHints="text"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_confirm" />
+        app:layout_constraintTop_toBottomOf="@id/tv_confirm"
+        tools:ignore="LabelFor" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

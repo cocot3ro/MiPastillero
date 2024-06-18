@@ -31,7 +31,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:menu="@menu/menu_toolbar_fav_med"
-            app:title="@string/favoritos" />
+            app:title="@string/favorites" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_favorites"
@@ -42,14 +42,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-        <!-- TODO: Hardcode string -->
         <TextView
             android:id="@+id/empty_data_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="64dp"
             android:gravity="center"
-            android:text="No hay medicamentos favoritos."
+            android:text="@string/no_fav_meds"
             android:textSize="24sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

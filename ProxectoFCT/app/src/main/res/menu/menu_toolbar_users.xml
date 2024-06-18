@@ -5,7 +5,7 @@
     <item
         android:id="@+id/manage_users"
         android:icon="@drawable/manage_accounts_32dp"
-        android:title="Manage users"
-        app:showAsAction="always" /> <!-- TODO: Hardcode string -->
+        android:title="@string/manage_users"
+        app:showAsAction="always" />
 
 </menu>

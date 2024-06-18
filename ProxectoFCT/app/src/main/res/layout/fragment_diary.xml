@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/menu_toolbar_diary"
-        app:title="@string/agenda" />
+        app:title="@string/diary" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

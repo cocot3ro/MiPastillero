@@ -138,7 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="2dp"
-                        android:text="@string/inicio"
+                        android:text="@string/start"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@id/dates_labels_guideline"
                         app:layout_constraintStart_toStartOf="parent"
@@ -156,7 +156,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="2dp"
-                        android:text="@string/fin"
+                        android:text="@string/end"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -178,7 +178,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="2dp"
-                        android:text="dd/MM/yyyy"
                         app:layout_constraintBottom_toTopOf="@id/dates_guideline"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -195,7 +194,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="2dp"
-                        android:text="dd/MM/yyyy"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/dates_guideline" />
@@ -217,7 +215,7 @@
                     android:id="@+id/schedule_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/horario"
+                    android:text="@string/schedule"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

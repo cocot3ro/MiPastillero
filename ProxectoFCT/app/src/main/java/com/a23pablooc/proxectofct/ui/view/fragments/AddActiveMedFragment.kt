@@ -119,7 +119,7 @@ class AddActiveMedFragment : Fragment() {
         binding.imgLayout.setOnLongClickListener {
             Toast.makeText(
                 context,
-                getString(R.string.seleccionar_una_imagen),
+                getString(R.string.select_img_frmo_device),
                 Toast.LENGTH_SHORT
             ).show()
             true
@@ -274,7 +274,7 @@ class AddActiveMedFragment : Fragment() {
 
         val toast = Toast.makeText(
             context,
-            "Guardando",
+            getString(R.string.saving),
             Toast.LENGTH_LONG
         )
 
@@ -289,46 +289,57 @@ class AddActiveMedFragment : Fragment() {
 
     private fun validateForm(): Boolean {
         if (binding.nombre.text.isNullOrBlank()) {
-            binding.nombre.error = getString(R.string.sin_nombre)
+            binding.nombre.error = getString(R.string.should_input_name)
             return false
         }
 
         if (scheduleList.isEmpty()) {
-            // TODO: Hardcode string
             Toast.makeText(
                 context,
-                "Se debe tener al menos una hora de toma",
+                getString(R.string.should_input_schedule),
                 Toast.LENGTH_SHORT
             ).show()
             return false
         }
 
         if (scheduleList.toSet().size != scheduleList.size) {
-            // TODO: Hardcode string
             Toast.makeText(
                 context,
-                "Las horas de toma deben de ser únicas",
+                getString(R.string.unique_schedule_dates),
                 Toast.LENGTH_SHORT
             ).show()
             return false
         }
 
-        val startDate = DateTimeUtils.parseDate(binding.dateStart.text.toString()).time
-        val endDate = DateTimeUtils.parseDate(binding.dateEnd.text.toString()).time
+        val startDate = Calendar.getInstance().apply {
+            time = DateTimeUtils.parseDate(binding.dateStart.text.toString())
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.time
+
+        val endDate = Calendar.getInstance().apply {
+            time = DateTimeUtils.parseDate(binding.dateEnd.text.toString())
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.time
 
         if (endDate < startDate) {
             Toast.makeText(
                 context,
-                R.string.fecha_invalida,
+                getString(R.string.invalid_date_end_minor_start),
                 Toast.LENGTH_SHORT
             ).show()
             return false
         }
 
-        if (endDate < DateTimeUtils.now.time) {
+        if (endDate < DateTimeUtils.now) {
             Toast.makeText(
                 context,
-                R.string.fecha_invalida,
+                getString(R.string.invalid_date_end_minor_now),
                 Toast.LENGTH_SHORT
             ).show()
             return false
@@ -343,10 +354,9 @@ class AddActiveMedFragment : Fragment() {
 
     private fun onRemoveTimer(date: Date) {
         if (scheduleList.size == 1) {
-            // TODO: Hardcode string
             Toast.makeText(
                 context,
-                "Se debe tener al menos una hora de toma",
+                getString(R.string.should_input_schedule),
                 Toast.LENGTH_SHORT
             ).show()
             return
@@ -370,10 +380,9 @@ class AddActiveMedFragment : Fragment() {
                 }.time
 
                 if (scheduleList.any { it.time == pickedTime.time }) {
-                    // TODO: Hardcode string
                     Toast.makeText(
                         context,
-                        "Atención: La hora de toma ya está añadida",
+                        getString(R.string.schedule_already_exists),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
@@ -411,7 +420,7 @@ class AddActiveMedFragment : Fragment() {
     private fun search() {
         val searchingToast: Toast = Toast.makeText(
             context,
-            R.string.buscando,
+            getString(R.string.searching),
             Toast.LENGTH_SHORT
         ).also { it.show() }
 
@@ -426,11 +435,10 @@ class AddActiveMedFragment : Fragment() {
                 this@AddActiveMedFragment.fetchedMed = fetchedMed
 
                 withContext(Dispatchers.Main) {
-                    //TODO: Hardcode string
                     if (fetchedMed == null) {
                         Toast.makeText(
                             context,
-                            "Medicamento no encontrado",
+                            getString(R.string.med_not_found),
                             Toast.LENGTH_SHORT
                         ).show()
                         return@withContext
@@ -456,10 +464,9 @@ class AddActiveMedFragment : Fragment() {
                     if (fetchedMed.esFavorito) {
                         binding.ivFavBg.visibility = View.VISIBLE
                         binding.favFrame.setOnClickListener {
-                            // TODO: Hardcode string
                             Toast.makeText(
                                 context,
-                                "Este medicamento ya está en favoritos",
+                                getString(R.string.med_already_on_fav),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -479,7 +486,7 @@ class AddActiveMedFragment : Fragment() {
                     searchingToast.cancel()
                     Toast.makeText(
                         context,
-                        R.string.codigo_nacional_no_valido, // TODO: a.k.a formato incorrecto by regex
+                        getString(R.string.invalid_national_drug_code),
                         Toast.LENGTH_SHORT
                     ).show()
 
@@ -490,16 +497,22 @@ class AddActiveMedFragment : Fragment() {
 
                 withContext(Dispatchers.Main) {
                     searchingToast.cancel()
-                    // TODO: Hardcode string
-                    Toast.makeText(context, "Error de conexión", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        getString(R.string.conection_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } catch (e: Exception) {
                 this@AddActiveMedFragment.fetchedMed = null
 
                 withContext(Dispatchers.Main) {
                     searchingToast.cancel()
-                    // TODO: Hardcode string
-                    Toast.makeText(context, "Error desconocido", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        getString(R.string.unknown_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } finally {
                 withContext(Dispatchers.Main) {

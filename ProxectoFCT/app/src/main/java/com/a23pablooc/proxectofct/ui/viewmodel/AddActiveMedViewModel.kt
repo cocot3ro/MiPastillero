@@ -19,7 +19,7 @@ class AddActiveMedViewModel @Inject constructor(
 
     suspend fun search(codNacional: String): MedicamentoItem? {
         if (!codNacionalPattern.matches(codNacional))
-            throw IllegalArgumentException("Invalid codNacional") // TODO: Hardcoded string
+            throw IllegalArgumentException("Invalid codNacional")
 
         return searchMedicamentoUseCase.invoke(codNacional.substringBefore('.').toLong())
     }

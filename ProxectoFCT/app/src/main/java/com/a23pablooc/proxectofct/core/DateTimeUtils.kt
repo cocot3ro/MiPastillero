@@ -4,7 +4,6 @@ import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import com.a23pablooc.proxectofct.R
-import com.a23pablooc.proxectofct.core.DateTimeUtils.formatShortTime
 import java.util.Date
 import kotlin.math.floor
 
@@ -18,7 +17,7 @@ object DateTimeUtils {
         }.get(Calendar.DAY_OF_WEEK)
 
         return if (dayOfWeek in Calendar.SUNDAY..Calendar.SATURDAY)
-            context.resources.getStringArray(R.array.dias_semana)[dayOfWeek - 1]
+            context.resources.getStringArray(R.array.days)[dayOfWeek - 1]
         else
             throw RuntimeException("Invalid day: $dayOfWeek")
     }

@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Manage users" /> <!-- TODO: Hardcode string -->
+        app:title="@string/manage_users" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -26,14 +26,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- TODO: Hardcode string -->
     <TextView
         android:id="@+id/empty_data_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="64dp"
         android:gravity="center"
-        android:text="No hay usuarios registrados"
+        android:text="@string/no_users"
         android:textSize="24sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

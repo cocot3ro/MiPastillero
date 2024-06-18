@@ -38,7 +38,7 @@
                         android:id="@+id/date_start_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/inicio"
+                        android:text="@string/start"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@id/dates_labels_guideline"
                         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +55,7 @@
                         android:id="@+id/date_end_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/fin"
+                        android:text="@string/end"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -77,7 +77,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:gravity="end"
-                        android:text="dd/MM/yyyy"
                         app:layout_constraintBottom_toTopOf="@id/dates_middle_guideline"
                         app:layout_constraintEnd_toStartOf="@id/dates_end_guideline"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -94,7 +93,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:gravity="end"
-                        android:text="dd/MM/yyyy"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/dates_end_guideline"
                         app:layout_constraintTop_toBottomOf="@id/dates_middle_guideline" />
@@ -133,12 +131,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <!-- TODO: Hardcode string -->
                     <TextView
                         android:id="@+id/tomas_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tomas:"
+                        android:text="@string/tomas"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -162,12 +159,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/cl_tomas">
 
-                    <!-- TODO: Hardcode string -->
                     <TextView
                         android:id="@+id/dosis_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dosis:"
+                        android:text="@string/dose_colon"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -197,7 +193,7 @@
                 android:id="@+id/schedule_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/horario"
+                android:text="@string/schedule"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

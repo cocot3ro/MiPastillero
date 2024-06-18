@@ -1,7 +1,9 @@
 package com.a23pablooc.proxectofct.ui.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DataStoreManager
 import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
@@ -54,12 +56,12 @@ class ManageUsersViewModel @Inject constructor(
         }
     }
 
-    fun fetchData() {
+    fun fetchData(context: Context) {
         viewModelScope.launch(Dispatchers.Main) {
             getUsersUseCase.invoke()
                 .catch {
-                    // TODO: Hardcode string
-                    _uiState.value = UiState.Error("Error fetching users from DB", it)
+                    _uiState.value =
+                        UiState.Error(context.getString(R.string.error_fetching_users), it)
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {

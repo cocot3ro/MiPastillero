@@ -22,7 +22,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:menu="@menu/menu_toolbar_calendar"
-            app:title="@string/calendario" />
+            app:title="@string/calendar" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"

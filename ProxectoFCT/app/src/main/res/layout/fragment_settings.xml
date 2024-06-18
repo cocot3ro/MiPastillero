@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.view.fragments.SettingsFragment">
 
-    <!-- TODO: Hardcode string -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         style="@style/Widget.MaterialComponents.Toolbar"
@@ -15,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Settings" />
+        app:title="@string/settings" />
 
     <ScrollView
         android:layout_width="0dp"
@@ -40,12 +39,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <!-- TODO: Hardcode string -->
                 <TextView
                     android:id="@+id/tv_images"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Imagenes"
+                    android:text="@string/images"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -77,23 +75,21 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <!-- TODO: Hardcode string -->
                             <TextView
                                 android:id="@+id/tv_use_images_label"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Usar imagenes"
+                                android:text="@string/use_images"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <!-- TODO: Hardcode string -->
                             <TextView
                                 android:id="@+id/tv_use_images_description"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Se descargarán imagenes de internet"
+                                android:text="@string/use_images_on"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/tv_use_images_label" />
 
@@ -128,23 +124,21 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <!-- TODO: Hardcode string -->
                             <TextView
                                 android:id="@+id/tv_hd_images_label"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Imagenes de alta calidad"
+                                android:text="@string/use_hd_images"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <!-- TODO: Hardcode string -->
                             <TextView
                                 android:id="@+id/tv_hd_images_description"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Se usarán imagenes de mayor calidad si estan disponibles"
+                                android:text="@string/use_hd_images_on"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/tv_hd_images_label" />
 
@@ -174,12 +168,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/settings_images">
 
-                <!-- TODO: Hardcode string -->
                 <TextView
                     android:id="@+id/tv_notifications"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Notificaciones"
+                    android:text="@string/notifications"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -211,23 +204,21 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <!-- TODO: Hardcode string -->
                             <TextView
                                 android:id="@+id/tv_use_notifications_label"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Recibir notificaciones"
+                                android:text="@string/use_notifications"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <!-- TODO: Hardcode string -->
                             <TextView
                                 android:id="@+id/tv_use_notifications_description"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Se notificará cada vez que se tenga que tomar un medicamento"
+                                android:text="@string/use_notifications_on"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/tv_use_notifications_label" />
 
@@ -257,12 +248,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/settings_notifications">
 
-                <!-- TODO: Hardcode string -->
                 <TextView
                     android:id="@+id/tv_users"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Usuarios"
+                    android:text="@string/users"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -287,23 +277,21 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <!-- TODO: Hardcode string -->
                         <TextView
                             android:id="@+id/tv_manage_users_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Manage users"
+                            android:text="@string/manage_users"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <!-- TODO: Hardcode string -->
                         <TextView
                             android:id="@+id/tv_manage_users_description"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Cambia nombres de usuarios y selecciona un usuario por defecto"
+                            android:text="@string/manage_users_desc"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_manage_users_label" />
 
@@ -314,6 +302,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
+                        android:contentDescription="TODO"
                         android:padding="6dp"
                         android:src="@drawable/open_in_new_32dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -340,7 +329,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <!-- TODO: Hardcode string -->
                         <Button
                             android:id="@+id/btn_delete_info"
                             android:layout_width="match_parent"
@@ -348,7 +336,7 @@
                             android:backgroundTint="@color/red_delete_bg"
                             android:gravity="center"
                             android:padding="6dp"
-                            android:text="Delete info"
+                            android:text="@string/delete_data"
                             android:textColor="@color/white"
                             android:textSize="18sp"
                             android:textStyle="bold" />

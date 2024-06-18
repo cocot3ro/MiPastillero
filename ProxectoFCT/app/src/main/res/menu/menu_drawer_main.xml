@@ -5,19 +5,19 @@
     <item
         android:id="@+id/addActiveMedFragment"
         android:icon="@drawable/outpatient_med_32dp"
-        android:title="@string/añadir_medicamento"
+        android:title="@string/add_med"
         app:showAsAction="withText" />
 
     <item
         android:id="@+id/diaryFragment"
         android:icon="@drawable/menu_book_32dp"
-        android:title="@string/agenda"
+        android:title="@string/diary"
         app:showAsAction="withText" />
 
     <item
         android:id="@+id/historyFragment"
         android:icon="@drawable/history_32dp"
-        android:title="@string/historial"
+        android:title="@string/history"
         app:showAsAction="withText" />
 
 </menu>

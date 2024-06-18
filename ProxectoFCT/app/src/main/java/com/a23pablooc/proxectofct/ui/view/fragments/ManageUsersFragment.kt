@@ -113,7 +113,7 @@ class ManageUsersFragment : Fragment(), CreateUserDialogFragment.OnDataEnteredLi
             }
         }
 
-        viewModel.fetchData()
+        viewModel.fetchData(requireContext())
 
         viewModel.trigger()
 

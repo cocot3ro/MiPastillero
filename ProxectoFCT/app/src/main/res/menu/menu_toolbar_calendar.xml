@@ -5,13 +5,13 @@
         <item
             android:id="@+id/search"
             android:icon="@drawable/search_32dp"
-            android:title="@string/buscar"
+            android:title="@string/search"
             app:showAsAction="always" />
 
         <item
             android:id="@+id/today"
             android:icon="@drawable/today_32dp"
-            android:title="@string/hoy"
+            android:title="@string/today"
             app:showAsAction="always" />
     </group>
 </menu>

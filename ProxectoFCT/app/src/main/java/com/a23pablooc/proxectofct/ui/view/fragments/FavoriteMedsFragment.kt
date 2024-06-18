@@ -148,7 +148,7 @@ class FavoriteMedsFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
-                    R.id.newFavMed -> {
+                    R.id.addActiveMed -> {
                         navController.navigate(R.id.addActiveMedFragment)
                         true
                     }

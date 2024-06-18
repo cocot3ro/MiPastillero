@@ -8,19 +8,19 @@
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.CalendarFragment"
-        android:label="@string/calendario"
+        android:label="@string/calendar"
         tools:layout="@layout/fragment_calendar" />
 
     <fragment
         android:id="@+id/activeMedsFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.ActiveMedsFragment"
-        android:label="@string/medicacion_activa"
+        android:label="@string/active_meds"
         tools:layout="@layout/fragment_active_meds" />
 
     <fragment
         android:id="@+id/favoriteMedsFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.FavoriteMedsFragment"
-        android:label="@string/favoritos"
+        android:label="@string/favorites"
         tools:layout="@layout/fragment_favorite_meds" />
 
 </navigation>

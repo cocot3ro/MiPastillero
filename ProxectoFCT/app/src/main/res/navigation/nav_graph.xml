@@ -5,11 +5,10 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/usersFragment">
 
-    <!-- TODO: Hardcode string -->
     <fragment
         android:id="@+id/usersFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.UsersFragment"
-        android:label="Usuarios"
+        android:label="@string/users"
         tools:layout="@layout/fragment_users" />
 
     <fragment
@@ -18,45 +17,40 @@
         android:label=""
         tools:layout="@layout/fragment_main_screen" />
 
-    <!-- TODO: Hardcode string -->
     <fragment
         android:id="@+id/manageUsersFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.ManageUsersFragment"
-        android:label="Usuarios"
+        android:label="@string/manage_users"
         tools:layout="@layout/fragment_manage_users" />
 
-    <!-- TODO: Hardcode string -->
     <fragment
         android:id="@+id/addActiveMedFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.AddActiveMedFragment"
-        android:label="Añadir medicamento"
+        android:label="@string/add_med"
         tools:layout="@layout/fragment_add_active_med" />
 
     <fragment
         android:id="@+id/medInfoFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.MedInfoFragment"
-        android:label="fragment_med_info"
+        android:label="@string/med_info"
         tools:layout="@layout/fragment_med_info" />
 
-    <!-- TODO: Hardcode string -->
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.SettingsFragment"
-        android:label="Settings"
+        android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
 
-    <!-- TODO: Hardcode string -->
     <fragment
         android:id="@+id/diaryFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.DiaryFragment"
-        android:label="Agenda"
+        android:label="@string/diary"
         tools:layout="@layout/fragment_diary" />
 
-    <!-- TODO: Hardcode string -->
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.HistoryFragment"
-        android:label="Historial"
+        android:label="@string/history"
         tools:layout="@layout/fragment_history" />
 
 </navigation>

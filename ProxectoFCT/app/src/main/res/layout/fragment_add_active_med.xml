@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.view.fragments.AddActiveMedFragment">
 
-    <!-- TODO: Hardcode string -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         style="@style/Widget.MaterialComponents.Toolbar"
@@ -15,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Añadir medicamento" />
+        app:title="@string/add_med" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
@@ -107,7 +106,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:autofillHints="name"
-                            android:hint="@string/codigo_nacional_opcional"
+                            android:hint="@string/national_drug_code"
                             android:inputType="numberDecimal"
                             android:maxLength="8"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -135,7 +134,7 @@
                     android:id="@+id/text_help"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/codigo_nacional_ayuda"
+                    android:text="@string/national_drug_code_help"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -178,7 +177,7 @@
                         android:id="@+id/nombre"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/nombre"
+                        android:hint="@string/med_name"
                         android:importantForAutofill="no"
                         android:inputType="textMultiLine"
                         android:minHeight="48dp"
@@ -194,7 +193,7 @@
                 android:id="@+id/dosis"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/dosis"
+                android:hint="@string/dose"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -220,7 +219,7 @@
                         android:id="@+id/date_start_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/inicio"
+                        android:text="@string/start"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@id/dates_labels_guideline"
                         app:layout_constraintStart_toStartOf="parent"
@@ -237,7 +236,7 @@
                         android:id="@+id/date_end_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/fin"
+                        android:text="@string/end"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -258,7 +257,6 @@
                         android:id="@+id/date_start"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="dd/MM/yyyy"
                         app:layout_constraintBottom_toTopOf="@id/dates_guideline"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -274,7 +272,6 @@
                         android:id="@+id/date_end"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="dd/MM/yyyy"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/dates_guideline" />
@@ -344,7 +341,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="8dp"
-                        android:text="@string/horario"
+                        android:text="@string/schedule"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/btn_add_timer"
