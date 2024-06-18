@@ -1,5 +1,8 @@
 # Referencias
+[Imaxe da aplicación](https://www.flaticon.es/iconos-gratis/medicamento) foi tomada de Flaticon.com
+
 [CIMA](https://cima.aemps.es/cima/publico/home.htm)
+
 [CIMA REST API](https://www.aemps.gob.es/apps/cima/docs/CIMA_REST_API.pdf)
 
 [RecyclerView](https://developer.android.com/develop/ui/views/layout/recyclerview?hl=es-419)
