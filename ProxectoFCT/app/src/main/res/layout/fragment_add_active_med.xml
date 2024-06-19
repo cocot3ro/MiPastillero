@@ -57,36 +57,22 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <FrameLayout
-                        android:id="@+id/imgLayout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/img"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:contentDescription="@string/med_img"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/hide_image_80dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageView
-                            android:id="@+id/img"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:contentDescription="TODO"
-                            android:scaleType="centerCrop"
-                            android:src="@mipmap/no_image_available" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@android:color/transparent"
-                            android:contentDescription="TODO"
-                            android:src="@drawable/image_search_24dp" />
-
-                    </FrameLayout>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/codsLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/imgLayout"
+                        app:layout_constraintStart_toEndOf="@id/img"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <ImageButton
@@ -94,8 +80,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:background="@android:color/transparent"
-                            android:contentDescription="TODO"
-                            android:padding="6dp"
+                            android:contentDescription="@string/search_med_by_cn"
+                            android:padding="8dp"
                             android:src="@drawable/search_32dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -109,6 +95,8 @@
                             android:hint="@string/national_drug_code"
                             android:inputType="numberDecimal"
                             android:maxLength="8"
+                            android:minHeight="48dp"
+                            android:textColorHint="#78909C"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@id/btn_help"
                             app:layout_constraintStart_toEndOf="@id/btn_search"
@@ -119,8 +107,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
-                            android:contentDescription="TODO"
-                            android:padding="6dp"
+                            android:contentDescription="@string/help"
+                            android:padding="8dp"
                             android:src="@drawable/help_32dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -153,6 +141,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:clickable="true"
+                        android:contentDescription="@string/button_to_fav"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -161,7 +150,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
-                            android:contentDescription="TODO"
+                            android:importantForAccessibility="no"
                             android:src="@drawable/star_on_48dp"
                             android:visibility="gone" />
 
@@ -169,7 +158,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
-                            android:contentDescription="TODO"
+                            android:importantForAccessibility="no"
                             android:src="@drawable/star_off_48dp" />
                     </FrameLayout>
 
@@ -181,9 +170,11 @@
                         android:importantForAutofill="no"
                         android:inputType="textMultiLine"
                         android:minHeight="48dp"
+                        android:textColorHint="#78909C"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/fav_frame"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="VisualLintTextFieldSize" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -196,9 +187,11 @@
                 android:hint="@string/dose"
                 android:importantForAutofill="no"
                 android:inputType="text"
+                android:minHeight="48dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/header" />
+                app:layout_constraintTop_toBottomOf="@id/header"
+                tools:ignore="VisualLintTextFieldSize" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/dates_layout"
@@ -291,8 +284,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:contentDescription="TODO"
-                        android:padding="6dp"
+                        android:contentDescription="@string/select_start_date"
+                        android:padding="8dp"
                         android:src="@drawable/edit_calendar_32dp"
                         app:layout_constraintBottom_toTopOf="@id/guideline3"
                         app:layout_constraintStart_toStartOf="parent"
@@ -310,8 +303,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:contentDescription="TODO"
-                        android:padding="6dp"
+                        android:contentDescription="@string/select_end_date"
+                        android:padding="8dp"
                         android:src="@drawable/edit_calendar_32dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -354,8 +347,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:background="@android:color/transparent"
-                        android:contentDescription="TODO"
-                        android:padding="6dp"
+                        android:contentDescription="@string/add_time_to_schedule"
+                        android:padding="8dp"
                         android:src="@drawable/playlist_add_32dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -398,8 +391,9 @@
             android:layout_gravity="end|bottom"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:contentDescription="TODO"
-            android:src="@drawable/medication_32dp" />
+            android:contentDescription="@string/add_med"
+            android:src="@drawable/medication_32dp"
+            tools:ignore="DuplicateSpeakableTextCheck" />
 
     </androidx.cardview.widget.CardView>
 

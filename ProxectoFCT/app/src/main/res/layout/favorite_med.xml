@@ -18,9 +18,9 @@
             android:id="@+id/img"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/med_img"
             android:scaleType="centerCrop"
-            android:src="@mipmap/no_image_available"
+            android:src="@drawable/hide_image_80dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,8 +48,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:background="@android:color/transparent"
-                android:contentDescription="TODO"
-                android:padding="6dp"
+                android:contentDescription="@string/info_about_med"
+                android:padding="8dp"
                 android:src="@drawable/info_32dp" />
 
             <ImageButton
@@ -57,8 +57,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:contentDescription="TODO"
-                android:padding="6dp"
+                android:contentDescription="@string/use_med"
+                android:padding="8dp"
                 android:src="@drawable/playlist_add_32dp" />
 
         </LinearLayout>

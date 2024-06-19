@@ -86,6 +86,26 @@
     <string name="see">Ver</string>
     <string name="see_leaflet">Ver o prospecto</string>
     <string name="active_principles">Principios activos</string>
+    <string name="info_about_med">Información sobre el medicamento</string>
+    <string name="button_to_fav">Botón para marcar como favorito</string>
+    <string name="med_img">Imágen del medicamento</string>
+    <string name="use_med">Usar medicamento</string>
+    <string name="add_time_to_schedule">Añadir hora de toma</string>
+    <string name="select_start_date">Seleccionar fecha de inicio</string>
+    <string name="select_end_date">Seleccionar fecha de fin</string>
+    <string name="help">Ayuda</string>
+    <string name="search_med_by_cn">Buscar medicamento por código nacional</string>
+    <string name="select_this_user_as_default">Seleccionar este usuario como predeterminado</string>
+    <string name="save_changes">Guardar cambios</string>
+    <string name="new_user">Nuevo usuario</string>
+    <string name="med_with_prescription">Medicamento sujeto a prescripción médica</string>
+    <string name="med_can_affect_driving">El medicamento puede afectar a la capacidad de conducción</string>
+    <string name="see_online">Ver en la web</string>
+    <string name="goto_manage_users">Ir a la gestión de usuarios</string>
+    <string name="delete_this_user">Borrar este usuario</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="delete_this_schedule_time">Elimiar esta hora de toma</string>
+    <string name="change_schedule_time">Cambiar hora de toma</string>
     <string-array name="days">
         <item>Luns</item>
         <item>Martes</item>

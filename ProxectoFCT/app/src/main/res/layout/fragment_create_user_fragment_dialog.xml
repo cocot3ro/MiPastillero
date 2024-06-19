@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -25,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:contentDescription="TODO"
+                android:importantForAccessibility="no"
                 android:src="@drawable/account_circle_72dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,6 +39,7 @@
                 android:clickable="true"
                 android:minWidth="48dp"
                 android:minHeight="48dp"
+                android:contentDescription="@string/select_this_user_as_default"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -46,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:contentDescription="TODO"
+                    android:importantForAccessibility="no"
                     android:src="@drawable/star_on_32dp"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -58,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:contentDescription="TODO"
+                    android:importantForAccessibility="no"
                     android:src="@drawable/star_off_32dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -77,12 +79,14 @@
                 android:hint="@string/user_name"
                 android:inputType="textMultiLine"
                 android:maxLength="30"
+                android:textColorHint="#78909C"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_user_avatar" />
+                app:layout_constraintTop_toBottomOf="@id/iv_user_avatar"
+                tools:ignore="VisualLintBounds" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

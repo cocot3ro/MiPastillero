@@ -109,22 +109,7 @@ class AddActiveMedFragment : Fragment() {
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         binding.toolbar.setupWithNavController(findNavController())
 
-        binding.imgLayout.setOnClickListener {
-            pickMedia.launch(
-                PickVisualMediaRequest(
-                    ActivityResultContracts.PickVisualMedia.ImageOnly
-                )
-            )
-        }
-
-        binding.imgLayout.setOnLongClickListener {
-            Toast.makeText(
-                context,
-                getString(R.string.select_img_from_device),
-                Toast.LENGTH_SHORT
-            ).show()
-            true
-        }
+        binding.img.setOnClickListener { selectImg() }
 
         binding.btnHelp.setOnClickListener { toggleHelp() }
 
@@ -224,6 +209,8 @@ class AddActiveMedFragment : Fragment() {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                     menuInflater.inflate(R.menu.menu_toolbar_add_active_med_land, menu)
+                } else {
+                    menuInflater.inflate(R.menu.menu_toolbar_add_active_med, menu)
                 }
             }
 
@@ -234,10 +221,19 @@ class AddActiveMedFragment : Fragment() {
                         true
                     }
 
+                    R.id.select_image -> {
+                        selectImg()
+                        true
+                    }
+
                     else -> false
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun selectImg() {
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     private suspend fun save() {
@@ -450,7 +446,8 @@ class AddActiveMedFragment : Fragment() {
                     binding.nombre.setText(fetchedMed.nombre)
 
                     if (fetchedMed.imagen.toString().startsWith(CimaApiDefinitions.BASE_URL)
-                        || fetchedMed.imagen.toString().startsWith(InternalStorageDefinitions.FILE_PREFIX)
+                        || fetchedMed.imagen.toString()
+                            .startsWith(InternalStorageDefinitions.FILE_PREFIX)
                     ) {
                         Glide.with(requireContext())
                             .load(fetchedMed.imagen)
@@ -458,7 +455,7 @@ class AddActiveMedFragment : Fragment() {
 
                         image = fetchedMed.imagen
                     } else {
-                        binding.img.setImageResource(R.mipmap.no_image_available)
+                        binding.img.setImageResource(R.drawable.hide_image_80dp)
                         image = Uri.EMPTY
                     }
 

@@ -25,9 +25,9 @@
                 android:id="@+id/medImg"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:contentDescription="TODO"
+                android:contentDescription="@string/med_img"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/no_image_available"
+                android:src="@drawable/hide_image_80dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,8 +46,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:contentDescription="TODO"
-                android:padding="6dp"
+                android:contentDescription="@string/help"
+                android:padding="8dp"
                 android:src="@drawable/info_32dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

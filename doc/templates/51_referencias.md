@@ -1,8 +1,6 @@
 # Referencias
 
-**Imaxes**
-
-Tanto a [imaxe da aplicación](https://www.flaticon.es/icono-gratis/pastillas_5157673) como a [_imaxe por defecto_](https://www.flaticon.es/icono-gratis/imagen_10701484), que se mostra cando no hai unha imaxe dispoñible, pertencen a [Flaticon](https://www.flaticon.es/)
+A [imaxe da aplicación](https://www.flaticon.es/icono-gratis/pastillas_5157673) pertence a un [paquete de imaxes](https://www.flaticon.es/iconos-gratis/medicamento) gratuitas de [Flaticon](https://www.flaticon.com/)
 
 [Iconos de Google Fonts](https://fonts.google.com/icons)
 
