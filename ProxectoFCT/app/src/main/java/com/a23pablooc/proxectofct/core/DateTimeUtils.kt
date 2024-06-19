@@ -4,8 +4,9 @@ import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import com.a23pablooc.proxectofct.R
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 import java.util.Date
-import kotlin.math.floor
 
 object DateTimeUtils {
 
@@ -43,7 +44,10 @@ object DateTimeUtils {
     }
 
     fun daysBetweenDates(startDate: Date, endDate: Date): Int {
-        return floor((endDate.time - startDate.time) / (1000 * 60 * 60 * 24).toDouble()).toInt()
+        val startLocalDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+        val endLocalDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+
+        return ChronoUnit.DAYS.between(startLocalDate, endLocalDate).toInt()
     }
 
     fun Date.get(value: Int): Int {
@@ -55,9 +59,7 @@ object DateTimeUtils {
     }
 
     fun Date.isToday(): Boolean {
-        val today = Calendar.getInstance().apply {
-            time = now
-        }
+        val today = now
 
         val date = Calendar.getInstance().apply {
             time = this@isToday
