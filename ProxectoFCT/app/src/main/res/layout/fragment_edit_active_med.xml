@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.fragments.ReuseMedFragment">
+    tools:context=".ui.view.fragments.EditActiveMedFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/add_med" />
+        app:title="@string/edit_active_med" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
@@ -52,12 +52,24 @@
                 <TextView
                     android:id="@+id/nombre"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    android:layout_marginTop="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/ib_info"
                     app:layout_constraintStart_toEndOf="@id/img"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/ib_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/help"
+                    android:padding="8dp"
+                    android:src="@drawable/info_32dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -267,14 +279,15 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_add_active_med"
+            android:id="@+id/fab_save_changes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:contentDescription="@string/add_med"
-            android:src="@drawable/medication_32dp"
+            android:contentDescription="@string/save_changes"
+            android:src="@drawable/save_32dp"
+            android:visibility="invisible"
             tools:ignore="DuplicateSpeakableTextCheck" />
 
     </androidx.cardview.widget.CardView>

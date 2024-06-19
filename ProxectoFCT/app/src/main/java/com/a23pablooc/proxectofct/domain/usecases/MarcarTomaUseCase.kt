@@ -30,6 +30,6 @@ class MarcarTomaUseCase @Inject constructor(private val repository: PillboxDbRep
 
         med.tomas[timeStamp] = value ?: med.tomas[timeStamp]?.not() ?: true
 
-        repository.updateMed(med)
+        repository.updateMedicamentoActivo(med)
     }
 }

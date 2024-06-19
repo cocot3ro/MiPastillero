@@ -218,7 +218,7 @@ class AddActiveMedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+        (activity as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                     menuInflater.inflate(R.menu.menu_toolbar_add_active_med_land, menu)

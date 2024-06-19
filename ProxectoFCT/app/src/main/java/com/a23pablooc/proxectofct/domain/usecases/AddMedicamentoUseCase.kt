@@ -52,7 +52,7 @@ class AddMedicamentoUseCase @Inject constructor(
                 }
             }
 
-            repository.updateMedicamento(med.fkMedicamento)
+            repository.updateMedicamentoActivo(med.fkMedicamento)
         }
     }
 

@@ -105,6 +105,7 @@
     <string name="logout">Cerrar sesión</string>
     <string name="delete_this_schedule_time">Elimiar esta hora de toma</string>
     <string name="change_schedule_time">Cambiar hora de toma</string>
+    <string name="edit_active_med">Modificar medicamento</string>
     <string-array name="days">
         <item>Monday</item>
         <item>Tuesday</item>

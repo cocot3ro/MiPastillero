@@ -32,7 +32,7 @@ class PillboxDbRepository @Inject constructor(
     private val userInfoProvider: UserInfoProvider
 ) {
 
-    suspend fun updateMed(med: MedicamentoActivoItem) {
+    suspend fun updateMedicamentoActivo(med: MedicamentoActivoItem) {
         medicamentoActivoDAO.update(med.toDatabase().medicamentosActivos[0])
     }
 
@@ -73,7 +73,7 @@ class PillboxDbRepository @Inject constructor(
         return medicamentoDAO.upsert(med.toDatabase())
     }
 
-    suspend fun updateMedicamento(medicamento: MedicamentoItem) {
+    suspend fun updateMedicamentoActivo(medicamento: MedicamentoItem) {
         medicamentoDAO.update(medicamento.toDatabase())
     }
 

@@ -105,14 +105,12 @@ class ActiveMedsFragment : Fragment() {
 
         activeRecyclerViewAdapter = ActiveMedsRecyclerViewAdapter(
             list = emptyList(),
-            onFav = {
-                viewModel.toggleFavMed(it.fkMedicamento)
-            },
+            onFav = { viewModel.toggleFavMed(it.fkMedicamento) },
             onInfo = {
-                navController.navigate(R.id.medInfoFragment, Bundle().apply {
+                navController.navigate(R.id.editActiveMedFragment, Bundle().apply {
                     putString(
-                        MedInfoFragment.BundleKeys.MED_KEY,
-                        gson.toJson(it.fkMedicamento, MedicamentoItem::class.java)
+                        EditActiveMedFragment.BundleKeys.MED_KEY,
+                        gson.toJson(it, MedicamentoActivoItem::class.java)
                     )
                 })
             }
