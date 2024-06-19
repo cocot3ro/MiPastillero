@@ -1,6 +1,8 @@
 # Referencias
 A [imaxe da aplicación](https://www.flaticon.es/icono-gratis/pastillas_5157673) pertence a un [paquete de imaxes](https://www.flaticon.es/iconos-gratis/medicamento) gratuitas de [Flaticon](https://www.flaticon.com/)
 
+[Iconos de Google Fonts](https://fonts.google.com/icons)
+
 [CIMA](https://cima.aemps.es/cima/publico/home.htm)
 
 [CIMA REST API](https://www.aemps.gob.es/apps/cima/docs/CIMA_REST_API.pdf)
