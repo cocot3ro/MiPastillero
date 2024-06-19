@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,7 +62,8 @@ class MedInfoFragment : Fragment() {
 
         binding.toolbar.setupWithNavController(findNavController())
 
-        Glide.with(requireContext()).load(med.imagen).into(binding.img)
+        if (med.imagen.toString().isNotBlank())
+            Glide.with(requireContext()).load(med.imagen).into(binding.img)
 
         binding.nombre.text = med.nombre
 

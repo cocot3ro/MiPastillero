@@ -69,7 +69,7 @@ class PillboxDbRepository @Inject constructor(
         medicamentoActivoDAO.insert(med)
     }
 
-    suspend fun addMedicamento(med: MedicamentoItem): Long {
+    suspend fun upsertMedicamento(med: MedicamentoItem): Long {
         return medicamentoDAO.upsert(med.toDatabase())
     }
 

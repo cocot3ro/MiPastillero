@@ -17,6 +17,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.MenuHost
@@ -62,6 +63,8 @@ class AddActiveMedFragment : Fragment() {
     private lateinit var binding: FragmentAddActiveMedBinding
     private val viewModel: AddActiveMedViewModel by viewModels()
 
+    private lateinit var navController: NavController
+
     private var scheduleList: List<Date> = listOf(
         Calendar.getInstance().apply {
             set(0, 0, 0, 8, 0, 0)
@@ -91,8 +94,6 @@ class AddActiveMedFragment : Fragment() {
         const val DATE_END = "date_end"
         const val SCHEDULE = "schedule"
     }
-
-    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -138,9 +139,14 @@ class AddActiveMedFragment : Fragment() {
 
         binding.btnAddTimer.setOnClickListener { onAddTimer() }
 
-        DateTimeUtils.now.formatDate().let {
-            binding.dateStart.text = it
-            binding.dateEnd.text = it
+        DateTimeUtils.now.let { now ->
+            binding.dateStart.text = now.formatDate()
+            Calendar.getInstance().apply {
+                time = now
+                add(Calendar.DAY_OF_MONTH, 7)
+            }.time.let { plusSeven ->
+                binding.dateEnd.text = plusSeven.formatDate()
+            }
         }
 
         binding.fabAddActiveMed?.setOnClickListener { onAdd() }
@@ -152,10 +158,18 @@ class AddActiveMedFragment : Fragment() {
 
     private fun onAdd() {
         if (saving) return
-
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             if (validateForm()) {
+
+                val dialog = AlertDialog.Builder(requireContext())
+                    .setCancelable(false)
+                    .setView(R.layout.saving_dialog)
+                    .show()
+
                 save()
+
+                dialog.dismiss()
+
                 navController.popBackStack()
             }
         }
@@ -204,8 +218,7 @@ class AddActiveMedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val menuHost: MenuHost = requireActivity()
-        menuHost.addMenuProvider(object : MenuProvider {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                     menuInflater.inflate(R.menu.menu_toolbar_add_active_med_land, menu)
