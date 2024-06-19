@@ -20,7 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="8dp"
-        app:layout_constraintBottom_toTopOf="@id/fab_save"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
@@ -61,74 +61,73 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <FrameLayout
-                            android:id="@+id/imgLayout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <ImageView
+                            android:id="@+id/img"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:contentDescription="TODO"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/no_image_available"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <ImageView
-                                android:id="@+id/img"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:contentDescription="TODO"
-                                android:scaleType="centerCrop"
-                                android:src="@mipmap/no_image_available" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@android:color/transparent"
-                                android:contentDescription="TODO"
-                                android:src="@drawable/image_search_24dp" />
-
-                        </FrameLayout>
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/codNacionalLayout"
+                            android:id="@+id/codsLayout"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/imgLayout"
+                            app:layout_constraintStart_toEndOf="@id/img"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <ImageButton
-                                android:id="@+id/btn_search"
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:background="@android:color/transparent"
-                                android:contentDescription="TODO"
-                                android:padding="6dp"
-                                android:src="@drawable/search_32dp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <EditText
-                                android:id="@+id/codNacional"
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/nreg_layout"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:autofillHints="name"
-                                android:hint="@string/national_drug_code"
-                                android:inputType="numberDecimal"
-                                android:maxLength="8"
+                                android:layout_height="0dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toStartOf="@id/btn_help"
-                                app:layout_constraintStart_toEndOf="@id/btn_search"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintEnd_toStartOf="@id/cods_guideline"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
 
-                            <ImageButton
-                                android:id="@+id/btn_help"
+                                <TextView
+                                    android:id="@+id/nreg_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textStyle="bold"
+                                    android:text="@string/nregistro"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.Guideline
+                                android:id="@+id/cods_guideline"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@android:color/transparent"
-                                android:contentDescription="TODO"
-                                android:padding="6dp"
-                                android:src="@drawable/help_32dp"
+                                android:orientation="vertical"
+                                app:layout_constraintGuide_percent="0.5" />
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/cn_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintStart_toEndOf="@id/cods_guideline"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:id="@+id/cn_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textStyle="bold"
+                                    android:text="@string/national_drug_code"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -152,41 +151,12 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/text_help">
 
-                        <FrameLayout
-                            android:id="@+id/fav_frame"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="true"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <ImageView
-                                android:id="@+id/iv_fav_bg"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@android:color/transparent"
-                                android:contentDescription="TODO"
-                                android:src="@drawable/star_on_48dp"
-                                android:visibility="gone" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@android:color/transparent"
-                                android:contentDescription="TODO"
-                                android:src="@drawable/star_off_48dp" />
-                        </FrameLayout>
-
-                        <EditText
+                        <TextView
                             android:id="@+id/nombre"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:hint="Nombre"
-                            android:importantForAutofill="no"
-                            android:inputType="textMultiLine"
-                            android:minHeight="48dp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/fav_frame"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -385,16 +355,5 @@
         </ScrollView>
 
     </androidx.cardview.widget.CardView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="TODO"
-        android:src="@drawable/save_32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

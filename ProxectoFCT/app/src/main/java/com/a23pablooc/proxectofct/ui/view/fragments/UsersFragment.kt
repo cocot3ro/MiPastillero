@@ -46,7 +46,10 @@ class UsersFragment : Fragment(), CreateUserDialogFragment.OnDataEnteredListener
     private lateinit var adapter: UserRecyclerViewAdapter
 
     private var firstTime: Boolean = true
-    private val firstTimeKey = "firstTime"
+
+    private object BundleKeys {
+        const val FIRST_TIME_KEY = "firstTime"
+    }
 
     private val onSelectUser: (UsuarioItem) -> Unit = {
         viewModel.selectUser(it)
@@ -56,13 +59,13 @@ class UsersFragment : Fragment(), CreateUserDialogFragment.OnDataEnteredListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState != null) {
-            firstTime = savedInstanceState.getBoolean(firstTimeKey, true)
+            firstTime = savedInstanceState.getBoolean(BundleKeys.FIRST_TIME_KEY, true)
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putBoolean(firstTimeKey, firstTime)
+        outState.putBoolean(BundleKeys.FIRST_TIME_KEY, firstTime)
     }
 
     override fun onCreateView(
@@ -155,7 +158,7 @@ class UsersFragment : Fragment(), CreateUserDialogFragment.OnDataEnteredListener
             }
         }
 
-        viewModel.fetchData()
+        viewModel.fetchData(requireContext())
 
         viewModel.trigger()
 

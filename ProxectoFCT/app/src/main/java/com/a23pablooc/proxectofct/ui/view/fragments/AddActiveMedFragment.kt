@@ -119,7 +119,7 @@ class AddActiveMedFragment : Fragment() {
         binding.imgLayout.setOnLongClickListener {
             Toast.makeText(
                 context,
-                getString(R.string.select_img_frmo_device),
+                getString(R.string.select_img_from_device),
                 Toast.LENGTH_SHORT
             ).show()
             true
@@ -499,7 +499,7 @@ class AddActiveMedFragment : Fragment() {
                     searchingToast.cancel()
                     Toast.makeText(
                         context,
-                        getString(R.string.conection_error),
+                        getString(R.string.connection_error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }

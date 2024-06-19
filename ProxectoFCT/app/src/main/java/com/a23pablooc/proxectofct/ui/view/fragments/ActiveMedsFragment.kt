@@ -73,7 +73,6 @@ class ActiveMedsFragment : Fragment() {
         binding.navView.apply {
             setNavigationItemSelectedListener { item ->
                 when (item.itemId) {
-
                     R.id.addActiveMedFragment,
                     R.id.historyFragment,
                     R.id.diaryFragment -> {
@@ -109,7 +108,7 @@ class ActiveMedsFragment : Fragment() {
             },
             onInfo = {
                 navController.navigate(R.id.medInfoFragment, Bundle().apply {
-//                    viewModel.gson
+                    putString(MedInfoFragment.BundleKeys.ACTIVE_MED_KEY, gson.toJson(it, MedicamentoActivoItem::class.java))
                 })
             }
         )
@@ -147,7 +146,7 @@ class ActiveMedsFragment : Fragment() {
             }
         }
 
-        viewModel.fetchData()
+        viewModel.fetchData(requireContext())
 
         return binding.root
     }

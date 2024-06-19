@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentManageUsersBinding
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.ui.view.adapters.ManageUserRecyclerViewAdapter
@@ -47,6 +48,7 @@ class ManageUsersFragment : Fragment(), CreateUserDialogFragment.OnDataEnteredLi
 
         lifecycleScope.launch(Dispatchers.Main) {
             adapter = ManageUserRecyclerViewAdapter(
+                context = requireContext(),
                 list = emptyList(),
                 onSaveUserFlow = viewModel.onSaveChangesFlow,
                 onSaveUser = { viewModel.saveUser(it) },
@@ -77,8 +79,7 @@ class ManageUsersFragment : Fragment(), CreateUserDialogFragment.OnDataEnteredLi
             binding.fabSave.setOnClickListener {
                 viewModel.triggerSave()
 
-                // TODO: Hardcode string
-                Toast.makeText(context, "Changes saved", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.changes_saved), Toast.LENGTH_SHORT).show()
 
                 binding.fabSave.hide()
             }

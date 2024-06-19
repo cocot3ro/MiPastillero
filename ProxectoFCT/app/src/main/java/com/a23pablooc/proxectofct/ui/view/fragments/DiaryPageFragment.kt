@@ -96,18 +96,14 @@ class DiaryPageFragment : Fragment() {
 
                         is UiState.Error -> {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(
-                                context,
-                                "Error fetching diary entry from DB",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_LONG).show()
                         }
                     }
                 }
             }
         }
 
-        viewModel.fetchData(savedDate)
+        viewModel.fetchData(requireContext(), savedDate)
 
         return binding.root
     }

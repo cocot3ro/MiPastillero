@@ -79,7 +79,7 @@ class HistoryFragment : Fragment() {
             }
         }
 
-        viewModel.fetchData()
+        viewModel.fetchData(requireContext())
 
         return binding.root
     }

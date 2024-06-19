@@ -1,9 +1,10 @@
 package com.a23pablooc.proxectofct.ui.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DataStoreManager
-import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import com.a23pablooc.proxectofct.domain.usecases.CreateUserUseCase
 import com.a23pablooc.proxectofct.domain.usecases.GetUsersUseCase
@@ -31,7 +32,8 @@ class UsersViewModel @Inject constructor(
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState
 
-    private val _onChangeDefaultUserFlow: MutableStateFlow<Long> = MutableStateFlow(DataStoreManager.Defaults.DEFAULT_USER_ID)
+    private val _onChangeDefaultUserFlow: MutableStateFlow<Long> =
+        MutableStateFlow(DataStoreManager.Defaults.DEFAULT_USER_ID)
     val onChangeDefaultUserFlow: StateFlow<Long> = _onChangeDefaultUserFlow
 
     fun selectUser(user: UsuarioItem) {
@@ -40,12 +42,12 @@ class UsersViewModel @Inject constructor(
         }
     }
 
-    fun fetchData() {
+    fun fetchData(context: Context) {
         viewModelScope.launch(Dispatchers.Main) {
             getUsersUseCase.invoke()
                 .catch {
                     _uiState.value =
-                        UiState.Error("Error fetching users from DB", it) // TODO: Hardcode string
+                        UiState.Error(context.getString(R.string.error_fetching_users), it)
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {

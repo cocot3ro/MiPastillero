@@ -33,7 +33,7 @@ class DeleteUserDialogFragment(
         try {
             listener = parentFragment as OnUserDeletedListener
         } catch (e: ClassCastException) {
-            throw ClassCastException(("$context must implement OnDataEnteredListener"))
+            throw ClassCastException("$context must implement OnDataEnteredListener")
         }
     }
 
@@ -41,9 +41,9 @@ class DeleteUserDialogFragment(
         return activity?.let {
             AlertDialog.Builder(it).apply {
                 setView(createView())
-                setTitle("Borrar usuario") // TODO: Hardcode string
-                setPositiveButton(R.string.aceptar, null)
-                setNegativeButton(R.string.cancelar, null)
+                setTitle(getString(R.string.delete_user))
+                setPositiveButton(R.string.accept, null)
+                setNegativeButton(R.string.cancel, null)
             }.create().apply {
                 setOnShowListener {
                     setUpPositiveButton(this)

@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.a23pablooc.proxectofct.databinding.FragmentMedInfoBinding
+import com.a23pablooc.proxectofct.ui.viewmodel.MedInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -16,6 +17,11 @@ class MedInfoFragment : Fragment() {
 
     private lateinit var binding: FragmentMedInfoBinding
     private val viewModel: MedInfoViewModel by viewModels()
+
+    object BundleKeys {
+        const val MED_KEY = "med_key"
+        const val ACTIVE_MED_KEY = "active_med_key"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -1,7 +1,9 @@
 package com.a23pablooc.proxectofct.ui.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.domain.model.AgendaItem
 import com.a23pablooc.proxectofct.domain.usecases.GetDiaryUseCase
 import com.a23pablooc.proxectofct.domain.usecases.SaveDiaryUseCase
@@ -24,12 +26,12 @@ class DiaryPageViewModel @Inject constructor(
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState
 
-    fun fetchData(date: Date) {
+    fun fetchData(context: Context, date: Date) {
         viewModelScope.launch(Dispatchers.Main) {
             getDiaryUseCase.invoke(date)
                 .catch {
                     _uiState.value =
-                        UiState.Error("Error fetching calendar meds from DB", it)
+                        UiState.Error(context.getString(R.string.error_fetching_meds), it)
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {

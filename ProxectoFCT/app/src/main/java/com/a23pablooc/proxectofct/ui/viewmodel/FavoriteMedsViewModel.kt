@@ -1,7 +1,9 @@
 package com.a23pablooc.proxectofct.ui.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.domain.usecases.GetFavoriteMedsUseCase
 import com.a23pablooc.proxectofct.ui.view.states.UiState
@@ -25,12 +27,12 @@ class FavoriteMedsViewModel @Inject constructor(
 
     val uiState: StateFlow<UiState> = _uiState
 
-    fun fetchData() {
+    fun fetchData(context: Context) {
         viewModelScope.launch(Dispatchers.Main) {
             getFavoriteMedsUseCase.invoke()
                 .catch {
                     _uiState.value = UiState
-                        .Error("Error fetching favorite meds", it)
+                        .Error(context.getString(R.string.error_fetching_meds), it)
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {

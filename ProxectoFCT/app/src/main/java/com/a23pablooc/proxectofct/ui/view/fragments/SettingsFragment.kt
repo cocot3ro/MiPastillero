@@ -50,23 +50,21 @@ class SettingsFragment : Fragment(), DeleteDataDialogFragment.OnDeleteDataListen
 
         navController = findNavController()
 
-        // Register the callback to handle back press events
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (changes.isEmpty()) {
                     isEnabled = false
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                 } else {
-                    // TODO: Hardcode string
                     AlertDialog.Builder(requireContext())
-                        .setTitle("Descartar cambios")
-                        .setMessage("¿Estás seguro de que quieres descartar los cambios?")
-                        .setPositiveButton("Descartar cambios") { _, _ ->
+                        .setTitle(getString(R.string.discard))
+                        .setMessage(getString(R.string.ensure_discard_changes))
+                        .setPositiveButton(getString(R.string.discard)) { _, _ ->
                             changes.clear()
                             isEnabled = false
                             requireActivity().onBackPressedDispatcher.onBackPressed()
                         }
-                        .setNegativeButton("Cancelar", null)
+                        .setNegativeButton(getString(R.string.cancel), null)
                         .show()
                 }
             }
@@ -181,19 +179,23 @@ class SettingsFragment : Fragment(), DeleteDataDialogFragment.OnDeleteDataListen
             mapSettings[DataStoreManager.PreferencesKeys.USE_NOTIFICATIONS] as Boolean
 
         binding.swUseImages.isChecked = useImages
-        // TODO: Hardcode string
+
         binding.tvUseImagesDescription.text =
-            if (useImages) "Permite la descarga de imagenes de internet"
-            else "Solo se usaran imagenes locales"
+            if (useImages) getString(R.string.use_images_on)
+            else getString(R.string.use_images_off)
 
         binding.swHdImages.isChecked = useHdImages
         binding.clHdImages.visibility = if (useImages) View.VISIBLE else View.GONE
-        // TODO: Hardcode string
+
         binding.tvHdImagesDescription.text =
-            if (useHdImages) "Se usarán imagenes de mayor calidad si estan disponibles"
-            else "Se descargaran imagenes en baja calidad"
+            if (useHdImages) getString(R.string.use_hd_images_on)
+            else getString(R.string.use_hd_images_off)
 
         binding.swUseNotifications.isChecked = useNotifications
+
+        binding.tvUseNotificationsDescription.text =
+            if (useNotifications) getString(R.string.use_notifications_on)
+            else getString(R.string.use_notifications_off)
     }
 
     private fun toggleChange(value: String) {

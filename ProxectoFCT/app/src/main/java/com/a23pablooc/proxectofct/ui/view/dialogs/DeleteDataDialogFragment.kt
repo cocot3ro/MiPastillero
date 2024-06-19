@@ -9,6 +9,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.FragmentDeleteDataDialogBinding
+import okhttp3.internal.format
 
 class DeleteDataDialogFragment : DialogFragment() {
 
@@ -30,7 +31,7 @@ class DeleteDataDialogFragment : DialogFragment() {
         try {
             listener = parentFragment as OnDeleteDataListener
         } catch (e: ClassCastException) {
-            throw ClassCastException(("$context must implement OnDeleteDataListener"))
+            throw ClassCastException("$context must implement OnDeleteDataListener")
         }
     }
 
@@ -38,9 +39,9 @@ class DeleteDataDialogFragment : DialogFragment() {
         return activity?.let {
             AlertDialog.Builder(it).apply {
                 setView(createView())
-                setTitle("Borrar datos") // TODO: Hardcode string
-                setPositiveButton(R.string.aceptar, null)
-                setNegativeButton(R.string.cancelar, null)
+                setTitle(getString(R.string.delete_data))
+                setPositiveButton(R.string.accept, null)
+                setNegativeButton(R.string.cancel, null)
             }.create().apply {
                 setOnShowListener {
                     setUpPositiveButton(this)
@@ -52,6 +53,11 @@ class DeleteDataDialogFragment : DialogFragment() {
     private fun createView(): View {
         binding = FragmentDeleteDataDialogBinding.inflate(layoutInflater)
 
+        binding.tvConfirm.text = String.format(
+            getString(R.string.delete_data_confirmation),
+            getString(R.string.delete_data_confirmation_key)
+        )
+
         return binding.root
     }
 
@@ -60,7 +66,7 @@ class DeleteDataDialogFragment : DialogFragment() {
             isEnabled = false
 
             setOnClickListener {
-                if (binding.etConfirm.text.toString() != "CONFIRMAR") return@setOnClickListener
+                if (binding.etConfirm.text.toString() != getString(R.string.delete_data_confirmation_key)) return@setOnClickListener
 
                 listener.onDeleteData()
                 dialog.dismiss()
@@ -68,7 +74,7 @@ class DeleteDataDialogFragment : DialogFragment() {
 
             binding.etConfirm.addTextChangedListener(
                 afterTextChanged = { text ->
-                    isEnabled = text.toString() == "CONFIRMAR"
+                    isEnabled = text.toString() == getString(R.string.delete_data_confirmation_key)
                 }
             )
         }

@@ -1,13 +1,13 @@
 package com.a23pablooc.proxectofct.ui.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.a23pablooc.proxectofct.core.UserInfoProvider
+import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.domain.usecases.GetMedicamentosActivosUseCase
 import com.a23pablooc.proxectofct.domain.usecases.UpdateMedicamentoUseCase
 import com.a23pablooc.proxectofct.ui.view.states.UiState
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,13 +26,12 @@ class ActiveMedsViewModel @Inject constructor(
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState
 
-    // TODO: Hardcode string
-    fun fetchData() {
+    fun fetchData(context: Context) {
         viewModelScope.launch(Dispatchers.Main) {
             getMedicamentosActivosUseCase.invoke()
                 .catch {
                     _uiState.value = UiState
-                        .Error("Error fetching active meds from DB", it)
+                        .Error(context.getString(R.string.error_fetching_meds), it)
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {

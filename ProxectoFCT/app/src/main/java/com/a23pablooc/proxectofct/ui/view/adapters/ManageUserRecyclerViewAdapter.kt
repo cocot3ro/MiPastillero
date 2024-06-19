@@ -1,5 +1,6 @@
 package com.a23pablooc.proxectofct.ui.view.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -12,6 +13,7 @@ import com.a23pablooc.proxectofct.ui.view.viewholders.ManageUserViewHolder
 import kotlinx.coroutines.flow.StateFlow
 
 class ManageUserRecyclerViewAdapter(
+    private val context: Context,
     private var list: List<UsuarioItem>,
     private val onSaveUserFlow: StateFlow<Any>,
     private val onSaveUser: (UsuarioItem) -> Unit,
@@ -32,6 +34,7 @@ class ManageUserRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ManageUserViewHolder, position: Int) {
         holder.render(
+            context,
             list[position],
             onSaveUserFlow,
             onSaveUser,

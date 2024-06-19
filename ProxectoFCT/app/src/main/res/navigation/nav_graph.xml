@@ -53,4 +53,10 @@
         android:label="@string/history"
         tools:layout="@layout/fragment_history" />
 
+    <fragment
+        android:id="@+id/reuseMedFragment"
+        android:name="com.a23pablooc.proxectofct.ui.view.fragments.ReuseMedFragment"
+        android:label="@string/add_med"
+        tools:layout="@layout/fragment_reuse_med" />
+
 </navigation>

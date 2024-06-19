@@ -10,7 +10,6 @@ import androidx.core.app.NotificationCompat
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DataStoreManager
 import com.a23pablooc.proxectofct.domain.model.NotificacionItem
-import com.a23pablooc.proxectofct.domain.usecases.SetUpUserToLoginUseCase
 import com.a23pablooc.proxectofct.ui.view.activity.MainActivity
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
@@ -30,9 +29,6 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
     @Inject
     lateinit var dataStoreManager: DataStoreManager
 
-    @Inject
-    lateinit var setUpUserToLoginUseCase: SetUpUserToLoginUseCase
-
     private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
 
@@ -48,11 +44,11 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
 
     private fun createChannel(context: Context) {
         val channel = NotificationChannel(
-            "CHANNEL_NAME", // TODO: Hardcode string
-            "CHANNEL_NAME", // TODO: Hardcode string
+            context.getString(R.string.channel_name),
+            context.getString(R.string.channel_name),
             NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
-            description = "CHANNEL_DESCRIPTION" // TODO: Hardcode string
+            description = context.getString(R.string.channel_description)
         }
 
         (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
@@ -86,14 +82,14 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        //TODO: Hardcode string
-        val notification = NotificationCompat.Builder(context, "CHANNEL_NAME")
+        val notification = NotificationCompat
+            .Builder(context, context.getString(R.string.channel_name))
             .setSmallIcon(R.drawable.pill_16dp)
-            .setContentTitle("Hora de tomar tu medicamento")
-            .setContentText("Es hora de tomar ${noti.fkMedicamentoActivo.fkMedicamento.nombre}")
+            .setContentTitle(context.getString(R.string.user_time_to_take)) // TODO: format here
+            .setContentText(noti.fkMedicamentoActivo.fkMedicamento.nombre)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(openAppPendingIntent)
-            .addAction(0, "Marcar toma", marcarTomaPendingIntent)
+            .addAction(0, context.getString(R.string.tick_take), marcarTomaPendingIntent)
             .setAutoCancel(true)
 
         if (noti.fkMedicamentoActivo.fkMedicamento.imagen.toString().isNotBlank()) {

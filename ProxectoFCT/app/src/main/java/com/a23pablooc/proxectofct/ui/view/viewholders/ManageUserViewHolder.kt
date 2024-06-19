@@ -1,5 +1,6 @@
 package com.a23pablooc.proxectofct.ui.view.viewholders
 
+import android.content.Context
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
@@ -8,6 +9,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
+import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.databinding.ManageUserProfileBinding
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +25,7 @@ class ManageUserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private var firstTime = true
 
     fun render(
+        context: Context,
         user: UsuarioItem,
         onSaveUserFlow: StateFlow<Any>,
         onSaveUser: (UsuarioItem) -> Unit,
@@ -51,8 +54,7 @@ class ManageUserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                     val name = binding.createUserLayout.etUserName.text.toString()
 
                     if (name.isBlank()) {
-                        // TODO: hardcoded string
-                        binding.createUserLayout.etUserName.error = "Campo obligatorio."
+                        binding.createUserLayout.etUserName.error = context.getString(R.string.required_field)
                         return@collect
                     }
 
@@ -78,7 +80,7 @@ class ManageUserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                     if (!firstTime && user.pkUsuario == pk) {
                         toast = Toast.makeText(
                             binding.root.context,
-                            "${user.nombre} es ahora el usuario por defecto",
+                            String.format(context.getString(R.string.is_now_default_user), user.nombre),
                             Toast.LENGTH_SHORT
                         ).also { it.show() }
                     }

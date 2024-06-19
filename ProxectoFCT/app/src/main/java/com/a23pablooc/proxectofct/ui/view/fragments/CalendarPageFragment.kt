@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
 import com.a23pablooc.proxectofct.core.DateTimeUtils.getDayName
 import com.a23pablooc.proxectofct.databinding.FragmentCalendarPageBinding
@@ -23,8 +24,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
 
-private const val ARGS_DATE_KEY = "ARG_DATE_KEY"
-
 @AndroidEntryPoint
 class CalendarPageFragment : Fragment() {
     private lateinit var binding: FragmentCalendarPageBinding
@@ -33,10 +32,14 @@ class CalendarPageFragment : Fragment() {
 
     private lateinit var date: Date
 
+    private object BundleKeys {
+        const val ARGS_DATE_KEY = "ARG_DATE_KEY"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            date = Date(it.getLong(ARGS_DATE_KEY))
+            date = Date(it.getLong(BundleKeys.ARGS_DATE_KEY))
         }
     }
 
@@ -48,16 +51,15 @@ class CalendarPageFragment : Fragment() {
         binding = FragmentCalendarPageBinding.inflate(layoutInflater)
 
         adapter = CalendarPageMedGroupRecyclerViewAdapter(
-            date,
-            emptyList(),
+            dia = date,
+            list = emptyList(),
             onMarcarToma = { med, dia, hora ->
-                // TODO: Hardcode string
                 try {
                     viewModel.marcarToma(med, dia, hora)
                 } catch (e: IllegalArgumentException) {
                     Toast.makeText(
                         context,
-                        "Solo puedes marcar las tomas de hoy",
+                        getString(R.string.only_today),
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -100,7 +102,7 @@ class CalendarPageFragment : Fragment() {
             }
         }
 
-        viewModel.fetchData(date)
+        viewModel.fetchData(requireContext(), date)
 
         return binding.root
     }
@@ -110,7 +112,7 @@ class CalendarPageFragment : Fragment() {
         fun newInstance(date: Date) =
             CalendarPageFragment().apply {
                 arguments = Bundle().apply {
-                    putLong(ARGS_DATE_KEY, date.time)
+                    putLong(BundleKeys.ARGS_DATE_KEY, date.time)
                 }
             }
     }

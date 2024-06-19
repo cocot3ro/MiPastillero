@@ -1,7 +1,9 @@
 package com.a23pablooc.proxectofct.ui.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.usecases.GetMedicamentosCalendarioUseCase
 import com.a23pablooc.proxectofct.domain.usecases.MarcarTomaUseCase
@@ -27,13 +29,12 @@ class CalendarPageViewModel @Inject constructor(
 
     val uiState: StateFlow<UiState> = _uiState
 
-    // TODO: Hardcode string
-    fun fetchData(date: Date) {
+    fun fetchData(context: Context, date: Date) {
         viewModelScope.launch(Dispatchers.Main) {
             getMedicamentosCalendarioUseCase.invoke(date)
                 .catch {
                     _uiState.value =
-                        UiState.Error("Error fetching calendar meds from DB", it)
+                        UiState.Error(context.getString(R.string.error_fetching_meds), it)
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {

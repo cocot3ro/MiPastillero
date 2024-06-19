@@ -33,7 +33,7 @@ class CreateUserDialogFragment : DialogFragment() {
         try {
             listener = parentFragment as OnDataEnteredListener
         } catch (e: ClassCastException) {
-            throw ClassCastException(("$context must implement OnDataEnteredListener"))
+            throw ClassCastException("$context must implement OnDataEnteredListener")
         }
     }
 
@@ -41,9 +41,9 @@ class CreateUserDialogFragment : DialogFragment() {
         return activity?.let {
             AlertDialog.Builder(it).apply {
                 setView(createView())
-                setTitle("Crear usuario") // TODO: Hardcode string
-                setPositiveButton(R.string.aceptar, null)
-                setNegativeButton(R.string.cancelar, null)
+                setTitle(getString(R.string.create_user))
+                setPositiveButton(getString(R.string.accept), null)
+                setNegativeButton(getString(R.string.cancel), null)
             }.create().apply {
                 setOnShowListener {
                     setUpPositiveButton(this)
@@ -66,7 +66,7 @@ class CreateUserDialogFragment : DialogFragment() {
                 val nombre = binding.etUserName.text.toString().trim()
 
                 if (nombre.isBlank()) {
-                    binding.etUserName.error = "Campo obligatorio" // TODO: Hardcode string
+                    binding.etUserName.error = getString(R.string.required_field)
                     return@setOnClickListener
                 }
 
@@ -86,9 +86,9 @@ class CreateUserDialogFragment : DialogFragment() {
                 binding.ivFavBg.visibility = View.VISIBLE
                 Toast.makeText(
                     context,
-                    "Este será ahora el usuario por defecto",
+                    getString(R.string.new_default_user),
                     Toast.LENGTH_SHORT
-                ).show() // TODO: Hardcode string
+                ).show()
             } else {
                 binding.ivFavBg.visibility = View.GONE
             }

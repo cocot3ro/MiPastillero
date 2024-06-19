@@ -28,12 +28,17 @@ import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.FavoriteRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.view.states.UiState
 import com.a23pablooc.proxectofct.ui.viewmodel.FavoriteMedsViewModel
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class FavoriteMedsFragment : Fragment() {
+    @Inject
+    lateinit var gson: Gson
+
     private lateinit var binding: FragmentFavoriteMedsBinding
     private val viewModel: FavoriteMedsViewModel by viewModels()
     private lateinit var navController: NavController
@@ -96,8 +101,20 @@ class FavoriteMedsFragment : Fragment() {
 
         favoriteRecyclerViewAdapter = FavoriteRecyclerViewAdapter(
             emptyList(),
-            onAdd = { onAdd(it) },
-            onInfo = { onInfo(it) }
+            onAdd = {
+                navController.navigate(
+                    R.id.reuseMedFragment, Bundle().apply {
+                        putString(ReuseMedFragment.BundleKeys.MED_KEY, gson.toJson(it, MedicamentoItem::class.java))
+                    }
+                )
+            },
+            onInfo = {
+                navController.navigate(
+                    R.id.medInfoFragment, Bundle().apply {
+                        putString(MedInfoFragment.BundleKeys.MED_KEY, gson.toJson(it, MedicamentoItem::class.java))
+                    }
+                )
+            }
         )
 
         binding.rvFavorites.apply {
@@ -133,7 +150,7 @@ class FavoriteMedsFragment : Fragment() {
             }
         }
 
-        viewModel.fetchData()
+        viewModel.fetchData(requireContext())
 
         return binding.root
     }
@@ -157,15 +174,5 @@ class FavoriteMedsFragment : Fragment() {
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-    }
-
-    private fun onAdd(med: MedicamentoItem) {
-        // TODO
-        Toast.makeText(context, "Añadir medicamento: ${med.nombre}", Toast.LENGTH_LONG).show()
-    }
-
-    private fun onInfo(med: MedicamentoItem) {
-        // TODO
-        Toast.makeText(context, "Info medicamento: ${med.nombre}", Toast.LENGTH_LONG).show()
     }
 }
