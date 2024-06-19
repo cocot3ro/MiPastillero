@@ -100,7 +100,7 @@ class FavoriteMedsFragment : Fragment() {
         }
 
         favoriteRecyclerViewAdapter = FavoriteRecyclerViewAdapter(
-            emptyList(),
+            list = emptyList(),
             onAdd = {
                 navController.navigate(
                     R.id.reuseMedFragment, Bundle().apply {

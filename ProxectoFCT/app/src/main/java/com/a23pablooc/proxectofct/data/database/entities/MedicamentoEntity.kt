@@ -6,7 +6,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition.Columns.AFECTA_CONDUCCION
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition.Columns.ES_FAVORITO
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition.Columns.FK_USUARIO
@@ -15,9 +14,11 @@ import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefi
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition.Columns.NOMBRE
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition.Columns.NUM_REGISTRO
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition.Columns.PK_COD_NACIONAL_MEDICAMENTO
-import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition.Columns.PRESCRIPCION
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition.Columns.RECETA
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition.Columns.PROSPECTO
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition.Columns.URL
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition.Columns.PRINCIPIOS_ACTIVOS
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition.Columns.PRESCRIPCION
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition.Indexes.IDX_MEDICAMENTO_USER_ID
 import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition.TABLE_NAME
 import com.a23pablooc.proxectofct.data.database.definitions.UsuarioTableDefinition
@@ -50,13 +51,13 @@ data class MedicamentoEntity(
     var fkUsuario: Long,
 
     @ColumnInfo(name = URL)
-    var url: String,
+    var url: Uri,
 
     @ColumnInfo(name = NOMBRE)
     var nombre: String,
 
     @ColumnInfo(name = PROSPECTO)
-    var prospecto: String,
+    var prospecto: Uri,
 
     @ColumnInfo(name = ES_FAVORITO)
     var esFavorito: Boolean,
@@ -70,9 +71,15 @@ data class MedicamentoEntity(
     @ColumnInfo(name = IMAGEN)
     var imagen: Uri,
 
-    @ColumnInfo(name = PRESCRIPCION)
-    var prescripcion: String,
+    @ColumnInfo(name = RECETA)
+    var receta: Boolean,
 
     @ColumnInfo(name = AFECTA_CONDUCCION)
-    var afectaConduccion: Boolean
+    var afectaConduccion: Boolean,
+
+    @ColumnInfo(name = PRINCIPIOS_ACTIVOS)
+    var principiosActivos: List<String>,
+
+    @ColumnInfo(name = PRESCRIPCION)
+    var prescripcion: String
 )

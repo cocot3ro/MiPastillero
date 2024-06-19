@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">My Pillbox</string>
+    <string name="app_name">Mi pastillero</string>
     <string name="national_drug_code">Código nacional</string>
     <string name="national_drug_code_help">Un número de seis dígitos, siempe mayor que 600.000, seguidos de un punto y un número de control. Se ubica generalmente en el frente y/o en el reverso de la caja del medicamento</string>
     <string name="med_name">Nombre del medicamento</string>
@@ -82,13 +82,17 @@
     <string name="user_time_to_take">\'%s\': Hora de tomar tu medicamento</string>
     <string name="error_fetching_data">Error al cargar los datos</string>
     <string name="nregistro">Número de registro</string>
+    <string name="med_affects_driving">Este fármaco puede afectar a la conducción o manejo de maquinaria peligrosa. Consulte el prospecto para mas información.</string>
+    <string name="see">Ver</string>
+    <string name="see_leaflet">Ver el prospecto</string>
+    <string name="active_principles">Principios activos</string>
     <string-array name="days">
-        <item>Monday</item>
-        <item>Tuesday</item>
-        <item>Wednesday</item>
-        <item>Thursday</item>
-        <item>Friday</item>
-        <item>Saturday</item>
-        <item>Sunday</item>
+        <item>Lunes</item>
+        <item>Martes</item>
+        <item>Miercoles</item>
+        <item>Jueves</item>
+        <item>Viernes</item>
+        <item>Sabado</item>
+        <item>Domingo</item>
     </string-array>
 </resources>

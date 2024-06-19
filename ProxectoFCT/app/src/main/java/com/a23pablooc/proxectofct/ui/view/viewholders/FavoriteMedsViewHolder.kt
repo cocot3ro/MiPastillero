@@ -2,6 +2,7 @@ package com.a23pablooc.proxectofct.ui.view.viewholders
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
 import com.a23pablooc.proxectofct.databinding.FavoriteMedBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.bumptech.glide.Glide
@@ -25,6 +26,14 @@ class FavoriteMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         binding.addBtn.setOnClickListener { onAdd(med) }
 
-        binding.infoBtn.setOnClickListener { onInfo(med) }
+        binding.infoBtn.apply {
+
+            visibility =
+                if (CimaApiDefinitions.codNacionalPattern.matches(med.pkCodNacionalMedicamento.toString())) View.VISIBLE
+                else View.GONE
+
+            if (visibility == View.VISIBLE)
+                setOnClickListener { onInfo(med) }
+        }
     }
 }

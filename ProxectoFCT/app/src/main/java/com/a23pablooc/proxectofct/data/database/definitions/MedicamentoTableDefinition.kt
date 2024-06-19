@@ -12,9 +12,11 @@ object MedicamentoTableDefinition {
         const val PROSPECTO = "${TABLE_NAME}__prospecto"
         const val IMAGEN = "${TABLE_NAME}__imagen"
         const val LABORATORIO = "${TABLE_NAME}__laboratorio"
-        const val PRESCRIPCION = "${TABLE_NAME}__prescripcion"
+        const val RECETA = "${TABLE_NAME}__receta"
         const val AFECTA_CONDUCCION = "${TABLE_NAME}__afecta_conduccion"
         const val ES_FAVORITO = "${TABLE_NAME}__es_favorito"
+        const val PRESCRIPCION = "${TABLE_NAME}__prescripcion"
+        const val PRINCIPIOS_ACTIVOS = "${TABLE_NAME}__principios_activos"
     }
 
     object Indexes {

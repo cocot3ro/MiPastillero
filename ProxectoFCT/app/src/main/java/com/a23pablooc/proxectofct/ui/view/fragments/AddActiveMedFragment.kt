@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DateTimeUtils
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
+import com.a23pablooc.proxectofct.core.InternalStorageDefinitions
 import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
 import com.a23pablooc.proxectofct.databinding.FragmentAddActiveMedBinding
@@ -449,7 +450,7 @@ class AddActiveMedFragment : Fragment() {
                     binding.nombre.setText(fetchedMed.nombre)
 
                     if (fetchedMed.imagen.toString().startsWith(CimaApiDefinitions.BASE_URL)
-                        || fetchedMed.imagen.toString().startsWith("file:///")
+                        || fetchedMed.imagen.toString().startsWith(InternalStorageDefinitions.FILE_PREFIX)
                     ) {
                         Glide.with(requireContext())
                             .load(fetchedMed.imagen)
@@ -552,11 +553,13 @@ class AddActiveMedFragment : Fragment() {
             imagen = image,
             esFavorito = binding.ivFavBg.visibility == View.VISIBLE,
             numRegistro = "",
-            url = "",
-            prescripcion = "",
+            url = Uri.EMPTY,
+            receta = false,
             laboratorio = "",
-            prospecto = "",
+            prospecto = Uri.EMPTY,
             afectaConduccion = false,
+            prescripcion = "",
+            principiosActivos = listOf()
         )
     }
 }

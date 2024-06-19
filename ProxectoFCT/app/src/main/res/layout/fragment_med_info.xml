@@ -32,327 +32,233 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:paddingBottom="16dp">
+                android:layout_margin="8dp">
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:contentDescription="TODO"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/no_image_available"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/nombre"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/lab"
+                    app:layout_constraintEnd_toStartOf="@id/btns"
+                    app:layout_constraintStart_toEndOf="@id/img"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/lab"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@id/guideline"
+                    app:layout_constraintEnd_toStartOf="@id/btns"
+                    app:layout_constraintStart_toEndOf="@id/img"
+                    app:layout_constraintTop_toBottomOf="@id/nombre" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/header"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/btns"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@id/guideline"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <ProgressBar
-                        android:id="@+id/progressBar"
+                    <ImageButton
+                        android:id="@+id/ib_receta"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="TODO"
+                        android:padding="8dp"
+                        android:src="@drawable/prescriptions_32dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/headerLayout"
-                        android:layout_width="0dp"
+                    <ImageButton
+                        android:id="@+id/ib_conduccion"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="TODO"
+                        android:padding="8dp"
+                        android:src="@drawable/car_crash_32dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageView
-                            android:id="@+id/img"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:contentDescription="TODO"
-                            android:scaleType="centerCrop"
-                            android:src="@mipmap/no_image_available"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/codsLayout"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/img"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:id="@+id/nreg_layout"
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toStartOf="@id/cods_guideline"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <TextView
-                                    android:id="@+id/nreg_title"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textStyle="bold"
-                                    android:text="@string/nregistro"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/cods_guideline"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.5" />
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:id="@+id/cn_layout"
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toEndOf="@id/cods_guideline"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <TextView
-                                    android:id="@+id/cn_title"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textStyle="bold"
-                                    android:text="@string/national_drug_code"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <TextView
-                        android:id="@+id/text_help"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/national_drug_code_help"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/headerLayout" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/nombreLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/text_help">
-
-                        <TextView
-                            android:id="@+id/nombre"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        app:layout_constraintTop_toBottomOf="@id/ib_receta" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <EditText
-                    android:id="@+id/dosis"
+                <androidx.constraintlayout.widget.ReactiveGuide
+                    android:id="@+id/guideline"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="@string/dose"
-                    android:importantForAutofill="no"
-                    android:inputType="text"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@id/guideline2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/header" />
+                    app:layout_constraintTop_toBottomOf="@id/img" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/dates_layout"
+                <ImageButton
+                    android:id="@+id/ib_web"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="TODO"
+                    android:padding="8dp"
+                    android:src="@drawable/captive_portal_32dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/dosis">
+                    app:layout_constraintTop_toBottomOf="@id/guideline" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/labels"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                <androidx.constraintlayout.widget.ReactiveGuide
+                    android:id="@+id/guideline2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="@id/ib_web"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/ib_web" />
 
-                        <TextView
-                            android:id="@+id/date_start_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/start"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toTopOf="@id/dates_labels_guideline"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/date_end_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/end"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/dates_labels_guideline" />
-
-                        <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/dates_labels_guideline"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            app:layout_constraintGuide_percent="0.5" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/dates"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginStart="8dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/labels"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <TextView
-                            android:id="@+id/date_start"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintBottom_toTopOf="@id/dates_guideline"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/date_end"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/dates_guideline" />
-
-                        <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/dates_guideline"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            app:layout_constraintGuide_percent="0.5" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/buttons"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/dates"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageButton
-                            android:id="@+id/btn_start_date_picker"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@android:color/transparent"
-                            android:contentDescription="TODO"
-                            android:padding="6dp"
-                            android:src="@drawable/edit_calendar_32dp"
-                            app:layout_constraintBottom_toTopOf="@id/guideline3"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageButton
-                            android:id="@+id/btn_end_date_picker"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@android:color/transparent"
-                            android:contentDescription="TODO"
-                            android:padding="6dp"
-                            android:src="@drawable/edit_calendar_32dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/guideline3" />
-
-                        <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/guideline3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            app:layout_constraintGuide_percent="0.5" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <LinearLayout
-                    android:id="@+id/schedule_header"
+                <TextView
+                    android:id="@+id/nregistro_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/dates_layout">
+                    android:text="@string/nregistro"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/guideline2"
+                    app:layout_constraintStart_toEndOf="@id/ib_web"
+                    app:layout_constraintTop_toBottomOf="@id/guideline" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="8dp"
-                            android:text="@string/schedule"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/btn_add_timer"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageButton
-                            android:id="@+id/btn_add_timer"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:background="@android:color/transparent"
-                            android:contentDescription="TODO"
-                            android:padding="6dp"
-                            android:src="@drawable/playlist_add_32dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/black" />
-
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_schedule"
+                <TextView
+                    android:id="@+id/nregistro"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@id/guideline2"
+                    app:layout_constraintStart_toEndOf="@id/nregistro_label"
+                    app:layout_constraintTop_toBottomOf="@id/guideline" />
+
+                <TextView
+                    android:id="@+id/cn_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/national_drug_code"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/guideline3"
+                    app:layout_constraintStart_toEndOf="@id/ib_web"
+                    app:layout_constraintTop_toBottomOf="@id/guideline2" />
+
+                <TextView
+                    android:id="@+id/cn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    app:layout_constraintBottom_toTopOf="@id/guideline3"
+                    app:layout_constraintStart_toEndOf="@id/cn_label"
+                    app:layout_constraintTop_toBottomOf="@id/guideline2" />
+
+                <androidx.constraintlayout.widget.ReactiveGuide
+                    android:id="@+id/guideline3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="@id/ib_web"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/ib_prospecto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="TODO"
+                    android:padding="8dp"
+                    android:src="@drawable/receipt_long_32dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/schedule_header" />
+                    app:layout_constraintTop_toBottomOf="@id/guideline3" />
+
+                <TextView
+                    android:id="@+id/prospecto_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/see_leaflet"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/guideline4"
+                    app:layout_constraintStart_toEndOf="@id/ib_prospecto"
+                    app:layout_constraintTop_toBottomOf="@id/guideline3" />
+
+                <androidx.constraintlayout.widget.ReactiveGuide
+                    android:id="@+id/guideline4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ib_prospecto" />
+
+                <TextView
+                    android:id="@+id/principios_activos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/active_principles"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/guideline4" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_principios_activos"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/principios_activos" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/snack_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/snack_bar_bg"
+            android:padding="8dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/med_affects_driving"
+                android:textColor="@color/snack_bar_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_see"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/btn_see"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:clickable="true"
+                android:padding="4dp"
+                android:text="@string/see"
+                android:textColor="@color/snack_bar_action_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 

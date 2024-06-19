@@ -41,15 +41,15 @@ object RoomModule {
             context,
             PillboxDatabase::class.java,
             DatabaseDefinition.DATABASE_NAME
-        )
-//            .openHelperFactory(supportFactory)
-            .addCallback(object : RoomDatabase.Callback() {
+        ).apply {
+//            openHelperFactory(supportFactory)
+            addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
                     initializeDatabase(db)
                 }
             })
-            .build()
+        }.build()
     }
 
     private fun initializeDatabase(db: SupportSQLiteDatabase) {

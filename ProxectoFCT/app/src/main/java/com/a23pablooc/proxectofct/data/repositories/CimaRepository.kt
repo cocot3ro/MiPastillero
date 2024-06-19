@@ -39,7 +39,7 @@ class CimaRepository @Inject constructor(
 
     suspend fun searchMedicamento(codNacional: Long): MedicamentoItem? {
         return cimaService.getMedicamentoByCodNacional(codNacional)?.apply {
-            imagen = getImageResourceUri(numRegistro, imagen).toString()
+            imagen = getImageResourceUri(numRegistro, imagen.toString())
         }?.toDomain()?.apply {
             pkCodNacionalMedicamento = codNacional
         }

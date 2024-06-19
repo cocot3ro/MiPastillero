@@ -14,5 +14,4 @@ class UriTypeAdapter : TypeAdapter<Uri>() {
     override fun read(`in`: JsonReader?): Uri {
         return `in`?.nextString()?.toUri() ?: Uri.EMPTY
     }
-
 }

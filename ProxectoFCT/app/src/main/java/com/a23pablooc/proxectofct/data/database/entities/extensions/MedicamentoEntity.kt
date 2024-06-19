@@ -12,9 +12,11 @@ fun MedicamentoEntity.toDomain(): MedicamentoItem {
         prospecto = prospecto,
         imagen = imagen,
         laboratorio = laboratorio,
-        prescripcion = prescripcion,
+        receta = receta,
         afectaConduccion = afectaConduccion,
         esFavorito = esFavorito,
-        fkUsuario = fkUsuario
+        fkUsuario = fkUsuario,
+        prescripcion = prescripcion,
+        principiosActivos = principiosActivos
     )
 }

@@ -1,6 +1,7 @@
 package com.a23pablooc.proxectofct.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.domain.usecases.AddMedicamentoUseCase
@@ -15,10 +16,8 @@ class AddActiveMedViewModel @Inject constructor(
     private val searchMedicamentoUseCase: SearchMedicamentoUseCase,
     private val programarNotificacionesUseCase: ProgramarNotificacionesUseCase
 ) : ViewModel() {
-    private val codNacionalPattern = Regex("""[6-9]\d{5}(\.\d)?""")
-
     suspend fun search(codNacional: String): MedicamentoItem? {
-        if (!codNacionalPattern.matches(codNacional))
+        if (!CimaApiDefinitions.codNacionalPattern.matches(codNacional))
             throw IllegalArgumentException("Invalid codNacional")
 
         return searchMedicamentoUseCase.invoke(codNacional.substringBefore('.').toLong())

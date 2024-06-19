@@ -11,10 +11,12 @@ fun MedicamentoItem.toDatabase(): MedicamentoEntity {
         nombre = nombre,
         url = url,
         prospecto = prospecto,
-        prescripcion = prescripcion,
+        receta = receta,
         afectaConduccion = afectaConduccion,
         imagen = imagen,
         laboratorio = laboratorio,
         esFavorito = esFavorito,
+        prescripcion = prescripcion,
+        principiosActivos = principiosActivos
     )
 }

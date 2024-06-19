@@ -3,6 +3,7 @@ package com.a23pablooc.proxectofct.ui.view.viewholders
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
+import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
 import com.a23pablooc.proxectofct.databinding.ActiveMedBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.ActiveMedScheduleRecyclerViewAdapter
@@ -44,7 +45,14 @@ class ActiveMedsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
         }
 
-        binding.btnInfo.setOnClickListener { onInfo(med) }
+        binding.btnInfo.apply {
+            visibility =
+                if (CimaApiDefinitions.codNacionalPattern.matches(med.fkMedicamento.pkCodNacionalMedicamento.toString())) View.VISIBLE
+                else View.GONE
+
+            if (visibility == View.VISIBLE)
+                setOnClickListener { onInfo(med) }
+        }
 
         binding.dateStart.text = med.fechaInicio.formatDate()
         binding.dateEnd.text = med.fechaFin.formatDate()

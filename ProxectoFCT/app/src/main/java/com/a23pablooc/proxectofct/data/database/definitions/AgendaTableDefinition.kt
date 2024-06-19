@@ -6,7 +6,7 @@ object AgendaTableDefinition {
     object Columns {
         const val PK_FECHA = "${TABLE_NAME}__pk_fecha"
         const val FK_USUARIO = "${TABLE_NAME}__fk_usuario"
-        const val HORA = "${TABLE_NAME}__hora"
+        const val DESCRIPCION = "${TABLE_NAME}__descripcion"
     }
 
     object Indexes {

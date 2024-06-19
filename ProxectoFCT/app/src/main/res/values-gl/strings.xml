@@ -1,94 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">My Pillbox</string>
+    <string name="app_name">O meu pastilleiro</string>
     <string name="national_drug_code">Código nacional</string>
-    <string name="national_drug_code_help">Un número de seis dígitos, siempe mayor que 600.000, seguidos de un punto y un número de control. Se ubica generalmente en el frente y/o en el reverso de la caja del medicamento</string>
-    <string name="med_name">Nombre del medicamento</string>
-    <string name="dose">Dosis</string>
+    <string name="national_drug_code_help">Un número de seis díxitos, sempre maior que 600.000, seguido dun punto e un número de control. Localízase xeralmente na fronte e/ou no reverso da caixa do medicamento</string>
+    <string name="med_name">Nome do medicamento</string>
+    <string name="dose">Dose</string>
     <string name="start">Inicio</string>
     <string name="end">Fin</string>
     <string name="schedule">Horario</string>
     <string name="favorites">Favoritos</string>
-    <string name="no_fav_meds">No hay medicamentos favoritos</string>
+    <string name="no_fav_meds">Non hai medicamentos favoritos</string>
     <string name="active_meds">Medicación Activa</string>
-    <string name="no_active_meds">No hay medicamentos activos</string>
-    <string name="add_med">Añadir medicamento</string>
+    <string name="no_active_meds">Non hai medicamentos activos</string>
+    <string name="add_med">Engadir medicamento</string>
     <string name="calendar">Calendario</string>
-    <string name="no_meds_at_day">No hay medicamentos que tomar este día</string>
-    <string name="user_name">Nombre de usuario</string>
-    <string name="warning">Atencion!</string>
-    <string name="delete_data_confirm">Al continuar se borrarán todos los datos de la aplicación de forma permanente. ¿Estás seguro de que deseas continuar?</string>
+    <string name="no_meds_at_day">Non hai medicamentos que tomar este día</string>
+    <string name="user_name">Nome de usuario</string>
+    <string name="warning">Atención!</string>
+    <string name="delete_data_confirm">Ao continuar borrarase toda a información da aplicación de forma permanente. Estás seguro de que queres continuar?</string>
     <string name="delete_data_confirmation">Escribe \'%s\' para confirmar</string>
-    <string name="delete_user_desc">Al eliminar un usuario, se perderán todos los datos asociados a este. Esto incluye los medicamentos que tenga registrados, notas en la agenda y el historial de medicaciones.</string>
-    <string name="delete_user_confirmation">Introduce el nombre del usuario \'%s\' para confirmar</string>
     <string name="delete_data_confirmation_key">CONFIRMAR</string>
-    <string name="diary">Agenda</string>
+    <string name="delete_user_desc">Ao eliminar un usuario perderase toda a información asociada a el. Isto inclúe os medicamentos que teña rexistrados, notas na axenda e o historial de medicacións.</string>
+    <string name="delete_user_confirmation">Introduce o nome do usuario \'%s\' para confirmar</string>
+    <string name="diary">Axenda</string>
     <string name="history">Historial</string>
-    <string name="no_history">No hay registros en el historial</string>
-    <string name="no_users">No hay usuarios registrados</string>
-    <string name="manage_users">Gestionar usuarios</string>
-    <string name="med_info">Información del medicamento</string>
-    <string name="settings">Ajustes</string>
-    <string name="images">Imagenes</string>
-    <string name="use_images">Usar imagenes</string>
-    <string name="use_images_on">Se descargarán imagenes de internet</string>
-    <string name="use_hd_images">Imagenes de alta calidad</string>
-    <string name="use_hd_images_on">Se usarán imagenes de mayor calidad si están disponibles</string>
-    <string name="notifications">Notificaciones</string>
-    <string name="use_notifications">Recibir notificaciones</string>
-    <string name="use_notifications_on">Se notificará cada vez que se tenga que tomar un medicamento</string>
+    <string name="no_history">Non hai rexistros no historial</string>
+    <string name="no_users">Non hai usuarios rexistrados</string>
+    <string name="manage_users">Xestionar usuarios</string>
+    <string name="med_info">Información do medicamento</string>
+    <string name="settings">Axustes</string>
+    <string name="images">Imaxes</string>
+    <string name="use_images">Usar imaxes</string>
+    <string name="use_images_on">Descargaránse imaxes de internet</string>
+    <string name="use_hd_images">Imaxes de alta calidade</string>
+    <string name="use_hd_images_on">Usaránse imaxes de maior calidade se están dispoñibles</string>
+    <string name="notifications">Notificacións</string>
+    <string name="use_notifications">Recibir notificacións</string>
+    <string name="use_notifications_on">Notificarase cada vez que teñas que tomar un medicamento</string>
     <string name="users">Usuarios</string>
-    <string name="manage_users_desc">Cambia nombres de usuarios y selecciona un usuario por defecto</string>
+    <string name="manage_users_desc">Cambia nomes de usuarios e selecciona un usuario por defecto</string>
     <string name="delete_data">Borrar datos</string>
     <string name="loading">Cargando</string>
     <string name="tomas">Tomas:</string>
-    <string name="dose_colon">Dosis:</string>
-    <string name="welcome">Bienvenido</string>
+    <string name="dose_colon">Dose:</string>
+    <string name="welcome">Benvido</string>
     <string name="search">Buscar</string>
-    <string name="today">Hoy</string>
-    <string name="error_fetching_users">Error al cargar los usuarios</string>
-    <string name="should_input_name">Debes introducir un nombre</string>
-    <string name="invalid_date_end_minor_start">La fecha de fin no puede ser anterior a la de inicio</string>
-    <string name="invalid_date_end_minor_now">La fecha de fin no puede ser anterior a la fecha actual</string>
-    <string name="should_input_schedule">Se debe tener al menos una hora de toma</string>
-    <string name="unique_schedule_dates">Las horas de toma deben de ser únicas</string>
-    <string name="saving">Guardando</string>
-    <string name="schedule_already_exists">Atención: La hora de toma ya está añadida</string>
+    <string name="today">Hoxe</string>
+    <string name="error_fetching_users">Erro ao cargar os usuarios</string>
+    <string name="should_input_name">Debes introducir un nome</string>
+    <string name="invalid_date_end_minor_start">A data de fin non pode ser anterior á de inicio</string>
+    <string name="invalid_date_end_minor_now">A data de fin non pode ser anterior á data actual</string>
+    <string name="should_input_schedule">Débese ter polo menos unha hora de toma</string>
+    <string name="unique_schedule_dates">As horas de toma deben ser únicas</string>
+    <string name="saving">Gardando</string>
+    <string name="schedule_already_exists">Atención: A hora de toma xa está engadida</string>
     <string name="searching">Buscando</string>
-    <string name="med_not_found">Medicamento no encontrado</string>
-    <string name="med_already_on_fav">Este medicamento ya está en favoritos</string>
-    <string name="connection_error">Error de conexión</string>
-    <string name="invalid_national_drug_code">Código nacional no válido</string>
-    <string name="unknown_error">Error desconocido</string>
-    <string name="select_img_from_device">Selecciona una imagen de la galería</string>
+    <string name="med_not_found">Medicamento non atopado</string>
+    <string name="med_already_on_fav">Este medicamento xa está en favoritos</string>
+    <string name="connection_error">Erro de conexión</string>
+    <string name="invalid_national_drug_code">Código nacional non válido</string>
+    <string name="unknown_error">Erro descoñecido</string>
+    <string name="select_img_from_device">Selecciona unha imaxe da galería</string>
     <string name="create_user">Crear usuario</string>
     <string name="accept">Aceptar</string>
     <string name="cancel">Cancelar</string>
-    <string name="required_field">Campo obligatorio</string>
-    <string name="new_default_user">Este será ahora el usuario por defecto</string>
+    <string name="required_field">Campo obrigatorio</string>
+    <string name="new_default_user">Este será agora o usuario por defecto</string>
     <string name="delete_user">Borrar usuario</string>
-    <string name="error_fetching_meds">Error al cargar los medicamentos</string>
-    <string name="discard">Descartar cambios</string>
-    <string name="ensure_discard_changes">¿Estás seguro de que quieres descartar los cambios?</string>
-    <string name="use_images_off">No se descargaran imagenes</string>
-    <string name="use_hd_images_off">Se descargaran imágenes de baja calidad</string>
-    <string name="use_notifications_off">No se notificará la toma de medicamentos</string>
-    <string name="changes_saved">Cambios guardados</string>
-    <string name="only_today">Solo puedes marcar las tomas de hoy</string>
-    <string name="is_now_default_user">\'%s\' es ahora el usuario por defecto</string>
+    <string name="error_fetching_meds">Erro ao cargar os medicamentos</string>
+    <string name="discard">Desbotar cambios</string>
+    <string name="ensure_discard_changes">Estás seguro de que queres desbotar os cambios?</string>
+    <string name="use_images_off">Non se descargarán imaxes</string>
+    <string name="use_hd_images_off">Descargaránse imaxes de baixa calidade</string>
+    <string name="use_notifications_off">Non se notificará a toma de medicamentos</string>
+    <string name="changes_saved">Cambios gardados</string>
+    <string name="only_today">Só podes marcar as tomas de hoxe</string>
+    <string name="is_now_default_user">\'%s\' é agora o usuario por defecto</string>
     <string name="channel_name">CHANNEL_NAME</string>
     <string name="channel_description">CHANNEL_DESCRIPTION</string>
     <string name="tick_take">Marcar toma</string>
-    <string name="user_time_to_take">\'%s\': Hora de tomar tu medicamento</string>
-    <string name="error_fetching_data">Error al cargar los datos</string>
-    <string name="nregistro">Número de registro</string>
+    <string name="user_time_to_take">\'%s\': Hora de tomar o teu medicamento</string>
+    <string name="error_fetching_data">Erro ao cargar os datos</string>
+    <string name="nregistro">Número de rexistro</string>
+    <string name="med_affects_driving">Este fármaco pode reducir a capacidade de condución ou manexo de maquinaria perigosa. Consulte o prospecto para máis información.</string>
+    <string name="see">Ver</string>
+    <string name="see_leaflet">Ver o prospecto</string>
+    <string name="active_principles">Principios activos</string>
     <string-array name="days">
-        <item>Monday</item>
-        <item>Tuesday</item>
-        <item>Wednesday</item>
-        <item>Thursday</item>
-        <item>Friday</item>
-        <item>Saturday</item>
-        <item>Sunday</item>
+        <item>Luns</item>
+        <item>Martes</item>
+        <item>Mércores</item>
+        <item>Xoves</item>
+        <item>Venres</item>
+        <item>Sábado</item>
+        <item>Domingo</item>
     </string-array>
 </resources>

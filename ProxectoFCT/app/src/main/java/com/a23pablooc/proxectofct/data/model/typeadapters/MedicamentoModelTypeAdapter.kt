@@ -10,9 +10,10 @@ class MedicamentoModelTypeAdapter : TypeAdapter<MedicamentoModel>() {
 
     override fun read(`in`: JsonReader?): MedicamentoModel {
         val builder = MedicamentoModel.Builder()
-
         `in`?.run {
+
             beginObject()
+
             while (hasNext()) {
                 when (nextName()) {
                     "nregistro" -> {
@@ -24,6 +25,8 @@ class MedicamentoModelTypeAdapter : TypeAdapter<MedicamentoModel>() {
                     "nombre" -> builder.nombre(nextString())
 
                     "labtitular" -> builder.laboratorio(nextString())
+
+                    "receta" -> builder.receta(nextBoolean())
 
                     "cpresc" -> builder.prescripcion(nextString())
 
@@ -86,12 +89,43 @@ class MedicamentoModelTypeAdapter : TypeAdapter<MedicamentoModel>() {
                         endArray()
                     }
 
+                    "principiosActivos" -> {
+                        beginArray()
+
+                        while (hasNext()) {
+                            beginObject()
+
+                            var nombre = ""
+                            var cantidad = ""
+                            var unidad = ""
+
+                            while (hasNext()) {
+                                when (nextName()) {
+                                    "nombre" -> nombre = nextString()
+                                    "cantidad" -> cantidad = nextString()
+                                    "unidad" -> unidad = nextString()
+
+                                    else -> skipValue()
+                                }
+                            }
+
+                            builder.pricipiosActivos("$nombre $cantidad $unidad")
+
+                            endObject()
+                        }
+                        endArray()
+                    }
+
                     else -> skipValue()
                 }
             }
+
             endObject()
+
         }
 
         return builder.build()
+
     }
+
 }

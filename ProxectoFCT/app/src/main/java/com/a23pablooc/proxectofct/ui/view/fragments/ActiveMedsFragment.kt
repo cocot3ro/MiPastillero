@@ -26,6 +26,7 @@ import com.a23pablooc.proxectofct.core.UserInfoProvider
 import com.a23pablooc.proxectofct.databinding.FragmentActiveMedsBinding
 import com.a23pablooc.proxectofct.databinding.NavHeaderBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
+import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.ActiveMedsRecyclerViewAdapter
 import com.a23pablooc.proxectofct.ui.view.states.UiState
 import com.a23pablooc.proxectofct.ui.viewmodel.ActiveMedsViewModel
@@ -40,6 +41,7 @@ class ActiveMedsFragment : Fragment() {
 
     @Inject
     lateinit var gson: Gson
+
     @Inject
     lateinit var userInfoProvider: UserInfoProvider
 
@@ -102,13 +104,16 @@ class ActiveMedsFragment : Fragment() {
         }
 
         activeRecyclerViewAdapter = ActiveMedsRecyclerViewAdapter(
-            emptyList(),
+            list = emptyList(),
             onFav = {
                 viewModel.toggleFavMed(it.fkMedicamento)
             },
             onInfo = {
                 navController.navigate(R.id.medInfoFragment, Bundle().apply {
-                    putString(MedInfoFragment.BundleKeys.ACTIVE_MED_KEY, gson.toJson(it, MedicamentoActivoItem::class.java))
+                    putString(
+                        MedInfoFragment.BundleKeys.MED_KEY,
+                        gson.toJson(it.fkMedicamento, MedicamentoItem::class.java)
+                    )
                 })
             }
         )

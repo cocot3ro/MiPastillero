@@ -7,7 +7,7 @@ object NotificacionTableDefinition {
         const val PK_NOTIFICACION = "${TABLE_NAME}__pk_notificacion"
         const val FK_MEDICAMENTO_ACTIVO = "${TABLE_NAME}__fk_medicamento_activo"
         const val FK_USUARIO = "${TABLE_NAME}__fk_usuario"
-        const val TIME_STAMP = "${TABLE_NAME}__fecha"
+        const val TIME_STAMP = "${TABLE_NAME}__time_stamp"
     }
 
     object Indexes {
