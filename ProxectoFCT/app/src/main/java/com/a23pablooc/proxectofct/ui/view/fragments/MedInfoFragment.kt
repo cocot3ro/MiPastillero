@@ -1,5 +1,6 @@
 package com.a23pablooc.proxectofct.ui.view.fragments
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.a23pablooc.proxectofct.R
+import com.a23pablooc.proxectofct.core.InternalStorageDefinitions
 import com.a23pablooc.proxectofct.data.network.CimaApiDefinitions
 import com.a23pablooc.proxectofct.databinding.FragmentMedInfoBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
@@ -242,10 +245,37 @@ class MedInfoFragment : Fragment() {
                     afectaConduccion = fetchedMed.afectaConduccion
                     numRegistro = fetchedMed.numRegistro
                     pkCodNacionalMedicamento = fetchedMed.pkCodNacionalMedicamento
-                    imagen = fetchedMed.imagen
                     url = fetchedMed.url
                     prospecto = fetchedMed.prospecto
                     principiosActivos = fetchedMed.principiosActivos
+                }
+
+                withContext(Dispatchers.Main) {
+                    if (fetchedMed.imagen.toString().startsWith(CimaApiDefinitions.BASE_URL)
+                        || fetchedMed.imagen.toString()
+                            .startsWith(InternalStorageDefinitions.FILE_PREFIX)
+                    ) {
+                        if (med.imagen == Uri.EMPTY) {
+                            Glide.with(requireContext())
+                                .load(fetchedMed.imagen)
+                                .into(binding.img)
+
+                            med.imagen = fetchedMed.imagen
+                        } else {
+                            AlertDialog.Builder(requireContext())
+                                .setMessage(getString(R.string.use_official_image))
+                                .setNegativeButton(getString(R.string.cancel), null)
+                                .setPositiveButton(getString(R.string.accept)) { _, _ ->
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        med.imagen = viewModel.useOfficialImage(fetchedMed)
+                                    }
+                                }
+                                .show()
+                        }
+                    } else {
+                        binding.img2.setImageResource(R.drawable.hide_image_80dp)
+                        med.imagen = Uri.EMPTY
+                    }
                 }
 
                 viewModel.updateCodNacional(oldCodNacional, med)
