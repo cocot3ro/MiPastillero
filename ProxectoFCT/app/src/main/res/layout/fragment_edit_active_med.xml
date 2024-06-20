@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/edit_active_med" />
+        app:title="@string/edit_med" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
@@ -53,7 +53,7 @@
                     android:id="@+id/nombre"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginTop="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"

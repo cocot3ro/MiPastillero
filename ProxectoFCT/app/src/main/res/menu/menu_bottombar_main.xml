@@ -6,18 +6,18 @@
         android:id="@+id/calendarFragment"
         android:icon="@drawable/calendar_month_32dp"
         android:title="@string/calendar"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/activeMedsFragment"
         android:icon="@drawable/pill_32dp"
         android:title="@string/active_meds"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/favoriteMedsFragment"
         android:icon="@drawable/star_off_32dp"
         android:title="@string/favorites"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
 </menu>

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.a23pablooc.proxectofct.databinding.MedHistoryGroupBinding
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
+import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.adapters.HistoryRecyclerViewAdapter
 import com.bumptech.glide.Glide
 
@@ -15,7 +16,7 @@ class HistoryGroupViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun render(
         list: List<MedicamentoActivoItem>,
-        onInfo: (MedicamentoActivoItem) -> Unit
+        onInfo: (MedicamentoItem) -> Unit
     ) {
         val med = list.first()
 
@@ -29,7 +30,7 @@ class HistoryGroupViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 .into(binding.medImg)
         }
 
-        binding.ibInfo.setOnClickListener { onInfo(med) }
+        binding.ibInfo.setOnClickListener { onInfo(med.fkMedicamento) }
 
         binding.rvMeds.apply {
             adapter = this@HistoryGroupViewHolder.adapter

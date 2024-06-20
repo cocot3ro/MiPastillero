@@ -462,11 +462,25 @@ class AddActiveMedFragment : Fragment() {
                         || fetchedMed.imagen.toString()
                             .startsWith(InternalStorageDefinitions.FILE_PREFIX)
                     ) {
-                        Glide.with(requireContext())
-                            .load(fetchedMed.imagen)
-                            .into(binding.img)
+                        if (image == Uri.EMPTY) {
+                            Glide.with(requireContext())
+                                .load(fetchedMed.imagen)
+                                .into(binding.img)
 
-                        image = fetchedMed.imagen
+                            image = fetchedMed.imagen
+                        } else {
+                            AlertDialog.Builder(requireContext())
+                                .setMessage(getString(R.string.use_official_image))
+                                .setNegativeButton(getString(R.string.cancel), null)
+                                .setPositiveButton(getString(R.string.accept)) { _, _ ->
+                                    Glide.with(requireContext())
+                                        .load(fetchedMed.imagen)
+                                        .into(binding.img)
+
+                                    image = fetchedMed.imagen
+                                }
+                                .show()
+                        }
                     } else {
                         binding.img.setImageResource(R.drawable.hide_image_80dp)
                         image = Uri.EMPTY

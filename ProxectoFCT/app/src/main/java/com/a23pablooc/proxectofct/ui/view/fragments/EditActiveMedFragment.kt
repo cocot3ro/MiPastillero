@@ -24,6 +24,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DateTimeUtils
 import com.a23pablooc.proxectofct.core.DateTimeUtils.formatDate
@@ -107,6 +108,11 @@ class EditActiveMedFragment : Fragment() {
             onRemoveTimer = { onRemoveTimer(it) }
         )
 
+        binding.rvSchedule.apply {
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = this@EditActiveMedFragment.adapter
+        }
+
         if (med.fkMedicamento.imagen.toString().isNotBlank())
             Glide.with(requireContext()).load(med.fkMedicamento.imagen).into(binding.img)
 
@@ -142,6 +148,8 @@ class EditActiveMedFragment : Fragment() {
         binding.dateStart.text = med.fechaInicio.formatDate()
         binding.dateEnd.text = med.fechaFin.formatDate()
 
+        adapter.updateData(med.horario.toList())
+
         return binding.root
     }
 
@@ -173,6 +181,14 @@ class EditActiveMedFragment : Fragment() {
 
         viewModel.saveChanges(originalMed!!, med)
         originalMed = med.copy()
+
+        Toast.makeText(
+            context,
+            getString(R.string.changes_saved),
+            Toast.LENGTH_SHORT
+        ).show()
+
+        updateFab()
     }
 
     private fun onSelectDate(textView: TextView, dateSetter: (Date) -> Unit) {
@@ -218,7 +234,10 @@ class EditActiveMedFragment : Fragment() {
                     ).show()
                 } else {
                     med.horario =
-                        med.horario.minus(date).plus(pickedTime).sortedBy { it.time }.toMutableSet()
+                        med.horario.apply {
+                            remove(date)
+                            add(pickedTime)
+                        }.sortedBy { it.time }.toMutableSet()
                     adapter.updateData(med.horario.toList())
                 }
 
@@ -248,7 +267,7 @@ class EditActiveMedFragment : Fragment() {
 
     private fun updateFab() {
         binding.fabSaveChanges?.let {
-            if (med == originalMed) it.show()
+            if (med != originalMed) it.show()
             else it.hide()
         }
     }

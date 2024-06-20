@@ -15,8 +15,10 @@ class EditActiveMedViewModel @Inject constructor(
     private val updateMedicamentoUseCase: UpdateMedicamentoUseCase
 ) : ViewModel() {
 
-    fun saveChanges(originalMed:MedicamentoActivoItem, med: MedicamentoActivoItem) {
-        med.horario.removeIf { it < med.fechaInicio || it > med.fechaFin }
+    fun saveChanges(originalMed: MedicamentoActivoItem, med: MedicamentoActivoItem) {
+        med.tomas =
+            med.tomas.filterNot { (date, _) -> date < med.fechaInicio || date > med.fechaFin }
+                .toMutableMap()
 
         val horas = originalMed.horario.map {
             Calendar.getInstance().apply {
@@ -25,16 +27,16 @@ class EditActiveMedViewModel @Inject constructor(
                 set(Calendar.SECOND, 0)
                 set(Calendar.MILLISECOND, 0)
             }.time
-        }
+        }.toSet()
 
-        med.horario.removeIf {
+        med.tomas = med.tomas.filter { (date, _) ->
             Calendar.getInstance().apply {
-                time = it
+                time = date
                 set(0, 0, 0)
                 set(Calendar.SECOND, 0)
                 set(Calendar.MILLISECOND, 0)
-            }.time !in horas
-        }
+            }.time in horas
+        }.toMutableMap()
 
         viewModelScope.launch(Dispatchers.IO) {
             updateMedicamentoUseCase.invoke(med)

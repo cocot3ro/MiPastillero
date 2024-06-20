@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/editActiveMedFragment"
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.EditActiveMedFragment"
-        android:label="@string/edit_active_med"
+        android:label="@string/edit_med"
         tools:layout="@layout/fragment_edit_active_med" />
 
     <fragment
@@ -64,6 +64,5 @@
         android:name="com.a23pablooc.proxectofct.ui.view.fragments.SettingsFragment"
         android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
-
 
 </navigation>

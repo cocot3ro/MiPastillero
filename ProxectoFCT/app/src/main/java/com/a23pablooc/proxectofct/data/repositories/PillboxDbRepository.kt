@@ -8,6 +8,7 @@ import com.a23pablooc.proxectofct.data.database.dao.MedicamentoDAO
 import com.a23pablooc.proxectofct.data.database.dao.MedicamentoWithMedicamentoActivoDAO
 import com.a23pablooc.proxectofct.data.database.dao.NotificacionDAO
 import com.a23pablooc.proxectofct.data.database.dao.UsuarioDAO
+import com.a23pablooc.proxectofct.data.database.definitions.MedicamentoTableDefinition
 import com.a23pablooc.proxectofct.data.database.entities.MedicamentoActivoEntity
 import com.a23pablooc.proxectofct.data.database.entities.extensions.toDomain
 import com.a23pablooc.proxectofct.domain.model.AgendaItem
@@ -34,6 +35,10 @@ class PillboxDbRepository @Inject constructor(
 
     suspend fun updateMedicamentoActivo(med: MedicamentoActivoItem) {
         medicamentoActivoDAO.update(med.toDatabase().medicamentosActivos[0])
+    }
+
+    suspend fun updateCodNacional(oldCodNacional: Long, newCodNacional: Long) {
+        medicamentoDAO.updateCodNacional(oldCodNacional, newCodNacional)
     }
 
     fun getAllFavoriteMedsFlow(): Flow<List<MedicamentoItem>> {
@@ -73,7 +78,7 @@ class PillboxDbRepository @Inject constructor(
         return medicamentoDAO.upsert(med.toDatabase())
     }
 
-    suspend fun updateMedicamentoActivo(medicamento: MedicamentoItem) {
+    suspend fun updateMedicamento(medicamento: MedicamentoItem) {
         medicamentoDAO.update(medicamento.toDatabase())
     }
 
@@ -112,7 +117,10 @@ class PillboxDbRepository @Inject constructor(
         agendaDAO.delete(item.toDatabase())
     }
 
-    suspend fun getNotificaciones(userId: Long, med: MedicamentoActivoItem): List<NotificacionItem> {
+    suspend fun getNotificaciones(
+        userId: Long,
+        med: MedicamentoActivoItem
+    ): List<NotificacionItem> {
         return medicamentoActivoWithNotificacionDAO.getAll(
             userId,
             med.pkMedicamentoActivo

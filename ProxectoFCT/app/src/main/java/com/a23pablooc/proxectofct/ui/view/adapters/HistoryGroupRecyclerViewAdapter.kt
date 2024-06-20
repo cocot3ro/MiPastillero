@@ -6,12 +6,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
+import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.ui.view.diffutils.HistoryGroupDiffUtil
 import com.a23pablooc.proxectofct.ui.view.viewholders.HistoryGroupViewHolder
 
 class HistoryGroupRecyclerViewAdapter(
     private var list: List<MedicamentoActivoItem>,
-    private val onInfo: (MedicamentoActivoItem) -> Unit
+    private val onInfo: (MedicamentoItem) -> Unit
 ) : RecyclerView.Adapter<HistoryGroupViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryGroupViewHolder {
         return HistoryGroupViewHolder(

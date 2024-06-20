@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/menu_toolbar_edit_active_med_land"
-        app:title="@string/edit_active_med" />
+        app:title="@string/edit_med" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
