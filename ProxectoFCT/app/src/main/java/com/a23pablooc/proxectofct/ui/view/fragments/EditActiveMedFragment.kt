@@ -21,6 +21,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -36,6 +37,9 @@ import com.a23pablooc.proxectofct.ui.viewmodel.EditActiveMedViewModel
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Date
 import javax.inject.Inject
 
@@ -120,6 +124,8 @@ class EditActiveMedFragment : Fragment() {
 
         binding.fabSaveChanges?.setOnClickListener { saveChanges() }
 
+        binding.fabDelete?.setOnClickListener { delete() }
+
         binding.ibInfo.setOnClickListener {
             navController.popBackStack()
             navController.navigate(R.id.medInfoFragment, Bundle().apply {
@@ -167,6 +173,11 @@ class EditActiveMedFragment : Fragment() {
                 return when (menuItem.itemId) {
                     R.id.saveChanged -> {
                         saveChanges()
+                        true
+                    }
+
+                    R.id.delete -> {
+                        delete()
                         true
                     }
 
@@ -308,5 +319,14 @@ class EditActiveMedFragment : Fragment() {
         }
 
         return true
+    }
+
+    private fun delete() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            withContext(Dispatchers.IO) {
+                viewModel.deleteMed(med)
+                navController.popBackStack()
+            }
+        }
     }
 }

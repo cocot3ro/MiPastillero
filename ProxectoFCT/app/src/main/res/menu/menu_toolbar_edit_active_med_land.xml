@@ -3,9 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/delete"
+        android:icon="@drawable/delete_32dp"
+        android:title="@string/delete_med"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/saveChanged"
         android:icon="@drawable/save_32dp"
         android:title="@string/save_changes"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
 </menu>

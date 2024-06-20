@@ -32,39 +32,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <FrameLayout
-                android:id="@+id/fav_frame"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:clickable="true"
-                android:contentDescription="@string/button_to_fav"
-                app:layout_constraintBottom_toBottomOf="@id/med_img"
-                app:layout_constraintEnd_toEndOf="@id/med_img"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/iv_fav_bg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@android:color/transparent"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/star_on_32dp"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/iv_fav_fg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@android:color/transparent"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/star_off_32dp" />
-            </FrameLayout>
-
             <TextView
                 android:id="@+id/med_name"
                 android:layout_width="0dp"
@@ -86,6 +53,34 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/med_img" />
 
+            <FrameLayout
+                android:id="@+id/fav_frame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="8dp"
+                android:contentDescription="@string/button_to_fav"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_fav_bg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/star_on_32dp"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/iv_fav_fg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/star_off_32dp" />
+            </FrameLayout>
+
             <ImageButton
                 android:id="@+id/btn_info"
                 android:layout_width="wrap_content"
@@ -95,7 +90,7 @@
                 android:padding="8dp"
                 android:src="@drawable/info_32dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/fav_frame" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

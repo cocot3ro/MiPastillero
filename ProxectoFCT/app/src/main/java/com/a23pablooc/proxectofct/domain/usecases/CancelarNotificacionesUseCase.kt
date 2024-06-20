@@ -3,6 +3,7 @@ package com.a23pablooc.proxectofct.domain.usecases
 import com.a23pablooc.proxectofct.core.notifications.NotificationManager
 import com.a23pablooc.proxectofct.data.repositories.PillboxDbRepository
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
+import com.a23pablooc.proxectofct.domain.model.MedicamentoItem
 import com.a23pablooc.proxectofct.domain.model.NotificacionItem
 import com.a23pablooc.proxectofct.domain.model.UsuarioItem
 import javax.inject.Inject

@@ -110,6 +110,7 @@
     <string name="use_official_image">¿Quieres descargar la imagen oficial o usar la imagen que has seleccionado?</string>
     <string name="no_info_about_med">No hay información sobre este medicamento. Por favor, introduzca el código nacional del medicamento y pulse el botón de búsqueda.</string>
     <string name="download_image">Descargar imagen</string>
+    <string name="delete_med">Borrar medicamento</string>
     <string-array name="days">
         <item>Lunes</item>
         <item>Martes</item>

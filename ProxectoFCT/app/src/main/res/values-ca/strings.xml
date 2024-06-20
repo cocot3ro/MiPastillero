@@ -110,6 +110,7 @@
     <string name="use_official_image">Vols descarregar la imatge oficial o utilitzar la imatge que has seleccionat?</string>
     <string name="no_info_about_med">No hi ha informació sobre aquest medicament. Si us plau, introdueix el codi nacional del medicament i prem el botó de cerca.</string>
     <string name="download_image">Descarregar imatge</string>
+    <string name="delete_med">Esborrar medicament</string>
     <string-array name="days">
         <item>Dilluns</item>
         <item>Dimarts</item>

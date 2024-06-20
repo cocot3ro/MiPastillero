@@ -4,6 +4,7 @@ import android.icu.util.Calendar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.a23pablooc.proxectofct.domain.model.MedicamentoActivoItem
+import com.a23pablooc.proxectofct.domain.usecases.BorrarMedicamentoUseCase
 import com.a23pablooc.proxectofct.domain.usecases.UpdateMedicamentoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditActiveMedViewModel @Inject constructor(
-    private val updateMedicamentoUseCase: UpdateMedicamentoUseCase
+    private val updateMedicamentoUseCase: UpdateMedicamentoUseCase,
+    private val borrarMedicamentoUseCase: BorrarMedicamentoUseCase
 ) : ViewModel() {
 
     fun saveChanges(originalMed: MedicamentoActivoItem, med: MedicamentoActivoItem) {
@@ -41,5 +43,9 @@ class EditActiveMedViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             updateMedicamentoUseCase.invoke(med)
         }
+    }
+
+    suspend fun deleteMed(med: MedicamentoActivoItem) {
+        borrarMedicamentoUseCase.invoke(med)
     }
 }

@@ -53,9 +53,9 @@
                     android:id="@+id/nombre"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:layout_marginTop="4dp"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:layout_marginTop="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/ib_info"
                     app:layout_constraintStart_toEndOf="@id/img"
@@ -279,6 +279,16 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|bottom"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/save_changes"
+            android:src="@drawable/delete_32dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_save_changes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -287,8 +297,7 @@
             android:layout_marginBottom="16dp"
             android:contentDescription="@string/save_changes"
             android:src="@drawable/save_32dp"
-            android:visibility="invisible"
-            tools:ignore="DuplicateSpeakableTextCheck" />
+            android:visibility="invisible" />
 
     </androidx.cardview.widget.CardView>
 

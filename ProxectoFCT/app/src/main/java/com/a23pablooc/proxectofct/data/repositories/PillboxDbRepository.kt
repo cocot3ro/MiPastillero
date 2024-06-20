@@ -138,4 +138,8 @@ class PillboxDbRepository @Inject constructor(
     suspend fun deleteNotificacion(notificacion: NotificacionItem) {
         notificacionDAO.delete(notificacion.toDatabase())
     }
+
+    suspend fun deleteMed(med: MedicamentoActivoItem) {
+        medicamentoActivoDAO.delete(med.toDatabase().medicamentosActivos[0])
+    }
 }

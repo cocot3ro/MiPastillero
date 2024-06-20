@@ -110,6 +110,7 @@
     <string name="use_official_image">Do you want to download the official image or use the image you selected?</string>
     <string name="no_info_about_med">There is no information about this medication. Please enter the national drug code and press the search button.</string>
     <string name="download_image">Download Image</string>
+    <string name="delete_med">Delete Medicine</string>
     <string-array name="days">
         <item>Monday</item>
         <item>Tuesday</item>
