@@ -2,6 +2,7 @@ package com.a23pablooc.proxectofct.di
 
 import android.net.Uri
 import com.a23pablooc.proxectofct.data.model.MedicamentoModel
+import com.a23pablooc.proxectofct.data.model.typeadapters.DateTypeAdapter
 import com.a23pablooc.proxectofct.data.model.typeadapters.MedicamentoModelTypeAdapter
 import com.a23pablooc.proxectofct.data.model.typeadapters.UriTypeAdapter
 import com.google.gson.Gson
@@ -10,6 +11,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import java.util.Date
 import javax.inject.Singleton
 
 @Module
@@ -25,6 +27,7 @@ object GsonModule {
                 MedicamentoModelTypeAdapter()
             )
             .registerTypeAdapter(Uri::class.java, UriTypeAdapter())
+            .registerTypeAdapter(Date::class.java, DateTypeAdapter())
             .create()
     }
 }
