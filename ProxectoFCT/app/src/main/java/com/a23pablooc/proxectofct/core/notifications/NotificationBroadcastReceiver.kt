@@ -10,6 +10,7 @@ import androidx.core.app.NotificationCompat
 import com.a23pablooc.proxectofct.R
 import com.a23pablooc.proxectofct.core.DataStoreManager
 import com.a23pablooc.proxectofct.domain.model.NotificacionItem
+import com.a23pablooc.proxectofct.domain.usecases.GetUsersUseCase
 import com.a23pablooc.proxectofct.ui.view.activity.MainActivity
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
@@ -19,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -28,6 +30,9 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var dataStoreManager: DataStoreManager
+
+    @Inject
+    lateinit var getUsersUseCase: GetUsersUseCase
 
     private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
@@ -55,7 +60,7 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
             .createNotificationChannel(channel)
     }
 
-    private fun createNotification(context: Context, intent: Intent) {
+    private suspend fun createNotification(context: Context, intent: Intent) {
         val json = intent.getStringExtra(NotificationDefinitions.NOTIF_KEY)!!
         val noti = gson.fromJson(json, NotificacionItem::class.java)
 
@@ -82,22 +87,28 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
+        val user = getUsersUseCase.invoke().first().find { it.pkUsuario == noti.fkUsuario }!!
+
+        val content = "${noti.fkMedicamentoActivo.fkMedicamento.nombre} ${noti.fkMedicamentoActivo.dosis}"
+
         val notification = NotificationCompat
             .Builder(context, context.getString(R.string.channel_name))
             .setSmallIcon(R.drawable.pill_16dp)
-            .setContentTitle(context.getString(R.string.user_time_to_take)) // TODO: format here
-            .setContentText(noti.fkMedicamentoActivo.fkMedicamento.nombre)
+            .setContentTitle(String.format(context.getString(R.string.user_time_to_take), user.nombre))
+            .setContentText(content)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(openAppPendingIntent)
             .addAction(0, context.getString(R.string.tick_take), marcarTomaPendingIntent)
             .setAutoCancel(true)
 
         if (noti.fkMedicamentoActivo.fkMedicamento.imagen.toString().isNotBlank()) {
-            val bitmap = Glide.with(context)
-                .asBitmap()
-                .load(noti.fkMedicamentoActivo.fkMedicamento.imagen)
-                .submit()
-                .get()
+            val bitmap = withContext(Dispatchers.IO) {
+                Glide.with(context)
+                    .asBitmap()
+                    .load(noti.fkMedicamentoActivo.fkMedicamento.imagen)
+                    .submit()
+                    .get()
+            }
 
             notification.setLargeIcon(bitmap)
         }

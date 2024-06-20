@@ -7,6 +7,7 @@ import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -472,7 +473,7 @@ class AddActiveMedFragment : Fragment() {
                             AlertDialog.Builder(requireContext())
                                 .setMessage(getString(R.string.use_official_image))
                                 .setNegativeButton(getString(R.string.cancel), null)
-                                .setPositiveButton(getString(R.string.accept)) { _, _ ->
+                                .setPositiveButton(getString(R.string.download_image)) { _, _ ->
                                     Glide.with(requireContext())
                                         .load(fetchedMed.imagen)
                                         .into(binding.img)

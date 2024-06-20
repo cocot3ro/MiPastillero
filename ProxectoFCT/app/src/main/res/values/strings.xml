@@ -79,7 +79,7 @@
     <string name="channel_name">Medication Notifications</string>
     <string name="channel_description">Receive notifications about your medication schedule.</string>
     <string name="tick_take">Mark take</string>
-    <string name="user_time_to_take">\'%s\': Time to take your medicine</string>
+    <string name="user_time_to_take">%s: Time to take your medicine</string>
     <string name="error_fetching_data">Error loading data</string>
     <string name="nregistro">Registration number</string>
     <string name="med_affects_driving">This medicine may impair your ability to drive or operate dangerous machinery. Consult the leaflet for more information.</string>
@@ -109,6 +109,7 @@
     <string name="edit_med">Edit medication</string>
     <string name="use_official_image">Do you want to download the official image or use the image you selected?</string>
     <string name="no_info_about_med">There is no information about this medication. Please enter the national drug code and press the search button.</string>
+    <string name="download_image">Download Image</string>
     <string-array name="days">
         <item>Monday</item>
         <item>Tuesday</item>

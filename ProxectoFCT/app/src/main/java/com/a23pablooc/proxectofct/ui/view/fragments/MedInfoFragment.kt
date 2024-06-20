@@ -265,7 +265,7 @@ class MedInfoFragment : Fragment() {
                             AlertDialog.Builder(requireContext())
                                 .setMessage(getString(R.string.use_official_image))
                                 .setNegativeButton(getString(R.string.cancel), null)
-                                .setPositiveButton(getString(R.string.accept)) { _, _ ->
+                                .setPositiveButton(getString(R.string.download_image)) { _, _ ->
                                     lifecycleScope.launch(Dispatchers.IO) {
                                         med.imagen = viewModel.useOfficialImage(fetchedMed)
                                     }

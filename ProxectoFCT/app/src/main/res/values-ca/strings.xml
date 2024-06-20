@@ -79,7 +79,7 @@
     <string name="channel_name">Notificacions de Medicaments</string>
     <string name="channel_description">Rep notificacions sobre la presa dels teus medicaments.</string>
     <string name="tick_take">Marcar presa</string>
-    <string name="user_time_to_take">\'%s\': Hora de prendre el teu medicament</string>
+    <string name="user_time_to_take">%s: Hora de prendre el teu medicament</string>
     <string name="error_fetching_data">Error en carregar les dades</string>
     <string name="nregistro">Número de registre</string>
     <string name="med_affects_driving">Aquest fàrmac pot reduir la capacitat de conducció o de maneig de maquinària perillosa. Consulteu el prospecte per a més informació.</string>
@@ -109,6 +109,7 @@
     <string name="edit_med">Modificar medicament</string>
     <string name="use_official_image">Vols descarregar la imatge oficial o utilitzar la imatge que has seleccionat?</string>
     <string name="no_info_about_med">No hi ha informació sobre aquest medicament. Si us plau, introdueix el codi nacional del medicament i prem el botó de cerca.</string>
+    <string name="download_image">Descarregar imatge</string>
     <string-array name="days">
         <item>Dilluns</item>
         <item>Dimarts</item>

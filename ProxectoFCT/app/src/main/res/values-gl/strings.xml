@@ -79,7 +79,7 @@
     <string name="channel_name">Notificacións de Medicamentos</string>
     <string name="channel_description">Recibe notificacións sobre a toma dos teus medicamentos.</string>
     <string name="tick_take">Marcar toma</string>
-    <string name="user_time_to_take">\'%s\': Hora de tomar o teu medicamento</string>
+    <string name="user_time_to_take">%s: Hora de tomar o teu medicamento</string>
     <string name="error_fetching_data">Erro ao cargar os datos</string>
     <string name="nregistro">Número de rexistro</string>
     <string name="med_affects_driving">Este fármaco pode reducir a capacidade de condución ou manexo de maquinaria perigosa. Consulte o prospecto para máis información.</string>
@@ -109,6 +109,7 @@
     <string name="edit_med">Modificar medicamento</string>
     <string name="use_official_image">Queres descargar a imaxe oficial ou usar a imaxe que seleccionaches?</string>
     <string name="no_info_about_med">Non hai información sobre este medicamento. Por favor, introduce o código nacional do medicamento e preme o botón de busca.</string>
+    <string name="download_image">Descargar imaxe</string>
     <string-array name="days">
         <item>Luns</item>
         <item>Martes</item>
