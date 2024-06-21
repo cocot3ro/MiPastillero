@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="header_bg">#1B7DE4</color>
+    <color name="red_delete_bg">#ED0D0D</color>
+    <color name="snack_bar_bg">#323232</color>
+    <color name="snack_bar_text">#FFFFFF</color>
+    <color name="snack_bar_action_text">#d0befc</color>
+</resources>
