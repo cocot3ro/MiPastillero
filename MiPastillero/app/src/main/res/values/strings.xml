@@ -1,0 +1,123 @@
+<resources>
+    <string name="app_name">My pillbox</string>
+    <string name="national_drug_code">National drug code</string>
+    <string name="national_drug_code_help">A six-digit number, always greater than 600,000, followed by a dot and a control number. It is usually located on the front and/or back of the medicine box</string>
+    <string name="med_name">Medicine name</string>
+    <string name="dose">Dose</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="schedule">Schedule</string>
+    <string name="favorites">Favorites</string>
+    <string name="no_fav_meds">No favorite medicines</string>
+    <string name="active_meds">Active Medication</string>
+    <string name="no_active_meds">No active medications</string>
+    <string name="add_med">Add medicine</string>
+    <string name="calendar">Calendar</string>
+    <string name="no_meds_at_day">No medicines to take on this day</string>
+    <string name="user_name">Username</string>
+    <string name="warning">Warning!</string>
+    <string name="delete_data_confirm">Continuing will permanently delete all application data. Are you sure you want to continue?</string>
+    <string name="delete_data_confirmation">Type \'%s\' to confirm</string>
+    <string name="delete_data_confirmation_key">CONFIRM</string>
+    <string name="delete_user_desc">Deleting a user will lose all data associated with them. This includes the medications they have registered, notes in the calendar, and the medication history.</string>
+    <string name="delete_user_confirmation">Enter the username \'%s\' to confirm</string>
+    <string name="diary">Diary</string>
+    <string name="history">History</string>
+    <string name="no_history">No history records</string>
+    <string name="no_users">No registered users</string>
+    <string name="manage_users">Manage users</string>
+    <string name="med_info">Medicine information</string>
+    <string name="settings">Settings</string>
+    <string name="images">Images</string>
+    <string name="use_images">Use images</string>
+    <string name="use_images_on">Images will be downloaded from the internet</string>
+    <string name="use_hd_images">High quality images</string>
+    <string name="use_hd_images_on">Higher quality images will be used if available</string>
+    <string name="notifications">Notifications</string>
+    <string name="use_notifications">Receive notifications</string>
+    <string name="use_notifications_on">You will be notified every time you need to take a medicine</string>
+    <string name="users">Users</string>
+    <string name="manage_users_desc">Change usernames and select a default user</string>
+    <string name="delete_data">Delete data</string>
+    <string name="loading">Loading</string>
+    <string name="tomas">Takes:</string>
+    <string name="dose_colon">Dose:</string>
+    <string name="welcome">Welcome</string>
+    <string name="search">Search</string>
+    <string name="today">Today</string>
+    <string name="error_fetching_users">Error loading users</string>
+    <string name="should_input_name">You must enter a name</string>
+    <string name="invalid_date_end_minor_start">End date cannot be earlier than start date</string>
+    <string name="invalid_date_end_minor_now">End date cannot be earlier than current date</string>
+    <string name="should_input_schedule">At least one schedule time is required</string>
+    <string name="unique_schedule_dates">Schedule times must be unique</string>
+    <string name="saving">Saving</string>
+    <string name="schedule_already_exists">Warning: The schedule time is already added</string>
+    <string name="searching">Searching</string>
+    <string name="med_not_found">Medicine not found</string>
+    <string name="med_already_on_fav">This medicine is already in favorites</string>
+    <string name="connection_error">Connection error</string>
+    <string name="invalid_national_drug_code">Invalid national drug code</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="select_img_from_device">Select an image from the gallery</string>
+    <string name="create_user">Create user</string>
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
+    <string name="required_field">Required field</string>
+    <string name="new_default_user">This will now be the default user</string>
+    <string name="delete_user">Delete user</string>
+    <string name="error_fetching_meds">Error loading medicines</string>
+    <string name="discard">Discard changes</string>
+    <string name="ensure_discard_changes">Are you sure you want to discard the changes?</string>
+    <string name="use_images_off">Images will not be downloaded</string>
+    <string name="use_hd_images_off">Low quality images will be downloaded</string>
+    <string name="use_notifications_off">Medicine reminders will not be notified</string>
+    <string name="changes_saved">Changes saved</string>
+    <string name="only_today">You can only mark today\'s takes</string>
+    <string name="is_now_default_user">\'%s\' is now the default user</string>
+    <string name="channel_id" translatable="false">medication_notifications</string>
+    <string name="channel_name">Medication Notifications</string>
+    <string name="channel_description">Receive notifications about your medication schedule.</string>
+    <string name="tick_take">Mark take</string>
+    <string name="user_time_to_take">%s: Time to take your medicine</string>
+    <string name="error_fetching_data">Error loading data</string>
+    <string name="nregistro">Registration number</string>
+    <string name="med_affects_driving">This medicine may impair your ability to drive or operate dangerous machinery. Consult the leaflet for more information.</string>
+    <string name="see">See</string>
+    <string name="see_leaflet">See the leaflet</string>
+    <string name="active_principles">Active ingredients</string>
+    <string name="info_about_med">Information about the medication</string>
+    <string name="button_to_fav">Button to mark as favorite</string>
+    <string name="med_img">Medication image</string>
+    <string name="use_med">Use medication</string>
+    <string name="add_time_to_schedule">Add time to schedule</string>
+    <string name="select_start_date">Select start date</string>
+    <string name="select_end_date">Select end date</string>
+    <string name="help">Help</string>
+    <string name="search_med_by_cn">Search medication by national code</string>
+    <string name="select_this_user_as_default">Select this user as default</string>
+    <string name="save_changes">Save changes</string>
+    <string name="new_user">New user</string>
+    <string name="med_with_prescription">Prescription medication</string>
+    <string name="med_can_affect_driving">The medication may affect driving ability</string>
+    <string name="see_online">See online</string>
+    <string name="goto_manage_users">Go to user management</string>
+    <string name="delete_this_user">Delete this user</string>
+    <string name="logout">Logout</string>
+    <string name="delete_this_schedule_time">Delete this schedule time</string>
+    <string name="change_schedule_time">Change schedule time</string>
+    <string name="edit_med">Edit medication</string>
+    <string name="use_official_image">Do you want to download the official image or use the image you selected?</string>
+    <string name="no_info_about_med">There is no information about this medication. Please enter the national drug code and press the search button.</string>
+    <string name="download_image">Download Image</string>
+    <string name="delete_med">Delete Medicine</string>
+    <string-array name="days">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+</resources>

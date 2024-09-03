@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/usersFragment">
+
+    <fragment
+        android:id="@+id/usersFragment"
+        android:name="com.cocot3ro.mipastillero.ui.view.fragments.UsersFragment"
+        android:label="@string/users"
+        tools:layout="@layout/fragment_users" />
+
+    <fragment
+        android:id="@+id/addActiveMedFragment"
+        android:name="com.cocot3ro.mipastillero.ui.view.fragments.AddActiveMedFragment"
+        android:label="@string/add_med"
+        tools:layout="@layout/fragment_add_active_med" />
+
+    <fragment
+        android:id="@+id/diaryFragment"
+        android:name="com.cocot3ro.mipastillero.ui.view.fragments.DiaryFragment"
+        android:label="@string/diary"
+        tools:layout="@layout/fragment_diary" />
+
+    <fragment
+        android:id="@+id/editActiveMedFragment"
+        android:name="com.cocot3ro.mipastillero.ui.view.fragments.EditActiveMedFragment"
+        android:label="@string/edit_med"
+        tools:layout="@layout/fragment_edit_active_med" />
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.cocot3ro.mipastillero.ui.view.fragments.HistoryFragment"
+        android:label="@string/history"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/mainScreenFragment"
+        android:name="com.cocot3ro.mipastillero.ui.view.fragments.MainScreenFragment"
+        android:label=""
+        tools:layout="@layout/fragment_main_screen" />
+
+    <fragment
+        android:id="@+id/manageUsersFragment"
+        android:name="com.cocot3ro.mipastillero.ui.view.fragments.ManageUsersFragment"
+        android:label="@string/manage_users"
+        tools:layout="@layout/fragment_manage_users" />
+
+    <fragment
+        android:id="@+id/medInfoFragment"
+        android:name="com.cocot3ro.mipastillero.ui.view.fragments.MedInfoFragment"
+        android:label="@string/med_info"
+        tools:layout="@layout/fragment_med_info" />
+
+    <fragment
+        android:id="@+id/reuseMedFragment"
+        android:name="com.cocot3ro.mipastillero.ui.view.fragments.ReuseMedFragment"
+        android:label="@string/add_med"
+        tools:layout="@layout/fragment_reuse_med" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.cocot3ro.mipastillero.ui.view.fragments.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings" />
+
+</navigation>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/addActiveMedFragment"
+        android:icon="@drawable/outpatient_med_32dp"
+        android:title="@string/add_med"
+        app:showAsAction="withText" />
+
+    <item
+        android:id="@+id/diaryFragment"
+        android:icon="@drawable/menu_book_32dp"
+        android:title="@string/diary"
+        app:showAsAction="withText" />
+
+    <item
+        android:id="@+id/historyFragment"
+        android:icon="@drawable/history_32dp"
+        android:title="@string/history"
+        app:showAsAction="withText" />
+
+</menu>
