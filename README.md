@@ -13,14 +13,3 @@
 ## Licencia
 
 > _TODO_: É requisito INDISPENSABLE licenciar explicitamente o proxecto. Crea un ficheiro `LICENSE` na raíz do repositorio, coa especificación da licencia.
-
-## Índice
-
-1. [Estudo preliminar](doc/templates/1_estudo_preliminar.md)
-2. [Análise](doc/templates/2_analise.md)
-   - [Planificación](doc/templates/21_planificacion.md)
-   - [Orzamento](doc/templates/22_orzamento.md)
-3. [Deseño](doc/templates/3_deseño.md)
-4. [Codificación e probas](doc/templates/4_codificacion_probas.md)
-5. [Manuais do proxecto](doc/templates/5_manuais.md)
-   - [Referencias](doc/templates/51_referencias.md)
