@@ -22,6 +22,7 @@ import com.cocot3ro.mipastillero.ui.viewmodel.CalendarPageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Date
 
 @AndroidEntryPoint
@@ -53,15 +54,20 @@ class CalendarPageFragment : Fragment() {
         adapter = CalendarPageMedGroupRecyclerViewAdapter(
             dia = date,
             list = emptyList(),
-            onMarcarToma = { med, dia, hora ->
-                try {
-                    viewModel.marcarToma(med, dia, hora)
-                } catch (e: IllegalArgumentException) {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.only_today),
-                        Toast.LENGTH_LONG
-                    ).show()
+            onMarcarToma = { med, dia, hora, onError ->
+                viewLifecycleOwner.lifecycleScope.launch {
+                    try {
+                        withContext(Dispatchers.IO) {
+                            viewModel.marcarToma(med, dia, hora)
+                        }
+                    } catch (e: IllegalArgumentException) {
+                        Toast.makeText(
+                            context,
+                            getString(R.string.only_today),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        onError.invoke()
+                    }
                 }
             }
         )

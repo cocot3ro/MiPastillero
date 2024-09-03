@@ -3,10 +3,10 @@ package com.cocot3ro.mipastillero.ui.view.viewholders
 import android.icu.util.Calendar
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.cocot3ro.mipastillero.core.DateTimeUtils.get
 import com.cocot3ro.mipastillero.databinding.CalendarMedBinding
 import com.cocot3ro.mipastillero.domain.model.MedicamentoActivoItem
-import com.bumptech.glide.Glide
 import java.util.Date
 
 class CalendarMedViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -16,7 +16,7 @@ class CalendarMedViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         dia: Date,
         hora: Date,
         med: MedicamentoActivoItem,
-        onMarcarToma: (MedicamentoActivoItem, Date, Date) -> Unit
+        onMarcarToma: (MedicamentoActivoItem, Date, Date, () -> Unit) -> Unit
     ) {
         binding.medName.text = med.fkMedicamento.nombre
 
@@ -35,7 +35,12 @@ class CalendarMedViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
             isChecked = med.tomas[timeStamp] ?: false
 
-            setOnClickListener { onMarcarToma(med, dia, hora) }
+            setOnClickListener {
+                val wasChecked = !isChecked
+                onMarcarToma(med, dia, hora) {
+                    isChecked = wasChecked
+                }
+            }
         }
 
         if (med.fkMedicamento.imagen.toString().isNotBlank()) {

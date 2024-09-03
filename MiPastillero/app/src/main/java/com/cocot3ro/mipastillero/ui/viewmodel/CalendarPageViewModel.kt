@@ -43,9 +43,7 @@ class CalendarPageViewModel @Inject constructor(
         }
     }
 
-    fun marcarToma(med: MedicamentoActivoItem, dia: Date, hora: Date) {
-        viewModelScope.launch(Dispatchers.IO) {
-            marcarTomaUseCase.invoke(med, dia, hora)
-        }
+    suspend fun marcarToma(med: MedicamentoActivoItem, dia: Date, hora: Date) {
+        marcarTomaUseCase.invoke(med, dia, hora)
     }
 }

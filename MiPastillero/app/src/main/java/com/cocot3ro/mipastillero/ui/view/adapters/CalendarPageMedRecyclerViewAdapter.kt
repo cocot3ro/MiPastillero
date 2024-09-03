@@ -14,7 +14,7 @@ class CalendarPageMedRecyclerViewAdapter(
     private val dia: Date,
     private var hora: Date,
     private var list: List<MedicamentoActivoItem>,
-    private val onMarcarToma: (MedicamentoActivoItem, Date, Date) -> Unit
+    private val onMarcarToma: (MedicamentoActivoItem, Date, Date, () -> Unit) -> Unit
 ) : RecyclerView.Adapter<CalendarMedViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarMedViewHolder {
         return CalendarMedViewHolder(

@@ -13,7 +13,7 @@ import java.util.Date
 class CalendarPageMedGroupRecyclerViewAdapter(
     private val dia: Date,
     private var list: List<MedicamentoActivoItem>,
-    private val onMarcarToma: (MedicamentoActivoItem, Date, Date) -> Unit
+    private val onMarcarToma: (MedicamentoActivoItem, Date, Date, () -> Unit) -> Unit
 ) : RecyclerView.Adapter<CalendarPageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarPageViewHolder {

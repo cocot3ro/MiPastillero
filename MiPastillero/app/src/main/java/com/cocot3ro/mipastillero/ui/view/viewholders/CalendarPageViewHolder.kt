@@ -18,7 +18,7 @@ class CalendarPageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         dia: Date,
         hora: Date,
         meds: List<MedicamentoActivoItem>,
-        onMarcarToma: (MedicamentoActivoItem, Date, Date) -> Unit
+        onMarcarToma: (MedicamentoActivoItem, Date, Date, () -> Unit) -> Unit
     ) {
         adapter = adapter ?: CalendarPageMedRecyclerViewAdapter(dia, hora, meds, onMarcarToma)
 
