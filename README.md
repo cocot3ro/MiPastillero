@@ -1,15 +1,42 @@
-# Proyecto fin de ciclo
+# MiPastillero
 
-> _TODO_: Este documento será a páxina de inicio do teu proxecto. Será o primeiro que vexa quen se interese por el. Coida a súa redacción e ortografía. Vai eliminando as liñas "_TODO_" a medida que completes a redacción de cada apartado. Inclúe neste apartado o título do proxecto e a autoría.
+**MiPastillero** es una aplicación para Android diseñada para ayudar a los usuarios a gestionar su medicación diaria de manera efectiva. La aplicación permite registrar medicamentos, recibir notificaciones para recordar cuándo tomarlos, acceder al historial de medicación y mantener una pequeña agenda de notas.
 
-## Descrición
+## Características
 
-> _TODO_: Realiza unha breve descrición do proxecto (entre 100 e 300 palabras). Resalta o fundamental **coas túas propias palabras**. Utiliza unha linguaxe correcta, **pero natural**, que poida ser entendida pola maioría das persoas, incluso as que non teñan un coñecemento técnico da materia.
+- **Registro de Medicamentos**: Permite a los usuarios registrar sus medicamentos y establecer la frecuencia y dosis de cada uno.
+- **Notificaciones**: Recordatorios oportunos cada vez que el usuario debe tomar su medicamento.
+- **Historial de Medicación**: Consulta del historial de medicación del paciente.
+- **Agenda de Notas**: Una pequeña agenda para tomar notas relacionadas con la medicación o la salud del usuario.
 
-## Sobre a autoría
+## Tecnologías Utilizadas
 
-> _TODO_: Realiza unha breve descrición de quen es (perfil profesional), puntos fortes, tecnoloxías que máis dominas... e os motivos que te levaron a elaborar este proxecto. **Non máis de 200 palabras**.
+- **Lenguaje**: Kotlin
+- **Principales librerías**:
+  - **Retrofit**: Para la comunicación con APIs.
+  - **Dagger Hilt**: Inyección de dependencias.
+  - **Room**: Manejo de la base de datos local.
+
+## Instalación
+
+1. Clona este repositorio:
+
+```bash
+git clone https://github.com/tuusuario/MiPastillero.git
+```
+
+2. Abre el proyecto en Android Studio, necesitaras la versión Android Studio Koala Feature Drop (2024.1.2 o superior) y un emulador o dispositivo físico
+
+3. Compila y ejecuta el proyecto
+
+## Fuente de Datos
+
+MiPastillero utiliza los datos de la Agencia Española de Medicamentos y Productos Sanitarios (AEMPS) para proporcionar información oficial sobre los medicamentos, lo que garantiza la fiabilidad y actualización de los datos presentados a los usuarios.
 
 ## Licencia
 
-> _TODO_: É requisito INDISPENSABLE licenciar explicitamente o proxecto. Crea un ficheiro `LICENSE` na raíz do repositorio, coa especificación da licencia.
+Este proyecto está licenciado bajo la Licencia Pública General de GNU v3.0 (GPL-3.0). Para mas detalles, consulta el archivo [LICENSE](LICENSE)
+
+## Autoría
+
+[Pablo Otero Castro](https://github.com/cocot3ro) - Único desarrollador de MiPastillero
