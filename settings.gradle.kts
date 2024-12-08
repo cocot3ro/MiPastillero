@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MiPastillero"
 include(":app")
+include(":compose-app")
