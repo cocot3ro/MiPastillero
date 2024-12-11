@@ -3,31 +3,31 @@ package com.cocot3ro.mipastillero.ui.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-object Splash
+data object Splash
 
 @Serializable
-object Login
+data object Login
 
 @Serializable
-object Main
+data object Home
 
 @Serializable
-object Calendar
+data object Calendar
 
 @Serializable
-object ActiveMeds
+data object ActiveMeds
 
 @Serializable
-object FavoriteMeds
+data object FavoriteMeds
 
 @Serializable
-object ManageUsers
+data object ManageUsers
 
 @Serializable
-object History
+data object History
 
 @Serializable
-object Settings
+data object Settings
 
 @Serializable
-object Diary
+data object Diary

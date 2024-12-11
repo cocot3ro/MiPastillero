@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class MarcarTomaUseCase @Inject constructor(private val repository: MiPastilleroDbRepository) {
 
-    suspend fun invoke(med: MedicamentoActivoItem, dia: Date, hora: Date) {
+    suspend fun invoke(med: MedicamentoActivoItem, dia: Date, hora: Date, tomado: Boolean?) {
         val timeStamp = Calendar.getInstance().apply {
             set(Calendar.YEAR, dia.get(Calendar.YEAR))
             set(Calendar.MONTH, dia.get(Calendar.MONTH))
@@ -21,7 +21,7 @@ class MarcarTomaUseCase @Inject constructor(private val repository: MiPastillero
             set(Calendar.MILLISECOND, hora.get(Calendar.MILLISECOND))
         }.time
 
-        invoke(med, timeStamp)
+        invoke(med, timeStamp, tomado)
     }
 
     suspend fun invoke(med: MedicamentoActivoItem, timeStamp: Date, value: Boolean? = null) {

@@ -1,6 +1,6 @@
 package com.cocot3ro.mipastillero.domain.usecases
 
-import com.cocot3ro.mipastillero.core.DataStoreManager
+import com.cocot3ro.mipastillero.core.datastore.DataStoreManager
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
@@ -9,9 +9,8 @@ class SelectDefaultUserUseCase @Inject constructor(
 ) {
     suspend fun invoke(userId: Long) {
         dataStoreManager.defaultUserId(
-            if (userId == dataStoreManager.defaultUserId()
-                    .first()
-            ) DataStoreManager.Defaults.DEFAULT_USER_ID else userId
+            if (userId == dataStoreManager.defaultUserId().first()) null
+            else userId
         )
     }
 

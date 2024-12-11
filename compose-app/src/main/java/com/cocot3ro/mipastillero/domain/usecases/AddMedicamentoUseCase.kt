@@ -1,7 +1,7 @@
 package com.cocot3ro.mipastillero.domain.usecases
 
 import android.net.Uri
-import com.cocot3ro.mipastillero.core.DataStoreManager
+import com.cocot3ro.mipastillero.core.datastore.DataStoreManager
 import com.cocot3ro.mipastillero.data.network.CimaApiDefinitions
 import com.cocot3ro.mipastillero.data.repositories.MiPastilleroDbRepository
 import com.cocot3ro.mipastillero.domain.model.MedicamentoActivoItem

@@ -1,7 +1,7 @@
 package com.cocot3ro.mipastillero.domain.usecases
 
 import android.content.Context
-import com.cocot3ro.mipastillero.core.DataStoreManager
+import com.cocot3ro.mipastillero.core.datastore.DataStoreManager
 import com.cocot3ro.mipastillero.core.UserInfoProvider
 import com.cocot3ro.mipastillero.data.database.DataBaseClearer
 import dagger.hilt.android.qualifiers.ApplicationContext

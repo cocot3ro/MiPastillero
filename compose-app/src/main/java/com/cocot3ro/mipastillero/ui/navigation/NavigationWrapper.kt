@@ -5,14 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.cocot3ro.mipastillero.ui.screens.activemeds.ActiveMedsScreen
-import com.cocot3ro.mipastillero.ui.screens.calendar.CalendarScreen
 import com.cocot3ro.mipastillero.ui.screens.diary.DiaryScreen
-import com.cocot3ro.mipastillero.ui.screens.favmeds.FavoriteMedsScreen
 import com.cocot3ro.mipastillero.ui.screens.history.HistoryScreen
 import com.cocot3ro.mipastillero.ui.screens.login.LoginScreen
+import com.cocot3ro.mipastillero.ui.screens.home.HomeScreen
 import com.cocot3ro.mipastillero.ui.screens.manageusers.ManageUsersScreen
 import com.cocot3ro.mipastillero.ui.screens.settings.SettingsScreen
 import com.cocot3ro.mipastillero.ui.screens.splash.SplashScreen
@@ -31,27 +28,25 @@ fun NavigationWrapper() {
                 },
                 onLoginSuccess = {
                     navController.popBackStack()
-                    navController.navigate(Main)
+                    navController.navigate(Home)
                 }
             )
         }
 
         composable<Login> {
-            LoginScreen(modifier = Modifier.fillMaxSize())
+            LoginScreen(
+                modifier = Modifier.fillMaxSize(),
+                onManageUsers = { navController.navigate(ManageUsers) },
+                onUserSelected = { navController.navigate(Home) }
+            )
         }
 
-        navigation<Main>(startDestination = Calendar) {
-            composable<Calendar> {
-                CalendarScreen(modifier = Modifier.fillMaxSize())
-            }
-
-            composable<ActiveMeds> {
-                ActiveMedsScreen(modifier = Modifier.fillMaxSize())
-            }
-
-            composable<FavoriteMeds> {
-                FavoriteMedsScreen(modifier = Modifier.fillMaxSize())
-            }
+        composable<Home> {
+            HomeScreen(
+                modifier = Modifier.fillMaxSize(),
+                onDiary = { navController.navigate(Diary) },
+                onHistory = { navController.navigate(History) },
+            )
         }
 
         composable<ManageUsers> {

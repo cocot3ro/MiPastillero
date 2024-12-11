@@ -1,6 +1,6 @@
 package com.cocot3ro.mipastillero.domain.usecases
 
-import com.cocot3ro.mipastillero.core.DataStoreManager
+import com.cocot3ro.mipastillero.core.datastore.DataStoreManager
 import javax.inject.Inject
 
 class SaveSettingsUseCase @Inject constructor(
