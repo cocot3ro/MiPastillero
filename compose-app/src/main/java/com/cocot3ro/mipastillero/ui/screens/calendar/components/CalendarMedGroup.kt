@@ -6,6 +6,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.cocot3ro.mipastillero.core.DateTimeUtils.formatShortTime
 import com.cocot3ro.mipastillero.domain.model.MedicamentoActivoItem
@@ -22,7 +23,8 @@ fun CalendarMedGroup(
     Card(modifier = modifier) {
         Text(
             text = hour.formatShortTime(),
-            fontSize = 28.sp
+            fontSize = 28.sp,
+            fontWeight = FontWeight.SemiBold
         )
 
         meds.filter { it.horario.contains(hour) }.forEach { med ->

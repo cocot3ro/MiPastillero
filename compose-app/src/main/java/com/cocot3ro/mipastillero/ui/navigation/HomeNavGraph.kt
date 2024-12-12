@@ -12,24 +12,34 @@ import com.cocot3ro.mipastillero.ui.screens.favmeds.FavoriteMedsScreen
 
 @Composable
 fun HomeNavGraph(
+    modifier: Modifier,
     navController: NavHostController,
     onOpenDrawer: () -> Unit
 ) {
-
     NavHost(
+        modifier = modifier,
         navController = navController,
         startDestination = Calendar
     ) {
         composable<Calendar> {
-            CalendarScreen(modifier = Modifier.fillMaxSize(), onOpenDrawer = onOpenDrawer)
+            CalendarScreen(
+                modifier = Modifier.fillMaxSize(),
+                onOpenDrawer = onOpenDrawer
+            )
         }
 
         composable<ActiveMeds> {
-            ActiveMedsScreen(modifier = Modifier.fillMaxSize(), onOpenDrawer = onOpenDrawer)
+            ActiveMedsScreen(
+                modifier = Modifier.fillMaxSize(),
+                onOpenDrawer = onOpenDrawer
+            )
         }
 
         composable<FavoriteMeds> {
-            FavoriteMedsScreen(modifier = Modifier.fillMaxSize(), onOpenDrawer = onOpenDrawer)
+            FavoriteMedsScreen(
+                modifier = Modifier.fillMaxSize(),
+                onOpenDrawer = onOpenDrawer
+            )
         }
     }
 }

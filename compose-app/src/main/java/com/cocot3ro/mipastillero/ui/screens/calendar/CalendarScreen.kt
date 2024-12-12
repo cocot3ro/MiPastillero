@@ -1,8 +1,7 @@
 package com.cocot3ro.mipastillero.ui.screens.calendar
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -26,19 +25,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cocot3ro.mipastillero.R
 import com.cocot3ro.mipastillero.ui.screens.calendar.components.CalendarPage
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalendarScreen(
@@ -91,58 +88,62 @@ fun CalendarScreen(
                 }
             )
         },
-    ) { innerPadding ->
+    ) {
 
-        Box(modifier = Modifier.padding(innerPadding)) {
+        HorizontalPager(
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize()
+            ,
+            state = pagerState
+        ) { position ->
 
-            HorizontalPager(
-                modifier = Modifier.fillMaxSize(),
-                state = pagerState
-            ) { position ->
-                val offset = position - Int.MAX_VALUE / 2
-                val date = viewModel.calculateDate(offset)
+            val offset = position - Int.MAX_VALUE / 2
+            val date = viewModel.calculateDate(offset)
 
-                val medList by viewModel.medicamentosFlow(date)
-                    .collectAsState(initial = emptyList())
+            val medList by viewModel.medicamentosFlow(date)
+                .collectAsState(initial = emptyList())
 
-                CalendarPage(
-                    modifier = Modifier.fillMaxSize().padding(8.dp),
-                    date = date,
-                    medList = medList,
-                    onMarcarToma = { med, dia, hora, tomado ->
-                        viewModel.marcarToma(med, dia, hora, tomado)
-                    }
-                )
-            }
-
-            if (showDatePickerDialog) {
-                val datePickerState = rememberDatePickerState()
-
-                DatePickerDialog(
-                    onDismissRequest = { showDatePickerDialog = false },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                scope.launch {
-                                    showDatePickerDialog = false
-                                    val offset =
-                                        viewModel.calculateOffset(datePickerState.selectedDateMillis!!)
-
-                                    pagerState.animateScrollToPage(Int.MAX_VALUE / 2 + offset)
-                                }
-                            }
-                        ) {
-                            Text(text = stringResource(R.string.accept))
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(onClick = { showDatePickerDialog = false }) {
-                            Text(text = stringResource(R.string.cancel))
-                        }
-                    }
-                ) {
-                    DatePicker(state = datePickerState)
+            CalendarPage(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 8.dp)
+                ,
+                date = date,
+                medList = medList,
+                onMarcarToma = { med, dia, hora, tomado ->
+                    viewModel.marcarToma(med, dia, hora, tomado)
                 }
+            )
+        }
+
+        if (showDatePickerDialog) {
+            val datePickerState = rememberDatePickerState()
+
+            DatePickerDialog(
+                onDismissRequest = { showDatePickerDialog = false },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            scope.launch {
+                                showDatePickerDialog = false
+                                val offset =
+                                    viewModel.calculateOffset(datePickerState.selectedDateMillis!!)
+
+                                pagerState.animateScrollToPage(Int.MAX_VALUE / 2 + offset)
+                            }
+                        }
+                    ) {
+                        Text(text = stringResource(R.string.accept))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDatePickerDialog = false }) {
+                        Text(text = stringResource(R.string.cancel))
+                    }
+                }
+            ) {
+                DatePicker(state = datePickerState)
             }
         }
     }
