@@ -7,9 +7,9 @@ import com.cocot3ro.mipastillero.core.InternalStorageDefinitions
 import java.io.File
 import java.security.SecureRandom
 
-class DatabasePassphrase(private val context: Context) {
+object DatabasePassphrase {
 
-    fun getPassphrase(): ByteArray {
+    fun getPassphrase(context: Context): ByteArray {
         val file = File(context.filesDir, InternalStorageDefinitions.PASSPHRASE_FILE)
         val encryptedFile = EncryptedFile.Builder(
             file,
