@@ -1,23 +1,39 @@
+@file:Suppress("UnstableApiUsage")
+
+rootProject.name = "MiPastillero"
+
 pluginManagement {
     repositories {
         google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
             }
         }
         mavenCentral()
         gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        google()
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
         mavenCentral()
+    }
+
+    versionCatalogs {
+        create("ktorLibs") {
+            from("io.ktor:ktor-version-catalog:3.6.0")
+        }
     }
 }
 
-rootProject.name = "MiPastillero"
-include(":app")
+include(":androidApp")
+include(":shared")
